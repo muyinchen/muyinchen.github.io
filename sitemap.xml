@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://muyinchen.github.io/categories/index.html</loc>
+    
+    <lastmod>2016-11-06T01:51:19.180Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://muyinchen.github.io/tags/index.html</loc>
+    
+    <lastmod>2016-11-06T01:50:30.010Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://muyinchen.github.io/2016/11/06/hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2016-11-06T01:39:24.000Z</lastmod>
