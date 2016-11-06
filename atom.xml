@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-06T01:39:24.000Z</updated>
+  <updated>2016-11-06T02:06:09.800Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,23 +16,22 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>hexo常用命令笔记</title>
     <link href="https://muyinchen.github.io/2016/11/06/hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AC%94%E8%AE%B0/"/>
     <id>https://muyinchen.github.io/2016/11/06/hexo常用命令笔记/</id>
     <published>2016-11-06T01:44:21.119Z</published>
-    <updated>2016-11-06T01:39:24.000Z</updated>
+    <updated>2016-11-06T02:06:09.800Z</updated>
     
-    <content type="html"><![CDATA[<p>###hexo常用命令笔记</p>
-<h4 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g #安装  </div><div class="line">npm update hexo -g #升级  </div><div class="line">hexo init #初始化</div></pre></td></tr></table></figure>
-<p>####简写</p>
+    <content type="html"><![CDATA[<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g #安装  </div><div class="line">npm update hexo -g #升级  </div><div class="line">hexo init #初始化</div></pre></td></tr></table></figure>
+<p>###简写</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo n &quot;我的博客&quot; == hexo new &quot;我的博客&quot; #新建文章</div><div class="line">hexo p == hexo publish</div><div class="line">hexo g == hexo generate#生成</div><div class="line">hexo s == hexo server #启动服务预览</div><div class="line">hexo d == hexo deploy#部署</div></pre></td></tr></table></figure>
-<p>####服务器</p>
+<p>###服务器</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。</div><div class="line">hexo server -s #静态模式</div><div class="line">hexo server -p 5000 #更改端口</div><div class="line">hexo server -i 192.168.1.1 #自定义 IP</div><div class="line"></div><div class="line">hexo clean #清除缓存 网页正常情况下可以忽略此条命令</div><div class="line">hexo g #生成静态网页</div><div class="line">hexo d #开始部署</div></pre></td></tr></table></figure>
-<p>####监视文件变动</p>
+<p>###监视文件变动</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">hexo generate #使用 Hexo 生成静态文件快速而且简单</div><div class="line">hexo generate --watch #监视文件变动</div><div class="line"></div><div class="line">完成后部署</div><div class="line">两个命令的作用是相同的</div><div class="line">hexo generate --deploy</div><div class="line">hexo deploy --generate</div><div class="line">hexo deploy -g</div><div class="line">hexo server -g</div></pre></td></tr></table></figure>
-<p>####草稿</p>
+<p>###草稿</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo publish [layout] &lt;title&gt;</div></pre></td></tr></table></figure>
-<p>####模版</p>
+<p>###模版</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">hexo new &quot;postName&quot; #新建文章</div><div class="line">hexo new page &quot;pageName&quot; #新建页面</div><div class="line">hexo generate #生成静态页面至public目录</div><div class="line">hexo server #开启预览访问端口（默认端口4000，&apos;ctrl + c&apos;关闭server）</div><div class="line">hexo deploy #将.deploy目录部署到GitHub</div><div class="line"></div><div class="line">hexo new [layout] &lt;title&gt;</div><div class="line">hexo new photo &quot;My Gallery&quot;</div><div class="line">hexo new &quot;Hello World&quot; --lang tw</div></pre></td></tr></table></figure>
 <table>
 <thead>
@@ -57,13 +56,13 @@
 </tbody>
 </table>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">title: 使用Hexo搭建个人博客</div><div class="line">layout: post</div><div class="line">date: 2014-03-03 19:07:43</div><div class="line">comments: true</div><div class="line">categories: Blog</div><div class="line">tags: [Hexo]</div><div class="line">keywords: Hexo, Blog</div><div class="line">description: 暮色匆匆去，音消尘也无</div><div class="line">模版（Scaffold）</div><div class="line">hexo new photo &quot;My Gallery&quot;</div></pre></td></tr></table></figure>
-<p>####设置文章摘要<br>以上是文章摘要 <a id="more"></a> 以下是余下全文 </p>
-<p>####写作</p>
+<p>###设置文章摘要<br>以上是文章摘要 <a id="more"></a> 以下是余下全文 </p>
+<p>###写作</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo new page &lt;title&gt;</div><div class="line">hexo new post &lt;title&gt;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">变量	   描述</div><div class="line">:title	标题</div><div class="line">:year	建立的年份（4 位数）</div><div class="line">:month	建立的月份（2 位数）</div><div class="line">:i_month	建立的月份（去掉开头的零）</div><div class="line">:day	建立的日期（2 位数）</div><div class="line">:i_day	建立的日期（去掉开头的零）</div></pre></td></tr></table></figure>
-<p>####推送到服务器上</p>
+<p>###推送到服务器上</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo n #写文章</div><div class="line">hexo g #生成</div><div class="line">hexo d #部署 #可与hexo g合并为 hexo d -g</div></pre></td></tr></table></figure>
-<p>####报错<br>1.找不到git部署</p>
+<p>###报错<br>1.找不到git部署</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ERROR Deployer not found: git</div></pre></td></tr></table></figure>
 <p>解决方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
@@ -77,10 +76,10 @@
 <li>RSS不显示<br>安装RSS插件</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-feed --save</div></pre></td></tr></table></figure>
-<p>####开启RSS功能</p>
+<p>###开启RSS功能</p>
 <p>编辑<code>hexo/_config.yml</code>，添加如下代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rss: /atom.xml #rss地址  默认即可</div></pre></td></tr></table></figure>
-<p>####开启评论</p>
+<p>###开启评论</p>
 <p>1.我使用多说代替自带的评论，在多说 网站注册 &gt; 后台管理 &gt; 添加新站点 &gt; 工具 === 复制通用代码 里面有 short_name</p>
 <p>1 在根目录 <code>_config.yml</code> 添加一行 <code>disqus_shortname: jslite</code> 是在多说注册时产生的<br>复制到 <code>themes\landscape\layout\_partial\article.ejs</code><br>2 把</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;% if (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</div><div class="line">&lt;section id=&quot;comments&quot;&gt;</div><div class="line">&lt;div id=&quot;disqus_thread&quot;&gt;</div><div class="line">  &lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;//disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;/section&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
@@ -90,17 +89,16 @@
     
     <summary type="html">
     
-      &lt;p&gt;###hexo常用命令笔记&lt;/p&gt;
-&lt;h4 id=&quot;hexo&quot;&gt;&lt;a href=&quot;#hexo&quot; class=&quot;headerlink&quot; title=&quot;hexo&quot;&gt;&lt;/a&gt;hexo&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;npm install hexo -g #安装  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;npm update hexo -g #升级  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo init #初始化&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####简写&lt;/p&gt;
+      &lt;h3 id=&quot;hexo&quot;&gt;&lt;a href=&quot;#hexo&quot; class=&quot;headerlink&quot; title=&quot;hexo&quot;&gt;&lt;/a&gt;hexo&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;npm install hexo -g #安装  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;npm update hexo -g #升级  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo init #初始化&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;###简写&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo n &amp;quot;我的博客&amp;quot; == hexo new &amp;quot;我的博客&amp;quot; #新建文章&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo p == hexo publish&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo g == hexo generate#生成&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo s == hexo server #启动服务预览&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo d == hexo deploy#部署&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####服务器&lt;/p&gt;
+&lt;p&gt;###服务器&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -s #静态模式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -p 5000 #更改端口&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -i 192.168.1.1 #自定义 IP&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo clean #清除缓存 网页正常情况下可以忽略此条命令&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo g #生成静态网页&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo d #开始部署&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####监视文件变动&lt;/p&gt;
+&lt;p&gt;###监视文件变动&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo generate #使用 Hexo 生成静态文件快速而且简单&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate --watch #监视文件变动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;完成后部署&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;两个命令的作用是相同的&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate --deploy&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy --generate&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy -g&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -g&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####草稿&lt;/p&gt;
+&lt;p&gt;###草稿&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo publish [layout] &amp;lt;title&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####模版&lt;/p&gt;
+&lt;p&gt;###模版&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo new &amp;quot;postName&amp;quot; #新建文章&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new page &amp;quot;pageName&amp;quot; #新建页面&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate #生成静态页面至public目录&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server #开启预览访问端口（默认端口4000，&amp;apos;ctrl + c&amp;apos;关闭server）&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy #将.deploy目录部署到GitHub&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new [layout] &amp;lt;title&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new photo &amp;quot;My Gallery&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new &amp;quot;Hello World&amp;quot; --lang tw&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -125,7 +123,7 @@
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;title: 使用Hexo搭建个人博客&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;layout: post&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;date: 2014-03-03 19:07:43&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;comments: true&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;categories: Blog&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tags: [Hexo]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;keywords: Hexo, Blog&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;description: 暮色匆匆去，音消尘也无&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;模版（Scaffold）&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new photo &amp;quot;My Gallery&amp;quot;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;####设置文章摘要&lt;br&gt;以上是文章摘要
+&lt;p&gt;###设置文章摘要&lt;br&gt;以上是文章摘要
     
     </summary>
     
