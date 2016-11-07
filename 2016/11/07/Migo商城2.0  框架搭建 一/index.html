@@ -1,28 +1,323 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>一叶知秋</title>
+<!doctype html>
+
+
+
   
-  <link href="/atom.xml" rel="self"/>
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-07T06:48:51.747Z</updated>
-  <id>https://muyinchen.github.io/</id>
   
-  <author>
-    <name>知秋</name>
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-  </author>
-  
-  <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>Migo商城2.0  框架搭建 一</title>
-    <link href="https://muyinchen.github.io/2016/11/07/Migo%E5%95%86%E5%9F%8E2.0%20%20%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA%20%E4%B8%80/"/>
-    <id>https://muyinchen.github.io/2016/11/07/Migo商城2.0  框架搭建 一/</id>
-    <published>2016-11-07T06:47:22.448Z</published>
-    <updated>2016-11-07T06:48:51.747Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Migo商城2-0-框架搭建-一"><a href="#Migo商城2-0-框架搭建-一" class="headerlink" title="Migo商城2.0  框架搭建 一"></a>Migo商城2.0  框架搭建 一</h2><p>1.0版本github链接：<a href="https://github.com/muyinchen/migoShop" target="_blank" rel="external">https://github.com/muyinchen/migoShop</a></p>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Migo商城2.0  框架搭建 一1.0版本github链接：https://github.com/muyinchen/migoShop
+开发技术SpringSpringmvcMybatis
+RedisSolrRabbitMQDubbohttpclient(调用系统服务)nginxMysqL
+环境IDEA 2016.1.3(64)maven 3.2.9tomcat 7jdk 1.7MySQL 5.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migo商城2.0  框架搭建 一">
+<meta property="og:url" content="https://muyinchen.github.io/2016/11/07/Migo商城2.0  框架搭建 一/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Migo商城2.0  框架搭建 一1.0版本github链接：https://github.com/muyinchen/migoShop
+开发技术SpringSpringmvcMybatis
+RedisSolrRabbitMQDubbohttpclient(调用系统服务)nginxMysqL
+环境IDEA 2016.1.3(64)maven 3.2.9tomcat 7jdk 1.7MySQL 5.">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/parent.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/migo-common.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/manage.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E9%80%9A%E7%94%A8%E8%B7%B3%E8%BD%AC%E5%B1%95%E7%A4%BA.png">
+<meta property="og:updated_time" content="2016-11-07T06:48:51.747Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migo商城2.0  框架搭建 一">
+<meta name="twitter:description" content="Migo商城2.0  框架搭建 一1.0版本github链接：https://github.com/muyinchen/migoShop
+开发技术SpringSpringmvcMybatis
+RedisSolrRabbitMQDubbohttpclient(调用系统服务)nginxMysqL
+环境IDEA 2016.1.3(64)maven 3.2.9tomcat 7jdk 1.7MySQL 5.">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/parent.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/07/Migo商城2.0  框架搭建 一/"/>
+
+
+  <title> Migo商城2.0  框架搭建 一 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Migo商城2.0  框架搭建 一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-07T14:47:22+08:00" content="2016-11-07">
+              2016-11-07
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/07/Migo商城2.0  框架搭建 一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/07/Migo商城2.0  框架搭建 一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Migo商城2-0-框架搭建-一"><a href="#Migo商城2-0-框架搭建-一" class="headerlink" title="Migo商城2.0  框架搭建 一"></a>Migo商城2.0  框架搭建 一</h2><p>1.0版本github链接：<a href="https://github.com/muyinchen/migoShop" target="_blank" rel="external">https://github.com/muyinchen/migoShop</a></p>
 <h3 id="开发技术"><a href="#开发技术" class="headerlink" title="开发技术"></a>开发技术</h3><p>Spring<br>Springmvc<br>Mybatis</p>
 <p>Redis<br>Solr<br>RabbitMQ<br>Dubbo<br>httpclient(调用系统服务)<br>nginx<br>MysqL</p>
 <h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>IDEA 2016.1.3(64)<br>maven 3.2.9<br>tomcat 7<br>jdk 1.7<br>MySQL 5.6<br>nginx 1.11.4<br>redis 3.2.4<br>solr 6.2.1</p>
@@ -56,143 +351,317 @@
 <h4 id="导入静态页面"><a href="#导入静态页面" class="headerlink" title="导入静态页面"></a>导入静态页面</h4><p><img src="http://og0sybnix.bkt.clouddn.com/%E9%9D%99%E6%80%81%E9%A1%B5%E9%9D%A2.png" alt="enter image description here"></p>
 <h4 id="写个通用跳转页面"><a href="#写个通用跳转页面" class="headerlink" title="写个通用跳转页面"></a>写个通用跳转页面</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/7.</div><div class="line"> * 通用页面的跳转</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/page/&#123;pageName&#125;"</span>,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">tpage</span><span class="params">(@PathVariable String pageName)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> pageName;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>效果页面展示<br><img src="http://og0sybnix.bkt.clouddn.com/%E9%80%9A%E7%94%A8%E8%B7%B3%E8%BD%AC%E5%B1%95%E7%A4%BA.png" alt="enter image description here"></p>
-]]></content>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/06/hexo常用命令笔记/" rel="next" title="hexo常用命令笔记">
+                <i class="fa fa-chevron-left"></i> hexo常用命令笔记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-    <summary type="html">
+      <div class="ds-thread" data-thread-key="2016/11/07/Migo商城2.0  框架搭建 一/"
+           data-title="Migo商城2.0  框架搭建 一" data-url="https://muyinchen.github.io/2016/11/07/Migo商城2.0  框架搭建 一/">
+      </div>
     
-      &lt;h2 id=&quot;Migo商城2-0-框架搭建-一&quot;&gt;&lt;a href=&quot;#Migo商城2-0-框架搭建-一&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  框架搭建 一&quot;&gt;&lt;/a&gt;Migo商城2.0  框架搭建 一&lt;/h2&gt;&lt;p&gt;1.0版本github链
-    
-    </summary>
-    
-    
-  </entry>
+  </div>
+
+
+        </div>
+        
+          
   
-  <entry>
-    <title>hexo常用命令笔记</title>
-    <link href="https://muyinchen.github.io/2016/11/06/hexo%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E7%AC%94%E8%AE%B0/"/>
-    <id>https://muyinchen.github.io/2016/11/06/hexo常用命令笔记/</id>
-    <published>2016-11-06T01:44:21.119Z</published>
-    <updated>2016-11-06T02:08:43.070Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g #安装  </div><div class="line">npm update hexo -g #升级  </div><div class="line">hexo init #初始化</div></pre></td></tr></table></figure>
-<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo n &quot;我的博客&quot; == hexo new &quot;我的博客&quot; #新建文章</div><div class="line">hexo p == hexo publish</div><div class="line">hexo g == hexo generate#生成</div><div class="line">hexo s == hexo server #启动服务预览</div><div class="line">hexo d == hexo deploy#部署</div></pre></td></tr></table></figure>
-<h3 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。</div><div class="line">hexo server -s #静态模式</div><div class="line">hexo server -p 5000 #更改端口</div><div class="line">hexo server -i 192.168.1.1 #自定义 IP</div><div class="line"></div><div class="line">hexo clean #清除缓存 网页正常情况下可以忽略此条命令</div><div class="line">hexo g #生成静态网页</div><div class="line">hexo d #开始部署</div></pre></td></tr></table></figure>
-<h3 id="监视文件变动"><a href="#监视文件变动" class="headerlink" title="监视文件变动"></a>监视文件变动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">hexo generate #使用 Hexo 生成静态文件快速而且简单</div><div class="line">hexo generate --watch #监视文件变动</div><div class="line"></div><div class="line">完成后部署</div><div class="line">两个命令的作用是相同的</div><div class="line">hexo generate --deploy</div><div class="line">hexo deploy --generate</div><div class="line">hexo deploy -g</div><div class="line">hexo server -g</div></pre></td></tr></table></figure>
-<h3 id="草稿"><a href="#草稿" class="headerlink" title="草稿"></a>草稿</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo publish [layout] &lt;title&gt;</div></pre></td></tr></table></figure>
-<h3 id="模版"><a href="#模版" class="headerlink" title="模版"></a>模版</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">hexo new &quot;postName&quot; #新建文章</div><div class="line">hexo new page &quot;pageName&quot; #新建页面</div><div class="line">hexo generate #生成静态页面至public目录</div><div class="line">hexo server #开启预览访问端口（默认端口4000，&apos;ctrl + c&apos;关闭server）</div><div class="line">hexo deploy #将.deploy目录部署到GitHub</div><div class="line"></div><div class="line">hexo new [layout] &lt;title&gt;</div><div class="line">hexo new photo &quot;My Gallery&quot;</div><div class="line">hexo new &quot;Hello World&quot; --lang tw</div></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">变量</th>
-<th style="text-align:right">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">layout</td>
-<td style="text-align:right">布局</td>
-</tr>
-<tr>
-<td style="text-align:left">title</td>
-<td style="text-align:right">标题</td>
-</tr>
-<tr>
-<td style="text-align:left">date</td>
-<td style="text-align:right">建立</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">title: 使用Hexo搭建个人博客</div><div class="line">layout: post</div><div class="line">date: 2014-03-03 19:07:43</div><div class="line">comments: true</div><div class="line">categories: Blog</div><div class="line">tags: [Hexo]</div><div class="line">keywords: Hexo, Blog</div><div class="line">description: 暮色匆匆去，音消尘也无</div><div class="line">模版（Scaffold）</div><div class="line">hexo new photo &quot;My Gallery&quot;</div></pre></td></tr></table></figure>
-<h3 id="设置文章摘要"><a href="#设置文章摘要" class="headerlink" title="设置文章摘要"></a>设置文章摘要</h3><p>以上是文章摘要 <a id="more"></a> 以下是余下全文 </p>
-<h3 id="写作"><a href="#写作" class="headerlink" title="写作"></a>写作</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">hexo new page &lt;title&gt;</div><div class="line">hexo new post &lt;title&gt;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">变量	   描述</div><div class="line">:title	标题</div><div class="line">:year	建立的年份（4 位数）</div><div class="line">:month	建立的月份（2 位数）</div><div class="line">:i_month	建立的月份（去掉开头的零）</div><div class="line">:day	建立的日期（2 位数）</div><div class="line">:i_day	建立的日期（去掉开头的零）</div></pre></td></tr></table></figure>
-<h3 id="推送到服务器上"><a href="#推送到服务器上" class="headerlink" title="推送到服务器上"></a>推送到服务器上</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo n #写文章</div><div class="line">hexo g #生成</div><div class="line">hexo d #部署 #可与hexo g合并为 hexo d -g</div></pre></td></tr></table></figure>
-<h3 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h3><p>1.找不到git部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ERROR Deployer not found: git</div></pre></td></tr></table></figure>
-<p>解决方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure>
-<p>3.部署类型设置git<br>hexo 3.0 部署类型不再是github，<code>_config.yml</code> 中修改</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: http://hexo.io/docs/deployment.html</div><div class="line">deploy:</div><div class="line">  type: git</div><div class="line">  repository: git@***.github.com:***/***.github.io.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
-<ol>
-<li>xcodebuild</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">xcode-select: error: tool &apos;xcodebuild&apos; requires Xcode, but active developer directory &apos;/Library/Developer/CommandLineTools&apos; is a command line tools instance</div><div class="line"></div><div class="line">npm install bcrypt</div></pre></td></tr></table></figure>
-<ol>
-<li>RSS不显示<br>安装RSS插件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-feed --save</div></pre></td></tr></table></figure>
-<h3 id="开启RSS功能"><a href="#开启RSS功能" class="headerlink" title="开启RSS功能"></a>开启RSS功能</h3><p>编辑<code>hexo/_config.yml</code>，添加如下代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rss: /atom.xml #rss地址  默认即可</div></pre></td></tr></table></figure>
-<h3 id="开启评论"><a href="#开启评论" class="headerlink" title="开启评论"></a>开启评论</h3><p>1.我使用多说代替自带的评论，在多说 网站注册 &gt; 后台管理 &gt; 添加新站点 &gt; 工具 === 复制通用代码 里面有 short_name</p>
-<p>1 在根目录 <code>_config.yml</code> 添加一行 <code>disqus_shortname: jslite</code> 是在多说注册时产生的<br>复制到 <code>themes\landscape\layout\_partial\article.ejs</code><br>2 把</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;% if (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</div><div class="line">&lt;section id=&quot;comments&quot;&gt;</div><div class="line">&lt;div id=&quot;disqus_thread&quot;&gt;</div><div class="line">  &lt;noscript&gt;Please enable JavaScript to view the &lt;a href=&quot;//disqus.com/?ref_noscript&quot;&gt;comments powered by Disqus.&lt;/a&gt;&lt;/noscript&gt;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;/section&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-<p>改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;% if (!index &amp;&amp; post.comments &amp;&amp; config.disqus_shortname)&#123; %&gt;</div><div class="line">  &lt;section id=&quot;comments&quot;&gt;</div><div class="line">    &lt;!-- 多说评论框 start --&gt;</div><div class="line">    &lt;div class=&quot;ds-thread&quot; data-thread-key=&quot;&lt;%= post.layout %&gt;-&lt;%= post.slug %&gt;&quot; data-title=&quot;&lt;%= post.title %&gt;&quot; data-url=&quot;&lt;%= page.permalink %&gt;&quot;&gt;&lt;/div&gt;</div><div class="line">    &lt;!-- 多说评论框 end --&gt;</div><div class="line">    &lt;!-- 多说公共JS代码 start (一个网页只需插入一次) --&gt;</div><div class="line">    &lt;script type=&quot;text/javascript&quot;&gt;</div><div class="line">    var duoshuoQuery = &#123;short_name:&apos;&lt;%= config.disqus_shortname %&gt;&apos;&#125;;</div><div class="line">      (function() &#123;</div><div class="line">        var ds = document.createElement(&apos;script&apos;);</div><div class="line">        ds.type = &apos;text/javascript&apos;;ds.async = true;</div><div class="line">        ds.src = (document.location.protocol == &apos;https:&apos; ? &apos;https:&apos; : &apos;http:&apos;) + &apos;//static.duoshuo.com/embed.js&apos;;</div><div class="line">        ds.charset = &apos;UTF-8&apos;;</div><div class="line">        (document.getElementsByTagName(&apos;head&apos;)[0] </div><div class="line">         || document.getElementsByTagName(&apos;body&apos;)[0]).appendChild(ds);</div><div class="line">      &#125;)();</div><div class="line">      &lt;/script&gt;</div><div class="line">    &lt;!-- 多说公共JS代码 end --&gt;</div><div class="line">  &lt;/section&gt;</div><div class="line">&lt;% &#125; %&gt;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;hexo&quot;&gt;&lt;a href=&quot;#hexo&quot; class=&quot;headerlink&quot; title=&quot;hexo&quot;&gt;&lt;/a&gt;hexo&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;npm install hexo -g #安装  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;npm update hexo -g #升级  &lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo init #初始化&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;简写&quot;&gt;&lt;a href=&quot;#简写&quot; class=&quot;headerlink&quot; title=&quot;简写&quot;&gt;&lt;/a&gt;简写&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo n &amp;quot;我的博客&amp;quot; == hexo new &amp;quot;我的博客&amp;quot; #新建文章&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo p == hexo publish&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo g == hexo generate#生成&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo s == hexo server #启动服务预览&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo d == hexo deploy#部署&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;服务器&quot;&gt;&lt;a href=&quot;#服务器&quot; class=&quot;headerlink&quot; title=&quot;服务器&quot;&gt;&lt;/a&gt;服务器&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo server #Hexo 会监视文件变动并自动更新，您无须重启服务器。&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -s #静态模式&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -p 5000 #更改端口&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -i 192.168.1.1 #自定义 IP&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo clean #清除缓存 网页正常情况下可以忽略此条命令&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo g #生成静态网页&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo d #开始部署&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;监视文件变动&quot;&gt;&lt;a href=&quot;#监视文件变动&quot; class=&quot;headerlink&quot; title=&quot;监视文件变动&quot;&gt;&lt;/a&gt;监视文件变动&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo generate #使用 Hexo 生成静态文件快速而且简单&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate --watch #监视文件变动&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;完成后部署&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;两个命令的作用是相同的&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate --deploy&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy --generate&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy -g&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server -g&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;草稿&quot;&gt;&lt;a href=&quot;#草稿&quot; class=&quot;headerlink&quot; title=&quot;草稿&quot;&gt;&lt;/a&gt;草稿&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo publish [layout] &amp;lt;title&amp;gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;模版&quot;&gt;&lt;a href=&quot;#模版&quot; class=&quot;headerlink&quot; title=&quot;模版&quot;&gt;&lt;/a&gt;模版&lt;/h3&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;hexo new &amp;quot;postName&amp;quot; #新建文章&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new page &amp;quot;pageName&amp;quot; #新建页面&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo generate #生成静态页面至public目录&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo server #开启预览访问端口（默认端口4000，&amp;apos;ctrl + c&amp;apos;关闭server）&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo deploy #将.deploy目录部署到GitHub&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new [layout] &amp;lt;title&amp;gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new photo &amp;quot;My Gallery&amp;quot;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new &amp;quot;Hello World&amp;quot; --lang tw&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th style=&quot;text-align:left&quot;&gt;变量&lt;/th&gt;
-&lt;th style=&quot;text-align:right&quot;&gt;描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;layout&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;布局&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;title&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;标题&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td style=&quot;text-align:left&quot;&gt;date&lt;/td&gt;
-&lt;td style=&quot;text-align:right&quot;&gt;建立&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;title: 使用Hexo搭建个人博客&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;layout: post&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;date: 2014-03-03 19:07:43&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;comments: true&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;categories: Blog&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;tags: [Hexo]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;keywords: Hexo, Blog&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;description: 暮色匆匆去，音消尘也无&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;模版（Scaffold）&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;hexo new photo &amp;quot;My Gallery&amp;quot;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h3 id=&quot;设置文章摘要&quot;&gt;&lt;a href=&quot;#设置文章摘要&quot; class=&quot;headerlink&quot; title=&quot;设置文章摘要&quot;&gt;&lt;/a&gt;设置文章摘要&lt;/h3&gt;&lt;p&gt;以上是文章摘要
-    
-    </summary>
-    
-    
-  </entry>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城2-0-框架搭建-一"><span class="nav-number">1.</span> <span class="nav-text">Migo商城2.0  框架搭建 一</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发技术"><span class="nav-number">1.1.</span> <span class="nav-text">开发技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">1.2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建maven项目"><span class="nav-number">1.3.</span> <span class="nav-text">构建maven项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建migo-common"><span class="nav-number">1.4.</span> <span class="nav-text">创建migo-common</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建migo-manage"><span class="nav-number">1.5.</span> <span class="nav-text">创建migo-manage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#子工程之间的依赖关系"><span class="nav-number">1.5.1.</span> <span class="nav-text">子工程之间的依赖关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入依赖"><span class="nav-number">1.5.2.</span> <span class="nav-text">导入依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#有些依赖包的用法会单独开博文讲解用法"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">有些依赖包的用法会单独开博文讲解用法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#migo-manage-pom"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">migo-manage pom</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#manage-pojo-pom"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">manage-pojo pom</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#manage-service-pom"><span class="nav-number">1.5.2.4.</span> <span class="nav-text">manage-service pom</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#manage-web-pom"><span class="nav-number">1.5.2.5.</span> <span class="nav-text">manage-web pom</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架整合思路"><span class="nav-number">1.6.</span> <span class="nav-text">框架整合思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#整合通用mapper"><span class="nav-number">1.6.1.</span> <span class="nav-text">整合通用mapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建web-xml"><span class="nav-number">1.6.2.</span> <span class="nav-text">创建web.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入静态页面"><span class="nav-number">1.6.3.</span> <span class="nav-text">导入静态页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#写个通用跳转页面"><span class="nav-number">1.6.4.</span> <span class="nav-text">写个通用跳转页面</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  <entry>
-    <title>Hello World</title>
-    <link href="https://muyinchen.github.io/2016/11/03/hello-world/"/>
-    <id>https://muyinchen.github.io/2016/11/03/hello-world/</id>
-    <published>2016-11-02T17:57:03.440Z</published>
-    <updated>2016-11-02T17:57:03.441Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-    
-    </summary>
-    
-    
-  </entry>
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
   
-</feed>
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
