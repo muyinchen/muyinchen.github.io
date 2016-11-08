@@ -252,6 +252,164 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/08/Migo商城2.0 后台管理页面分析及商品类目展示实现 二/" itemprop="url">
+                  Migo商城2.0 后台管理页面分析及商品类目展示实现 二
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-08T11:56:44+08:00" content="2016-11-08">
+              2016-11-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/08/Migo商城2.0 后台管理页面分析及商品类目展示实现 二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/08/Migo商城2.0 后台管理页面分析及商品类目展示实现 二/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Migo商城2-0-后台管理页面分析及商品类目展示实现-二"><a href="#Migo商城2-0-后台管理页面分析及商品类目展示实现-二" class="headerlink" title="Migo商城2.0 后台管理页面分析及商品类目展示实现 二"></a>Migo商城2.0 后台管理页面分析及商品类目展示实现 二</h2><h4 id="首页布局如下图所示"><a href="#首页布局如下图所示" class="headerlink" title="首页布局如下图所示"></a>首页布局如下图所示</h4><p><img src="http://og0sybnix.bkt.clouddn.com/%E9%A6%96%E9%A1%B5%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80.png" alt="enter image description here"></p>
+<p>树所对应代码</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E6%A0%91%E6%89%80%E5%AF%B9%E5%BA%94%E6%BA%90%E7%A0%81.png" alt="enter image description here"></p>
+<p>菜单点击事件源码<br>先判断是否是叶子节点，然后再进行下面的判断<br><img src="http://og0sybnix.bkt.clouddn.com/%E7%82%B9%E5%87%BB%E4%BA%8B%E4%BB%B6.png" alt="enter image description here"></p>
+<p>点击新增商品后，点击选择类目，弹出窗口，在窗口中显示商品类目数据<br>效果如图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E9%80%89%E6%8B%A9%E7%B1%BB%E7%9B%AE%E6%95%88%E6%9E%9C.png" alt="enter image description here"><br> 其中，弹出框如何做出来，找到其源码：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E5%88%9D%E5%A7%8B%E5%8C%96%E9%80%89%E6%8B%A9%E7%B1%BB%E7%9B%AE%E7%BB%84%E4%BB%B6.png" alt="enter image description here"><br><img src="http://og0sybnix.bkt.clouddn.com/%E5%88%9B%E5%BB%BA%E5%AF%8C%E6%96%87%E6%9C%AC%E5%B9%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B1%BB%E7%9B%AE.png" alt="enter image description here"></p>
+<p>调用的类目选择所在js代码<br><img src="http://og0sybnix.bkt.clouddn.com/%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B1%BB%E7%9B%AE%E9%80%89%E6%8B%A9.png" alt="enter image description here"><br>还是将代码贴下的，通过下面这段代码来加载一个类目tree，判断这个tree</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 初始化选择类目组件</span></div><div class="line">   initItemCat : <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">   	$(<span class="string">".selectItemCat"</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">i,e</span>)</span>&#123;</div><div class="line">   		<span class="keyword">var</span> _ele = $(e);</div><div class="line">   		<span class="keyword">if</span>(data &amp;&amp; data.cid)&#123;</div><div class="line">   			_ele.after(<span class="string">"&lt;span style='margin-left:10px;'&gt;"</span>+data.cid+<span class="string">"&lt;/span&gt;"</span>);</div><div class="line">   		&#125;<span class="keyword">else</span>&#123;</div><div class="line">   			_ele.after(<span class="string">"&lt;span style='margin-left:10px;'&gt;&lt;/span&gt;"</span>);</div><div class="line">   		&#125;</div><div class="line">   		_ele.unbind(<span class="string">'click'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   			$(<span class="string">"&lt;div&gt;"</span>).css(&#123;<span class="attr">padding</span>:<span class="string">"5px"</span>&#125;).html(<span class="string">"&lt;ul&gt;"</span>)</div><div class="line">   			.window(&#123;</div><div class="line">   				<span class="attr">width</span>:<span class="string">'500'</span>,</div><div class="line">   			    <span class="attr">height</span>:<span class="string">"450"</span>,</div><div class="line">   			    <span class="attr">modal</span>:<span class="literal">true</span>,</div><div class="line">   			    <span class="attr">closed</span>:<span class="literal">true</span>,</div><div class="line">   			    <span class="attr">iconCls</span>:<span class="string">'icon-save'</span>,</div><div class="line">   			    <span class="attr">title</span>:<span class="string">'选择类目'</span>,</div><div class="line">   			    <span class="attr">onOpen</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   			    	<span class="keyword">var</span> _win = <span class="keyword">this</span>;</div><div class="line">   			    	$(<span class="string">"ul"</span>,_win).tree(&#123;</div><div class="line">   			    		<span class="attr">url</span>:<span class="string">'/rest/item/cat/list'</span>,</div><div class="line">   			    		<span class="attr">animate</span>:<span class="literal">true</span>,</div><div class="line">   			    		<span class="attr">onClick</span> : <span class="function"><span class="keyword">function</span>(<span class="params">node</span>)</span>&#123;</div><div class="line">   			    			<span class="keyword">if</span>($(<span class="keyword">this</span>).tree(<span class="string">"isLeaf"</span>,node.target))&#123;</div><div class="line">   			    				<span class="comment">// 填写到cid中</span></div><div class="line">   			    				_ele.parent().find(<span class="string">"[name=cid]"</span>).val(node.id);</div><div class="line">   			    				_ele.next().text(node.text).attr(<span class="string">"cid"</span>,node.id);</div><div class="line">   			    				$(_win).window(<span class="string">'close'</span>);</div><div class="line">   			    				<span class="keyword">if</span>(data &amp;&amp; data.fun)&#123;</div><div class="line">   			    					data.fun.call(<span class="keyword">this</span>,node);</div><div class="line">   			    				&#125;</div><div class="line">   			    			&#125;</div><div class="line">   			    		&#125;</div><div class="line">   			    	&#125;);</div><div class="line">   			    &#125;,</div><div class="line">   			    <span class="attr">onClose</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   			    	$(<span class="keyword">this</span>).window(<span class="string">"destroy"</span>);</div><div class="line">   			    &#125;</div><div class="line">   			&#125;).window(<span class="string">'open'</span>);</div><div class="line">   		&#125;);</div><div class="line">   	&#125;);</div><div class="line">   &#125;,</div></pre></td></tr></table></figure>
+<p>查看<code>jquery api</code>关于<code>tree</code>控件需要返回的json数据格式<br><img src="http://og0sybnix.bkt.clouddn.com/EasyUI%E7%9A%84tree%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84.png" alt="enter image description here"></p>
+<p>从以上代码可以看出</p>
+<blockquote>
+<p>请求的<code>url：/item/cat/list</code><br>使用tree控件的异步机制来实现，第一次取顶层节点列表。如果节点下有子节点状态就是关闭状态，如果没有子节点就打开状态。<br>每个节点中包含三个属性： <code>id</code>：节点<code>ID</code>，对加载远程数据很重要。 <code>text</code>：显示节点文本。 <code>state</code>：节点状态，’<code>open</code>‘ 或 ‘<code>closed</code>‘</p>
+<p>返回结果是json数据，是一个节点列表，每个节点包含<code>id、text、state</code>三个属性。</p>
+<p>请求的参数：<code>id</code>（当前节点的<code>id</code>）</p>
+<p>数据分析： 查询的表：<code>tb_item_cat</code> 数据是一个树形结果的数据。<code>parentId、isparent</code></p>
+</blockquote>
+<p>再看下商品类目表结构：<br><img src="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E7%B1%BB%E7%9B%AE%E8%A1%A8%E7%BB%93%E6%9E%84.png" alt="enter image description here"></p>
+<h4 id="后台代码实现"><a href="#后台代码实现" class="headerlink" title="后台代码实现"></a>后台代码实现</h4><p>接着，在manage-pojo中添加依赖，因为使用的是通用mapper，需要支持jpa，要给pojo添加注解来映射数据库表</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.persistence<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>persistence-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>导入<code>pojo</code></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E5%AF%BC%E5%85%A5pojo.png" alt="enter image description here"></p>
+<p> <code>mapper</code>里添加接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"> <span class="keyword">package</span> com.migo.mapper;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemCat;</div><div class="line"><span class="keyword">import</span> tk.mybatis.mapper.common.Mapper;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemCatMapper</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">ItemCat</span>&gt; </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>service</code>实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.mapper.ItemCatMapper;</div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemCat;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatService</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemCatMapper itemCatMapper;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;ItemCat&gt; <span class="title">getItemCatList</span><span class="params">(Long parentId)</span> </span>&#123;</div><div class="line">        ItemCat example = <span class="keyword">new</span> ItemCat();</div><div class="line">        example.setParentId(parentId);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.itemCatMapper.select(example);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>controller</code>实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemCat;</div><div class="line"><span class="keyword">import</span> com.migo.service.ItemCatService;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"item/cat"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemCatService itemCatService;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据父节点id查询商品类目表</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</div><div class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;ItemCat&gt;&gt; getItemCatList(</div><div class="line">            <span class="meta">@RequestParam</span>(value = <span class="string">"&#123;d"</span>,defaultValue = <span class="string">"0"</span>) Long parentId</div><div class="line">    )&#123;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            List&lt;ItemCat&gt; itemcats=<span class="keyword">this</span>.itemCatService.getItemCatList(parentId);</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span>==itemcats&amp;&amp;itemcats.isEmpty())&#123;</div><div class="line">                <span class="comment">//资源不存在，响应404</span></div><div class="line">                <span class="keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span>  ResponseEntity.ok(itemcats);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            <span class="comment">// 出错，响应500</span></div><div class="line">            <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p> 对<code>ItemCat</code><br>进行改造，增加扩展字段，支持<code>EasyUItree</code>的显示,这样就可以避免再写一个第一版中的EasyuiTreeNode类，同时也省了第一版中在<code>service</code>中的一系列对<code>easyuiTreeNode</code>的处理(这里有疑问可以参照第一版的相关代码)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.pojo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</div><div class="line"><span class="keyword">import</span> javax.persistence.GenerationType;</div><div class="line"><span class="keyword">import</span> javax.persistence.Id;</div><div class="line"><span class="keyword">import</span> javax.persistence.Table;</div><div class="line"></div><div class="line"><span class="meta">@Table</span>(name = <span class="string">"tb_item_cat"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCat</span> <span class="keyword">extends</span> <span class="title">BasePojo</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Id</span></div><div class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line">    <span class="keyword">private</span> Long id;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Long parentId;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer status;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer sortOrder;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Boolean isParent;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getParentId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> parentId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParentId</span><span class="params">(Long parentId)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.parentId = parentId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStatus</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> status;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(Integer status)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.status = status;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getSortOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sortOrder;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSortOrder</span><span class="params">(Integer sortOrder)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.sortOrder = sortOrder;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">getIsParent</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> isParent;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsParent</span><span class="params">(Boolean isParent)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.isParent = isParent;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 扩展字段，支持EasyUItree的显示,这样就可以避免再写一个第一版中的EasyuiTreeNode类，同时也省了第一版中</span></div><div class="line">    <span class="comment">//在service中的一系列对easyuiTreeNode的处理</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getText</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.getName();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.getIsParent() ? <span class="string">"closed"</span> : <span class="string">"open"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行，输入地址运行结果<br>出错1：地址错误，去js文件list删掉，因为现在是要彻底<code>restful</code>化<br><img src="http://og0sybnix.bkt.clouddn.com/%E8%BF%90%E8%A1%8C%E5%90%8E%E5%87%BA%E9%94%991.png" alt="enter image description here"></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/js%E5%88%A0%E9%99%A4%E5%9C%B0%E6%96%B9.png" alt="enter image description here"></p>
+<p>更改重新选择后，错误2: 405错误<br><img src="http://og0sybnix.bkt.clouddn.com/405%E9%94%99%E8%AF%AF.png" alt="enter image description here"><br>原因：查<code>api，tree</code>控件默认是<code>get</code>请求 修改下即可<br><img src="http://og0sybnix.bkt.clouddn.com/treeapi%E6%96%87%E6%A1%A3%E9%BB%98%E8%AE%A4post%E8%AF%B7%E6%B1%82.png" alt="enter image description here"></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E6%9B%B4%E6%94%B9%E8%AF%B7%E6%B1%82%E7%B1%BB%E5%9E%8B.png" alt="enter image description here"></p>
+<p>刷新后连接显示没有结果，查后台代码，因没添加log4j日志配置文件，先写个测试用例试试手，发现是数据库密码写错了，坑。。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.alibaba.fastjson.JSON;</div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemCat;</div><div class="line"><span class="keyword">import</span> com.migo.service.ItemCatService;</div><div class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class) <span class="comment">//表示继承了SpringJUnit4ClassRunner类</span></div><div class="line"><span class="meta">@ContextConfiguration</span>(locations = &#123;<span class="string">"classpath*:spring/*.xml"</span>&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger logger=Logger.getLogger(Test.class);</div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> ItemCatService itemCatService;</div><div class="line">    <span class="meta">@org</span>.junit.<span class="function">Test</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span>&#123;</div><div class="line">        List&lt;ItemCat&gt; itemCatList = itemCatService.getItemCatList(<span class="number">0L</span>);</div><div class="line">        logger.info(JSON.toJSONString(itemCatList));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>问题解决：<br><img src="http://og0sybnix.bkt.clouddn.com/%E6%9C%80%E5%90%8E%E7%BB%93%E6%9E%9C.png" alt="enter image description here"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/08/由域联系到的逃逸分析/" itemprop="url">
                   由域联系到的逃逸分析
                 </a>
@@ -430,6 +588,25 @@
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -806,7 +983,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-count">5</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -814,7 +991,7 @@
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -823,7 +1000,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
