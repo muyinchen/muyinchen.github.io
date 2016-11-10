@@ -252,6 +252,153 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/10/Migo商城  对代码的二次优化封装  四/" itemprop="url">
+                  参考通用mapper思想对service代码的二次优化封装  四
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-10T21:13:25+08:00" content="2016-11-10">
+              2016-11-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/10/Migo商城  对代码的二次优化封装  四/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/10/Migo商城  对代码的二次优化封装  四/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Migo商城-参考通用mapper思想对service代码的二次优化封装-四"><a href="#Migo商城-参考通用mapper思想对service代码的二次优化封装-四" class="headerlink" title="Migo商城  参考通用mapper思想对service代码的二次优化封装  四"></a>Migo商城  参考通用mapper思想对service代码的二次优化封装  四</h2><p>上一篇通过域名访问，nginx反向代理的效果图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/nginx%E6%95%88%E6%9E%9C.png" alt=""></p>
+<p>然后步入正题：</p>
+<p>对比第一版的代码，这里再贴段的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatService</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemCatMapper itemCatMapper;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;ItemCat&gt; <span class="title">getItemCatList</span><span class="params">(Long parentId)</span> </span>&#123;</div><div class="line">        ItemCat example = <span class="keyword">new</span> ItemCat();</div><div class="line">        example.setParentId(parentId);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.itemCatMapper.select(example);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>其实很多service都会用到这些增删改查，既然通用mapper可以做封装，我们何不学通用mapper做过通用service？自己造个适合自己的小轮子</p>
+<p>要添加的通用方法：</p>
+<p>1、  <code>queryById</code></p>
+<p>2、  <code>queryAll</code></p>
+<p>3、  <code>queryOne</code></p>
+<p>4、  <code>queryListByWhere</code></p>
+<p>5、  <code>queryPageListByWhere</code></p>
+<p>6、  <code>save</code></p>
+<p>7、  <code>update</code></p>
+<p>8、  <code>deleteById</code></p>
+<p>9、  <code>deleteByIds</code></p>
+<p>10、 <code>deleteByWhere</code></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.github.pagehelper.PageHelper;</div><div class="line"><span class="keyword">import</span> com.github.pagehelper.PageInfo;</div><div class="line"><span class="keyword">import</span> com.migo.pojo.BasePojo;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> tk.mybatis.mapper.common.Mapper;</div><div class="line"><span class="keyword">import</span> tk.mybatis.mapper.entity.Example;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Date;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/10.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseService</span> &lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">BasePojo</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">//这里利用了Spring4才支持的泛型注入</span></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> Mapper&lt;T&gt; mapper;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据id查询</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">queryById</span><span class="params">(Long id)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.selectByPrimaryKey(id);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据条件查询一条数据</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">queryOne</span><span class="params">(T example)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.selectOne(example);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 查询所有数据</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">queryAll</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.select(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据条件查询数据列表</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;T&gt; <span class="title">queryListByWhere</span><span class="params">(T example)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.select(example);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 分页查询数据列表</div><div class="line">     * <span class="doctag">@param</span> example 查询条件</div><div class="line">     * <span class="doctag">@param</span> page 页数</div><div class="line">     * <span class="doctag">@param</span> rows 页面大小</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> PageInfo&lt;T&gt; <span class="title">queryPageListByWhere</span><span class="params">(T example,Integer page,Integer rows)</span></span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//设置分页参数</span></div><div class="line">        PageHelper.startPage(page,rows);</div><div class="line">        <span class="comment">//执行查询</span></div><div class="line">        List&lt;T&gt; list = <span class="keyword">this</span>.mapper.select(example);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> PageInfo&lt;T&gt;(list);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 新增数据，注意设置数据的创建和更新时间</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">save</span><span class="params">(T t)</span></span>&#123;</div><div class="line">        Date date=<span class="keyword">new</span> Date();</div><div class="line">        t.setCreated(date);</div><div class="line">        t.setUpdated(date);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.insertSelective(t);</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 更新数据，设置数据的更新时间</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">update</span><span class="params">(T t)</span></span>&#123;</div><div class="line">        t.setUpdated(<span class="keyword">new</span> Date());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.updateByPrimaryKey(t);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 更新数据，设置数据的更新时间（更新部分数据）</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">updateSelective</span><span class="params">(T t)</span></span>&#123;</div><div class="line">        t.setUpdated(<span class="keyword">new</span> Date());</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.updateByPrimaryKeySelective(t);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据id删除数据</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">deleteById</span><span class="params">(Long id)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.deleteByPrimaryKey(id);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 批量删除数据</div><div class="line">     * <span class="doctag">@param</span> clazz</div><div class="line">     * <span class="doctag">@param</span> property</div><div class="line">     * <span class="doctag">@param</span> list</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">deleteByIds</span><span class="params">(Class&lt;T&gt; clazz,String property,List&lt;Object&gt; list)</span></span>&#123;</div><div class="line">        Example example=<span class="keyword">new</span> Example(clazz);</div><div class="line">        example.createCriteria().andIn(property,list);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.deleteByExample(example);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据条件删除数据</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">deleteByWhere</span><span class="params">(T example)</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mapper.delete(example);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下来，之前的service就可以各种省事了</p>
+<p>首先改造<code>ItemCatService</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ItemCat</span>&gt; </span>&#123;</div><div class="line">   <span class="comment">/* @Autowired</span></div><div class="line">    private ItemCatMapper itemCatMapper;</div><div class="line"></div><div class="line"></div><div class="line">    public List&lt;ItemCat&gt; getItemCatList(Long parentId) &#123;</div><div class="line">        ItemCat example = new ItemCat();</div><div class="line">        example.setParentId(parentId);</div><div class="line">        return this.itemCatMapper.select(example);</div><div class="line">    &#125;*/</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着改造<code>ItemCatController</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"item/cat"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemCatService itemCatService;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据父节点id查询商品类目表</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</div><div class="line"><span class="keyword">public</span> ResponseEntity&lt;List&lt;ItemCat&gt;&gt; getItemCatList(</div><div class="line">        <span class="meta">@RequestParam</span>(value = <span class="string">"id"</span>,defaultValue = <span class="string">"0"</span>) Long parentId</div><div class="line">)&#123;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">//List&lt;ItemCat&gt; itemcats=itemCatService.getItemCatList(parentId);</span></div><div class="line">        ItemCat example=<span class="keyword">new</span> ItemCat();</div><div class="line">        example.setParentId(parentId);</div><div class="line">        List&lt;ItemCat&gt; itemCats = itemCatService.queryListByWhere(example);</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">null</span>==itemCats&amp;&amp;itemCats.isEmpty())&#123;</div><div class="line">            <span class="comment">//资源不存在，响应404</span></div><div class="line">            <span class="keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span>  ResponseEntity.ok(itemCats);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">        <span class="comment">// 出错，响应500</span></div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>顺带改造下写的那个测试类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/8.</div><div class="line"> */</div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class) <span class="comment">//表示继承了SpringJUnit4ClassRunner类</span></div><div class="line"><span class="meta">@ContextConfiguration</span>(locations = &#123;<span class="string">"classpath*:spring/*.xml"</span>&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Logger logger=Logger.getLogger(Test.class);</div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> ItemCatService itemCatService;</div><div class="line">    <span class="meta">@org</span>.junit.<span class="function">Test</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span>&#123;</div><div class="line">       <span class="comment">// List&lt;ItemCat&gt; itemCatList = itemCatService.getItemCatList(0L);</span></div><div class="line">        ItemCat example=<span class="keyword">new</span> ItemCat();</div><div class="line">        example.setParentId(<span class="number">0L</span>);</div><div class="line">        List&lt;ItemCat&gt; itemCatList = itemCatService.queryListByWhere(example);</div><div class="line">        logger.info(JSON.toJSONString(itemCatList));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行项目，完美，就不截图了，改造成功</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/10/Migo商城2.0 Nginx的安装与使用 三/" itemprop="url">
                   Migo商城2.0 Nginx的安装与使用 三
                 </a>
@@ -1197,7 +1344,7 @@ nginx不仅支持http协议，还支持https（即在ssl协议上传输http）�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
