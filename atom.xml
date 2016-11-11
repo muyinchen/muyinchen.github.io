@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-11T10:33:18.000Z</updated>
+  <updated>2016-11-11T10:52:31.017Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2016/11/11/Migo%E5%95%86%E5%9F%8E%20%20%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E6%90%AD%E5%BB%BA%E4%B8%8E%E4%BD%BF%E7%94%A8%20%20%E4%BA%94/"/>
     <id>https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/</id>
     <published>2016-11-11T10:32:02.166Z</published>
-    <updated>2016-11-11T10:33:18.000Z</updated>
+    <updated>2016-11-11T10:52:31.017Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Migo商城-图片服务器的搭建与使用-五"><a href="#Migo商城-图片服务器的搭建与使用-五" class="headerlink" title="Migo商城  图片服务器的搭建与使用 五"></a>Migo商城  图片服务器的搭建与使用 五</h2><p>这里简单说下<code>fastdfs</code>的说明搭建使用，回头专门出附章来讲这块的<code>api</code>和各种配置，这里就来过简易版的，能进行开发就可。</p>
 <h3 id="什么是FastDFS"><a href="#什么是FastDFS" class="headerlink" title="什么是FastDFS"></a>什么是FastDFS</h3><p>​      <code>FastDFS</code>是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：<code>4KB&lt; file_size &lt;500MB）</code>为载体的在线服务，如相册网站、视频网站等等。</p>
@@ -141,6 +141,8 @@
 <p>第八步：启动<code>Nginx</code></p>
 <p>最後，再多说一点 这是之前自己 笔记的一点心得，贴出来</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">nginx通过插件fastdfs-nginx-module_v1.16.tar管理访问/group1/M00/过来的路径</div><div class="line">这是插件的日志路径</div><div class="line"># the base path to store log files</div><div class="line">base_path=/tmp</div><div class="line">这里接收管理storage存放路径</div><div class="line"># store_path#, based 0, if store_path0 not exists, it&apos;s value is base_path</div><div class="line"># the paths must be exist</div><div class="line"># must same as storage.conf 注意看这些注释，然后就知道怎么配了</div><div class="line">store_path0=/home/fastdfs/storage</div><div class="line">通过下面来和索引器联系起来</div><div class="line"># valid only when load_fdfs_parameters_from_tracker is true</div><div class="line">tracker_server=192.168.42.129:22122</div></pre></td></tr></table></figure>
+<p>忘说了：<br>启动测试前，开放端口号端口给浏览器访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT</div><div class="line">/sbin/iptables -I INPUT -p tcp --dport 22 -j ACCEPT</div><div class="line">/sbin/iptables -I INPUT -p tcp --dport 22122 -j ACCEPT</div><div class="line">#然后保存：</div><div class="line">/etc/rc.d/init.d/iptables save</div><div class="line">#重启防火墙以便改动生效:(或者直接重启系统)</div><div class="line">/etc/init.d/iptables restart</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
