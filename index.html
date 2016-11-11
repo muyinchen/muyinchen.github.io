@@ -252,6 +252,244 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/11/Migo商城  图片服务器的搭建与使用  五/" itemprop="url">
+                  Migo商城2.0 图片服务器的搭建与使用 五
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-11T18:32:02+08:00" content="2016-11-11">
+              2016-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/11/Migo商城  图片服务器的搭建与使用  五/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/11/Migo商城  图片服务器的搭建与使用  五/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Migo商城-图片服务器的搭建与使用-五"><a href="#Migo商城-图片服务器的搭建与使用-五" class="headerlink" title="Migo商城  图片服务器的搭建与使用 五"></a>Migo商城  图片服务器的搭建与使用 五</h2><p>这里简单说下<code>fastdfs</code>的说明搭建使用，回头专门出附章来讲这块的<code>api</code>和各种配置，这里就来过简易版的，能进行开发就可。</p>
+<h3 id="什么是FastDFS"><a href="#什么是FastDFS" class="headerlink" title="什么是FastDFS"></a>什么是FastDFS</h3><p>​      <code>FastDFS</code>是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：<code>4KB&lt; file_size &lt;500MB）</code>为载体的在线服务，如相册网站、视频网站等等。</p>
+<p>​      <code>FastDFS</code>是用c语言编写的一款开源的分布式文件系统。<code>FastDFS</code>为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用<code>FastDFS</code>很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。</p>
+<h3 id="FastDFS的设计理念"><a href="#FastDFS的设计理念" class="headerlink" title="FastDFS的设计理念"></a>FastDFS的设计理念</h3><p>和现有的类<code>Google FS</code>分布式文件系统相比，<code>FastDFS</code>的架构和设计理念有其独到之处，主要体现在<code>轻量级</code>、<code>分组方式</code>和<code>对等结构</code>三个方面。</p>
+<h5 id="轻量级"><a href="#轻量级" class="headerlink" title="轻量级"></a>轻量级</h5><p><code>FastDFS</code>只有两个角色：<code>Tracker server</code>和<code>Storage server</code>。<code>Tracker server</code>作为中心结点，其主要作用是负载均衡和调度。<br>​     <code>Tracker server</code>在内存中记录<code>分组</code>和<code>Storage server</code>的状态等信息，不记录文件索引信息，占用的内存量很少。另外，客户端（应用）和<code>Storage server</code>访问<code>Tracker server</code>时，<code>Tracker server</code>扫描内存中的分组和<code>Storage server</code>信息，然后给出应答。由此可以看出<code>Tracker server</code>非常轻量化，不会成为系统瓶颈。<br>​       <code>FastDFS</code>中的<code>Storage server</code>在其他文件系统中通常称作<code>Trunk server</code>或<code>Dataserver</code>。<code>Storage server</code>直接利用<code>OS</code>的文件系统存储文件。<code>FastDFS</code>不会对文件进行分块存储，客户端上传的文件和<code>Storage server</code>上的文件一一对应。<br>​         众所周知，大多数网站都需要存储用户上传的文件，如图片、视频、电子文档等。出于降低带宽和存储成本的考虑，网站通常都会限制用户上传的文件大小，例如图片文件不能超过5MB、视频文件不能超过100MB等。我认为，对于互联网应用，文件分块存储没有多大的必要。它既没有带来多大的好处，又增加了系统的复杂性。<code>FastDFS</code>不对文件进行分块存储，与支持文件分块存储的<code>DFS</code>相比，更加简洁高效，并且完全能满足绝大多数互联网应用的实际需要。<br>​      在<code>FastDFS</code>中，客户端上传文件时，文件<code>ID</code>不是由客户端指定，而是由S<code>torage server</code>生成后返回给客户端的。文件<code>ID</code>中包含了<code>组名</code>、<code>文件相对路径</code>和<code>文件名</code>，<code>Storage server</code>可以根据文件<code>ID</code>直接定位到文件。因此<code>FastDFS</code>集群中根本不需要存储文件索引信息，这是<code>FastDFS</code>比较轻量级的一个例证。而其他文件系统则需要存储文件索引信息，这样的角色通常称作<code>NameServer</code>。其中<code>mogileFS</code>采用<code>MySQL</code>数据库来存储文件索引以及系统相关的信息，其局限性显而易见，<code>MySQL</code>将成为整个系统的瓶颈。<br>​       <code>FastDFS</code>轻量级的另外一个体现是代码量较小。最新的<code>V2.0</code>包括了<code>C</code>客户端<code>API</code>、<code>FastDHT</code>客户端<code>API</code>和<code>PHP extension</code>等，代码行数不到<code>5.2</code>万行。</p>
+<h5 id="分组方式"><a href="#分组方式" class="headerlink" title="分组方式"></a>分组方式</h5><p>​       类<code>Google FS</code>都支持文件冗余备份，例如<code>Google FS</code>、<code>TFS</code>的备份数是3。一个文件存储到哪几个存储结点，通常采用动态分配的方式。采用这种方式，一个文件存储到的结点是不确定的。举例说明，文件备份数是3，集群中有A、B、C、D四个存储结点。文件1可能存储在A、B、C三个结点，文件2可能存储在B、C、D三个结点，文件3可能存储在A、B、D三个结点。<br>​       <code>FastDFS</code>采用了<code>分组存储</code>方式。集群由一个或多个组构成，集群存储总容量为集群中所有组的存储容量之和。一个组由一台或多台存储服务器组成，同组内的多台<code>Storage server</code>之间是互备关系，同组存储服务器上的文件是完全一致的。文件上传、下载、删除等操作可以在组内任意一台<code>Storage server</code>上进行。类似木桶短板效应，一个组的存储容量为该组内存储服务器容量最小的那个，由此可见组内存储服务器的软硬件配置最好是一致的。<code>采用分组存储方式的好处是灵活、可控性较强</code>。比如上传文件时，可以由客户端直接指定上传到的组。一个分组的存储服务器访问压力较大时，可以在该组增加存储服务器来扩充服务能力（纵向扩容）。当系统容量不足时，可以增加组来扩充存储容量（横向扩容）。采用这样的分组存储方式，可以使用<code>FastDFS</code>对文件进行管理，使用主流的<code>Web server</code>如<code>Apache、nginx</code>等进行文件下载。</p>
+<h5 id="对等结构"><a href="#对等结构" class="headerlink" title="对等结构"></a>对等结构</h5><p>​       <code>FastDFS</code>集群中的<code>Tracker server</code>也可以有多台，<code>Tracker server</code>和<code>Storage server</code>均不存在单点问题。<code>Tracker server</code>之间是对等关系，组内的<code>Storage server</code>之间也是对等关系。传统的<code>Master-Slave</code>结构中的<code>Master</code>是单点，写操作仅针对<code>Master</code>。如果<code>Master</code>失效，需要将<code>Slave</code>提升为<code>Master</code>，实现逻辑会比较复杂。和<code>Master-Slave</code>结构相比，<code>对等结构中所有结点的地位是相同的，每个结点都是Master，不存在单点问题</code>。 </p>
+<h3 id="FastDFS的架构"><a href="#FastDFS的架构" class="headerlink" title="FastDFS的架构"></a>FastDFS的架构</h3><h5 id="FastDFS的系统架构-如图："><a href="#FastDFS的系统架构-如图：" class="headerlink" title="FastDFS的系统架构 如图："></a>FastDFS的系统架构 如图：</h5><p><img src="http://og0sybnix.bkt.clouddn.com/fastdfs2.png" alt=""></p>
+<p>从图中可以看出，Tracker server之间相互独立，不存在直接联系。 </p>
+<p>​     客户端和<code>Storage server</code>主动连接<code>Tracker server</code>。<code>Storage server</code>主动向<code>Tracker server</code>报告其状态信息，包括磁盘剩余空间、文件同步状况、文件上传下载次数等统计信息。<code>Storage server</code>会连接集群中所有的<code>Tracker server</code>，向他们报告自己的状态。<code>Storage server</code>启动一个单独的线程来完成对一台<code>Tracker server</code>的连接和定时报告。需要说明的是，一个组包含的<code>Storage server</code>不是通过配置文件设定的，而是通过<code>Tracker server</code>获取到的。<br>​      不同组的<code>Storage server</code>之间不会相互通信，同组内的<code>Storage server</code>之间会相互连接进行文件同步。<code>Storage server</code>采用<code>binlog</code>文件记录文件上传、删除等更新操作。<code>binlog</code>中只记录文件名，不记录文件内容。<br>​      文件同步只在<code>同组内的Storage server</code>之间进行，采用<code>push</code>方式，即源头服务器同步给目标服务器。只有源头数据才需要同步，备份数据并不需要再次同步，否则就构成环路了。有个例外，就是新增加一台<code>Storage server</code>时，由已有的一台<code>Storage server</code>将已有的所有数据（包括源头数据和备份数据）同步给该新增服务器。<br>​      <code>Storage server</code>中由专门的线程根据<code>binlog</code>进行文件同步。为了最大程度地避免相互影响以及出于系统简洁性考<br>虑，<code>Storage server</code>对组内除自己以外的每台服务器都会启动一个线程来进行文件同步。</p>
+<p>​     文件同步采用增量同步方式，系统记录已同步的位置（<code>binlog</code>文件偏移量）到标识文件中。标识文件名格式：<br><code>{dest storage IP}_{port}.mark</code>，例如：192.168.1.14_23000.mark。</p>
+<h5 id="文件上传和下载的交互过程"><a href="#文件上传和下载的交互过程" class="headerlink" title="文件上传和下载的交互过程"></a>文件上传和下载的交互过程</h5><h6 id="文件上传流程"><a href="#文件上传流程" class="headerlink" title="文件上传流程"></a>文件上传流程</h6><p>接下来我们一起看一下文件上传和下载的交互过程。文件上传流程的步骤如下 </p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/upload_file.jpg" alt=""></p>
+<blockquote>
+<ol>
+<li><code>Client</code>询问<code>Tracker server</code>上传到的<code>Storage server</code>；</li>
+<li><code>Tracker server</code>返回一台可用的<code>Storage server</code>，返回的数据为该<code>Storage server</code>的IP地址和端口；</li>
+<li>Client直接和该<code>Storage server</code>建立连接，进行文件上传，<code>Storage server</code>返回新生成的文件<code>ID</code>，文件上传结束。 </li>
+</ol>
+</blockquote>
+<p>再啰嗦点细节：</p>
+<p>选择<code>tracker server</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当集群中不止一个tracker server时，由于tracker之间是完全对等的关系，客户端在upload文件时可以任意选择一个trakcer。</div></pre></td></tr></table></figure>
+<p>选择存储的<code>group</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当tracker接收到upload file的请求时，会为该文件分配一个可以存储该文件的group，支持如下选择group的规则： 1. Round robin，所有的group间轮询 2. Specified group，指定某一个确定的group 3. Load balance，剩余存储空间多多group优先</div></pre></td></tr></table></figure>
+<p>选择<code>storage server</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当选定group后，tracker会在group内选择一个storage server给客户端，支持如下选择storage的规则： 1. Round robin，在group内的所有storage间轮询 2. First server ordered by ip，按ip排序 3. First server ordered by priority，按优先级排序（优先级在storage上配置）</div></pre></td></tr></table></figure>
+<p>选择<code>storage path</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当分配好storage server后，客户端将向storage发送写文件请求，storage将会为文件分配一个数据存储目录，支持如下规则： 1. Round robin，多个存储目录间轮询 2. 剩余存储空间最多的优先</div></pre></td></tr></table></figure>
+<p>生成<code>Fileid</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">选定存储目录之后，storage会为文件生一个Fileid，由storage server ip、文件创建时间、文件大小、文件crc32和一个随机数拼接而成，然后将这个二进制串进行base64编码，转换为可打印的字符串。</div></pre></td></tr></table></figure>
+<p>选择两级目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当选定存储目录之后，storage会为文件分配一个fileid，每个存储目录下有两级256*256的子目录，storage会按文件fileid进行两次hash（猜测），路由到其中一个子目录，然后将文件以fileid为文件名存储到该子目录下。</div></pre></td></tr></table></figure>
+<p>生成文件名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">当文件存储到某个子目录后，即认为该文件存储成功，接下来会为该文件生成一个文件名，文件名由group、存储目录、两级子目录、fileid、文件后缀名（由客户端指定，主要用于区分文件类型）拼接而成。</div></pre></td></tr></table></figure>
+<blockquote>
+<p>客户端上传文件后存储服务器将文件ID返回给客户端，此文件ID用于以后访问该文件的索引信息。文件索引信息包括：组名，虚拟磁盘路径，数据两级目录，文件名。</p>
+</blockquote>
+<p><img src="http://og0sybnix.bkt.clouddn.com/fastdfs_name.jpg" alt=""></p>
+<h5 id="文件同步"><a href="#文件同步" class="headerlink" title="文件同步"></a>文件同步</h5><p>写文件时，客户端将文件写至<code>group</code>内一个<code>storage server</code>即认为写文件成功，<code>storage server</code>写完文件后，会由后台线程将文件同步至同<code>group</code>内其他的<code>storage server</code>。</p>
+<p>每个<code>storage</code>写文件后，同时会写一份<code>binlog</code>，<code>binlog</code>里不包含文件数据，只包含文件名等元信息，这份<code>binlog</code>用于后台同步，<code>storage</code>会记录向<code>group</code>内其他<code>storage</code>同步的进度，以便重启后能接上次的进度继续同步；进度以时间戳的方式进行记录，所以最好能保证集群内所有<code>server</code>的时钟保持同步。</p>
+<p><code>storage</code>的同步进度会作为元数据的一部分汇报到<code>tracker</code>上，<code>tracker</code>在选择读<code>storage</code>的时候会以同步进度作为参考。</p>
+<p>​      比如一个group内有A、B、C三个<code>storage server</code>，A向C同步到进度为T1 (T1以前写的文件都已经同步到B上了），B向C同步到时间戳为T2（T2 &gt; T1)，<code>tracker</code>接收到这些同步进度信息时，就会进行整理，将最小的那个做为C的同步时间戳，本例中T1即为C的同步时间戳为T1（即所有T1以前写的数据都已经同步到C上了）；同理，根据上述规则，tracker会为A、B生成一个同步时间戳。</p>
+<h5 id="文件下载流程"><a href="#文件下载流程" class="headerlink" title="文件下载流程"></a>文件下载流程</h5><p><img src="http://og0sybnix.bkt.clouddn.com/download_file.jpg" alt=""></p>
+<blockquote>
+<ol>
+<li>Client询问Tracker server可以下载指定文件的Storage server，参数为文件ID（包含组名和文件名）；</li>
+<li>Tracker server返回一台可用的Storage server；</li>
+<li>Client直接和该Storage server建立连接，完成文件下载 </li>
+</ol>
+</blockquote>
+<h5 id="文件同步延迟问题的提出"><a href="#文件同步延迟问题的提出" class="headerlink" title="文件同步延迟问题的提出"></a>文件同步延迟问题的提出</h5><p>客户端将一个文件上传到一台Storage server后，文件上传工作就结束了。由该Storage server根据binlog中的上传记录将这个文件同步到同组的其他Storage server。这样的文件同步方式是异步方式，异步方式带来了文件同步延迟的问题。新上传文件后，在尚未被同步过去的Storage server上访问该文件，会出现找不到文件的现象。</p>
+<h6 id="FastDFS是如何解决文件同步延迟这个问题的呢？"><a href="#FastDFS是如何解决文件同步延迟这个问题的呢？" class="headerlink" title="FastDFS是如何解决文件同步延迟这个问题的呢？"></a>FastDFS是如何解决文件同步延迟这个问题的呢？</h6><p>文件的访问分为两种情况：文件更新和文件下载。文件更新包括设置文件附加属性和删除文件。文件的附加属性包括文件大小、图片宽度、图片高度等。FastDFS中，文件更新操作都会优先选择源Storage server，也就是该文件被上传到的那台<br>Storage server。这样的做法不仅避免了文件同步延迟的问题，而且有效地避免了在多台Storage server上更新同一文件可能引起的时序错乱的问题。</p>
+<h6 id="那么文件下载是如何解决文件同步延迟这个问题的呢？"><a href="#那么文件下载是如何解决文件同步延迟这个问题的呢？" class="headerlink" title="那么文件下载是如何解决文件同步延迟这个问题的呢？"></a>那么文件下载是如何解决文件同步延迟这个问题的呢？</h6><p>要回答这个问题，需要先了解文件名中包含了什么样的信息。Storage server生成的文件名中，包含了源Storage server的IP地址和文件创建时间等字段。文件创建时间为UNIX时间戳，后面称为文件时间戳。从文件名或文件ID中，可以反解出这两个字段。然后我们再来看一下，Tracker server是如何准确地知道一个文件已被同步到一台Storage server上的。前面已经讲过，文件同步采用主动推送的方式。另外，每台storage server都会定时向tracker server报告它向同组的其他storage server同步到的文件时间戳。当tracker server收到一台storage server的文件同步报告后，它会依次找出该组内各个storage server（后称作为S）被同步到的文件时间戳最小值，作为S的一个属性记录到内存中。<br>FastDFS对文件同步延迟问题的解决方案<br>下面我们来看一下FastDFS采取的解决方法。<br>一个最简单的解决办法，和文件更新一样，优先选择源Storage server下载文件即可。这可以在Tracker server的配置文件中设置，对应的参数名为download_server。<br>另外一种选择Storage server的方法是轮流选择（round-robin）。当Client询问Tracker server有哪些Storage server可以<br>下载指定文件时，Tracker server返回满足如下四个条件之一的Storage server：</p>
+<blockquote>
+<ol>
+<li><p>该文件上传到的源Storage server，文件直接上传到该服务器上的；</p>
+</li>
+<li><p>文件创建时间戳 &lt; Storage server被同步到的文件时间戳，这意味着当前文件已经被同步过来了；</p>
+</li>
+<li><p>文件创建时间戳=Storage server被同步到的文件时间戳，且（当前时间—文件创建时间戳） &gt; 一个文件同步完成需要的最大时间（如5分钟）；</p>
+<p>（当前时间—文件创建时间戳） &gt; 文件同步延迟阈值，比如我们把阈值设置为1天，表示文件同步在一天内肯定可以完成。 </p>
+</li>
+</ol>
+</blockquote>
+<h3 id="图片服务器的搭建"><a href="#图片服务器的搭建" class="headerlink" title="图片服务器的搭建"></a>图片服务器的搭建</h3><p>因为开发所用，这里就搭建个单机版</p>
+<p>安装环境 CentOS6.8 64位</p>
+<p>需要gcc的编译环境</p>
+<p>需要libevent的包。</p>
+<p><code>yum install -y zlib zlib-devel pcre pcre-devel gcc gcc-c++ openssl openssl-devel libevent libevent-devel perl unzip</code></p>
+<h4 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h4><h5 id="Tracker的安装"><a href="#Tracker的安装" class="headerlink" title="Tracker的安装"></a>Tracker的安装</h5><p>第一步：把源码包上传到linux系统。</p>
+<p>第二步：解压缩libfastcommonV1.0.7.tar.gz包。</p>
+<p>第三步：进入/root/libfastcommon-1.0.7文件夹执行./make.sh、./make.sh install</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">安装libfastcommon</div><div class="line"></div><div class="line">下载最新版本： libfastcommon</div><div class="line">wget https://github.com/happyfish100/libfastcommon/archive/master.zip</div><div class="line">unzip master.zip</div><div class="line"><span class="built_in">cd</span> libfastcommon-master/</div><div class="line">./make.sh</div><div class="line">./make.sh install</div></pre></td></tr></table></figure>
+<p>第四步：把/usr/lib64/libfastcommon.so文件向/usr/lib文件夹下复制一份。(32位系统可这么做，64位不需要)</p>
+<p>第五步：把FastDFS_v5.05.tar.gz解压缩。</p>
+<p>第六步：进入/root/FastDFS目录执行：./make.sh、./make.sh install</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">wget http://sourceforge.net/projects/fastdfs/files/FastDFS%20Server%20Source%20Code/FastDFS%20Server%20with%20PHP%20Extension%20Source%20Code%20V5.05/FastDFS_v5.05.tar.gz</div><div class="line">tar zxf FastDFS_v5.05.tar.gz &amp;&amp; <span class="built_in">cd</span> FastDFS</div><div class="line">./make.sh</div><div class="line">./make.sh install</div><div class="line">\cp -pa conf/*.conf /etc/fdfs/</div><div class="line"><span class="built_in">cd</span> /etc/fdfs/</div><div class="line">rm -rf *.sample</div></pre></td></tr></table></figure>
+<p>第七步：配置trackerServer。</p>
+<p>1、 把<code>/root/FastDFS/conf</code>目录下的所以的文件复制到<code>/etc/fdfs</code>目录下。</p>
+<p>2、 编辑/etc/fdfs/tracker.conf</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E9%85%8D%E7%BD%AEtracker.png" alt=""></p>
+<p>第八步：启动tracker服务</p>
+<p><code>/usr/bin/fdfs_trackerd/etc/fdfs/tracker.conf restart</code></p>
+<h5 id="Storage服务的安装"><a href="#Storage服务的安装" class="headerlink" title="Storage服务的安装"></a>Storage服务的安装</h5><blockquote>
+<p>如果storage和tracker不在同一台服务上需要重复执行Tracker的安装的第一步到第六步</p>
+</blockquote>
+<p>配置Storage服务：</p>
+<p>需要修改<code>/etc/fdfs/storage.conf</code>文件</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/storage.conf1.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/storage.conf2.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/storage.conf3.png" alt=""></p>
+<p>启动服务：</p>
+<p><code>[root@localhost fdfs]#/usr/bin/fdfs_storaged /etc/fdfs/storage.conf</code></p>
+<h5 id="测试上传服务"><a href="#测试上传服务" class="headerlink" title="测试上传服务"></a>测试上传服务</h5><p>修改客户端的配置文件<code>/etc/fdfs/client.conf</code></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/fastdfsclient.conf.png" alt=""></p>
+<p>上传文件：</p>
+<p><code>/usr/bin/fdfs_testclient.conf upload xxx.jpg</code></p>
+<h5 id="访问图片"><a href="#访问图片" class="headerlink" title="访问图片"></a>访问图片</h5><p>使用FastDFS的Nginx插件和Nginx配合，实现图片的访问。Nginx需要安装到storage服务所在的服务器</p>
+<p>安装步骤：</p>
+<p>第一步：把插件包解压缩。fastdfs-nginx-module_v1.16.tar.gz</p>
+<p>第二步：编辑/root/fastdfs-nginx-module/src/config文件。删除其中的local字样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">wget http://nginx.org/download/nginx-1.8.0.tar.gz</div><div class="line">http://sourceforge.net/projects/fastdfs/files/FastDFS%20Nginx%20Module%20Source%20Code/fastdfs-nginx-module_v1.16.tar.gz/download</div><div class="line"></div><div class="line">tar zxf fastdfs-nginx-module_v1.16.tar.gz &amp;&amp; tar zxf nginx-1.8.0.tar.gz </div><div class="line"></div><div class="line"><span class="comment">#修改模块中对应的路径，要不然模块不能正确安装加载</span></div><div class="line"><span class="built_in">cd</span> fastdfs-nginx-module/src</div><div class="line">vi conf   <span class="comment">#更改如下， 去掉local，并指定lib64（64系统）</span></div><div class="line">CORE_INCS=<span class="string">"<span class="variable">$CORE_INCS</span> /usr/include/fastdfs /usr/include/fastcommon/"</span></div><div class="line">CORE_LIBS=<span class="string">"<span class="variable">$CORE_LIBS</span> -L/usr/lib64 -lfastcommon -lfdfsclient"</span></div></pre></td></tr></table></figure>
+<p>第三步：把<code>/root/fastdfs-nginx-module/src/mod_fastdfs.conf</code>文件复制到<code>/etc/fdfs</code>目录下。</p>
+<p>第四步：把<code>/usr/lib64/libfdfsclient.so</code>文件复制到<code>/usr/lib</code>目录下(32位系统，64位系统不需要)</p>
+<p>第五步：编译Nginx</p>
+<p>对Nginx进行config</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">./configure \</div><div class="line">--prefix=/usr/<span class="built_in">local</span>/nginx \</div><div class="line">--pid-path=/var/run/nginx/nginx.pid \</div><div class="line">--lock-path=/var/lock/nginx.lock \</div><div class="line">--error-log-path=/var/<span class="built_in">log</span>/nginx/error.log \</div><div class="line">--http-log-path=/var/<span class="built_in">log</span>/nginx/access.log \</div><div class="line">--with-http_gzip_static_module \</div><div class="line">--http-client-body-temp-path=/var/temp/nginx/client \</div><div class="line">--http-proxy-temp-path=/var/temp/nginx/proxy \</div><div class="line">--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \</div><div class="line">--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \</div><div class="line">--http-scgi-temp-path=/var/temp/nginx/scgi \</div><div class="line">--add-module=/root/fastdfs-nginx-module/src</div></pre></td></tr></table></figure>
+<p>第六步：配置<code>Nginx</code></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/fastdfs_nginx.png" alt=""></p>
+<p>第七步：编辑<code>Nginx</code>插件的配置文件：</p>
+<p>修改<code>/etc/fdfs/mod_fastdfs.conf</code>文件</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/mod_fastdfs1.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/mod_fastdfs2.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/mod_fastdfs3.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/mod_fastdfs4.png" alt=""></p>
+<p>第八步：启动<code>Nginx</code></p>
+<p>最後，再多说一点 这是之前自己 笔记的一点心得，贴出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">nginx通过插件fastdfs-nginx-module_v1.16.tar管理访问/group1/M00/过来的路径</div><div class="line">这是插件的日志路径</div><div class="line"># the base path to store log files</div><div class="line">base_path=/tmp</div><div class="line">这里接收管理storage存放路径</div><div class="line"># store_path#, based 0, if store_path0 not exists, it&apos;s value is base_path</div><div class="line"># the paths must be exist</div><div class="line"># must same as storage.conf 注意看这些注释，然后就知道怎么配了</div><div class="line">store_path0=/home/fastdfs/storage</div><div class="line">通过下面来和索引器联系起来</div><div class="line"># valid only when load_fdfs_parameters_from_tracker is true</div><div class="line">tracker_server=192.168.42.129:22122</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/10/Migo商城  对代码的二次优化封装  四/" itemprop="url">
                   Migo商城2.0 参考通用mapper思想对service代码的二次优化封装  四
                 </a>
@@ -1344,7 +1582,7 @@ nginx不仅支持http协议，还支持https（即在ssl协议上传输http）�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-count">8</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
