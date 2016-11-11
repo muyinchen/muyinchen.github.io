@@ -252,6 +252,152 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/11/Migo商城 图片上传代码实现 六/" itemprop="url">
+                  Migo商城2.0 图片上传代码实现 六
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-11T21:19:09+08:00" content="2016-11-11">
+              2016-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/11/Migo商城 图片上传代码实现 六/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/11/Migo商城 图片上传代码实现 六/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Migo商城-图片上传代码实现-六"><a href="#Migo商城-图片上传代码实现-六" class="headerlink" title="Migo商城 图片上传代码实现 六"></a>Migo商城 图片上传代码实现 六</h2><p>图片服务器搭建完成后，开始回到商品的图片上传功能的实现</p>
+<h4 id="先来分析页面代码："><a href="#先来分析页面代码：" class="headerlink" title="先来分析页面代码："></a>先来分析页面代码：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/up_pic_click.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/pic_up_params.png" alt="图片上传参数"></p>
+<blockquote>
+<p>请求的url：/rest/pic/upload</p>
+<p>参数：MultiPartFileuploadFile</p>
+<p>上传文件返回的数据是：文本类型的json数据</p>
+</blockquote>
+<p>查文档<a href="http://kindeditor.net/docs/upload.html" target="_blank" rel="external">http://kindeditor.net/docs/upload.html</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">返回格式(JSON)</div><div class="line"></div><div class="line">//成功时</div><div class="line">&#123;</div><div class="line">        "error" : 0,</div><div class="line">        "url" : "http://www.example.com/path/to/file.ext"</div><div class="line">&#125;</div><div class="line">//失败时</div><div class="line">&#123;</div><div class="line">        "error" : 1,</div><div class="line">        "message" : "错误信息"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里使用使用<code>Map</code>设置返回值(请对比<code>migo</code>第一版实现，用的是<code>POJO</code>来做封装，这里换一种方法)</p>
+<p>接收的参数：<code>MulitPartFileuploadFile</code></p>
+<p>业务逻辑：把图片流上传到图片服务器，使用<code>FastDFSClient</code>工具类上传，返回图片的<code>url</code>。需要把图片服务器的域名或者ip拼接返回的url做为完整的<code>url</code>返回。把<code>url</code>和<code>error</code> 对象封装到<code>map</code>中返回。 </p>
+<p>返回值：<code>map</code></p>
+</blockquote>
+<h4 id="添加依赖："><a href="#添加依赖：" class="headerlink" title="添加依赖："></a>添加依赖：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>fastdfs_client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastdfs_client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.25<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="在common工程中加入工具类-FastDFSClient-java"><a href="#在common工程中加入工具类-FastDFSClient-java" class="headerlink" title="在common工程中加入工具类 FastDFSClient.java"></a>在common工程中加入工具类 <code>FastDFSClient.java</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.utils;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.csource.common.NameValuePair;</div><div class="line"><span class="keyword">import</span> org.csource.fastdfs.*;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FastDFSClient</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> TrackerClient trackerClient = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> TrackerServer trackerServer = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> StorageServer storageServer = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> StorageClient1 storageClient = <span class="keyword">null</span>;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FastDFSClient</span><span class="params">(String conf)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">if</span> (conf.contains(<span class="string">"classpath:"</span>)) &#123;</div><div class="line">			conf = conf.replace(<span class="string">"classpath:"</span>, <span class="keyword">this</span>.getClass().getResource(<span class="string">"/"</span>).getPath());</div><div class="line">		&#125;</div><div class="line">		ClientGlobal.init(conf);</div><div class="line">		trackerClient = <span class="keyword">new</span> TrackerClient();</div><div class="line">		trackerServer = trackerClient.getConnection();</div><div class="line">		storageServer = <span class="keyword">null</span>;</div><div class="line">		storageClient = <span class="keyword">new</span> StorageClient1(trackerServer, storageServer);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 上传文件方法</div><div class="line">	 * &lt;p&gt;Title: uploadFile&lt;/p&gt;</div><div class="line">	 * &lt;p&gt;Description: &lt;/p&gt;</div><div class="line">	 * <span class="doctag">@param</span> fileName 文件全路径</div><div class="line">	 * <span class="doctag">@param</span> extName 文件扩展名，不包含（.）</div><div class="line">	 * <span class="doctag">@param</span> metas 文件扩展信息</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 * <span class="doctag">@throws</span> Exception</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName, String extName, NameValuePair[] metas)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		String result = storageClient.upload_file1(fileName, extName, metas);</div><div class="line">		<span class="keyword">return</span> result;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileName, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName, String extName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileName, extName, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 上传文件方法</div><div class="line">	 * &lt;p&gt;Title: uploadFile&lt;/p&gt;</div><div class="line">	 * &lt;p&gt;Description: &lt;/p&gt;</div><div class="line">	 * <span class="doctag">@param</span> fileContent 文件的内容，字节数组</div><div class="line">	 * <span class="doctag">@param</span> extName 文件扩展名</div><div class="line">	 * <span class="doctag">@param</span> metas 文件扩展信息</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 * <span class="doctag">@throws</span> Exception</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent, String extName, NameValuePair[] metas)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		</div><div class="line">		String result = storageClient.upload_file1(fileContent, extName, metas);</div><div class="line">		<span class="keyword">return</span> result;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileContent, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent, String extName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileContent, extName, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="service实现"><a href="#service实现" class="headerlink" title="service实现:"></a>service实现:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.utils.FastDFSClient;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.HashMap;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 图片上传</div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/11.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PicService</span> </span>&#123;</div><div class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;IMAGE_SERVER_BASE_URL&#125;"</span>)</div><div class="line">    <span class="keyword">private</span> String IMAGE_SERVER_BASE_URL;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Map <span class="title">uploadFile</span><span class="params">(MultipartFile uploadFile)</span></span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            FastDFSClient client=<span class="keyword">new</span> FastDFSClient(<span class="string">"classpath:properties/env.properties"</span>);</div><div class="line">            <span class="comment">//获取图片原始名称</span></div><div class="line">            String filename = uploadFile.getOriginalFilename();</div><div class="line">            <span class="comment">//取扩展名</span></div><div class="line">            String extendName = filename.substring(filename.lastIndexOf(<span class="string">"."</span>) + <span class="number">1</span>);</div><div class="line">            String url=client.uploadFile(uploadFile.getBytes(),extendName);</div><div class="line">            <span class="comment">//拼接URL</span></div><div class="line">            url=IMAGE_SERVER_BASE_URL+url;</div><div class="line">            <span class="comment">//返回map数据</span></div><div class="line">            Map result=<span class="keyword">new</span> HashMap();</div><div class="line">            result.put(<span class="string">"error"</span>,<span class="number">0</span>);</div><div class="line">            result.put(<span class="string">"url"</span>,url);</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            <span class="comment">//返回Map数据</span></div><div class="line">            Map result = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">            result.put(<span class="string">"error"</span>, <span class="number">1</span>);</div><div class="line">            result.put(<span class="string">"message"</span>, <span class="string">"上传失败"</span>);</div><div class="line"></div><div class="line">            <span class="keyword">return</span> result;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Controller实现："><a href="#Controller实现：" class="headerlink" title="Controller实现："></a>Controller实现：</h4><blockquote>
+<p>在springmvc中上传图片，需要在springmvc.xml中配置多媒体解析器</p>
+<p>上传文件返回的数据是：文本类型的json数据   所以在controller里要将map数据转换为字符串返回</p>
+<p><code>jsonutils</code>是封装的工具类，很简单，就是封装Jackson的实现方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.service.PicService;</div><div class="line"><span class="keyword">import</span> com.migo.utils.JsonUtils;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 图片上传controller</div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/11.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PicController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> PicService picService;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/rest/pic/upload"</span>)</div><div class="line">    <span class="meta">@ResponseBody</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(MultipartFile uploadFile)</span></span>&#123;</div><div class="line">        Map result = picService.uploadFile(uploadFile);</div><div class="line"></div><div class="line">        <span class="comment">//把Java对象手工转换成json数据</span></div><div class="line">        String json = JsonUtils.objectToJson(result);</div><div class="line">        <span class="keyword">return</span> json;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到此，图片上传功能完成，具体效果图后面再展示</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/11/Migo商城  图片服务器的搭建与使用  五/" itemprop="url">
                   Migo商城2.0 图片服务器的搭建与使用 五
                 </a>
@@ -1584,7 +1730,7 @@ nginx不仅支持http协议，还支持https（即在ssl协议上传输http）�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">9</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

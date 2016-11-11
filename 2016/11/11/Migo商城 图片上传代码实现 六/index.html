@@ -1,0 +1,718 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="电商demo ssm" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Migo商城 图片上传代码实现 六图片服务器搭建完成后，开始回到商品的图片上传功能的实现
+先来分析页面代码：
+
+
+
+请求的url：/rest/pic/upload
+参数：MultiPartFileuploadFile
+上传文件返回的数据是：文本类型的json数据
+
+查文档http://kindeditor.net/docs/upload.html
+123456789101112返回格式(JSON)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migo商城2.0 图片上传代码实现 六">
+<meta property="og:url" content="https://muyinchen.github.io/2016/11/11/Migo商城 图片上传代码实现 六/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Migo商城 图片上传代码实现 六图片服务器搭建完成后，开始回到商品的图片上传功能的实现
+先来分析页面代码：
+
+
+
+请求的url：/rest/pic/upload
+参数：MultiPartFileuploadFile
+上传文件返回的数据是：文本类型的json数据
+
+查文档http://kindeditor.net/docs/upload.html
+123456789101112返回格式(JSON)">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/up_pic_click.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/pic_up_params.png">
+<meta property="og:updated_time" content="2016-11-11T13:19:42.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migo商城2.0 图片上传代码实现 六">
+<meta name="twitter:description" content="Migo商城 图片上传代码实现 六图片服务器搭建完成后，开始回到商品的图片上传功能的实现
+先来分析页面代码：
+
+
+
+请求的url：/rest/pic/upload
+参数：MultiPartFileuploadFile
+上传文件返回的数据是：文本类型的json数据
+
+查文档http://kindeditor.net/docs/upload.html
+123456789101112返回格式(JSON)">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/11/Migo商城 图片上传代码实现 六/"/>
+
+
+  <title> Migo商城2.0 图片上传代码实现 六 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Migo商城2.0 图片上传代码实现 六
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-11T21:19:09+08:00" content="2016-11-11">
+              2016-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/11/Migo商城 图片上传代码实现 六/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/11/Migo商城 图片上传代码实现 六/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Migo商城-图片上传代码实现-六"><a href="#Migo商城-图片上传代码实现-六" class="headerlink" title="Migo商城 图片上传代码实现 六"></a>Migo商城 图片上传代码实现 六</h2><p>图片服务器搭建完成后，开始回到商品的图片上传功能的实现</p>
+<h4 id="先来分析页面代码："><a href="#先来分析页面代码：" class="headerlink" title="先来分析页面代码："></a>先来分析页面代码：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E7%BB%84%E4%BB%B6.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/up_pic_click.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/pic_up_params.png" alt="图片上传参数"></p>
+<blockquote>
+<p>请求的url：/rest/pic/upload</p>
+<p>参数：MultiPartFileuploadFile</p>
+<p>上传文件返回的数据是：文本类型的json数据</p>
+</blockquote>
+<p>查文档<a href="http://kindeditor.net/docs/upload.html" target="_blank" rel="external">http://kindeditor.net/docs/upload.html</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">返回格式(JSON)</div><div class="line"></div><div class="line">//成功时</div><div class="line">&#123;</div><div class="line">        "error" : 0,</div><div class="line">        "url" : "http://www.example.com/path/to/file.ext"</div><div class="line">&#125;</div><div class="line">//失败时</div><div class="line">&#123;</div><div class="line">        "error" : 1,</div><div class="line">        "message" : "错误信息"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这里使用使用<code>Map</code>设置返回值(请对比<code>migo</code>第一版实现，用的是<code>POJO</code>来做封装，这里换一种方法)</p>
+<p>接收的参数：<code>MulitPartFileuploadFile</code></p>
+<p>业务逻辑：把图片流上传到图片服务器，使用<code>FastDFSClient</code>工具类上传，返回图片的<code>url</code>。需要把图片服务器的域名或者ip拼接返回的url做为完整的<code>url</code>返回。把<code>url</code>和<code>error</code> 对象封装到<code>map</code>中返回。 </p>
+<p>返回值：<code>map</code></p>
+</blockquote>
+<h4 id="添加依赖："><a href="#添加依赖：" class="headerlink" title="添加依赖："></a>添加依赖：</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>fastdfs_client<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastdfs_client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.25<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="在common工程中加入工具类-FastDFSClient-java"><a href="#在common工程中加入工具类-FastDFSClient-java" class="headerlink" title="在common工程中加入工具类 FastDFSClient.java"></a>在common工程中加入工具类 <code>FastDFSClient.java</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.utils;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.csource.common.NameValuePair;</div><div class="line"><span class="keyword">import</span> org.csource.fastdfs.*;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FastDFSClient</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> TrackerClient trackerClient = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> TrackerServer trackerServer = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> StorageServer storageServer = <span class="keyword">null</span>;</div><div class="line">	<span class="keyword">private</span> StorageClient1 storageClient = <span class="keyword">null</span>;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">FastDFSClient</span><span class="params">(String conf)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">if</span> (conf.contains(<span class="string">"classpath:"</span>)) &#123;</div><div class="line">			conf = conf.replace(<span class="string">"classpath:"</span>, <span class="keyword">this</span>.getClass().getResource(<span class="string">"/"</span>).getPath());</div><div class="line">		&#125;</div><div class="line">		ClientGlobal.init(conf);</div><div class="line">		trackerClient = <span class="keyword">new</span> TrackerClient();</div><div class="line">		trackerServer = trackerClient.getConnection();</div><div class="line">		storageServer = <span class="keyword">null</span>;</div><div class="line">		storageClient = <span class="keyword">new</span> StorageClient1(trackerServer, storageServer);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 上传文件方法</div><div class="line">	 * &lt;p&gt;Title: uploadFile&lt;/p&gt;</div><div class="line">	 * &lt;p&gt;Description: &lt;/p&gt;</div><div class="line">	 * <span class="doctag">@param</span> fileName 文件全路径</div><div class="line">	 * <span class="doctag">@param</span> extName 文件扩展名，不包含（.）</div><div class="line">	 * <span class="doctag">@param</span> metas 文件扩展信息</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 * <span class="doctag">@throws</span> Exception</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName, String extName, NameValuePair[] metas)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		String result = storageClient.upload_file1(fileName, extName, metas);</div><div class="line">		<span class="keyword">return</span> result;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileName, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(String fileName, String extName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileName, extName, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 上传文件方法</div><div class="line">	 * &lt;p&gt;Title: uploadFile&lt;/p&gt;</div><div class="line">	 * &lt;p&gt;Description: &lt;/p&gt;</div><div class="line">	 * <span class="doctag">@param</span> fileContent 文件的内容，字节数组</div><div class="line">	 * <span class="doctag">@param</span> extName 文件扩展名</div><div class="line">	 * <span class="doctag">@param</span> metas 文件扩展信息</div><div class="line">	 * <span class="doctag">@return</span></div><div class="line">	 * <span class="doctag">@throws</span> Exception</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent, String extName, NameValuePair[] metas)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		</div><div class="line">		String result = storageClient.upload_file1(fileContent, extName, metas);</div><div class="line">		<span class="keyword">return</span> result;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileContent, <span class="keyword">null</span>, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(<span class="keyword">byte</span>[] fileContent, String extName)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> uploadFile(fileContent, extName, <span class="keyword">null</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="service实现"><a href="#service实现" class="headerlink" title="service实现:"></a>service实现:</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.utils.FastDFSClient;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.HashMap;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 图片上传</div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/11.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PicService</span> </span>&#123;</div><div class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;IMAGE_SERVER_BASE_URL&#125;"</span>)</div><div class="line">    <span class="keyword">private</span> String IMAGE_SERVER_BASE_URL;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Map <span class="title">uploadFile</span><span class="params">(MultipartFile uploadFile)</span></span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            FastDFSClient client=<span class="keyword">new</span> FastDFSClient(<span class="string">"classpath:properties/env.properties"</span>);</div><div class="line">            <span class="comment">//获取图片原始名称</span></div><div class="line">            String filename = uploadFile.getOriginalFilename();</div><div class="line">            <span class="comment">//取扩展名</span></div><div class="line">            String extendName = filename.substring(filename.lastIndexOf(<span class="string">"."</span>) + <span class="number">1</span>);</div><div class="line">            String url=client.uploadFile(uploadFile.getBytes(),extendName);</div><div class="line">            <span class="comment">//拼接URL</span></div><div class="line">            url=IMAGE_SERVER_BASE_URL+url;</div><div class="line">            <span class="comment">//返回map数据</span></div><div class="line">            Map result=<span class="keyword">new</span> HashMap();</div><div class="line">            result.put(<span class="string">"error"</span>,<span class="number">0</span>);</div><div class="line">            result.put(<span class="string">"url"</span>,url);</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            <span class="comment">//返回Map数据</span></div><div class="line">            Map result = <span class="keyword">new</span> HashMap&lt;&gt;();</div><div class="line">            result.put(<span class="string">"error"</span>, <span class="number">1</span>);</div><div class="line">            result.put(<span class="string">"message"</span>, <span class="string">"上传失败"</span>);</div><div class="line"></div><div class="line">            <span class="keyword">return</span> result;</div><div class="line"></div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Controller实现："><a href="#Controller实现：" class="headerlink" title="Controller实现："></a>Controller实现：</h4><blockquote>
+<p>在springmvc中上传图片，需要在springmvc.xml中配置多媒体解析器</p>
+<p>上传文件返回的数据是：文本类型的json数据   所以在controller里要将map数据转换为字符串返回</p>
+<p><code>jsonutils</code>是封装的工具类，很简单，就是封装Jackson的实现方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.service.PicService;</div><div class="line"><span class="keyword">import</span> com.migo.utils.JsonUtils;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</div><div class="line"><span class="keyword">import</span> org.springframework.web.multipart.MultipartFile;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 图片上传controller</div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/11.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PicController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> PicService picService;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/rest/pic/upload"</span>)</div><div class="line">    <span class="meta">@ResponseBody</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">uploadFile</span><span class="params">(MultipartFile uploadFile)</span></span>&#123;</div><div class="line">        Map result = picService.uploadFile(uploadFile);</div><div class="line"></div><div class="line">        <span class="comment">//把Java对象手工转换成json数据</span></div><div class="line">        String json = JsonUtils.objectToJson(result);</div><div class="line">        <span class="keyword">return</span> json;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>到此，图片上传功能完成，具体效果图后面再展示</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Migo商城2-0/" rel="tag">#Migo商城2.0</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/11/Migo商城  图片服务器的搭建与使用  五/" rel="next" title="Migo商城2.0 图片服务器的搭建与使用 五">
+                <i class="fa fa-chevron-left"></i> Migo商城2.0 图片服务器的搭建与使用 五
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/11/Migo商城 图片上传代码实现 六/"
+           data-title="Migo商城2.0 图片上传代码实现 六" data-url="https://muyinchen.github.io/2016/11/11/Migo商城 图片上传代码实现 六/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城-图片上传代码实现-六"><span class="nav-number">1.</span> <span class="nav-text">Migo商城 图片上传代码实现 六</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#先来分析页面代码："><span class="nav-number">1.0.1.</span> <span class="nav-text">先来分析页面代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加依赖："><span class="nav-number">1.0.2.</span> <span class="nav-text">添加依赖：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在common工程中加入工具类-FastDFSClient-java"><span class="nav-number">1.0.3.</span> <span class="nav-text">在common工程中加入工具类 FastDFSClient.java</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#service实现"><span class="nav-number">1.0.4.</span> <span class="nav-text">service实现:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Controller实现："><span class="nav-number">1.0.5.</span> <span class="nav-text">Controller实现：</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
