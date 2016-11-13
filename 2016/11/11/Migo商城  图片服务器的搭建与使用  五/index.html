@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next muse use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs2.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs3.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs4.png">
-<meta property="og:updated_time" content="2016-11-11T10:52:31.017Z">
+<meta property="og:updated_time" content="2016-11-13T03:50:07.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Migo商城2.0 图片服务器的搭建与使用 五">
 <meta name="twitter:description" content="Migo商城  图片服务器的搭建与使用 五这里简单说下fastdfs的说明搭建使用，回头专门出附章来讲这块的api和各种配置，这里就来过简易版的，能进行开发就可。
@@ -120,7 +120,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
+    scheme: 'Muse',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -342,7 +342,7 @@
         <h2 id="Migo商城-图片服务器的搭建与使用-五"><a href="#Migo商城-图片服务器的搭建与使用-五" class="headerlink" title="Migo商城  图片服务器的搭建与使用 五"></a>Migo商城  图片服务器的搭建与使用 五</h2><p>这里简单说下<code>fastdfs</code>的说明搭建使用，回头专门出附章来讲这块的<code>api</code>和各种配置，这里就来过简易版的，能进行开发就可。</p>
 <h3 id="什么是FastDFS"><a href="#什么是FastDFS" class="headerlink" title="什么是FastDFS"></a>什么是FastDFS</h3><p>​      <code>FastDFS</code>是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：<code>4KB&lt; file_size &lt;500MB）</code>为载体的在线服务，如相册网站、视频网站等等。</p>
 <p>​      <code>FastDFS</code>是用c语言编写的一款开源的分布式文件系统。<code>FastDFS</code>为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用<code>FastDFS</code>很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。</p>
-<h3 id="FastDFS的设计理念"><a href="#FastDFS的设计理念" class="headerlink" title="FastDFS的设计理念"></a>FastDFS的设计理念</h3><p>和现有的类<code>Google FS</code>分布式文件系统相比，<code>FastDFS</code>的架构和设计理念有其独到之处，主要体现在<code>轻量级</code>、<code>分组方式</code>和<code>对等结构</code>三个方面。</p>
+<h3 id="FastDFS的设计理念"><a href="#FastDFS的设计理念" class="headerlink" title="FastDFS的设计理念"></a>FastDFS的设计理念</h3><p>和现有的类<code>Google FS</code>分布式文件系统相比，<code>FastDFS</code>的架构和设计理念有其独到之处，主要体现在<code>轻量级</code>、<code>分组方式</code>和<code>对等结构</code>三个方面。<br><a id="more"></a></p>
 <h5 id="轻量级"><a href="#轻量级" class="headerlink" title="轻量级"></a>轻量级</h5><p><code>FastDFS</code>只有两个角色：<code>Tracker server</code>和<code>Storage server</code>。<code>Tracker server</code>作为中心结点，其主要作用是负载均衡和调度。<br>​     <code>Tracker server</code>在内存中记录<code>分组</code>和<code>Storage server</code>的状态等信息，不记录文件索引信息，占用的内存量很少。另外，客户端（应用）和<code>Storage server</code>访问<code>Tracker server</code>时，<code>Tracker server</code>扫描内存中的分组和<code>Storage server</code>信息，然后给出应答。由此可以看出<code>Tracker server</code>非常轻量化，不会成为系统瓶颈。<br>​       <code>FastDFS</code>中的<code>Storage server</code>在其他文件系统中通常称作<code>Trunk server</code>或<code>Dataserver</code>。<code>Storage server</code>直接利用<code>OS</code>的文件系统存储文件。<code>FastDFS</code>不会对文件进行分块存储，客户端上传的文件和<code>Storage server</code>上的文件一一对应。<br>​         众所周知，大多数网站都需要存储用户上传的文件，如图片、视频、电子文档等。出于降低带宽和存储成本的考虑，网站通常都会限制用户上传的文件大小，例如图片文件不能超过5MB、视频文件不能超过100MB等。我认为，对于互联网应用，文件分块存储没有多大的必要。它既没有带来多大的好处，又增加了系统的复杂性。<code>FastDFS</code>不对文件进行分块存储，与支持文件分块存储的<code>DFS</code>相比，更加简洁高效，并且完全能满足绝大多数互联网应用的实际需要。<br>​      在<code>FastDFS</code>中，客户端上传文件时，文件<code>ID</code>不是由客户端指定，而是由S<code>torage server</code>生成后返回给客户端的。文件<code>ID</code>中包含了<code>组名</code>、<code>文件相对路径</code>和<code>文件名</code>，<code>Storage server</code>可以根据文件<code>ID</code>直接定位到文件。因此<code>FastDFS</code>集群中根本不需要存储文件索引信息，这是<code>FastDFS</code>比较轻量级的一个例证。而其他文件系统则需要存储文件索引信息，这样的角色通常称作<code>NameServer</code>。其中<code>mogileFS</code>采用<code>MySQL</code>数据库来存储文件索引以及系统相关的信息，其局限性显而易见，<code>MySQL</code>将成为整个系统的瓶颈。<br>​       <code>FastDFS</code>轻量级的另外一个体现是代码量较小。最新的<code>V2.0</code>包括了<code>C</code>客户端<code>API</code>、<code>FastDHT</code>客户端<code>API</code>和<code>PHP extension</code>等，代码行数不到<code>5.2</code>万行。</p>
 <h5 id="分组方式"><a href="#分组方式" class="headerlink" title="分组方式"></a>分组方式</h5><p>​       类<code>Google FS</code>都支持文件冗余备份，例如<code>Google FS</code>、<code>TFS</code>的备份数是3。一个文件存储到哪几个存储结点，通常采用动态分配的方式。采用这种方式，一个文件存储到的结点是不确定的。举例说明，文件备份数是3，集群中有A、B、C、D四个存储结点。文件1可能存储在A、B、C三个结点，文件2可能存储在B、C、D三个结点，文件3可能存储在A、B、D三个结点。<br>​       <code>FastDFS</code>采用了<code>分组存储</code>方式。集群由一个或多个组构成，集群存储总容量为集群中所有组的存储容量之和。一个组由一台或多台存储服务器组成，同组内的多台<code>Storage server</code>之间是互备关系，同组存储服务器上的文件是完全一致的。文件上传、下载、删除等操作可以在组内任意一台<code>Storage server</code>上进行。类似木桶短板效应，一个组的存储容量为该组内存储服务器容量最小的那个，由此可见组内存储服务器的软硬件配置最好是一致的。<code>采用分组存储方式的好处是灵活、可控性较强</code>。比如上传文件时，可以由客户端直接指定上传到的组。一个分组的存储服务器访问压力较大时，可以在该组增加存储服务器来扩充服务能力（纵向扩容）。当系统容量不足时，可以增加组来扩充存储容量（横向扩容）。采用这样的分组存储方式，可以使用<code>FastDFS</code>对文件进行管理，使用主流的<code>Web server</code>如<code>Apache、nginx</code>等进行文件下载。</p>
 <h5 id="对等结构"><a href="#对等结构" class="headerlink" title="对等结构"></a>对等结构</h5><p>​       <code>FastDFS</code>集群中的<code>Tracker server</code>也可以有多台，<code>Tracker server</code>和<code>Storage server</code>均不存在单点问题。<code>Tracker server</code>之间是对等关系，组内的<code>Storage server</code>之间也是对等关系。传统的<code>Master-Slave</code>结构中的<code>Master</code>是单点，写操作仅针对<code>Master</code>。如果<code>Master</code>失效，需要将<code>Slave</code>提升为<code>Master</code>，实现逻辑会比较复杂。和<code>Master-Slave</code>结构相比，<code>对等结构中所有结点的地位是相同的，每个结点都是Master，不存在单点问题</code>。 </p>
@@ -659,7 +659,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Muse
   </a>
 </div>
 
