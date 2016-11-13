@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-12T06:27:32.409Z</updated>
+  <updated>2016-11-13T03:44:55.172Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2016/11/12/Migo%E5%95%86%E5%9F%8E2.0%20%E5%95%86%E5%93%81%E7%9A%84%E6%B7%BB%E5%8A%A0%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0%20%E4%B8%83/"/>
     <id>https://muyinchen.github.io/2016/11/12/Migo商城2.0 商品的添加功能实现 七/</id>
     <published>2016-11-12T06:27:03.750Z</published>
-    <updated>2016-11-12T06:27:32.409Z</updated>
+    <updated>2016-11-13T03:44:55.172Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Migo商城2-0-商品的添加功能实现-七"><a href="#Migo商城2-0-商品的添加功能实现-七" class="headerlink" title="Migo商城2.0 商品的添加功能实现 七"></a>Migo商城2.0 商品的添加功能实现 七</h1><p>接着看商品的添加功能</p>
 <p>向商品表添加一条记录。</p>
@@ -34,6 +34,7 @@
 <p> 商品描述的数据量大，会导致数据文件变大，影响查询速度。</p>
 <p>后期会对商品描述数据的存储做改造，所以需要将描述数据分离</p>
 </blockquote>
+<a id="more"></a>
 <p><img src="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E8%A1%A8%E7%BC%BA%E9%99%B7.png" alt=""></p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/%E6%9B%B4%E6%94%B9%E5%90%8E%E7%9A%84%E5%95%86%E5%93%81%E8%A1%A8.png" alt=""></p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/jd%E5%95%86%E5%93%81id.png" alt=""></p>
@@ -101,7 +102,18 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Migo商城2-0-商品的添加功能实现-七&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品的添加功能实现-七&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0 商品的添加功能实现 七&quot;&gt;&lt;/a&gt;Migo商城2.0 商品的添加功能实现 七&lt;/
+      &lt;h1 id=&quot;Migo商城2-0-商品的添加功能实现-七&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品的添加功能实现-七&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0 商品的添加功能实现 七&quot;&gt;&lt;/a&gt;Migo商城2.0 商品的添加功能实现 七&lt;/h1&gt;&lt;p&gt;接着看商品的添加功能&lt;/p&gt;
+&lt;p&gt;向商品表添加一条记录。&lt;/p&gt;
+&lt;p&gt;商品的基本信息保存到：tb_item&lt;/p&gt;
+&lt;p&gt;商品的描述：tb_item_desc&lt;/p&gt;
+&lt;p&gt;下图数据库表分析 可以看出，为保证商品id不能重复，考虑到并发的需求，将自动增长删除&lt;/p&gt;
+&lt;p&gt;看下图jd商品id的设计是一个数值类型&lt;/p&gt;
+&lt;p&gt;这里用一个工具类IDUtils生成id&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里将商品描述和商品的基本数据分离：&lt;/p&gt;
+&lt;p&gt; 商品描述的数据量大，会导致数据文件变大，影响查询速度。&lt;/p&gt;
+&lt;p&gt;后期会对商品描述数据的存储做改造，所以需要将描述数据分离&lt;/p&gt;
+&lt;/blockquote&gt;
     
     </summary>
     
