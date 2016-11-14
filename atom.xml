@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-14T10:36:59.210Z</updated>
+  <updated>2016-11-14T10:38:35.513Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,15 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>Migo商城2.0 商品的编辑 九</title>
     <link href="https://muyinchen.github.io/2016/11/14/Migo%E5%95%86%E5%9F%8E2.0%20%20%E5%95%86%E5%93%81%E7%9A%84%E7%BC%96%E8%BE%91%20%E4%B9%9D/"/>
     <id>https://muyinchen.github.io/2016/11/14/Migo商城2.0  商品的编辑 九/</id>
     <published>2016-11-14T10:32:07.487Z</published>
-    <updated>2016-11-14T10:36:59.210Z</updated>
+    <updated>2016-11-14T10:38:35.513Z</updated>
     
-    <content type="html"><![CDATA[<hr>
-<p>title: Migo商城2.0 商品的编辑 九<br>categories: Migo商城2.0<br>tags: Migo商城2.0</p>
-<h2 id="keywords-电商demo-ssm"><a href="#keywords-电商demo-ssm" class="headerlink" title="keywords: 电商demo ssm"></a>keywords: 电商demo ssm</h2><h2 id="Migo商城2-0-商品的编辑-九"><a href="#Migo商城2-0-商品的编辑-九" class="headerlink" title="Migo商城2.0  商品的编辑 九"></a>Migo商城2.0  商品的编辑 九</h2><p>商品的添加查询做完，接着就是修改和删除了</p>
+    <content type="html"><![CDATA[<h2 id="Migo商城2-0-商品的编辑-九"><a href="#Migo商城2-0-商品的编辑-九" class="headerlink" title="Migo商城2.0  商品的编辑 九"></a>Migo商城2.0  商品的编辑 九</h2><p>商品的添加查询做完，接着就是修改和删除了</p>
 <p>先做修改，也就是编辑</p>
 <h3 id="商品编辑："><a href="#商品编辑：" class="headerlink" title="商品编辑："></a>商品编辑：</h3><p>需求的核心应该是<code>数据的回显</code><br><a id="more"></a></p>
 <p>看前端js代码，没有截图的看注释，已经很清楚了！</p>
@@ -50,14 +48,16 @@
     
     <summary type="html">
     
-      &lt;hr&gt;
-&lt;p&gt;title: Migo商城2.0 商品的编辑 九&lt;br&gt;categories: Migo商城2.0&lt;br&gt;tags: Migo商城2.0&lt;/p&gt;
-&lt;h2 id=&quot;keywords-电商demo-ssm&quot;&gt;&lt;a href=&quot;#keywords-电商demo-ssm&quot; class=&quot;headerlink&quot; title=&quot;keywords: 电商demo ssm&quot;&gt;&lt;/a&gt;keywords: 电商demo ssm&lt;/h2&gt;&lt;h2 id=&quot;Migo商城2-0-商品的编辑-九&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品的编辑-九&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品的编辑 九&quot;&gt;&lt;/a&gt;Migo商城2.0  商品的编辑 九&lt;/h2&gt;&lt;p&gt;商品的添加查询做完，接着就是修改和删除了&lt;/p&gt;
+      &lt;h2 id=&quot;Migo商城2-0-商品的编辑-九&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品的编辑-九&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品的编辑 九&quot;&gt;&lt;/a&gt;Migo商城2.0  商品的编辑 九&lt;/h2&gt;&lt;p&gt;商品的添加查询做完，接着就是修改和删除了&lt;/p&gt;
 &lt;p&gt;先做修改，也就是编辑&lt;/p&gt;
 &lt;h3 id=&quot;商品编辑：&quot;&gt;&lt;a href=&quot;#商品编辑：&quot; class=&quot;headerlink&quot; title=&quot;商品编辑：&quot;&gt;&lt;/a&gt;商品编辑：&lt;/h3&gt;&lt;p&gt;需求的核心应该是&lt;code&gt;数据的回显&lt;/code&gt;&lt;br&gt;
     
     </summary>
     
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
+    
+    
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
     
   </entry>
   
