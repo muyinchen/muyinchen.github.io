@@ -1,0 +1,670 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="title:  Migo商城2.0 商品的编辑 九categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品的编辑 九商品的添加查询做完，接着就是修改和删除了
+先做修改，也就是编辑
+商品编辑：需求的核心应该是数据的回显">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一叶知秋">
+<meta property="og:url" content="https://muyinchen.github.io/2016/11/14/Migo商城2.0  商品的编辑 九/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="title:  Migo商城2.0 商品的编辑 九categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品的编辑 九商品的添加查询做完，接着就是修改和删除了
+先做修改，也就是编辑
+商品编辑：需求的核心应该是数据的回显">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E9%80%89%E6%8B%A9.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E9%80%89%E6%8B%A9%E5%99%A8%E4%BD%8D%E7%BD%AEDemo.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E7%BC%96%E8%BE%91%E5%9B%9E%E6%98%BE%E6%88%90%E5%8A%9F.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E4%BF%AE%E6%94%B9%E6%88%90%E5%8A%9F.png">
+<meta property="og:updated_time" content="2016-11-14T10:32:58.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一叶知秋">
+<meta name="twitter:description" content="title:  Migo商城2.0 商品的编辑 九categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品的编辑 九商品的添加查询做完，接着就是修改和删除了
+先做修改，也就是编辑
+商品编辑：需求的核心应该是数据的回显">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E9%80%89%E6%8B%A9.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/14/Migo商城2.0  商品的编辑 九/"/>
+
+
+  <title>  | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-14T18:32:07+08:00" content="2016-11-14">
+              2016-11-14
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/14/Migo商城2.0  商品的编辑 九/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/14/Migo商城2.0  商品的编辑 九/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>title:  Migo商城2.0 商品的编辑 九<br>categories: Migo商城2.0<br>tags: Migo商城2.0</p>
+<h2 id="keywords-电商demo-ssm"><a href="#keywords-电商demo-ssm" class="headerlink" title="keywords: 电商demo ssm"></a>keywords: 电商demo ssm</h2><h2 id="Migo商城2-0-商品的编辑-九"><a href="#Migo商城2-0-商品的编辑-九" class="headerlink" title="Migo商城2.0  商品的编辑 九"></a>Migo商城2.0  商品的编辑 九</h2><p>商品的添加查询做完，接着就是修改和删除了</p>
+<p>先做修改，也就是编辑</p>
+<h3 id="商品编辑："><a href="#商品编辑：" class="headerlink" title="商品编辑："></a>商品编辑：</h3><p>需求的核心应该是<code>数据的回显</code><br><a id="more"></a></p>
+<p>看前端js代码，没有截图的看注释，已经很清楚了！</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E9%80%89%E6%8B%A9.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E9%80%89%E6%8B%A9%E5%99%A8%E4%BD%8D%E7%BD%AEDemo.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">        <span class="attr">text</span>:<span class="string">'编辑'</span>,</div><div class="line">        <span class="attr">iconCls</span>:<span class="string">'icon-edit'</span>,</div><div class="line">        <span class="attr">handler</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        	<span class="keyword">var</span> ids = getSelectionsIds();</div><div class="line">          <span class="comment">//1、	判断选中的行数</span></div><div class="line">        	<span class="keyword">if</span>(ids.length == <span class="number">0</span>)&#123;</div><div class="line">        		$.messager.alert(<span class="string">'提示'</span>,<span class="string">'必须选择一个商品才能编辑!'</span>);</div><div class="line">        		<span class="keyword">return</span> ;</div><div class="line">        	&#125;</div><div class="line">        	<span class="keyword">if</span>(ids.indexOf(<span class="string">','</span>) &gt; <span class="number">0</span>)&#123;</div><div class="line">        		$.messager.alert(<span class="string">'提示'</span>,<span class="string">'只能选择一个商品!'</span>);</div><div class="line">        		<span class="keyword">return</span> ;</div><div class="line">        	&#125;</div><div class="line"> &lt;!-- <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"itemEditWindow"</span> <span class="attr">class</span>=<span class="string">"easyui-window"</span> <span class="attr">title</span>=<span class="string">"编辑商品"</span> <span class="attr">data-</span>		  <span class="attr">options</span>=<span class="string">"modal:true,closed:true,iconCls:'icon-save',href:'/rest/page/item-edit'"</span> <span class="attr">style</span>=<span class="string">"width:80%;height:80%;padding:10px;"</span>&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span> --&gt;</div><div class="line">        	$(<span class="string">"#itemEditWindow"</span>).window(&#123;</div><div class="line">              <span class="comment">//页面加载完执行，加载页面看上面的div代码块里的href</span></div><div class="line">        		onLoad :<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        			<span class="comment">//回显数据</span></div><div class="line">        			<span class="keyword">var</span> data = $(<span class="string">"#itemList"</span>).datagrid(<span class="string">"getSelections"</span>)[<span class="number">0</span>];</div><div class="line">        			data.priceView = migo.formatPrice(data.price);</div><div class="line">        			$(<span class="string">"#itemeEditForm"</span>).form(<span class="string">"load"</span>,data);</div><div class="line">        			</div><div class="line">        			<span class="comment">// 加载商品描述</span></div><div class="line">        			$.getJSON(<span class="string">'/rest/item/desc/'</span>+data.id,<span class="function"><span class="keyword">function</span>(<span class="params">_data</span>)</span>&#123;</div><div class="line">        				itemEditEditor.html(_data.itemDesc);</div><div class="line">        			&#125;);</div><div class="line">        			</div><div class="line">        			<span class="comment">//加载商品规格</span></div><div class="line">        			$.getJSON(<span class="string">'/rest/item/param/item/query/'</span>+data.id,<span class="function"><span class="keyword">function</span>(<span class="params">_data</span>)</span>&#123;</div><div class="line">        				<span class="keyword">if</span>(_data &amp;&amp; _data.status == <span class="number">200</span> &amp;&amp; _data.data &amp;&amp; _data.data.paramData)&#123;</div><div class="line">        					$(<span class="string">"#itemeEditForm .params"</span>).show();</div><div class="line">        					$(<span class="string">"#itemeEditForm [name=itemParams]"</span>).val(_data.data.paramData);</div><div class="line">        					$(<span class="string">"#itemeEditForm [name=itemParamId]"</span>).val(_data.data.id);</div><div class="line">        					</div><div class="line">        					<span class="comment">//回显商品规格</span></div><div class="line">        					 <span class="keyword">var</span> paramData = <span class="built_in">JSON</span>.parse(_data.data.paramData);</div><div class="line">        					</div><div class="line">        					 <span class="keyword">var</span> html = <span class="string">"&lt;ul&gt;"</span>;</div><div class="line">        					 <span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> paramData)&#123;</div><div class="line">        						 <span class="keyword">var</span> pd = paramData[i];</div><div class="line">        						 html+=<span class="string">"&lt;li&gt;&lt;table&gt;"</span>;</div><div class="line">        						 html+=<span class="string">"&lt;tr&gt;&lt;td colspan=\"2\" class=\"group\"&gt;"</span>+pd.group+<span class="string">"&lt;/td&gt;&lt;/tr&gt;"</span>;</div><div class="line">        						 </div><div class="line">        						 <span class="keyword">for</span>(<span class="keyword">var</span> j <span class="keyword">in</span> pd.params)&#123;</div><div class="line">        							 <span class="keyword">var</span> ps = pd.params[j];</div><div class="line">        							 html+=<span class="string">"&lt;tr&gt;&lt;td class=\"param\"&gt;&lt;span&gt;"</span>+ps.k+<span class="string">"&lt;/span&gt;: &lt;/td&gt;&lt;td&gt;&lt;input autocomplete=\"off\" type=\"text\" value='"</span>+ps.v+<span class="string">"'/&gt;&lt;/td&gt;&lt;/tr&gt;"</span>;</div><div class="line">        						 &#125;</div><div class="line">        						 </div><div class="line">        						 html+=<span class="string">"&lt;/li&gt;&lt;/table&gt;"</span>;</div><div class="line">        					 &#125;</div><div class="line">        					 html+= <span class="string">"&lt;/ul&gt;"</span>;</div><div class="line">        					 $(<span class="string">"#itemeEditForm .params td"</span>).eq(<span class="number">1</span>).html(html);</div><div class="line">        				&#125;</div><div class="line">        			&#125;);</div><div class="line">        			</div><div class="line">        			migo.init(&#123;</div><div class="line">                      <span class="comment">//这里已经看过很多次了，修改类目想要显示类目名称可自行这里添加修改的</span></div><div class="line">                      <span class="comment">//图片的回显就不说了，init方便会自动调用</span></div><div class="line">        				<span class="string">"pics"</span> : data.image,</div><div class="line">        				<span class="string">"cid"</span> : data.cid,</div><div class="line">        				<span class="attr">fun</span>:<span class="function"><span class="keyword">function</span>(<span class="params">node</span>)</span>&#123;</div><div class="line">        					migo.changeItemParam(node, <span class="string">"itemeEditForm"</span>);</div><div class="line">        				&#125;</div><div class="line">        			&#125;);</div><div class="line">        		&#125;</div><div class="line">        	&#125;).window(<span class="string">"open"</span>); <span class="comment">//将close变为true</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 初始化选择类目组件</span></div><div class="line">    initItemCat : <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">    	$(<span class="string">".selectItemCat"</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">i,e</span>)</span>&#123;</div><div class="line">    		<span class="keyword">var</span> _ele = $(e);</div><div class="line">    		<span class="keyword">if</span>(data &amp;&amp; data.cid)&#123;</div><div class="line">    			_ele.after(<span class="string">"&lt;span style='margin-left:10px;'&gt;"</span>+data.cid+<span class="string">"&lt;/span&gt;"</span>);</div><div class="line">    		&#125;<span class="keyword">else</span>&#123;</div><div class="line">    			_ele.after(<span class="string">"&lt;span style='margin-left:10px;'&gt;&lt;/span&gt;"</span>);</div><div class="line">    		&#125;</div><div class="line">    		_ele.unbind(<span class="string">'click'</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    			$(<span class="string">"&lt;div&gt;"</span>).css(&#123;<span class="attr">padding</span>:<span class="string">"5px"</span>&#125;).html(<span class="string">"&lt;ul&gt;"</span>)</div><div class="line">    			.window(&#123;</div><div class="line">    				<span class="attr">width</span>:<span class="string">'500'</span>,</div><div class="line">    			    <span class="attr">height</span>:<span class="string">"450"</span>,</div><div class="line">    			    <span class="attr">modal</span>:<span class="literal">true</span>,</div><div class="line">    			    <span class="attr">closed</span>:<span class="literal">true</span>,</div><div class="line">    			    <span class="attr">iconCls</span>:<span class="string">'icon-save'</span>,</div><div class="line">    			    <span class="attr">title</span>:<span class="string">'选择类目'</span>,</div><div class="line">    			    <span class="attr">onOpen</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    			    	<span class="keyword">var</span> _win = <span class="keyword">this</span>;</div><div class="line">    			    	$(<span class="string">"ul"</span>,_win).tree(&#123;</div><div class="line">    			    		<span class="attr">url</span>:<span class="string">'/rest/item/cat/'</span>,</div><div class="line">							<span class="attr">method</span>:<span class="string">"GET"</span>,</div><div class="line">    			    		<span class="attr">animate</span>:<span class="literal">true</span>,</div><div class="line">    			    		<span class="attr">onClick</span> : <span class="function"><span class="keyword">function</span>(<span class="params">node</span>)</span>&#123;</div><div class="line">    			    			<span class="keyword">if</span>($(<span class="keyword">this</span>).tree(<span class="string">"isLeaf"</span>,node.target))&#123;</div><div class="line">    			    				<span class="comment">// 填写到cid中</span></div><div class="line">    			    				_ele.parent().find(<span class="string">"[name=cid]"</span>).val(node.id);</div><div class="line">    			    				_ele.next().text(node.text).attr(<span class="string">"cid"</span>,node.id);</div><div class="line">    			    				$(_win).window(<span class="string">'close'</span>);</div><div class="line">    			    				<span class="keyword">if</span>(data &amp;&amp; data.fun)&#123;</div><div class="line">    			    					data.fun.call(<span class="keyword">this</span>,node);</div><div class="line">    			    				&#125;</div><div class="line">    			    			&#125;</div><div class="line">    			    		&#125;</div><div class="line">    			    	&#125;);</div><div class="line">    			    &#125;,</div><div class="line">    			    <span class="attr">onClose</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    			    	$(<span class="keyword">this</span>).window(<span class="string">"destroy"</span>);</div><div class="line">    			    &#125;</div><div class="line">    			&#125;).window(<span class="string">'open'</span>);</div><div class="line">    		&#125;);</div><div class="line">    	&#125;);</div><div class="line">    &#125;,</div></pre></td></tr></table></figure>
+<p>请求的URL：<code>&#39;/rest/item/desc/&#39;+data.id</code> 即<code>item/desc/{itemId}</code></p>
+<h4 id="后台代码："><a href="#后台代码：" class="headerlink" title="后台代码："></a>后台代码：</h4><p>controller：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemDesc;</div><div class="line"><span class="keyword">import</span> com.migo.service.ItemDescService;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/14.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"item/desc"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemDescController</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger= LoggerFactory.getLogger(ItemDescController.class);</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemDescService itemDescService;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据商品id查询商品描述信息</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"&#123;itemId&#125;"</span>,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;ItemDesc&gt; <span class="title">queryItemDescByItemId</span><span class="params">(</span></span></div><div class="line">            @PathVariable(<span class="string">"itemId"</span>) Long itemId</div><div class="line">    )&#123;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (logger.isInfoEnabled())&#123;</div><div class="line">            logger.info(<span class="string">"商品描述信息查询 id = &#123;&#125;"</span>,itemId);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            ItemDesc itemDesc = <span class="keyword">this</span>.itemDescService.queryById(itemId);</div><div class="line">            <span class="keyword">if</span> (itemDesc==<span class="keyword">null</span>)&#123;</div><div class="line">                <span class="keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> ResponseEntity.ok(itemDesc);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            logger.error(<span class="string">"商品描述查询失败id = &#123;&#125;"</span>,itemId,e);</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="运行项目，操作结果如图："><a href="#运行项目，操作结果如图：" class="headerlink" title="运行项目，操作结果如图："></a>运行项目，操作结果如图：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/%E7%BC%96%E8%BE%91%E5%9B%9E%E6%98%BE%E6%88%90%E5%8A%9F.png" alt=""></p>
+<h4 id="最后，就是商品修改的提交"><a href="#最后，就是商品修改的提交" class="headerlink" title="最后，就是商品修改的提交"></a>最后，就是商品修改的提交</h4><p>先看前台js代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">	<span class="keyword">var</span> itemEditEditor ;</div><div class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="comment">//实例化编辑器</span></div><div class="line">		itemEditEditor = migo.createEditor(<span class="string">"#itemeEditForm [name=desc]"</span>);</div><div class="line">	&#125;);</div><div class="line">	</div><div class="line">	<span class="function"><span class="keyword">function</span> <span class="title">submitForm</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="keyword">if</span>(!$(<span class="string">'#itemeEditForm'</span>).form(<span class="string">'validate'</span>))&#123;</div><div class="line">			$.messager.alert(<span class="string">'提示'</span>,<span class="string">'表单还未填写完成!'</span>);</div><div class="line">			<span class="keyword">return</span> ;</div><div class="line">		&#125;</div><div class="line">		$(<span class="string">"#itemeEditForm [name=price]"</span>).val(<span class="built_in">eval</span>($(<span class="string">"#itemeEditForm [name=priceView]"</span>).val()) * <span class="number">100</span>);</div><div class="line">		itemEditEditor.sync();</div><div class="line">		</div><div class="line">		<span class="keyword">var</span> paramJson = [];</div><div class="line">		$(<span class="string">"#itemeEditForm .params li"</span>).each(<span class="function"><span class="keyword">function</span>(<span class="params">i,e</span>)</span>&#123;</div><div class="line">			<span class="keyword">var</span> trs = $(e).find(<span class="string">"tr"</span>);</div><div class="line">			<span class="keyword">var</span> group = trs.eq(<span class="number">0</span>).text();</div><div class="line">			<span class="keyword">var</span> ps = [];</div><div class="line">			<span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">1</span>;i&lt;trs.length;i++)&#123;</div><div class="line">				<span class="keyword">var</span> tr = trs.eq(i);</div><div class="line">				ps.push(&#123;</div><div class="line">					<span class="string">"k"</span> : $.trim(tr.find(<span class="string">"td"</span>).eq(<span class="number">0</span>).find(<span class="string">"span"</span>).text()),</div><div class="line">					<span class="string">"v"</span> : $.trim(tr.find(<span class="string">"input"</span>).val())</div><div class="line">				&#125;);</div><div class="line">			&#125;</div><div class="line">			paramJson.push(&#123;</div><div class="line">				<span class="string">"group"</span> : group,</div><div class="line">				<span class="string">"params"</span>: ps</div><div class="line">			&#125;);</div><div class="line">		&#125;);</div><div class="line">		paramJson = <span class="built_in">JSON</span>.stringify(paramJson);</div><div class="line">		</div><div class="line">		$(<span class="string">"#itemeEditForm [name=itemParams]"</span>).val(paramJson);</div><div class="line">		</div><div class="line">		<span class="comment">//提交到后台的RESTful</span></div><div class="line">		$.ajax(&#123;</div><div class="line">		   <span class="attr">type</span>: <span class="string">"PUT"</span>,</div><div class="line">		   <span class="attr">url</span>: <span class="string">"/rest/item"</span>,</div><div class="line">		   <span class="attr">data</span>: $(<span class="string">"#itemeEditForm"</span>).serialize(),</div><div class="line">		   <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>)</span>&#123;</div><div class="line">			   $.messager.alert(<span class="string">'提示'</span>,<span class="string">'修改商品成功!'</span>,<span class="string">'info'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">					$(<span class="string">"#itemEditWindow"</span>).window(<span class="string">'close'</span>);</div><div class="line">					$(<span class="string">"#itemList"</span>).datagrid(<span class="string">"reload"</span>);</div><div class="line">				&#125;);</div><div class="line">		   &#125;,</div><div class="line">		   <span class="attr">error</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">			   $.messager.alert(<span class="string">'提示'</span>,<span class="string">'修改商品失败!'</span>);</div><div class="line">		   &#125;</div><div class="line">		&#125;);</div><div class="line">	&#125;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+<p>和商品添加页面提交一样，这里同样未来做到更加明了的restful化，具体请参考 商品添加 那篇博文</p>
+<p>js修改如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//提交到后台的RESTful</span></div><div class="line">		$.ajax(&#123;</div><div class="line">		   <span class="attr">type</span>: <span class="string">"PUT"</span>,</div><div class="line">		   <span class="attr">url</span>: <span class="string">"/rest/item"</span>,</div><div class="line">		   <span class="attr">data</span>: $(<span class="string">"#itemeEditForm"</span>).serialize(),</div><div class="line">		   <span class="attr">statusCode</span> : &#123;</div><div class="line">			   <span class="number">204</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">				   $.messager.alert(<span class="string">'提示'</span>,<span class="string">'修改商品成功!'</span>,<span class="string">'info'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">						$(<span class="string">"#itemEditWindow"</span>).window(<span class="string">'close'</span>);</div><div class="line">						$(<span class="string">"#itemList"</span>).datagrid(<span class="string">"reload"</span>);</div><div class="line">					&#125;);</div><div class="line">			   &#125;,</div><div class="line">			   <span class="number">400</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">				   $.messager.alert(<span class="string">'提示'</span>,<span class="string">'请求参数不合法!'</span>);</div><div class="line">			   &#125;,</div><div class="line">			   <span class="number">500</span> : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">				   $.messager.alert(<span class="string">'提示'</span>,<span class="string">'修改商品失败!'</span>);</div><div class="line">			   &#125;</div><div class="line">		   &#125;</div><div class="line">		&#125;);</div></pre></td></tr></table></figure>
+<h3 id="后台实现"><a href="#后台实现" class="headerlink" title="后台实现"></a>后台实现</h3><h4 id="service："><a href="#service：" class="headerlink" title="service："></a>service：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * 商品修改</div><div class="line">  */</div><div class="line"> <span class="function"><span class="keyword">public</span> Boolean <span class="title">updateItem</span><span class="params">(Item item,String desc)</span></span>&#123;</div><div class="line">     <span class="comment">//强制设置不能更新的字段为空,防止恶意修改</span></div><div class="line">     item.setStatus(<span class="keyword">null</span>);</div><div class="line">     item.setCreated(<span class="keyword">null</span>);</div><div class="line"></div><div class="line">     Integer change1 = <span class="keyword">super</span>.updateSelective(item);</div><div class="line"></div><div class="line">     <span class="comment">//更新商品描述</span></div><div class="line">     ItemDesc itemDesc=<span class="keyword">new</span> ItemDesc();</div><div class="line">     itemDesc.setItemId(item.getId());</div><div class="line">     itemDesc.setItemDesc(desc);</div><div class="line">     Integer change2 = <span class="keyword">this</span>.itemDescService.updateSelective(itemDesc);</div><div class="line"></div><div class="line">     <span class="keyword">return</span> change1.intValue()==<span class="number">1</span>&amp;&amp;change2.intValue()==<span class="number">1</span>;</div><div class="line"></div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h4 id="controller实现："><a href="#controller实现：" class="headerlink" title="controller实现："></a>controller实现：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * 更新商品数据</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.PUT)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">updateItem</span><span class="params">(Item item, @RequestParam(<span class="string">"desc"</span>)</span> String desc)</span>&#123;</div><div class="line">        <span class="keyword">if</span> (LOGGER.isInfoEnabled()) &#123;</div><div class="line">            LOGGER.info(<span class="string">"修改商品，item = &#123;&#125;, desc = &#123;&#125;"</span>, item, desc);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">/**</span></div><div class="line">         * TODO 校验以后完善</div><div class="line">         */</div><div class="line">        <span class="keyword">if</span> (item.getPrice() == <span class="keyword">null</span> || item.getPrice().intValue() == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (LOGGER.isInfoEnabled()) &#123;</div><div class="line">                LOGGER.info(<span class="string">"修改商品时用户输入的参数不合法，item = &#123;&#125;, desc = &#123;&#125;"</span>, item, desc);</div><div class="line">            &#125;</div><div class="line">            <span class="comment">// 参数有误，返回400</span></div><div class="line">            <span class="comment">//ResponseEntity&lt;Void&gt; build();</span></div><div class="line">            <span class="keyword">return</span> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Boolean updateItem = <span class="keyword">this</span>.itemService.updateItem(item, desc);</div><div class="line">            <span class="keyword">if</span> (updateItem) &#123;</div><div class="line">                <span class="keyword">if</span> (LOGGER.isInfoEnabled()) &#123;</div><div class="line">                    LOGGER.info(<span class="string">"修改商品成功! id = &#123;&#125;"</span>, item.getId());</div><div class="line">                &#125;</div><div class="line">                <span class="comment">//CREATED(201, "Created"),</span></div><div class="line">                <span class="keyword">return</span> ResponseEntity.status(HttpStatus.CREATED).build();</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            LOGGER.error(<span class="string">"修改商品失败! item = "</span> + item + <span class="string">", desc = "</span> + desc, e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="启动项目，测试"><a href="#启动项目，测试" class="headerlink" title="启动项目，测试"></a>启动项目，测试</h4><p>结果：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/%E5%95%86%E5%93%81%E4%BF%AE%E6%94%B9%E6%88%90%E5%8A%9F.png" alt=""></p>
+<p>商品的删除很简单，这里就不去说了，边写博客边迭代进程实在太慢，先实现主要的</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/13/Migo商城2.0 查询商品列表的实现 八 /" rel="next" title="Migo商城2.0 查询商品列表的实现 八">
+                <i class="fa fa-chevron-left"></i> Migo商城2.0 查询商品列表的实现 八
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/14/Migo商城2.0  商品的编辑 九/"
+           data-title="" data-url="https://muyinchen.github.io/2016/11/14/Migo商城2.0  商品的编辑 九/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#keywords-电商demo-ssm"><span class="nav-number">1.</span> <span class="nav-text">keywords: 电商demo ssm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城2-0-商品的编辑-九"><span class="nav-number">2.</span> <span class="nav-text">Migo商城2.0  商品的编辑 九</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#商品编辑："><span class="nav-number">2.1.</span> <span class="nav-text">商品编辑：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#后台代码："><span class="nav-number">2.1.1.</span> <span class="nav-text">后台代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行项目，操作结果如图："><span class="nav-number">2.1.2.</span> <span class="nav-text">运行项目，操作结果如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后，就是商品修改的提交"><span class="nav-number">2.1.3.</span> <span class="nav-text">最后，就是商品修改的提交</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后台实现"><span class="nav-number">2.2.</span> <span class="nav-text">后台实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#service："><span class="nav-number">2.2.1.</span> <span class="nav-text">service：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller实现："><span class="nav-number">2.2.2.</span> <span class="nav-text">controller实现：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动项目，测试"><span class="nav-number">2.2.3.</span> <span class="nav-text">启动项目，测试</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
