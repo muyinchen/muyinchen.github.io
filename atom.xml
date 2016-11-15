@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-15T11:47:35.998Z</updated>
+  <updated>2016-11-15T11:50:51.388Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Migo商城2.0 商品规格参数的实现(2) 十一</title>
+    <title>Migo商城2.0 商品规格参数的实现(2)  十一</title>
     <link href="https://muyinchen.github.io/2016/11/15/Migo%E5%95%86%E5%9F%8E2.0%20%20%E5%95%86%E5%93%81%E8%A7%84%E6%A0%BC%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0(2)%20%20%E5%8D%81%E4%B8%80/"/>
     <id>https://muyinchen.github.io/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/</id>
     <published>2016-11-15T11:43:56.931Z</published>
-    <updated>2016-11-15T11:47:35.998Z</updated>
+    <updated>2016-11-15T11:50:51.388Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Migo商城2-0-商品规格参数的实现-2-十一"><a href="#Migo商城2-0-商品规格参数的实现-2-十一" class="headerlink" title="Migo商城2.0  商品规格参数的实现(2)  十一"></a>Migo商城2.0  商品规格参数的实现(2)  十一</h2><p>   接上篇</p>
 <h4 id="初始化类目选择组件里的回调函数的执行："><a href="#初始化类目选择组件里的回调函数的执行：" class="headerlink" title="初始化类目选择组件里的回调函数的执行："></a>初始化类目选择组件里的回调函数的执行：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png" alt=""></p>
