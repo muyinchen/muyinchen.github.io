@@ -1,0 +1,666 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="title:  Migo商城2.0 商品规格参数的实现(2) 十一categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品规格参数的实现(2)  十一   接上篇
+初始化类目选择组件里的回调函数的执行：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一叶知秋">
+<meta property="og:url" content="https://muyinchen.github.io/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="title:  Migo商城2.0 商品规格参数的实现(2) 十一categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品规格参数的实现(2)  十一   接上篇
+初始化类目选择组件里的回调函数的执行：">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/xinzengggcs.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/ggcslb.png">
+<meta property="og:updated_time" content="2016-11-15T11:45:23.734Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一叶知秋">
+<meta name="twitter:description" content="title:  Migo商城2.0 商品规格参数的实现(2) 十一categories: Migo商城2.0tags: Migo商城2.0
+keywords: 电商demo ssmMigo商城2.0  商品规格参数的实现(2)  十一   接上篇
+初始化类目选择组件里的回调函数的执行：">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/"/>
+
+
+  <title>  | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-15T19:43:56+08:00" content="2016-11-15">
+              2016-11-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>title:  Migo商城2.0 商品规格参数的实现(2) 十一<br>categories: Migo商城2.0<br>tags: Migo商城2.0</p>
+<h2 id="keywords-电商demo-ssm"><a href="#keywords-电商demo-ssm" class="headerlink" title="keywords: 电商demo ssm"></a>keywords: 电商demo ssm</h2><h2 id="Migo商城2-0-商品规格参数的实现-2-十一"><a href="#Migo商城2-0-商品规格参数的实现-2-十一" class="headerlink" title="Migo商城2.0  商品规格参数的实现(2)  十一"></a>Migo商城2.0  商品规格参数的实现(2)  十一</h2><p>   接上篇</p>
+<h4 id="初始化类目选择组件里的回调函数的执行："><a href="#初始化类目选择组件里的回调函数的执行：" class="headerlink" title="初始化类目选择组件里的回调函数的执行："></a>初始化类目选择组件里的回调函数的执行：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png" alt=""></p>
+<a id="more"></a>
+<h4 id="点击提交的js代码："><a href="#点击提交的js代码：" class="headerlink" title="点击提交的js代码："></a>点击提交的js代码：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#itemParamAddTable .submit"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">//这里就是拼接出下面的数据格式的代码，然后stringfy序列化json字符串</span></div><div class="line">			<span class="keyword">var</span> params = [];</div><div class="line">			<span class="keyword">var</span> groups = $(<span class="string">"#itemParamAddTable [name=group]"</span>);</div><div class="line">			groups.each(<span class="function"><span class="keyword">function</span>(<span class="params">i,e</span>)</span>&#123;</div><div class="line">				<span class="keyword">var</span> p = $(e).parentsUntil(<span class="string">"ul"</span>).parent().find(<span class="string">"[name=param]"</span>);</div><div class="line">				<span class="keyword">var</span> _ps = [];</div><div class="line">				p.each(<span class="function"><span class="keyword">function</span>(<span class="params">_i,_e</span>)</span>&#123;</div><div class="line">					<span class="keyword">var</span> _val = $(_e).siblings(<span class="string">"input"</span>).val();</div><div class="line">					<span class="keyword">if</span>($.trim(_val).length&gt;<span class="number">0</span>)&#123;</div><div class="line">						_ps.push(_val);						</div><div class="line">					&#125;</div><div class="line">				&#125;);</div><div class="line">				<span class="keyword">var</span> _val = $(e).siblings(<span class="string">"input"</span>).val();</div><div class="line">				<span class="keyword">if</span>($.trim(_val).length&gt;<span class="number">0</span> &amp;&amp; _ps.length &gt; <span class="number">0</span>)&#123;</div><div class="line">					params.push(&#123;</div><div class="line">						<span class="string">"group"</span>:_val,</div><div class="line">						<span class="string">"params"</span>:_ps</div><div class="line">					&#125;);					</div><div class="line">				&#125;</div><div class="line">			&#125;);</div><div class="line">			<span class="keyword">var</span> url = <span class="string">"/rest/item/param/"</span>+$(<span class="string">"#itemParamAddTable [name=cid]"</span>).val();</div><div class="line">         <span class="comment">//JSON.stringify将js的对象序列化为json字符串，之前有人见有人犯过这样的小错误</span></div><div class="line">			$.post(url,&#123;<span class="string">"paramData"</span>:<span class="built_in">JSON</span>.stringify(params)&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">				$.messager.alert(<span class="string">'提示'</span>,<span class="string">'新增商品规格成功!'</span>,<span class="literal">undefined</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">					$(<span class="string">".panel-tool-close"</span>).click();</div><div class="line">   					$(<span class="string">"#itemParamList"</span>).datagrid(<span class="string">"reload"</span>);</div><div class="line">   				&#125;);</div><div class="line">			&#125;);</div><div class="line">		&#125;);</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
+<h4 id="提交的数据格式为："><a href="#提交的数据格式为：" class="headerlink" title="提交的数据格式为："></a>提交的数据格式为：</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="attr">"group"</span>: <span class="string">"主体"</span>,</div><div class="line">        <span class="attr">"params"</span>: [</div><div class="line">            <span class="string">"品牌\t"</span>,</div><div class="line">            <span class="string">"类型"</span>,</div><div class="line">            <span class="string">"适用型号"</span></div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        <span class="attr">"group"</span>: <span class="string">"规格"</span>,</div><div class="line">        <span class="attr">"params"</span>: [</div><div class="line">            <span class="string">"容量"</span>,</div><div class="line">            <span class="string">"速度级别"</span>,</div><div class="line">            <span class="string">"读写速度\t"</span></div><div class="line">        ]</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h4 id="后台实现："><a href="#后台实现：" class="headerlink" title="后台实现："></a>后台实现：</h4><p>提交的URL：<code>/rest/item/param/{cid}</code></p>
+<p>请求参数：<code>Long cid</code> <code>String paramData</code></p>
+<p>代码实现：</p>
+<h5 id="controller："><a href="#controller：" class="headerlink" title="controller："></a><code>controller</code>：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * 新增规格参数模板</div><div class="line">    */</div><div class="line">   <span class="meta">@RequestMapping</span>(value = <span class="string">"&#123;itemCatId&#125;"</span>,method = RequestMethod.POST)</div><div class="line">   <span class="function"><span class="keyword">public</span> ResponseEntity&lt;Void&gt; <span class="title">addItemParamByItemCatId</span><span class="params">(</span></span></div><div class="line">           @PathVariable(<span class="string">"itemCatId"</span>) Long itemCatId,@<span class="title">RequestParam</span><span class="params">(<span class="string">"paramData"</span>)</span> String paramData</div><div class="line">   )&#123;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           <span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</div><div class="line">               logger.info(<span class="string">"新增某商品规格模板参数模板 itemCatId= &#123;&#125;，paramData = &#123;&#125;"</span>,itemCatId,paramData);</div><div class="line">           &#125;</div><div class="line">           ItemParam itemparam=<span class="keyword">new</span> ItemParam();</div><div class="line">           itemparam.setId(<span class="keyword">null</span>);   <span class="comment">//置空，防止恶意修改 `id` bigint(20) NOT NULL AUTO_INCREMENT</span></div><div class="line">           itemparam.setItemCatId(itemCatId);</div><div class="line">           itemparam.setParamData(paramData);</div><div class="line">           <span class="keyword">this</span>.itemParmService.save(itemparam);</div><div class="line">           <span class="keyword">return</span> ResponseEntity.status(HttpStatus.CREATED).build();</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           logger.error(<span class="string">"新增某商品规格模板参数模板 失败 itemCatId= &#123;&#125;，"</span>+itemCatId+<span class="string">"paramData = &#123;&#125;"</span>+paramData,e);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>打算添加个对讲机的，谁知道jd太水，没有这个规格参数</p>
+<p>添加个遥控车的参数</p>
+<h4 id="运行项目，测试结果如图："><a href="#运行项目，测试结果如图：" class="headerlink" title="运行项目，测试结果如图："></a>运行项目，测试结果如图：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/xinzengggcs.png" alt=""></p>
+<h4 id="添加的数据在数据库里的格式："><a href="#添加的数据在数据库里的格式：" class="headerlink" title="添加的数据在数据库里的格式："></a>添加的数据在数据库里的格式：</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123;</div><div class="line">        <span class="attr">"group"</span>: <span class="string">"主体"</span>,</div><div class="line">        <span class="attr">"params"</span>: [</div><div class="line">            <span class="string">"品牌"</span>,</div><div class="line">            <span class="string">"车型"</span>,</div><div class="line">            <span class="string">"包装\t"</span></div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        <span class="attr">"group"</span>: <span class="string">"电源"</span>,</div><div class="line">        <span class="attr">"params"</span>: [</div><div class="line">            <span class="string">"充电\t"</span>,</div><div class="line">            <span class="string">"无线遥控"</span>,</div><div class="line">            <span class="string">"有线遥控\t"</span></div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    &#123;</div><div class="line">        <span class="attr">"group"</span>: <span class="string">"尺寸"</span>,</div><div class="line">        <span class="attr">"params"</span>: [</div><div class="line">            <span class="string">"产品净尺寸（长*宽*高"</span>,</div><div class="line">            <span class="string">"带包装尺寸（长*宽*高"</span></div><div class="line">        ]</div><div class="line">    &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<h3 id="查询规格参数模板列表"><a href="#查询规格参数模板列表" class="headerlink" title="查询规格参数模板列表"></a>查询规格参数模板列表</h3><p>请求URL：<code>/rest/item/param/list</code></p>
+<p>因返回的数据格式涉及到两张表 <code>tb_item_param</code> <code>tb_item_cat</code>  所以不能使用<code>通用mapper</code></p>
+<h4 id="新建pojo-ItemParamexd"><a href="#新建pojo-ItemParamexd" class="headerlink" title="新建pojo ItemParamexd"></a>新建<code>pojo</code> <code>ItemParamexd</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.pojo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Date;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/10/6.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemParamexd</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Long id;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Long itemCatId;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Date created;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Date updated;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String paramData;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String itemCatName;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getCreated</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> created;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCreated</span><span class="params">(Date created)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.created = created;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getItemCatId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> itemCatId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItemCatId</span><span class="params">(Long itemCatId)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.itemCatId = itemCatId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getItemCatName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> itemCatName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItemCatName</span><span class="params">(String itemCatName)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.itemCatName = itemCatName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getParamData</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> paramData;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParamData</span><span class="params">(String paramData)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.paramData = paramData;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getUpdated</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> updated;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUpdated</span><span class="params">(Date updated)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.updated = updated;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="新建mapper-ItemparamexdMapper"><a href="#新建mapper-ItemparamexdMapper" class="headerlink" title="新建mapper  ItemparamexdMapper"></a>新建<code>mapper</code>  <code>ItemparamexdMapper</code></h4><p> 这里就直接使用注解查询了(参照第一版的<code>xml</code>配置，可做对比)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.mapper;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemParamexd;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Select;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/10/6.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ItemparamexdMapper</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Select</span>(<span class="string">" select\n"</span> +</div><div class="line">            <span class="string">"         a.id id ,a.item_cat_id itemCatId,a.created created,a.updated updated,a.param_data paramData,b.`name` itemCatName\n"</span> +</div><div class="line">            <span class="string">"        FROM\n"</span> +</div><div class="line">            <span class="string">"        tb_item_param AS a LEFT JOIN  tb_item_cat  as b\n"</span> +</div><div class="line">            <span class="string">"        ON\n"</span> +</div><div class="line">            <span class="string">"        a.item_cat_id=b.id "</span>)</div><div class="line">    <span class="function">List&lt;ItemParamexd&gt; <span class="title">selectList</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="service功能实现："><a href="#service功能实现：" class="headerlink" title="service功能实现："></a>service功能实现：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.github.pagehelper.PageHelper;</div><div class="line"><span class="keyword">import</span> com.github.pagehelper.PageInfo;</div><div class="line"><span class="keyword">import</span> com.migo.mapper.ItemparamexdMapper;</div><div class="line"><span class="keyword">import</span> com.migo.pojo.EasyUIDataGridResult;</div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemParam;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/14.</div><div class="line">*/</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemParmService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ItemParam</span>&gt; </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemparamexdMapper itemparamexdMapper;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> EasyUIDataGridResult <span class="title">getItemParamList</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">int</span> rows)</span> </span>&#123;</div><div class="line">        <span class="comment">//分页处理</span></div><div class="line">        PageHelper.startPage(page, rows);</div><div class="line">        <span class="comment">//执行查询</span></div><div class="line"></div><div class="line">        List list = itemparamexdMapper.selectList();</div><div class="line">        <span class="comment">//取分页信息</span></div><div class="line">        PageInfo pageInfo = <span class="keyword">new</span> PageInfo&lt;&gt;(list);</div><div class="line">        <span class="comment">//返回处理结果</span></div><div class="line">        EasyUIDataGridResult result = <span class="keyword">new</span> EasyUIDataGridResult();</div><div class="line">        result.setTotal(pageInfo.getTotal());</div><div class="line">        result.setRows(pageInfo.getList());</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="controller实现："><a href="#controller实现：" class="headerlink" title="controller实现："></a>controller实现：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * 查询规格参数模板列表</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/list"</span>,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;EasyUIDataGridResult&gt; <span class="title">getItemparmList</span><span class="params">(Integer page,Integer rows)</span></span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</div><div class="line">                logger.info(<span class="string">"查询商品规格模板参数模板 page= &#123;&#125;，rows = &#123;&#125;"</span>,page,rows);</div><div class="line">            &#125;</div><div class="line">            EasyUIDataGridResult result=<span class="keyword">this</span>.itemParmService.getItemParamList(page,rows);</div><div class="line">            <span class="keyword">return</span> ResponseEntity.ok(result);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            logger.error(<span class="string">"查询商品规格参数模板列表出错：page="</span>+page+<span class="string">",rows="</span>+rows,e);</div><div class="line">            <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="启动项目，运行查看："><a href="#启动项目，运行查看：" class="headerlink" title="启动项目，运行查看："></a>启动项目，运行查看：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/ggcslb.png" alt=""></p>
+<p>因删除比较简单，这里就不做了</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/14/Migo商城2.0  商品规格参数的实现(1) 十/" rel="next" title="Migo商城2.0 商品规格参数的实现(1) 十">
+                <i class="fa fa-chevron-left"></i> Migo商城2.0 商品规格参数的实现(1) 十
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/"
+           data-title="" data-url="https://muyinchen.github.io/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#keywords-电商demo-ssm"><span class="nav-number">1.</span> <span class="nav-text">keywords: 电商demo ssm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城2-0-商品规格参数的实现-2-十一"><span class="nav-number">2.</span> <span class="nav-text">Migo商城2.0  商品规格参数的实现(2)  十一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化类目选择组件里的回调函数的执行："><span class="nav-number">2.0.1.</span> <span class="nav-text">初始化类目选择组件里的回调函数的执行：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#点击提交的js代码："><span class="nav-number">2.0.2.</span> <span class="nav-text">点击提交的js代码：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提交的数据格式为："><span class="nav-number">2.0.3.</span> <span class="nav-text">提交的数据格式为：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#后台实现："><span class="nav-number">2.0.4.</span> <span class="nav-text">后台实现：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#controller："><span class="nav-number">2.0.4.1.</span> <span class="nav-text">controller：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行项目，测试结果如图："><span class="nav-number">2.0.5.</span> <span class="nav-text">运行项目，测试结果如图：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加的数据在数据库里的格式："><span class="nav-number">2.0.6.</span> <span class="nav-text">添加的数据在数据库里的格式：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询规格参数模板列表"><span class="nav-number">2.1.</span> <span class="nav-text">查询规格参数模板列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#新建pojo-ItemParamexd"><span class="nav-number">2.1.1.</span> <span class="nav-text">新建pojo ItemParamexd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#新建mapper-ItemparamexdMapper"><span class="nav-number">2.1.2.</span> <span class="nav-text">新建mapper  ItemparamexdMapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#service功能实现："><span class="nav-number">2.1.3.</span> <span class="nav-text">service功能实现：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#controller实现："><span class="nav-number">2.1.4.</span> <span class="nav-text">controller实现：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动项目，运行查看："><span class="nav-number">2.1.5.</span> <span class="nav-text">启动项目，运行查看：</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
