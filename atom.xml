@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-15T11:45:23.734Z</updated>
+  <updated>2016-11-15T11:47:35.998Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,15 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title></title>
+    <title>Migo商城2.0 商品规格参数的实现(2) 十一</title>
     <link href="https://muyinchen.github.io/2016/11/15/Migo%E5%95%86%E5%9F%8E2.0%20%20%E5%95%86%E5%93%81%E8%A7%84%E6%A0%BC%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0(2)%20%20%E5%8D%81%E4%B8%80/"/>
     <id>https://muyinchen.github.io/2016/11/15/Migo商城2.0  商品规格参数的实现(2)  十一/</id>
     <published>2016-11-15T11:43:56.931Z</published>
-    <updated>2016-11-15T11:45:23.734Z</updated>
+    <updated>2016-11-15T11:47:35.998Z</updated>
     
-    <content type="html"><![CDATA[<hr>
-<p>title:  Migo商城2.0 商品规格参数的实现(2) 十一<br>categories: Migo商城2.0<br>tags: Migo商城2.0</p>
-<h2 id="keywords-电商demo-ssm"><a href="#keywords-电商demo-ssm" class="headerlink" title="keywords: 电商demo ssm"></a>keywords: 电商demo ssm</h2><h2 id="Migo商城2-0-商品规格参数的实现-2-十一"><a href="#Migo商城2-0-商品规格参数的实现-2-十一" class="headerlink" title="Migo商城2.0  商品规格参数的实现(2)  十一"></a>Migo商城2.0  商品规格参数的实现(2)  十一</h2><p>   接上篇</p>
+    <content type="html"><![CDATA[<h2 id="Migo商城2-0-商品规格参数的实现-2-十一"><a href="#Migo商城2-0-商品规格参数的实现-2-十一" class="headerlink" title="Migo商城2.0  商品规格参数的实现(2)  十一"></a>Migo商城2.0  商品规格参数的实现(2)  十一</h2><p>   接上篇</p>
 <h4 id="初始化类目选择组件里的回调函数的执行："><a href="#初始化类目选择组件里的回调函数的执行：" class="headerlink" title="初始化类目选择组件里的回调函数的执行："></a>初始化类目选择组件里的回调函数的执行：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png" alt=""></p>
 <a id="more"></a>
 <h4 id="点击提交的js代码："><a href="#点击提交的js代码：" class="headerlink" title="点击提交的js代码："></a>点击提交的js代码：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">"#itemParamAddTable .submit"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">//这里就是拼接出下面的数据格式的代码，然后stringfy序列化json字符串</span></div><div class="line">			<span class="keyword">var</span> params = [];</div><div class="line">			<span class="keyword">var</span> groups = $(<span class="string">"#itemParamAddTable [name=group]"</span>);</div><div class="line">			groups.each(<span class="function"><span class="keyword">function</span>(<span class="params">i,e</span>)</span>&#123;</div><div class="line">				<span class="keyword">var</span> p = $(e).parentsUntil(<span class="string">"ul"</span>).parent().find(<span class="string">"[name=param]"</span>);</div><div class="line">				<span class="keyword">var</span> _ps = [];</div><div class="line">				p.each(<span class="function"><span class="keyword">function</span>(<span class="params">_i,_e</span>)</span>&#123;</div><div class="line">					<span class="keyword">var</span> _val = $(_e).siblings(<span class="string">"input"</span>).val();</div><div class="line">					<span class="keyword">if</span>($.trim(_val).length&gt;<span class="number">0</span>)&#123;</div><div class="line">						_ps.push(_val);						</div><div class="line">					&#125;</div><div class="line">				&#125;);</div><div class="line">				<span class="keyword">var</span> _val = $(e).siblings(<span class="string">"input"</span>).val();</div><div class="line">				<span class="keyword">if</span>($.trim(_val).length&gt;<span class="number">0</span> &amp;&amp; _ps.length &gt; <span class="number">0</span>)&#123;</div><div class="line">					params.push(&#123;</div><div class="line">						<span class="string">"group"</span>:_val,</div><div class="line">						<span class="string">"params"</span>:_ps</div><div class="line">					&#125;);					</div><div class="line">				&#125;</div><div class="line">			&#125;);</div><div class="line">			<span class="keyword">var</span> url = <span class="string">"/rest/item/param/"</span>+$(<span class="string">"#itemParamAddTable [name=cid]"</span>).val();</div><div class="line">         <span class="comment">//JSON.stringify将js的对象序列化为json字符串，之前有人见有人犯过这样的小错误</span></div><div class="line">			$.post(url,&#123;<span class="string">"paramData"</span>:<span class="built_in">JSON</span>.stringify(params)&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">				$.messager.alert(<span class="string">'提示'</span>,<span class="string">'新增商品规格成功!'</span>,<span class="literal">undefined</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">					$(<span class="string">".panel-tool-close"</span>).click();</div><div class="line">   					$(<span class="string">"#itemParamList"</span>).datagrid(<span class="string">"reload"</span>);</div><div class="line">   				&#125;);</div><div class="line">			&#125;);</div><div class="line">		&#125;);</div><div class="line">	&#125;);</div></pre></td></tr></table></figure>
@@ -50,13 +48,15 @@
     
     <summary type="html">
     
-      &lt;hr&gt;
-&lt;p&gt;title:  Migo商城2.0 商品规格参数的实现(2) 十一&lt;br&gt;categories: Migo商城2.0&lt;br&gt;tags: Migo商城2.0&lt;/p&gt;
-&lt;h2 id=&quot;keywords-电商demo-ssm&quot;&gt;&lt;a href=&quot;#keywords-电商demo-ssm&quot; class=&quot;headerlink&quot; title=&quot;keywords: 电商demo ssm&quot;&gt;&lt;/a&gt;keywords: 电商demo ssm&lt;/h2&gt;&lt;h2 id=&quot;Migo商城2-0-商品规格参数的实现-2-十一&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品规格参数的实现-2-十一&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品规格参数的实现(2)  十一&quot;&gt;&lt;/a&gt;Migo商城2.0  商品规格参数的实现(2)  十一&lt;/h2&gt;&lt;p&gt;   接上篇&lt;/p&gt;
+      &lt;h2 id=&quot;Migo商城2-0-商品规格参数的实现-2-十一&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品规格参数的实现-2-十一&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品规格参数的实现(2)  十一&quot;&gt;&lt;/a&gt;Migo商城2.0  商品规格参数的实现(2)  十一&lt;/h2&gt;&lt;p&gt;   接上篇&lt;/p&gt;
 &lt;h4 id=&quot;初始化类目选择组件里的回调函数的执行：&quot;&gt;&lt;a href=&quot;#初始化类目选择组件里的回调函数的执行：&quot; class=&quot;headerlink&quot; title=&quot;初始化类目选择组件里的回调函数的执行：&quot;&gt;&lt;/a&gt;初始化类目选择组件里的回调函数的执行：&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
     
     </summary>
     
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
+    
+    
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
     
   </entry>
   
