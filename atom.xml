@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-17T15:54:03.306Z</updated>
+  <updated>2016-11-17T15:55:04.095Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://muyinchen.github.io/2016/11/17/Migo%E5%95%86%E5%9F%8E2.0%20%20%E9%97%A8%E6%88%B7%E9%A6%96%E9%A1%B5%E5%B7%A6%E4%BE%A7%E5%95%86%E5%93%81%E7%B1%BB%E7%9B%AE%E6%98%BE%E7%A4%BA%20%E5%8D%81%E4%B8%89/"/>
     <id>https://muyinchen.github.io/2016/11/17/Migo商城2.0  门户首页左侧商品类目显示 十三/</id>
     <published>2016-11-17T15:50:14.316Z</published>
-    <updated>2016-11-17T15:54:03.306Z</updated>
+    <updated>2016-11-17T15:55:04.095Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页左侧商品类目显示-十四"><a href="#Migo商城2-0-门户首页左侧商品类目显示-十四" class="headerlink" title="Migo商城2.0  门户首页左侧商品类目显示 十四"></a><code>Migo</code>商城2.0  门户首页左侧商品类目显示 十四</h2><p>新建后台提供系统服务，这里就不再新建专门提供服务的项目了(也是因为访问的网址里有rest这个字眼了)</p>
+    <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页左侧商品类目显示-十四"><a href="#Migo商城2-0-门户首页左侧商品类目显示-十四" class="headerlink" title="Migo商城2.0  门户首页左侧商品类目显示 十四"></a>Migo商城2.0  门户首页左侧商品类目显示 十四</h2><p>新建后台提供系统服务，这里就不再新建专门提供服务的项目了(也是因为访问的网址里有rest这个字眼了)</p>
 <p>先看下jd的商品类目返回的数据格式：</p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/jdsplmfx.png" alt=""></p>
 <a id="more"></a>
@@ -65,7 +65,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;Migo商城2-0-门户首页左侧商品类目显示-十四&quot;&gt;&lt;a href=&quot;#Migo商城2-0-门户首页左侧商品类目显示-十四&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  门户首页左侧商品类目显示 十四&quot;&gt;&lt;/a&gt;&lt;code&gt;Migo&lt;/code&gt;商城2.0  门户首页左侧商品类目显示 十四&lt;/h2&gt;&lt;p&gt;新建后台提供系统服务，这里就不再新建专门提供服务的项目了(也是因为访问的网址里有rest这个字眼了)&lt;/p&gt;
+      &lt;h2 id=&quot;Migo商城2-0-门户首页左侧商品类目显示-十四&quot;&gt;&lt;a href=&quot;#Migo商城2-0-门户首页左侧商品类目显示-十四&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  门户首页左侧商品类目显示 十四&quot;&gt;&lt;/a&gt;Migo商城2.0  门户首页左侧商品类目显示 十四&lt;/h2&gt;&lt;p&gt;新建后台提供系统服务，这里就不再新建专门提供服务的项目了(也是因为访问的网址里有rest这个字眼了)&lt;/p&gt;
 &lt;p&gt;先看下jd的商品类目返回的数据格式：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/jdsplmfx.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
     
