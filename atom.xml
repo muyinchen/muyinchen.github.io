@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-18T11:01:41.162Z</updated>
+  <updated>2016-11-18T11:40:35.709Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>缓存浅析 一  常用的缓存技术</title>
+    <link href="https://muyinchen.github.io/2016/11/18/%E7%BC%93%E5%AD%98%E6%B5%85%E6%9E%90%20%E4%B8%80%20%20%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BC%93%E5%AD%98%E6%8A%80%E6%9C%AF%20/"/>
+    <id>https://muyinchen.github.io/2016/11/18/缓存浅析 一  常用的缓存技术 /</id>
+    <published>2016-11-18T11:40:48.216Z</published>
+    <updated>2016-11-18T11:40:35.709Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="缓存浅析-一-常用的缓存技术"><a href="#缓存浅析-一-常用的缓存技术" class="headerlink" title="缓存浅析 一  常用的缓存技术"></a>缓存浅析 一  常用的缓存技术</h2><h3 id="1、常见的两种缓存"><a href="#1、常见的两种缓存" class="headerlink" title="1、常见的两种缓存"></a>1、常见的两种缓存</h3><ul>
+<li><code>本地缓存</code>：不需要序列化，速度快，缓存的数量与大小受限于本机内存</li>
+<li><p><code>分布式缓存</code>：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）</p>
+<a id="more"></a>
+<h3 id="2、本地缓存"><a href="#2、本地缓存" class="headerlink" title="2、本地缓存"></a>2、本地缓存</h3></li>
+<li><p><code>Google guava cache</code>：当下最好用的本地缓存</p>
+</li>
+<li><code>Ehcache</code>：<code>spring</code>默认集成的一个缓存，以spring cache的底层缓存实现类形式去操作缓存的话，非常方便，但是欠缺灵活，如果想要灵活使用，还是要单独使用<code>Ehcache</code></li>
+<li><code>Oscache</code>：最经典简单的页面缓存</li>
+</ul>
+<h3 id="3、分布式缓存"><a href="#3、分布式缓存" class="headerlink" title="3、分布式缓存"></a>3、分布式缓存</h3><ol>
+<li><code>memcached</code>：分布式缓存的标配</li>
+<li><code>Redis</code>：新一代的分布式缓存，有替代memcached的趋势</li>
+</ol>
+<h4 id="3-1、memcached"><a href="#3-1、memcached" class="headerlink" title="3.1、memcached"></a>3.1、memcached</h4><ul>
+<li><code>经典的一致性hash算法</code></li>
+<li><code>基于slab的内存模型有效防止内存碎片的产生</code>（但同时也需要估计好启动参数，否则会浪费很多的内存）</li>
+<li><code>集群中机器之间互不通信</code>（相较于Jboss cache等集群中机器之间的相互通信的缓存，速度更快&lt;–因为少了同步更新缓存的开销，且更适合于大型分布式系统中使用）</li>
+<li><code>使用方便</code>（这一点是相较于Redis在构建客户端的时候而言的，尽管redis的使用也不困难）</li>
+<li><code>很专一</code>（专做缓存，这一点也是相较于Redis而言的）</li>
+</ul>
+<h4 id="3-2、Redis"><a href="#3-2、Redis" class="headerlink" title="3.2、Redis"></a>3.2、Redis</h4><blockquote>
+<p><code>可以存储复杂的数据结构（5种）</code><br>strings–&gt;即简单的key-value，就是memcached可以存储的唯一的一种形式，接下来的四种是memcached不能直接存储的四种格式（当然理论上可以先将下面的一些数据结构中的东西封装成对象，然后存入memcached，但是不推荐将大对象存入memcached，因memcached的单一value的最大存储为1M，可能即使采用了压缩算法也不够，即使够，可能存取的效率也不高，而redis的value最大为1G）<br>hashs–&gt;看做hashTable<br>lists–&gt;看做LinkedList<br>sets–&gt;看做hashSet，事实上底层是一个hashTable<br>sorted sets–&gt;底层是一个skipList<br><code>有两种方式可以对缓存数据进行持久化</code><br>RDB<br>AOF<br><code>事件调度</code><br><code>发布订阅等</code></p>
+</blockquote>
+<h4 id="4、集成缓存"><a href="#4、集成缓存" class="headerlink" title="4、集成缓存"></a>4、集成缓存</h4><p>专指spring cache，spring cache自己继承了ehcache作为了缓存的实现类，我们也可以使用guava cache、memcached、redis<br>自己来实现spring cache的底层。当然，spring cache可以根据实现类来将缓存存在本地还是存在远程机器上。</p>
+<h4 id="5、页面缓存"><a href="#5、页面缓存" class="headerlink" title="5、页面缓存"></a>5、页面缓存</h4><p>在使用jsp的时候，我们会将一些复杂的页面使用O scache进行页面缓存，使用非常简单，就是几个标签的事儿；但是，现在一般的企业，<br>前台都会使用velocity、freemaker这两种模板引擎，本身速度就已经很快了，页面缓存使用的也就很少了。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><blockquote>
+<p>在实际生产中，我们通常会使用guava cache做本地缓存+redis做分布式缓存+spring cache就集成缓存（底层使用redis来实现）的形式<br>guava cache使用在更快的获取缓存数据，同时缓存的数据量并不大的情况<br>spring cache集成缓存是为了简单便捷的去使用缓存（以注解的方式即可），使用redis做其实现类是为了可以存更多的数据在机器上<br>redis缓存单独使用是为了弥补spring cache集成缓存的不灵活<br>就我个人而言，如果需要使用分布式缓存，那么首先redis是必选的，因为在实际开发中，我们会缓存各种各样的数据类型，在使用了redis的同时，memcached就完全可以舍弃了，但是现在还有很多公司在同时使用memcached和redis两种缓存。<br>接下来的介绍中，会介绍在分布式情况下guava cache、memcached、redis、spring cache的使用与原理。</p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;缓存浅析-一-常用的缓存技术&quot;&gt;&lt;a href=&quot;#缓存浅析-一-常用的缓存技术&quot; class=&quot;headerlink&quot; title=&quot;缓存浅析 一  常用的缓存技术&quot;&gt;&lt;/a&gt;缓存浅析 一  常用的缓存技术&lt;/h2&gt;&lt;h3 id=&quot;1、常见的两种缓存&quot;&gt;&lt;a href=&quot;#1、常见的两种缓存&quot; class=&quot;headerlink&quot; title=&quot;1、常见的两种缓存&quot;&gt;&lt;/a&gt;1、常见的两种缓存&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;本地缓存&lt;/code&gt;：不需要序列化，速度快，缓存的数量与大小受限于本机内存&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;分布式缓存&lt;/code&gt;：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="缓存" scheme="https://muyinchen.github.io/categories/%E7%BC%93%E5%AD%98/"/>
+    
+    
+      <category term="缓存 redis" scheme="https://muyinchen.github.io/tags/%E7%BC%93%E5%AD%98-redis/"/>
+    
+  </entry>
   
   <entry>
     <title>Migo商城2.0  门户首页左侧商品类目显示 十四</title>
