@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-17T16:14:05.875Z</updated>
+  <updated>2016-11-18T11:01:41.162Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2016/11/17/Migo%E5%95%86%E5%9F%8E2.0%20%20%E9%97%A8%E6%88%B7%E9%A6%96%E9%A1%B5%E5%B7%A6%E4%BE%A7%E5%95%86%E5%93%81%E7%B1%BB%E7%9B%AE%E6%98%BE%E7%A4%BA%20%E5%8D%81%E5%9B%9B/"/>
     <id>https://muyinchen.github.io/2016/11/17/Migo商城2.0  门户首页左侧商品类目显示 十四/</id>
     <published>2016-11-17T15:50:14.316Z</published>
-    <updated>2016-11-17T16:14:05.875Z</updated>
+    <updated>2016-11-18T11:01:41.162Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页左侧商品类目显示-十四"><a href="#Migo商城2-0-门户首页左侧商品类目显示-十四" class="headerlink" title="Migo商城2.0  门户首页左侧商品类目显示 十四"></a>Migo商城2.0  门户首页左侧商品类目显示 十四</h2><p>新建后台提供系统服务，这里就不再新建专门提供服务的项目了(也是因为访问的网址里有rest这个字眼了)</p>
 <p>先看下jd的商品类目返回的数据格式：</p>
@@ -35,7 +35,7 @@
 <p>为更好的符合类的名字的含义，和更好的理解性，对<code>ItemCatResult</code> 稍做改造</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.pojo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonProperty;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/10/9.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatResult</span> </span>&#123;</div><div class="line">    <span class="meta">@JsonProperty</span>(<span class="string">"data"</span>)</div><div class="line">    <span class="keyword">private</span> List&lt;CatNode&gt; catNodes=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;CatNode&gt; <span class="title">getCatNodes</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> catNodes;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCatNodes</span><span class="params">(List&lt;CatNode&gt; catNodes)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.catNodes = catNodes;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>前台访问的<code>URL</code> :  <code>URL_Serv: &quot;http://tomcat.migo.com/rest/webs/item/cat?callback=category.getDataService&quot;</code>   <code>lib-v1.js 1173行</code></p>
-<h3 id="后台代码："><a href="#后台代码：" class="headerlink" title="后台代码："></a>后台代码：</h3><h4 id="service"><a href="#service" class="headerlink" title="service"></a>service</h4><p>从<code>tb_item_cat</code>表中取数据，单表查询，可以使用逆向工程生成的代码</p>
+<h3 id="后台代码："><a href="#后台代码：" class="headerlink" title="后台代码："></a>后台代码：</h3><h4 id="service"><a href="#service" class="headerlink" title="service"></a>service</h4><p>从<code>tb_item_cat</code>表中取数据，单表查询，可以使用<code>通用mapper</code></p>
 <p>返回结果：<code>ItemCatResult</code></p>
 <p>参数：没有</p>
 <p>业务逻辑：根据<code>parentid</code>查询子节点列表，并递归调用</p>
