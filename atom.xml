@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-11-18T11:40:35.709Z</updated>
+  <updated>2016-11-20T15:52:11.700Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,92 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Migo商城2.0 门户首页大广告位显示(1) 十五</title>
+    <link href="https://muyinchen.github.io/2016/11/20/Migo%E5%95%86%E5%9F%8E2.0%20%20%E9%97%A8%E6%88%B7%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%B9%BF%E5%91%8A%E4%BD%8D%E6%98%BE%E7%A4%BA(1)%20%E5%8D%81%E4%BA%94/"/>
+    <id>https://muyinchen.github.io/2016/11/20/Migo商城2.0  门户首页大广告位显示(1) 十五/</id>
+    <published>2016-11-20T15:52:22.470Z</published>
+    <updated>2016-11-20T15:52:11.700Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页大广告位显示-1-十五"><a href="#Migo商城2-0-门户首页大广告位显示-1-十五" class="headerlink" title="Migo商城2.0  门户首页大广告位显示(1) 十五"></a>Migo商城2.0  门户首页大广告位显示(1) 十五</h2><p>操作失误，将之前的稿子搞没了，又得重新敲，坑。。。</p>
+<p>来一张效果图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/dgg.png" alt=""></p>
+<h3 id="轮播图的实现"><a href="#轮播图的实现" class="headerlink" title="轮播图的实现"></a>轮播图的实现</h3><blockquote>
+<p>1、  将首页显示的广告都抽象的看作是内容</p>
+<p>2、  在后台系统中创建一张内容表<br><a id="more"></a><br>3、  创建一个内容分类表用于区分内容的分类</p>
+<p>4、  后台系统对内容表以及分类表进行CRUD</p>
+<p>5、  对外提供接口服务</p>
+<p>6、  前端系统通过接口获取数据，进行封装，即可实现</p>
+</blockquote>
+<h4 id="首页动态展示分析"><a href="#首页动态展示分析" class="headerlink" title="首页动态展示分析"></a>首页动态展示分析</h4><blockquote>
+<p>1、网页内容可以进行分组</p>
+<p>2、组中的每个项目包含一张图片</p>
+<p>3、项目包含一个url</p>
+<p>4、项目包含一个title</p>
+<p>5、项目可能包含价格</p>
+<p>6、大组下还可以有小组，小组下还可以再分组。</p>
+</blockquote>
+<p>内容归类：</p>
+<blockquote>
+<ol>
+<li>需要有内容分组，需要是一个树形结构。</li>
+<li>组下有项目</li>
+</ol>
+<ul>
+<li>a)        包含图片</li>
+<li>b)       Url</li>
+<li>c)        Title</li>
+<li>d)       价格</li>
+</ul>
+</blockquote>
+<p>可以使用两个表来保存，</p>
+<p>一个是内容分组表：<code>tb_content_category</code></p>
+<p>一个内容项目表。<code>tb_content</code></p>
+<p>于是引出一个概念 <code>内容管理系统（CMS）</code> 具体可以谷歌一下</p>
+<h4 id="内容分类管理分析"><a href="#内容分类管理分析" class="headerlink" title="内容分类管理分析"></a>内容分类管理分析</h4><h5 id="功能分析："><a href="#功能分析：" class="headerlink" title="功能分析："></a>功能分析：</h5><blockquote>
+<p>操作的数据库是tb_content_category，向表中插入数据。</p>
+<p>页面：</p>
+<ol>
+<li>初始化树形控件。</li>
+<li>添加节点</li>
+<li>重命名节点</li>
+<li>删除节点</li>
+</ol>
+</blockquote>
+<h4 id="初始化树形控件"><a href="#初始化树形控件" class="headerlink" title="初始化树形控件"></a>初始化树形控件</h4><p>如图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/contentcat1.png" alt=""></p>
+<p>请求的url：/rest/content/category</p>
+<p>参数：id，当前节点的id，根据id查询子节点。</p>
+<p>返回值：json数据</p>
+<p>格式：(api查询所得)</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[&#123;    </div><div class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,    </div><div class="line">    <span class="attr">"text"</span>: <span class="string">"Node 1"</span>,    </div><div class="line">    <span class="attr">"state"</span>: <span class="string">"closed"</span>,    </div><div class="line">    <span class="attr">"children"</span>: [&#123;    </div><div class="line">        <span class="attr">"id"</span>: <span class="number">11</span>,    </div><div class="line">        <span class="attr">"text"</span>: <span class="string">"Node 11"</span>   </div><div class="line">    &#125;,&#123;    </div><div class="line">        <span class="attr">"id"</span>: <span class="number">12</span>,    </div><div class="line">        <span class="attr">"text"</span>: <span class="string">"Node 12"</span>   </div><div class="line">    &#125;]    </div><div class="line">&#125;,&#123;    </div><div class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,    </div><div class="line">    <span class="attr">"text"</span>: <span class="string">"Node 2"</span>,    </div><div class="line">    <span class="attr">"state"</span>: <span class="string">"closed"</span>   </div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+<p>可以使用<code>EUTreeNode</code>(第一版)  2.0版本是<code>ContentCategory</code> 主要是为省查到结果后重新遍历转换为<code>EUTreeNode</code>，造成性能浪费 具体不同的地方请自行对比</p>
+<p>操作的数据库是<code>tb_content_category</code>，属于单表操作，可以使用<code>通用mapper</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.mapper;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> tk.mybatis.mapper.common.Mapper;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ContentCategoryMapper</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">ContentCategory</span>&gt; </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Service层"><a href="#Service层" class="headerlink" title="Service层"></a>Service层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentCategoryService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ContentCategory</span>&gt;</span>&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> com.migo.service.ContentCategoryService;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"content/category"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentCategoryController</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger= LoggerFactory.getLogger(ContentCategoryController.class);</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ContentCategoryService contentCategoryService;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据父节点id查询节点列表</div><div class="line">     * <span class="doctag">@param</span> parentId</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</div><div class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;ContentCategory&gt;&gt; getContentCatList(</div><div class="line">            <span class="meta">@RequestParam</span>(value = <span class="string">"id"</span>, defaultValue = <span class="string">"0"</span>) Long parentId) &#123;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (logger.isInfoEnabled())&#123;</div><div class="line">                logger.info(<span class="string">"根据父节点id查询节点列表 parentId = &#123;&#125;"</span>,parentId);</div><div class="line">            &#125;</div><div class="line">            ContentCategory example=<span class="keyword">new</span> ContentCategory();</div><div class="line">            example.setParentId(parentId);</div><div class="line">            List&lt;ContentCategory&gt; categoryList = <span class="keyword">this</span>.contentCategoryService.queryListByWhere(example);</div><div class="line">            <span class="keyword">if</span> (categoryList==<span class="keyword">null</span>||categoryList.isEmpty())&#123;</div><div class="line">                <span class="keyword">if</span> (logger.isInfoEnabled())&#123;</div><div class="line">                    logger.info(<span class="string">"根据父节点id查询节点列表 未找到 parentId = &#123;&#125;"</span>,parentId);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span>  ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span>  ResponseEntity.ok(categoryList);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           logger.error(<span class="string">"根据父节点id查询节点列表 服务器傲娇了 parentId = &#123;&#125;"</span>,parentId,e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行项目，显示效果：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/catgery.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Migo商城2-0-门户首页大广告位显示-1-十五&quot;&gt;&lt;a href=&quot;#Migo商城2-0-门户首页大广告位显示-1-十五&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  门户首页大广告位显示(1) 十五&quot;&gt;&lt;/a&gt;Migo商城2.0  门户首页大广告位显示(1) 十五&lt;/h2&gt;&lt;p&gt;操作失误，将之前的稿子搞没了，又得重新敲，坑。。。&lt;/p&gt;
+&lt;p&gt;来一张效果图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/dgg.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3 id=&quot;轮播图的实现&quot;&gt;&lt;a href=&quot;#轮播图的实现&quot; class=&quot;headerlink&quot; title=&quot;轮播图的实现&quot;&gt;&lt;/a&gt;轮播图的实现&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;1、  将首页显示的广告都抽象的看作是内容&lt;/p&gt;
+&lt;p&gt;2、  在后台系统中创建一张内容表&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
+    
+    
+      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
+    
+  </entry>
   
   <entry>
     <title>缓存浅析 一  常用的缓存技术</title>
