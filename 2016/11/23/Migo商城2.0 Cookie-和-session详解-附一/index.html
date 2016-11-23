@@ -1,0 +1,681 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="电商demo ssm Cookie session" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Cookie 和 session详解因为要写单点登录系统，有些基本的东西想想还是说下的
+在将cookie 和 session 之前需要先理解什么是会话会话：用户打开一个浏览器，点击多个超链接，访问多个web资源，然后关闭浏览器，整个过程称为一个会话。http协议是无状态的，一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换建立新的连接，也就是说，服务器无法跟踪会话。而cookie 和 se">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migo商城2.0 Cookie 和 session详解 附一">
+<meta property="og:url" content="https://muyinchen.github.io/2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Cookie 和 session详解因为要写单点登录系统，有些基本的东西想想还是说下的
+在将cookie 和 session 之前需要先理解什么是会话会话：用户打开一个浏览器，点击多个超链接，访问多个web资源，然后关闭浏览器，整个过程称为一个会话。http协议是无状态的，一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换建立新的连接，也就是说，服务器无法跟踪会话。而cookie 和 se">
+<meta property="og:updated_time" content="2016-11-23T13:37:28.452Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migo商城2.0 Cookie 和 session详解 附一">
+<meta name="twitter:description" content="Cookie 和 session详解因为要写单点登录系统，有些基本的东西想想还是说下的
+在将cookie 和 session 之前需要先理解什么是会话会话：用户打开一个浏览器，点击多个超链接，访问多个web资源，然后关闭浏览器，整个过程称为一个会话。http协议是无状态的，一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换建立新的连接，也就是说，服务器无法跟踪会话。而cookie 和 se">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/"/>
+
+
+  <title> Migo商城2.0 Cookie 和 session详解 附一 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Migo商城2.0 Cookie 和 session详解 附一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-23T21:37:50+08:00" content="2016-11-23">
+              2016-11-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Cookie-和-session详解"><a href="#Cookie-和-session详解" class="headerlink" title="Cookie 和 session详解"></a>Cookie 和 session详解</h1><p>因为要写单点登录系统，有些基本的东西想想还是说下的</p>
+<p>在将cookie 和 session 之前需要先理解什么是会话<br>会话：<br>用户打开一个浏览器，点击多个超链接，访问多个web资源，然后关闭浏览器，整个过程称为一个会话。<br>http协议是无状态的，一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换建立新的连接，也就是说，服务器无法跟踪会话。而cookie 和 session 就是用与解决这种问题。<br><a id="more"></a></p>
+<h3 id="1-什么是cookie"><a href="#1-什么是cookie" class="headerlink" title="1.什么是cookie"></a>1.什么是cookie</h3><p>cookie是客户端的技术，程序把每个用户数据以cookie的形式写给用户各自的浏览器，当客户端再次访问服务器的时候，会带着各自的Cookie过来，这样服务器就能处理各自用户的数据了</p>
+<h4 id="1-1-如何使用cookie"><a href="#1-1-如何使用cookie" class="headerlink" title="1.1 如何使用cookie"></a>1.1 如何使用cookie</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">"name"</span>,<span class="string">"value"</span>); <span class="comment">//创建一个cookie</span></div><div class="line">cookie.setPath(<span class="string">"/"</span>); <span class="comment">//cookie记得一定要设定路径，默认是当前的类的路径，设置/代表是整个web应用。</span></div><div class="line">cookie.setMaxAge(<span class="string">""</span>); <span class="comment">//设置有效期限，默认是浏览器的进程，也就是浏览器关了，就没了。如果是设置为负数，那么cookie不会被存储，并且会被删除。如果设置为0，那么cookie会被删除。（这些内容在API上描述得非常清楚）</span></div><div class="line">response.addCookie(cookie);<span class="comment">//添加cookie,这样才能回写给客户端</span></div></pre></td></tr></table></figure>
+<p>以上的内容就是关于如何去使用一个cookie了。</p>
+<h4 id="1-2-cookie的细节"><a href="#1-2-cookie的细节" class="headerlink" title="1.2. cookie的细节"></a>1.2. cookie的细节</h4><p>根据API的描述，一个cookie最大为4KB.浏览器一般只允许存放300个cookie，每个站点最多存放20个Cookie。Cookie被创建的时候默认使用Verssion 0 ,也就是http 1.0</p>
+<h5 id="1-2-1-cookie的删除"><a href="#1-2-1-cookie的删除" class="headerlink" title="1.2.1 cookie的删除"></a>1.2.1 cookie的删除</h5><p>在cookie的API中没有删除cookie的具体方法，但是我们可以通过设置cookie的生命周期，来讲cookie删除，设置为0代表删除（详解自行查看setMaxAge()方法）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cookie.setMaxAge(<span class="number">0</span>);  </div><div class="line">如果说不想从request域中获取cookie，然后将该cookie的生命周期设置为<span class="number">0</span>，可以采用以下这个方法</div><div class="line">Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">"想删除的cooki名字"</span>,<span class="string">"value"</span>);</div><div class="line">cookie.setPath(<span class="string">""</span>);<span class="comment">//此处路径必须与想删除的cookie一致</span></div><div class="line">cookie.setMaxAge(<span class="number">0</span>); </div><div class="line">response.addCookie(cookie);</div></pre></td></tr></table></figure>
+<h4 id="1-3-cookie的获取"><a href="#1-3-cookie的获取" class="headerlink" title="1.3 cookie的获取"></a>1.3 cookie的获取</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">request.getCookies(); <span class="comment">//返回的是cookie的数组</span></div></pre></td></tr></table></figure>
+<p>以上就是cookie的常用方法。</p>
+<h4 id="1-4-cookie设置注释"><a href="#1-4-cookie设置注释" class="headerlink" title="1.4 cookie设置注释"></a>1.4 cookie设置注释</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cookie.setComment(<span class="string">"comment"</span>)</div></pre></td></tr></table></figure>
+<h4 id="1-5-cookie-设置安全传输协议-例如-https-ssl"><a href="#1-5-cookie-设置安全传输协议-例如-https-ssl" class="headerlink" title="1.5 cookie 设置安全传输协议(例如 https ,ssl)"></a>1.5 cookie 设置安全传输协议(例如 https ,ssl)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cookie.setSecure(<span class="keyword">true</span>|<span class="keyword">false</span>) 默认为<span class="keyword">false</span></div></pre></td></tr></table></figure>
+<h3 id="2-什么是session"><a href="#2-什么是session" class="headerlink" title="2.什么是session"></a>2.什么是session</h3><p>session是服务端的技术，当浏览器第1次访问web资源的时候，服务器会自动为其创建一个session，并保存在服务器，当需要保存用户数据的时候，可以将数据写入session中。当用户访问其他程序的时候，就可以直接从session中取值。值得一提的是sesion是建立在cookie的基础上创建的。</p>
+<h4 id="2-1-session实现原理"><a href="#2-1-session实现原理" class="headerlink" title="2.1 session实现原理"></a>2.1 session实现原理</h4><p>session的实现原理是建立在给浏览器回写cookie，并且是以JSESSIONID为键，但是这个cookie是没有时间的，也就是说，当你关闭浏览器时，代表一个会话结束了，也就是说你的session会被删除，当你再次访问服务器的时候，服务器会为你重新创建一个session。</p>
+<h4 id="2-2-session的使用"><a href="#2-2-session的使用" class="headerlink" title="2.2 session的使用"></a>2.2 session的使用</h4><h5 id="2-2-1-客户端不禁用cookie的情况"><a href="#2-2-1-客户端不禁用cookie的情况" class="headerlink" title="2.2.1 客户端不禁用cookie的情况"></a>2.2.1 客户端不禁用cookie的情况</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">HttpSession session = request.getSession();<span class="comment">//客户端访问服务器的时候，服务器会自动创建一个session,如果客户端没有禁用cookie的话。</span></div><div class="line">String sessionId = session.getId();</div><div class="line">Cookie cookie = <span class="keyword">new</span> Cookie(<span class="string">"JSESSIONID"</span>,sessionId);</div><div class="line">cookie.setPaht(<span class="string">"/"</span>);</div><div class="line">cookie.setMaxAge(<span class="number">30</span>*<span class="number">60</span>);<span class="comment">//注意在tomcat的web.xml文件中，设置了session的生命周期最长为30分钟。</span></div><div class="line">response.addCookie(cookie);</div><div class="line">session.setAttribute(<span class="string">"key"</span>,<span class="string">"value"</span>);</div></pre></td></tr></table></figure>
+<h5 id="2-2-2-客户端禁用cookie的情况"><a href="#2-2-2-客户端禁用cookie的情况" class="headerlink" title="2.2.2 客户端禁用cookie的情况"></a>2.2.2 客户端禁用cookie的情况</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">如果客户端禁用cookie，那么需要调用response的encodeURL(<span class="string">"转发的地址"</span>)</div><div class="line">HttpSession session = request.getSession();</div><div class="line">String url1 = response.encodeURL(<span class="string">"xxxx"</span>);<span class="comment">//注意，调用这个方法之前，必须要先获取session,（在该方法的API描述得很清楚）</span></div><div class="line">PrintWriter pw = response.getWriter();</div><div class="line">pw.write(url1);</div></pre></td></tr></table></figure>
+<h4 id="2-3-session的一些细节"><a href="#2-3-session的一些细节" class="headerlink" title="2.3 session的一些细节"></a>2.3 session的一些细节</h4><p>设置session的生命周期</p>
+<p>可以通过设置配置文件的形式，设置session的生命周期；在web.xml文件中添加如下代码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>30<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span>//备注这里是以分钟为单位</div><div class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>参考以下2篇博文:<br><a href="https://my.oschina.net/kevinair/blog/192829" target="_blank" rel="external">https://my.oschina.net/kevina…</a> 深入源码剖析了session和cookie<br><a href="http://blog.csdn.net/fangaoxin/article/details/6952954/" target="_blank" rel="external">http://blog.csdn.net/fangaoxi…</a> 介绍了一些基本的知识</p>
+<p>本来想自己写下基本知识，发现有现成的，就拿来主义了，自己保存的一篇文章，源于何处未知</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Migo商城2-0/" rel="tag">#Migo商城2.0</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/20/Migo商城2.0  门户首页大广告位显示(1) 十五/" rel="next" title="Migo商城2.0 门户首页大广告位显示(1) 十五">
+                <i class="fa fa-chevron-left"></i> Migo商城2.0 门户首页大广告位显示(1) 十五
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/"
+           data-title="Migo商城2.0 Cookie 和 session详解 附一" data-url="https://muyinchen.github.io/2016/11/23/Migo商城2.0 Cookie-和-session详解-附一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie-和-session详解"><span class="nav-number">1.</span> <span class="nav-text">Cookie 和 session详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是cookie"><span class="nav-number">1.0.1.</span> <span class="nav-text">1.什么是cookie</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-如何使用cookie"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">1.1 如何使用cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-cookie的细节"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">1.2. cookie的细节</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1-cookie的删除"><span class="nav-number">1.0.1.2.1.</span> <span class="nav-text">1.2.1 cookie的删除</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-cookie的获取"><span class="nav-number">1.0.1.3.</span> <span class="nav-text">1.3 cookie的获取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-cookie设置注释"><span class="nav-number">1.0.1.4.</span> <span class="nav-text">1.4 cookie设置注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-cookie-设置安全传输协议-例如-https-ssl"><span class="nav-number">1.0.1.5.</span> <span class="nav-text">1.5 cookie 设置安全传输协议(例如 https ,ssl)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是session"><span class="nav-number">1.0.2.</span> <span class="nav-text">2.什么是session</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-session实现原理"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">2.1 session实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-session的使用"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">2.2 session的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-客户端不禁用cookie的情况"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">2.2.1 客户端不禁用cookie的情况</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-客户端禁用cookie的情况"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">2.2.2 客户端禁用cookie的情况</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-session的一些细节"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">2.3 session的一些细节</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
