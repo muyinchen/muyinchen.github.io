@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-12-06T15:07:48.795Z</updated>
+  <updated>2016-12-06T15:28:32.341Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,9 +20,10 @@
     <link href="https://muyinchen.github.io/2016/12/06/%E5%9B%BE%E8%A7%A3%20HTTP%20%E5%8D%8F%E8%AE%AE/"/>
     <id>https://muyinchen.github.io/2016/12/06/图解 HTTP 协议/</id>
     <published>2016-12-06T15:08:14.667Z</published>
-    <updated>2016-12-06T15:07:48.795Z</updated>
+    <updated>2016-12-06T15:28:32.341Z</updated>
     
     <content type="html"><![CDATA[<h1 id="图解-HTTP-协议"><a href="#图解-HTTP-协议" class="headerlink" title="图解 HTTP 协议"></a>图解 HTTP 协议</h1><h1 id="一、技术基石及概述"><a href="#一、技术基石及概述" class="headerlink" title="一、技术基石及概述"></a>一、技术基石及概述</h1><p>问：什么是HTTP?<br>答：HTTP是一个客户端和服务器端<strong>请求</strong>和<strong>响应</strong>的<strong>标准TCP</strong>。其实建立在TCP之上的。</p>
+<a id="more"></a>
 <p>当我们打开百度网页时，是这样的：</p>
 <blockquote>
 <p><a href="https://www.baidu.com" target="_blank" rel="external">https://www.baidu.com</a></p>
@@ -143,7 +144,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;图解-HTTP-协议&quot;&gt;&lt;a href=&quot;#图解-HTTP-协议&quot; class=&quot;headerlink&quot; title=&quot;图解 HTTP 协议&quot;&gt;&lt;/a&gt;图解 HTTP 协议&lt;/h1&gt;&lt;h1 id=&quot;一、技术基石及概述&quot;&gt;&lt;a href=&quot;#一、技术基石及概述&quot; c
+      &lt;h1 id=&quot;图解-HTTP-协议&quot;&gt;&lt;a href=&quot;#图解-HTTP-协议&quot; class=&quot;headerlink&quot; title=&quot;图解 HTTP 协议&quot;&gt;&lt;/a&gt;图解 HTTP 协议&lt;/h1&gt;&lt;h1 id=&quot;一、技术基石及概述&quot;&gt;&lt;a href=&quot;#一、技术基石及概述&quot; class=&quot;headerlink&quot; title=&quot;一、技术基石及概述&quot;&gt;&lt;/a&gt;一、技术基石及概述&lt;/h1&gt;&lt;p&gt;问：什么是HTTP?&lt;br&gt;答：HTTP是一个客户端和服务器端&lt;strong&gt;请求&lt;/strong&gt;和&lt;strong&gt;响应&lt;/strong&gt;的&lt;strong&gt;标准TCP&lt;/strong&gt;。其实建立在TCP之上的。&lt;/p&gt;
     
     </summary>
     
