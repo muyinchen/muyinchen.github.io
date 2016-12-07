@@ -1,0 +1,699 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="电商demo ssm redis 缓存" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九分单机版和集群版，之前附件有说单机版了这里说下另外一种集群：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九分单机版和集群版，之前附件有说单机版了这里说下另外一种集群：">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp161207_224849.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp161208_002341.png">
+<meta property="og:updated_time" content="2016-12-07T17:26:46.631Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九">
+<meta name="twitter:description" content="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九分单机版和集群版，之前附件有说单机版了这里说下另外一种集群：">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp161207_224849.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/"/>
+
+
+  <title> Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-08T01:28:19+08:00" content="2016-12-08">
+              2016-12-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Migo商城2-0-业务逻辑中添加redis-缓存-1-十九"><a href="#Migo商城2-0-业务逻辑中添加redis-缓存-1-十九" class="headerlink" title="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九"></a>Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九</h2><p>分单机版和集群版，之前附件有说单机版了这里说下另外一种集群：<br><a id="more"></a></p>
+<h3 id="集群的搭建（伪分布式）"><a href="#集群的搭建（伪分布式）" class="headerlink" title="集群的搭建（伪分布式）"></a>集群的搭建（伪分布式）</h3><p>集群中至少有三个节点(选举模式)，每个节点有一备份节点。需要6台服务器。</p>
+<p>需要6个<code>redis</code>实例。需要每个实例运行在不同的端口号。</p>
+<p>搭建步骤：</p>
+<p>第一步：创建6个<code>redis</code>实例</p>
+<p>第二步：修改<code>redis</code>的配置文件，修改端口号，开启集群。</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp161207_224849.png" alt=""></p>
+<p>第三步：启动每个<code>redis</code>实例。</p>
+<p>第四步：创建集群，需要使用<code>ruby</code>脚本。需要安装<code>ruby</code>环境。</p>
+<p>安装<code>ruby</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install ruby</div><div class="line">yum install rubygems</div></pre></td></tr></table></figure>
+<p>安装<code>ruby</code>和<code>redis</code>的接口程序：</p>
+<p>拷贝<code>redis-3.0.0.gem</code>至<code>/usr/local</code>下</p>
+<p>执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gem install /usr/<span class="built_in">local</span>/redis-3.0.0.gem</div></pre></td></tr></table></figure>
+<p>使用<code>redis-trib.rb</code>脚本创建集群。</p>
+<p>第五步：执行创建集群命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">[root@localhost redis-cluster]<span class="comment"># ./redis-trib.rb create --replicas 1 192.168.25.153:7001 192.168.25.153:7002 192.168.25.153:7003 192.168.25.153:7004 192.168.25.153:7005  192.168.25.153:7006</span></div><div class="line">&gt;&gt;&gt; Creating cluster</div><div class="line">Connecting to node 192.168.25.153:7001: OK</div><div class="line">Connecting to node 192.168.25.153:7002: OK</div><div class="line">Connecting to node 192.168.25.153:7003: OK</div><div class="line">Connecting to node 192.168.25.153:7004: OK</div><div class="line">Connecting to node 192.168.25.153:7005: OK</div><div class="line">Connecting to node 192.168.25.153:7006: OK</div><div class="line">&gt;&gt;&gt; Performing <span class="built_in">hash</span> slots allocation on 6 nodes...</div><div class="line">Using 3 masters:</div><div class="line">192.168.25.153:7001</div><div class="line">192.168.25.153:7002</div><div class="line">192.168.25.153:7003</div><div class="line">Adding replica 192.168.25.153:7004 to 192.168.25.153:7001</div><div class="line">Adding replica 192.168.25.153:7005 to 192.168.25.153:7002</div><div class="line">Adding replica 192.168.25.153:7006 to 192.168.25.153:7003</div><div class="line">M: be19d1b9fe8efa5c136defcce7562dcafce74ede 192.168.25.153:7001</div><div class="line">   slots:0-5460 (5461 slots) master</div><div class="line">M: 5c4f1a5bab8717c3631809d781e08589924b1377 192.168.25.153:7002</div><div class="line">   slots:5461-10922 (5462 slots) master</div><div class="line">M: 26a456a8757a2685ea0cad2bad4e946503c54871 192.168.25.153:7003</div><div class="line">   slots:10923-16383 (5461 slots) master</div><div class="line">S: 40430837d5120024d40a4f96066ab6e2ddef73f2 192.168.25.153:7004</div><div class="line">   replicates be19d1b9fe8efa5c136defcce7562dcafce74ede</div><div class="line">S: ae04c79dded411921b84dbef93afc485673d6408 192.168.25.153:7005</div><div class="line">   replicates 5c4f1a5bab8717c3631809d781e08589924b1377</div><div class="line">S: 5d8886d27f2e45f2b617ae5474f187f53e36309e 192.168.25.153:7006</div><div class="line">   replicates 26a456a8757a2685ea0cad2bad4e946503c54871</div><div class="line">Can I <span class="built_in">set</span> the above configuration? (<span class="built_in">type</span> <span class="string">'yes'</span> to accept): yes</div><div class="line">&gt;&gt;&gt; Nodes configuration updated</div><div class="line">&gt;&gt;&gt; Assign a different config epoch to each node</div><div class="line">&gt;&gt;&gt; Sending CLUSTER MEET messages to join the cluster</div><div class="line">Waiting <span class="keyword">for</span> the cluster to join....</div><div class="line">&gt;&gt;&gt; Performing Cluster Check (using node 192.168.25.153:7001)</div><div class="line">M: be19d1b9fe8efa5c136defcce7562dcafce74ede 192.168.25.153:7001</div><div class="line">   slots:0-5460 (5461 slots) master</div><div class="line">M: 5c4f1a5bab8717c3631809d781e08589924b1377 192.168.25.153:7002</div><div class="line">   slots:5461-10922 (5462 slots) master</div><div class="line">M: 26a456a8757a2685ea0cad2bad4e946503c54871 192.168.25.153:7003</div><div class="line">   slots:10923-16383 (5461 slots) master</div><div class="line">M: 40430837d5120024d40a4f96066ab6e2ddef73f2 192.168.25.153:7004</div><div class="line">   slots: (0 slots) master</div><div class="line">   replicates be19d1b9fe8efa5c136defcce7562dcafce74ede</div><div class="line">M: ae04c79dded411921b84dbef93afc485673d6408 192.168.25.153:7005</div><div class="line">   slots: (0 slots) master</div><div class="line">   replicates 5c4f1a5bab8717c3631809d781e08589924b1377</div><div class="line">M: 5d8886d27f2e45f2b617ae5474f187f53e36309e 192.168.25.153:7006</div><div class="line">   slots: (0 slots) master</div><div class="line">   replicates 26a456a8757a2685ea0cad2bad4e946503c54871</div><div class="line">[OK] All nodes agree about slots configuration.</div><div class="line">&gt;&gt;&gt; Check <span class="keyword">for</span> open slots...</div><div class="line">&gt;&gt;&gt; Check slots coverage...</div><div class="line">[OK] All 16384 slots covered.</div><div class="line">[root@localhost redis-cluster]<span class="comment"># </span></div><div class="line">./redis-trib.rb create --replicas 1 192.168.131.102:7001 192.168.131.102:7002 192.168.131.102:7003 192.168.131.102:7004 192.168.131.102:7005  192.168.131.102:7006</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost redis-cluster]<span class="comment"># redis01/redis-cli -p 7004 -c</span></div><div class="line">连接集群需要添加-c参数</div></pre></td></tr></table></figure>
+<p>项目中导入<code>jedis</code>的依赖，因为各个系统都有可能加缓存，所以，代码实现放在<code>common</code>工程中，注意事项看代码中的解释</p>
+<p>这里就涉及到了什么时候定义接口和实现，同一个接口可以有不一样的实现，这里是分为单机版和集群版两种实现，这就是所谓的面向接口</p>
+<p>先定义一个接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/7.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">JedisClient</span> </span>&#123;</div><div class="line">    <span class="function">String <span class="title">get</span><span class="params">(String key)</span></span>;</div><div class="line">    <span class="function">String <span class="title">set</span><span class="params">(String key,String value)</span></span>;</div><div class="line">    <span class="function">String <span class="title">hget</span><span class="params">(String hkey,String key)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">hset</span><span class="params">(String hkey,String key,String value)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">incr</span><span class="params">(String key)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">decr</span><span class="params">(String key)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">expire</span><span class="params">(String key,<span class="keyword">int</span> second)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">ttl</span><span class="params">(String key)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">del</span><span class="params">(String key)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">long</span> <span class="title">hdel</span><span class="params">(String hkey,String key)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>单机版<code>redis</code>实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.service.JedisClient;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</div><div class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPool;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/7.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisClientSingle</span> <span class="keyword">implements</span> <span class="title">JedisClient</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 有些系统可能不需要添加redis缓存，反而依赖了common项目，但是自己容器内又没有对redis做相应配置,</div><div class="line">     * 故 required = false 这样就可以做到，容器内有则注入，没有就忽略</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line">    <span class="keyword">private</span> JedisPool jedisPool;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        String result=jedis.get(key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">set</span><span class="params">(String key, String value)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        String result=jedis.set(key, value);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hget</span><span class="params">(String hkey, String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        String result=jedis.hget(hkey, key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">hset</span><span class="params">(String hkey, String key, String value)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.hset(hkey, key, value);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">incr</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.incr(key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">decr</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.decr(key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">expire</span><span class="params">(String key, <span class="keyword">int</span> second)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.expire(key, second);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">ttl</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.ttl(key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">del</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.del(key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">hdel</span><span class="params">(String hkey, String key)</span> </span>&#123;</div><div class="line">        Jedis jedis=jedisPool.getResource();</div><div class="line">        Long result = jedis.hdel(hkey, key);</div><div class="line">        jedis.close();</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>集群版<code>redis</code>实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.service.JedisClient;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> redis.clients.jedis.JedisCluster;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/7.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisClientCluster</span> <span class="keyword">implements</span> <span class="title">JedisClient</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 有些系统可能不需要添加redis缓存，反而依赖了common项目，但是自己容器内又没有对redis做相应配置,</div><div class="line">     * 故 required = false 这样就可以做到，容器内有则注入，没有就忽略</div><div class="line">     */</div><div class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line">    <span class="keyword">private</span> JedisCluster jedisCluster;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.get(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">set</span><span class="params">(String key, String value)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> jedisCluster.set(key, value);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hget</span><span class="params">(String hkey, String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.hget(hkey, key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">hset</span><span class="params">(String hkey, String key, String value)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.hset(hkey, key, value);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">incr</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.incr(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">decr</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.decr(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">expire</span><span class="params">(String key, <span class="keyword">int</span> second)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.expire(key, second);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">ttl</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.ttl(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">del</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.del(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">hdel</span><span class="params">(String hkey, String key)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> jedisCluster.hdel(hkey,key);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="抽取模板方法"><a href="#抽取模板方法" class="headerlink" title="抽取模板方法"></a>抽取模板方法</h3><p>单机版那里可以看到方法里有比较多的重复代码，这里就讲一下Spring对模板代码的抽取方法：</p>
+<p>拿大家最熟悉的<code>jdbctemplate</code>为例：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp161208_002341.png" alt=""></p>
+<h4 id="第一步-任务逻辑接口-自己需要实现的逻辑-："><a href="#第一步-任务逻辑接口-自己需要实现的逻辑-：" class="headerlink" title="第一步 任务逻辑接口(自己需要实现的逻辑)："></a>第一步 任务逻辑接口(自己需要实现的逻辑)：</h4><p><code>WorkCallback</code> 参考上图中的<code>1</code>，因参数未知类型，所以设置为E</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/8.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WorkCallback</span>&lt;<span class="title">T</span>,<span class="title">E</span>&gt; </span>&#123;</div><div class="line">    <span class="function">T <span class="title">doWorkCallback</span><span class="params">(E e)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="第二步-实现类中定义execute方法"><a href="#第二步-实现类中定义execute方法" class="headerlink" title="第二步 实现类中定义execute方法"></a>第二步 实现类中定义<code>execute</code>方法</h4><p>返回类型依然是<code>T</code> 参考上图中<code>2</code>和<code>3</code>，参数就是第一步代码中定义的接口实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> &lt;T&gt; <span class="function">T <span class="title">excute</span><span class="params">(WorkCallback&lt;T,Jedis&gt; workCallback)</span></span>&#123;</div><div class="line">        Jedis jedis=<span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            jedis = jedisPool.getResource();</div><div class="line">            <span class="keyword">return</span> workCallback.doWorkCallback(jedis);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;<span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> !=jedis)&#123;</div><div class="line">                jedis.close();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h4 id="第三步，调用类中调用excute方法并实现相应接口任务逻辑"><a href="#第三步，调用类中调用excute方法并实现相应接口任务逻辑" class="headerlink" title="第三步，调用类中调用excute方法并实现相应接口任务逻辑"></a>第三步，调用类中调用excute方法并实现相应接口任务逻辑</h4><p>因为要传入的是类型，所以返回的<code>long</code>修改为装箱类<code>Long</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.service.JedisClient;</div><div class="line"><span class="keyword">import</span> com.migo.service.WorkCallback;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</div><div class="line"><span class="keyword">import</span> redis.clients.jedis.JedisPool;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/7.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisClientSingle</span> <span class="keyword">implements</span> <span class="title">JedisClient</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 有些系统可能不需要添加redis缓存，反而依赖了common项目，但是自己容器内又没有对redis做相应配置,</div><div class="line">     * 故 required = false 这样就可以做到，容器内有则注入，没有就忽略</div><div class="line">     */</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span>(required = <span class="keyword">false</span>)</div><div class="line">    <span class="keyword">private</span> JedisPool jedisPool;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> &lt;T&gt; <span class="function">T <span class="title">excute</span><span class="params">(WorkCallback&lt;T,Jedis&gt; workCallback)</span></span>&#123;</div><div class="line">        Jedis jedis=<span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            jedis = jedisPool.getResource();</div><div class="line">            <span class="keyword">return</span> workCallback.doWorkCallback(jedis);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;<span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> !=jedis)&#123;</div><div class="line">                jedis.close();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">(<span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        String result=jedis.get(key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;String, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.get(key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">set</span><span class="params">(<span class="keyword">final</span> String key, <span class="keyword">final</span> String value)</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;String, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.set(key, value);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hget</span><span class="params">(<span class="keyword">final</span> String hkey, <span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        String result=jedis.hget(hkey, key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;String, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.hget(hkey, key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">hset</span><span class="params">(<span class="keyword">final</span> String hkey, <span class="keyword">final</span> String key, <span class="keyword">final</span> String value)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.hset(hkey, key, value);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.hset(hkey, key, value);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">incr</span><span class="params">(<span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.incr(key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.incr(key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">decr</span><span class="params">(<span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.decr(key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.decr(key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">expire</span><span class="params">(<span class="keyword">final</span> String key, <span class="keyword">final</span> <span class="keyword">int</span> second)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.expire(key, second);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.expire(key, second);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">ttl</span><span class="params">(<span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.ttl(key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.ttl(key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">del</span><span class="params">(<span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.del(key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.del(key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">hdel</span><span class="params">(<span class="keyword">final</span> String hkey, <span class="keyword">final</span> String key)</span> </span>&#123;</div><div class="line">        <span class="comment">/*Jedis jedis=jedisPool.getResource();</span></div><div class="line">        Long result = jedis.hdel(hkey, key);</div><div class="line">        jedis.close();</div><div class="line">        return result;*/</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.excute(<span class="keyword">new</span> WorkCallback&lt;Long, Jedis&gt;() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> Long <span class="title">doWorkCallback</span><span class="params">(Jedis jedis)</span> </span>&#123;</div><div class="line">                <span class="keyword">return</span> jedis.hdel(hkey,key);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>改造完毕，其实模板类方法的设计也不过如此</p>
+<h3 id="Spring和jedis的整合"><a href="#Spring和jedis的整合" class="headerlink" title="Spring和jedis的整合"></a><code>Spring</code>和<code>jedis</code>的整合</h3><p><code>migo-manage</code>  <code>web</code>项目中的<code>service</code>配置文件：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></span></div><div class="line">       <span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span> <span class="attr">xmlns:p</span>=<span class="string">"http://www.springframework.org/schema/p"</span></div><div class="line">       <span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span> <span class="attr">xmlns:tx</span>=<span class="string">"http://www.springframework.org/schema/tx"</span></div><div class="line">       <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></div><div class="line">       <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd</span></div><div class="line">	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd</div><div class="line">	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd</div><div class="line">	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd"&gt;</div><div class="line">    <span class="comment">&lt;!-- 配置包扫描器 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.migo.service"</span>/&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 配置redis客户端单机版 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisPool"</span> <span class="attr">class</span>=<span class="string">"redis.clients.jedis.JedisPool"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"host"</span> <span class="attr">value</span>=<span class="string">"192.168.42.131"</span>/&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">name</span>=<span class="string">"port"</span> <span class="attr">value</span>=<span class="string">"6379"</span>/&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 配置redis客户端实现类 --&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"jedisClientSingle"</span> <span class="attr">class</span>=<span class="string">"com.migo.service.impl.JedisClientSingle"</span>/&gt;</span></div><div class="line">    <span class="comment">&lt;!-- 配置redis客户端集群版 --&gt;</span></div><div class="line">    <span class="comment">&lt;!--&lt;bean id="jedisCluster" class="redis.clients.jedis.JedisCluster"&gt;</span></div><div class="line">       &lt;constructor-arg&gt;</div><div class="line">           &lt;set&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7001"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7002"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7003"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7004"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7005"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">               &lt;bean class="redis.clients.jedis.HostAndPort"&gt;</div><div class="line">                   &lt;constructor-arg name="host" value="192.168.42.131"/&gt;</div><div class="line">                   &lt;constructor-arg name="port" value="7006"/&gt;</div><div class="line">               &lt;/bean&gt;</div><div class="line">           &lt;/set&gt;</div><div class="line">       &lt;/constructor-arg&gt;</div><div class="line">   &lt;/bean&gt;</div><div class="line">   &lt;bean id="jedisClientCluster" class="com.migo.service.impl.JedisClientCluster"/&gt;--&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Migo商城2-0/" rel="tag">#Migo商城2.0</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/06/图解 HTTP 协议/" rel="next" title="图解 HTTP 协议">
+                <i class="fa fa-chevron-left"></i> 图解 HTTP 协议
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/"
+           data-title="Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九" data-url="https://muyinchen.github.io/2016/12/08/Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">26</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城2-0-业务逻辑中添加redis-缓存-1-十九"><span class="nav-number">1.</span> <span class="nav-text">Migo商城2.0 业务逻辑中添加redis 缓存(1) 十九</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群的搭建（伪分布式）"><span class="nav-number">1.1.</span> <span class="nav-text">集群的搭建（伪分布式）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽取模板方法"><span class="nav-number">1.2.</span> <span class="nav-text">抽取模板方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一步-任务逻辑接口-自己需要实现的逻辑-："><span class="nav-number">1.2.1.</span> <span class="nav-text">第一步 任务逻辑接口(自己需要实现的逻辑)：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二步-实现类中定义execute方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">第二步 实现类中定义execute方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三步，调用类中调用excute方法并实现相应接口任务逻辑"><span class="nav-number">1.2.3.</span> <span class="nav-text">第三步，调用类中调用excute方法并实现相应接口任务逻辑</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring和jedis的整合"><span class="nav-number">1.3.</span> <span class="nav-text">Spring和jedis的整合</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
