@@ -104,7 +104,7 @@
 返回结果">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp161208_230058.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp161208_233144.png">
-<meta property="og:updated_time" content="2016-12-08T15:44:59.337Z">
+<meta property="og:updated_time" content="2016-12-08T15:59:23.014Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Migo商城2.0 业务逻辑中添加redis 缓存(2) 二十">
 <meta name="twitter:description" content="Migo商城2.0 业务逻辑中添加redis 缓存(2) 二十业务逻辑中添加缓存缓存应该添加到服务层。
@@ -356,7 +356,7 @@
 <p>如果 <code>key</code> 已经存在， <a href="http://doc.redisfans.com/string/setex.html#setex" target="_blank" rel="external">SETEX</a> 命令将覆写旧值。</p>
 <p>这个命令类似于以下两个命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SET key value</div><div class="line">EXPIRE key seconds  <span class="comment"># 设置生存时间</span></div></pre></td></tr></table></figure>
-<p>不同之处是， <a href="http://doc.redisfans.com/string/setex.html#setex" target="_blank" rel="external">SETEX</a> 是一个原子性(atomic)操作，关联值和设置生存时间两个动作会在同一时间内完成，该命令在 Redis 用作缓存时，非常实用。</p>
+<p>不同之处是， <a href="http://doc.redisfans.com/string/setex.html#setex" target="_blank" rel="external">SETEX</a> 是一个原子性(<code>atomic</code>)操作，关联值和设置生存时间两个动作会在同一时间内完成，该命令在 Redis 用作缓存时，非常实用。</p>
 <ul>
 <li><p><strong>可用版本：</strong></p>
 <blockquote>
