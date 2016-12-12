@@ -1,0 +1,684 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="redis  缓存" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="redis-cli中那些或许我们还不知道的一些实用小功能玩过redis的朋友都知道，redis中有一个叫做redis-cli的小工具，我们可以利用它在test和develop环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入redis-cli启动命令的交互式，而这个对redis-cli来说绝对是九牛一毛，下面我逐一给大家演示下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis-cli中那些或许我们还不知道的一些实用小功能">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="redis-cli中那些或许我们还不知道的一些实用小功能玩过redis的朋友都知道，redis中有一个叫做redis-cli的小工具，我们可以利用它在test和develop环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入redis-cli启动命令的交互式，而这个对redis-cli来说绝对是九牛一毛，下面我逐一给大家演示下。">
+<meta property="og:image" content="http://img1.tuicool.com/qUBbQre.png!web">
+<meta property="og:updated_time" content="2016-12-12T12:01:14.435Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis-cli中那些或许我们还不知道的一些实用小功能">
+<meta name="twitter:description" content="redis-cli中那些或许我们还不知道的一些实用小功能玩过redis的朋友都知道，redis中有一个叫做redis-cli的小工具，我们可以利用它在test和develop环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入redis-cli启动命令的交互式，而这个对redis-cli来说绝对是九牛一毛，下面我逐一给大家演示下。">
+<meta name="twitter:image" content="http://img1.tuicool.com/qUBbQre.png!web">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/"/>
+
+
+  <title> redis-cli中那些或许我们还不知道的一些实用小功能 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                redis-cli中那些或许我们还不知道的一些实用小功能
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-12T20:01:34+08:00" content="2016-12-12">
+              2016-12-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="redis-cli中那些或许我们还不知道的一些实用小功能"><a href="#redis-cli中那些或许我们还不知道的一些实用小功能" class="headerlink" title="redis-cli中那些或许我们还不知道的一些实用小功能"></a>redis-cli中那些或许我们还不知道的一些实用小功能</h1><p>玩过<code>redis</code>的朋友都知道，<code>redis</code>中有一个叫做<code>redis-cli</code>的小工具，我们可以利用它在<code>test</code>和<code>develop</code>环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入<code>redis-cli</code>启动命令的交互式，而这个对<code>redis-cli</code>来说绝对是九牛一毛，下面我逐一给大家演示下。<br> <a id="more"></a></p>
+<h3 id="一：非REPL-Read-Eval-Print-Loop-模式"><a href="#一：非REPL-Read-Eval-Print-Loop-模式" class="headerlink" title="一：非REPL (Read Eval Print Loop) 模式"></a>一：非REPL (Read Eval Print Loop) 模式</h3><p>通常我们都是使用REPL模式，就是连接上端口之后，发一条<code>request</code>再等待<code>response</code>这样一个<code>loop</code>的形式，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216</span></div><div class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> username jack</div><div class="line">OK</div><div class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> password 12345</div><div class="line">OK</div><div class="line">192.168.1.216:6379&gt;</div></pre></td></tr></table></figure>
+<p>其实我还可以直接在命令行中使用<code>redis-cli</code>再配合各种附加参数，效果和上面图示是一模一样的，比如下面这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set username jack</span></div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set password 12345</span></div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>看到没有，这样也是可以的，是不是有点意思哈~~~</p>
+<h3 id="二：从本地文件中执行命令导入"><a href="#二：从本地文件中执行命令导入" class="headerlink" title="二：从本地文件中执行命令导入"></a>二：从本地文件中执行命令导入</h3><p>乍一看还是挺酷的，就是可以把本地文件中的一组<code>redis</code>命令直接导入到<code>redis-cli</code>中执行，这样也就免去了一行一行的去键入了，对不对，工作量可以大大的减轻，比如下面这样：</p>
+<ol>
+<li><p>首先找一个目录，这里就选择<code>/usr/</code>， 下面新建一个<code>txt文件</code>，命令还是非常的简单，执行两个<code>set</code>操作。</p>
+<p><img src="http://img1.tuicool.com/qUBbQre.png!web" alt=""> </p>
+</li>
+</ol>
+<p>然后我们用 <code>&lt; 命令</code>导入就可以了，这里<code>126</code>的ip是本地局域网内的一台虚拟机，是不是有点像<code>pipeline</code>管道操作，牛逼吧~~~ 如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 &lt; /usr/1.txt</span></div><div class="line">OK</div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<h3 id="三：对指定redis命令重复调用"><a href="#三：对指定redis命令重复调用" class="headerlink" title="三：对指定redis命令重复调用"></a>三：对指定<code>redis</code>命令重复调用</h3><p>对指定的<code>redis</code>命令进行重复调用，乍一看也没什么用处，但是如果你调用<code>info</code>命令会是咋样的呢？？？ 你肯定会想到，我操，监控对不对？？？好吧，猜对了，命令格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli -r &lt;count&gt; and -i &lt;delay&gt; <span class="built_in">command</span></div></pre></td></tr></table></figure>
+<p>其中<code>-r</code> 是<code>repeat</code>的次数，<code>-i</code>是<code>delay</code>的<code>sencond</code>的秒数，那接下来我演示一下啊，调用<code>info</code>命令10次，每次延迟<code>1s</code>，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO</span></div><div class="line"><span class="comment"># Server</span></div><div class="line">redis_version:3.2.4</div><div class="line">redis_git_sha1:00000000</div><div class="line">redis_git_dirty:0</div><div class="line">redis_build_id:<span class="built_in">fc</span>9ad9a14d3a0fb5</div><div class="line">redis_mode:standalone</div><div class="line">os:Linux 3.10.0-327.el7.x86_64 x86_64</div><div class="line">arch_bits:64</div><div class="line">multiplexing_api:epoll</div><div class="line">gcc_version:4.8.5</div><div class="line">process_id:6171</div><div class="line">run_id:8d1d5cffbf81e31c6c6e0bd144186e9df9fea482</div><div class="line">tcp_port:6379</div><div class="line">uptime_in_seconds:3536932</div><div class="line">uptime_in_days:40</div><div class="line">hz:10</div><div class="line">lru_clock:5049094</div><div class="line">executable:/etc/redis/redis-server</div><div class="line">config_file:/etc/redis/6379.conf</div><div class="line"></div><div class="line"><span class="comment"># Clients</span></div><div class="line">connected_clients:7</div><div class="line">client_longest_output_list:0</div><div class="line">client_biggest_input_buf:0</div><div class="line">blocked_clients:0</div><div class="line"></div><div class="line"><span class="comment"># Memory</span></div><div class="line">used_memory:1295512</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_rss:10395648</div><div class="line">used_memory_rss_human:9.91M</div><div class="line">used_memory_peak:35199336</div><div class="line">used_memory_peak_human:33.57M</div><div class="line">total_system_memory:2099109888</div><div class="line">total_system_memory_human:1.95G</div><div class="line">used_memory_lua:37888</div><div class="line">used_memory_lua_human:37.00K</div><div class="line">maxmemory:0</div><div class="line">maxmemory_human:0B</div><div class="line">maxmemory_policy:noeviction</div><div class="line">mem_fragmentation_ratio:8.02</div><div class="line">mem_allocator:jemalloc-4.0.3</div><div class="line"></div><div class="line"><span class="comment"># Persistence</span></div><div class="line">loading:0</div><div class="line">rdb_changes_since_last_save:0</div><div class="line">rdb_bgsave_in_progress:0</div><div class="line">rdb_last_save_time:1481443658</div><div class="line">rdb_last_bgsave_status:ok</div><div class="line">rdb_last_bgsave_time_sec:0</div><div class="line">rdb_current_bgsave_time_sec:-1</div><div class="line">aof_enabled:0</div><div class="line">aof_rewrite_in_progress:0</div><div class="line">aof_rewrite_scheduled:0</div><div class="line">aof_last_rewrite_time_sec:-1</div><div class="line">aof_current_rewrite_time_sec:-1</div><div class="line">aof_last_bgrewrite_status:ok</div><div class="line">aof_last_write_status:ok</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>可以看到，命令一下子就刷出来了很多，有点眼花缭乱，一般来说我只关注的是<code>used_memory_human</code>字段，也就仅仅需要知道当然redis占用了多少内存就完事了，所以这里我需要<code>grep</code>一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO | grep used_memory_human</span></div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<p>可以清楚的看到，当前<code>memory_human</code>占用<code>1.24M</code>对吧。。。是不是有一种监控的效果呢？</p>
+<h3 id="四：-stat完整版监控"><a href="#四：-stat完整版监控" class="headerlink" title="四：--stat完整版监控"></a>四：<code>--stat</code>完整版监控</h3><p>其实上面的这个监控还仅仅算是一个极简的版本，可能不能满足有些朋友的需求，比如你就看不到当前的<code>redis</code>中有多少的<code>keys</code>,有多少的<code>clients</code>，有多少被<code>blocked</code>，有多少<code>requests</code>等等信息，如果这些都有了，是不是有点像<code>mongodb</code>中的<code>mongostats</code>呢？哈哈，下面我就迫不及待的给大家来演示一下吧，非常的简单。。。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 --stat</span></div><div class="line">------- data ------ --------------------- load -------------------- - child -</div><div class="line">keys       mem      clients blocked requests            connections          </div><div class="line">27         1.24M    7       0       1198768 (+0)        2206        </div><div class="line">27         1.24M    7       0       1198769 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198770 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198771 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198772 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198773 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198774 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198775 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198776 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198777 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198778 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198779 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198780 (+1)        2206        </div><div class="line">27         1.27M    7       0       1198782 (+2)        2206        </div><div class="line">27         1.24M    7       0       1198783 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198784 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198785 (+1)        2206</div></pre></td></tr></table></figure>
+<p>看到没有，是不是非常的牛逼，一目了然。</p>
+<p>转<a href="http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/redis/" rel="tag">#redis</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/10/Migo商城2.0 商品详情页面的实现 二十一/" rel="next" title="Migo商城2.0 商品详情页面的实现 二十一">
+                <i class="fa fa-chevron-left"></i> Migo商城2.0 商品详情页面的实现 二十一
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/"
+           data-title="redis-cli中那些或许我们还不知道的一些实用小功能" data-url="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#redis-cli中那些或许我们还不知道的一些实用小功能"><span class="nav-number">1.</span> <span class="nav-text">redis-cli中那些或许我们还不知道的一些实用小功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一：非REPL-Read-Eval-Print-Loop-模式"><span class="nav-number">1.0.1.</span> <span class="nav-text">一：非REPL (Read Eval Print Loop) 模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二：从本地文件中执行命令导入"><span class="nav-number">1.0.2.</span> <span class="nav-text">二：从本地文件中执行命令导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三：对指定redis命令重复调用"><span class="nav-number">1.0.3.</span> <span class="nav-text">三：对指定redis命令重复调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四：-stat完整版监控"><span class="nav-number">1.0.4.</span> <span class="nav-text">四：--stat完整版监控</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
