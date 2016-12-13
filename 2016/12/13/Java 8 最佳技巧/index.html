@@ -1,0 +1,754 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java 8  新特性" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Java 8 最佳技巧
+翻译文章
+
+ 在过去的几年中，我一直使用Java 8 进行了很多的编码工作，用于开发 新应用 和 迁移遗留应用 ，我觉得是时候写一些有用的”最佳实践”。我个人不喜欢”最佳实践”这个术语，因为它意味着“一刀切”的解决方案，当然编码工作是不会这样的–这是因为我们开发人员会想出适合我们的方案。但我发现我对Java8特别的喜欢，它让我的生活更轻松一点，所以我想就此话题展开讨论。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 8 最佳技巧">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/13/Java 8 最佳技巧/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Java 8 最佳技巧
+翻译文章
+
+ 在过去的几年中，我一直使用Java 8 进行了很多的编码工作，用于开发 新应用 和 迁移遗留应用 ，我觉得是时候写一些有用的”最佳实践”。我个人不喜欢”最佳实践”这个术语，因为它意味着“一刀切”的解决方案，当然编码工作是不会这样的–这是因为我们开发人员会想出适合我们的方案。但我发现我对Java8特别的喜欢，它让我的生活更轻松一点，所以我想就此话题展开讨论。">
+<meta property="og:image" content="http://img2.tuicool.com/FRbYzeF.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/yuQFV3F.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/AvaieqY.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/A7RjYny.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/niQZJfn.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/vAvURb6.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/mMNvqij.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/bmQRBrJ.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/jIV3Qb7.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/eeeEbyE.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/UN7F32R.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/MZ3Q3iq.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/IVv6jaI.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/BzAzea2.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/Q3U77jJ.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/zANbeyI.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/yANV3mA.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/Mj6zuuj.png!web">
+<meta property="og:image" content="http://img1.tuicool.com/uqmm6zN.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/NVJJf2b.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/qMBzA3Q.png!web">
+<meta property="og:image" content="http://img0.tuicool.com/f2eMziQ.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/QjuQFjI.png!web">
+<meta property="og:image" content="http://img2.tuicool.com/Zv6F7zi.png!web">
+<meta property="og:updated_time" content="2016-12-13T11:09:30.651Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 8 最佳技巧">
+<meta name="twitter:description" content="Java 8 最佳技巧
+翻译文章
+
+ 在过去的几年中，我一直使用Java 8 进行了很多的编码工作，用于开发 新应用 和 迁移遗留应用 ，我觉得是时候写一些有用的”最佳实践”。我个人不喜欢”最佳实践”这个术语，因为它意味着“一刀切”的解决方案，当然编码工作是不会这样的–这是因为我们开发人员会想出适合我们的方案。但我发现我对Java8特别的喜欢，它让我的生活更轻松一点，所以我想就此话题展开讨论。">
+<meta name="twitter:image" content="http://img2.tuicool.com/FRbYzeF.png!web">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/13/Java 8 最佳技巧/"/>
+
+
+  <title> Java 8 最佳技巧 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java 8 最佳技巧
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-13T19:10:19+08:00" content="2016-12-13">
+              2016-12-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/13/Java 8 最佳技巧/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/13/Java 8 最佳技巧/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Java-8-最佳技巧"><a href="#Java-8-最佳技巧" class="headerlink" title="Java 8 最佳技巧"></a>Java 8 最佳技巧</h1><blockquote>
+<p>翻译文章</p>
+</blockquote>
+<p> 在过去的几年中，我一直使用<code>Java 8</code> 进行了很多的编码工作，用于开发 <a href="http://trishagee.github.io/presentation/java8_in_anger/" target="_blank" rel="external">新应用</a> 和 <a href="http://trishagee.github.io/presentation/refactoring_to_java_8/" target="_blank" rel="external">迁移遗留应用</a> ，我觉得是时候写一些有用的”最佳实践”。我个人不喜欢”最佳实践”这个术语，因为它意味着“一刀切”的解决方案，当然编码工作是不会这样的–这是因为我们开发人员会想出适合我们的方案。但我发现我对<code>Java8</code>特别的喜欢，它让我的生活更轻松一点，所以我想就此话题展开讨论。<br> <a id="more"></a></p>
+<h2 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a><code>Optional</code></h2><p> <a href="http://www.oracle.com/technetwork/articles/java/java8-optional-2175753.html" target="_blank" rel="external"> <code>Optional</code> </a> 是一个被严重低估的功能, 它消除了很多困扰着我们的   <code>NullPointerExceptions。它在代码边界（包括你调用和提供 API）处理上特别有用，因为它允许你和你调用的代码说明程序运行的期望结果。</code> </p>
+<p>然而，如果没有必要的思考和设计，那么就会导致一个小变化而影响大量的类，也会导致可读性变差。这里有一些关于如何高效使用<code>Optional</code>的提示。</p>
+<h3 id="Optional-应该只用于返回类型"><a href="#Optional-应该只用于返回类型" class="headerlink" title="Optional 应该只用于返回类型"></a><code>Optional</code> 应该只用于返回类型</h3><p>…不能是参数和属性. 阅读 <a href="http://blog.joda.org/2015/08/java-se-8-optional-pragmatic-approach.html" target="_blank" rel="external">这个博客</a> 了解怎样使用 <code>Optional</code>。 幸运的是, <code>IntelliJ IDEA</code> 在打开  <a href="https://www.jetbrains.com/help/idea/2016.2/code-inspection.html" target="_blank" rel="external">inspection</a> 功能的情况下会检查你是否遵循了这些建议。<br><img src="http://img2.tuicool.com/FRbYzeF.png!web" alt=""> </p>
+<p>可选值应该在使用的地方进行处理.  <code>IntelliJ IDEA</code>的建议可以防止你不恰当的使用<code>Optional</code>, 所以你应该立即处理你发现的不恰当使用<code>Optional</code>。(根据自己的理解翻译)<br><img src="http://img0.tuicool.com/yuQFV3F.png!web" alt=""> </p>
+<h3 id="你不应该简单的调用-get"><a href="#你不应该简单的调用-get" class="headerlink" title="你不应该简单的调用 get()"></a>你不应该简单的调用 <code>get()</code></h3><p><code>Optinal</code>的目的是为了表示此值有可能为空，且让你有能力来应付这种情况。因此，在使用值之前进行检查是非常重要的。在某些情况下简单的调用<code>get()</code>而没有先使用<code>isPresent()</code>进行检查是一样会导致空指针问题。幸运的是，<code>IntelliJ IDEA</code> 任然会检查出这个问题并警告你。<br><img src="http://img1.tuicool.com/AvaieqY.png!web" alt=""> </p>
+<h3 id="有可能是一个更优雅的方式"><a href="#有可能是一个更优雅的方式" class="headerlink" title="有可能是一个更优雅的方式"></a>有可能是一个更优雅的方式</h3><p> <code>isPresent()</code> 与&nbsp; <code>get()</code> 结合 <code>使用的技巧</code> … </p>
+<p> <img src="http://img1.tuicool.com/A7RjYny.png!web" alt=""> </p>
+<p> …但还有更优雅的解决方案。你可以使用 <code>orElse方法来使得当它为null时给出一个代替的值。</code> </p>
+<p> <img src="http://img0.tuicool.com/niQZJfn.png!web" alt=""> </p>
+<p> …或者使用 <code>orElseGet方法来处理上述相同情况。这个例子和上面的看起来好像一样，但本例是可以调用</code> <code>supplier</code> 接口的 <code>实现</code> ,，因此如果它是一个高开销的方法，可以使用 <code>lambda</code> 表达式来获得更好的性能。 </p>
+<p> <img src="http://img1.tuicool.com/vAvURb6.png!web" alt=""> </p>
+<h2 id="使用Lambda表达式"><a href="#使用Lambda表达式" class="headerlink" title="使用Lambda表达式"></a>使用Lambda表达式</h2><p> <a href="http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html" target="_blank" rel="external">Lambda 表达式</a> 是 <code>Java 8</code> 的卖点之一.。即使你还没有使用过<code>Java 8</code>， 到目前你也可能有一些基本的了解。但在<code>Java</code>编程中还是一种新的方式，它也不是明显的”最佳实践” 。 这里有一些我遵循的指南。 </p>
+<h3 id="保持简短"><a href="#保持简短" class="headerlink" title="保持简短"></a>保持简短</h3><p> 函数式程序员更愿意使用较长的<code>lambda</code> 表达式，但我们这些仅仅使用Java很多年的程序员来说更容易保持<code>lambda</code> 表达式的短小。你甚至更喜欢把它们限制在一行，更容易把较长的表达式  <a href="http://www.amazon.cn/gp/product/B003BY6PLK/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&amp;tag=importnew-23&amp;linkCode=as2&amp;camp=536&amp;creative=3200&amp;creativeASIN=B003BY6PLK" target="_blank" rel="external">重构</a>  到一个方法中。 </p>
+<p> <img src="http://img2.tuicool.com/mMNvqij.png!web" alt=""> </p>
+<p>把它们变成一个方法引用， 方法引用看起来有一点陌生，但却值得这样做，因为在某些情况有助于提高可读性，后面我再谈可读性。</p>
+<p> <img src="http://img1.tuicool.com/bmQRBrJ.png!web" alt=""> </p>
+<h3 id="明确的"><a href="#明确的" class="headerlink" title="明确的"></a>明确的</h3><p>(作者应该想要表达的是: 参数命名规范，要有意义；有更好的翻译请修正)</p>
+<p>   lambda 表达式中类型信息已经丢失了，因此你会发现包含类型信息的参数会更有用。<br>  <img src="http://img2.tuicool.com/jIV3Qb7.png!web" alt=""> </p>
+<p>如你所见，这样会比较麻烦。因此我更喜欢给参数一个更有意义的命名。当然，你做与否， IntelliJ IDEA 都会让你看到参数的类型信息。<br>  <img src="http://img2.tuicool.com/eeeEbyE.png!web" alt=""> </p>
+<p>即使是在函数式接口的<code>lambda</code> 表达式中:</p>
+<p> <img src="http://img0.tuicool.com/UN7F32R.png!web" alt=""> </p>
+<h2 id="针对-Lambda-表达式进行设计"><a href="#针对-Lambda-表达式进行设计" class="headerlink" title="针对 Lambda 表达式进行设计"></a>针对 <code>Lambda</code> 表达式进行设计</h2><p> 我认为lambda表达式有点像 <a href="http://docs.oracle.com/javase/tutorial/extra/generics/index.html" target="_blank" rel="external">泛型</a> – 泛型,我们经常使用它们 (例如, 给  <code>List&lt;&gt;</code> 添加类型信息 )，但不常见的是我们把一个方法或类泛型化  (如:  <code>Person&lt;T&gt;</code> )。同样的, 它就像我们使用通过<code>lambdas</code>包装的 <code>Streams API</code>，但对我们来说更罕见的是创建一个需要  <code>lambda 表达式</code>参数的方法。 </p>
+<h3 id="IntelliJ-IDEA-可以帮助你引入一个函数化的参数"><a href="#IntelliJ-IDEA-可以帮助你引入一个函数化的参数" class="headerlink" title="IntelliJ IDEA 可以帮助你引入一个函数化的参数"></a><code>IntelliJ IDEA</code> 可以帮助你引入一个函数化的参数</h3><p> 这里让你可以使用 <code>Lambda</code> 表达式而非对象来 <a href="https://www.jetbrains.com/help/idea/2016.1/extract-functional-parameter.html" target="_blank" rel="external">创建一个参数</a> 。这个功能的好处在于其建议使用一个已有的  <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/FunctionalInterface.html" target="_blank" rel="external">函数接口</a> 来匹配这个规范。 </p>
+<p> <img src="http://img2.tuicool.com/MZ3Q3iq.png!web" alt=""> </p>
+<p>这个将引导我们</p>
+<h3 id="使用已有的函数接口"><a href="#使用已有的函数接口" class="headerlink" title="使用已有的函数接口"></a>使用已有的函数接口</h3><p> 当开发者越来越熟悉 Java 8 代码时，我们会知道使用例如 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html" target="_blank" rel="external"> <code>Supplier</code> </a> 和  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html" target="_blank" rel="external"> <code>Consumer</code> </a> 这样的接口会发生什么，但是单独再创建一个 <code>ErrorMessageCreator</code> 会让我们很诧异并且很浪费时间。你可以翻阅  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html" target="_blank" rel="external"> <code>function package</code> </a> 来查看系统本身已经给我们准备了什么。 </p>
+<h3 id="为函数接口添加-FunctionalInterface-注解"><a href="#为函数接口添加-FunctionalInterface-注解" class="headerlink" title="为函数接口添加 @FunctionalInterface 注解"></a>为函数接口添加 <code>@FunctionalInterface</code> 注解</h3><p>如果你真的需要创建自己的函数接口，那么就需要用这个 <code>@FunctionalInterface</code> 注解。这个注解似乎没多大用处，但是 <code>IntelliJ IDEA</code> 会在接口不满足这个注解要求的情况下予以提示。例如你没有指定要继承的方法：</p>
+<p><img src="http://img1.tuicool.com/IVv6jaI.png!web" alt=""> </p>
+<p>指定太多的方法：</p>
+<p><img src="http://img2.tuicool.com/BzAzea2.png!web" alt=""> </p>
+<p>在类中使用注解而不是在接口：</p>
+<p><img src="http://img1.tuicool.com/Q3U77jJ.png!web" alt=""> </p>
+<p><code>Lambda</code> 表达式可用于任意只包含单个抽象方法的接口中，但是不能用于满足该要求的抽象类。看似不符合逻辑，但实际要求必须如此。</p>
+<h2 id="Streams"><a href="#Streams" class="headerlink" title="Streams"></a>Streams</h2><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external">Stream API</a> 是<code>Java 8</code>的另一大卖点, 我认为到现在为止，我们仍然不知道这会对我们的编码方式有多大改变．但我发现这是一个好坏参半的功能。 </p>
+<h3 id="流式风格"><a href="#流式风格" class="headerlink" title="流式风格"></a>流式风格</h3><p>就我个人而言，更喜欢使用流式风格．当然你不必也这么做, 但我发现它帮助了我：</p>
+<ul>
+<li>一眼就能看出有哪些操作，它的执行顺序是什么</li>
+<li>更方便调试（虽然<code>IntelliJ IDEA</code>提供了 <a href="https://youtu.be/rimzOolGguo?t=3s" target="_blank" rel="external">在包含lambda表达式的行上设置断点的能力</a> ，为了更方便调试，把它拆分到不同的行上）*   在测试的时候允许取消一个操作</li>
+<li>在调试或测试是，可以很方便的插入<code>peek()</code> </li>
+</ul>
+<p><img src="http://img1.tuicool.com/zANbeyI.png!web" alt=""> </p>
+<p>在我看来这样写很简洁。但是使用这种方法并没有给我们节省多少代码行。你可能需要调整代码格式化设置让代码看起来更加清晰。<br><img src="http://img2.tuicool.com/yANV3mA.png!web" alt=""> </p>
+<h3 id="使用方法引用"><a href="#使用方法引用" class="headerlink" title="使用方法引用"></a>使用方法引用</h3><p>是的，你需要一点时间来适应这个奇怪的语法。但如果使用恰当，真的可以提升代码的可读性，看看下面代码：</p>
+<p><img src="http://img0.tuicool.com/Mj6zuuj.png!web" alt=""> </p>
+<p>以及使用 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Objects.html" target="_blank" rel="external"> <code>Objects</code> </a> 类的辅助方法： </p>
+<p><img src="http://img1.tuicool.com/uqmm6zN.png!web" alt=""> </p>
+<p>后面一段代码更加的明确可读。<code>IntelliJ IDEA</code> 通常会知道怎么将一个 <code>Lambda 表达式</code>进行折叠。<br>  <img src="http://img0.tuicool.com/NVJJf2b.png!web" alt=""> </p>
+<h3 id="当对集合进行元素迭代时，尽可能的使用-Streams-API"><a href="#当对集合进行元素迭代时，尽可能的使用-Streams-API" class="headerlink" title="当对集合进行元素迭代时，尽可能的使用 Streams API"></a>当对集合进行元素迭代时，尽可能的使用 Streams API</h3><p>…或者用新的集合方法，例如 <code>forEach</code> .  <code>IntelliJ IDEA</code> 会建议你这么做： </p>
+<p><img src="http://img0.tuicool.com/qMBzA3Q.png!web" alt=""> </p>
+<p>一般来说使用 <code>Streams API</code> 比起循环和 <code>if 语句</code>组合来得更加直观，例如：</p>
+<p><img src="http://img0.tuicool.com/f2eMziQ.png!web" alt=""> </p>
+<p><code>IntelliJ IDEA</code> 会建议这样的写法进行重构：</p>
+<p><img src="http://img2.tuicool.com/QjuQFjI.png!web" alt=""> </p>
+<p>我做过的性能测试显示这种重构带来的结果比较奇怪，难以预测，有时候好，有时候坏，有时候没区别。一如既往的，如果你的应用对性能问题非常在意，请认真的进行衡量。</p>
+<h3 id="遍历数组时请用-for-循环"><a href="#遍历数组时请用-for-循环" class="headerlink" title="遍历数组时请用 for 循环"></a>遍历数组时请用 for 循环</h3><p>然后，使用 <code>Java 8</code> 并不意味着你一定要使用<code>流 API</code> 以及<code>集合的新方法</code>。<code>IntelliJ IDEA</code> 会建议一些做法改用流的方式重构，但你不一定非得接受 (记住 <a href="https://www.jetbrains.com/help/idea/2016.2/suppressing-inspections.html" target="_blank" rel="external">inspections can be suppressed</a> 或者  <a href="https://www.jetbrains.com/help/idea/2016.2/disabling-and-enabling-inspections.html" target="_blank" rel="external">turned off</a> ). </p>
+<p>特别是对一个原始类型的小数组时，使用 <code>for 循环</code>的性能是最好的，而且代码更具可读性（至少对 <code>Streams API</code> 的新手来说是这样）：</p>
+<p><img src="http://img2.tuicool.com/Zv6F7zi.png!web" alt=""> </p>
+<p>任何的技巧和提示都不是一成不变的，你应该自己决定哪里需要使用 <code>Streams API</code> ，而哪里还用循环操作。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>我每天都在发现一些新的东西，有时候我的偏好会有所变化。例如我过去会讨厌方法的引用。非常期待倾听你的建议。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/" rel="next" title="redis-cli中那些或许我们还不知道的一些实用小功能">
+                <i class="fa fa-chevron-left"></i> redis-cli中那些或许我们还不知道的一些实用小功能
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/13/Java 8 最佳技巧/"
+           data-title="Java 8 最佳技巧" data-url="https://muyinchen.github.io/2016/12/13/Java 8 最佳技巧/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">30</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-8-最佳技巧"><span class="nav-number">1.</span> <span class="nav-text">Java 8 最佳技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Optional"><span class="nav-number">1.1.</span> <span class="nav-text">Optional</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Optional-应该只用于返回类型"><span class="nav-number">1.1.1.</span> <span class="nav-text">Optional 应该只用于返回类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#你不应该简单的调用-get"><span class="nav-number">1.1.2.</span> <span class="nav-text">你不应该简单的调用 get()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#有可能是一个更优雅的方式"><span class="nav-number">1.1.3.</span> <span class="nav-text">有可能是一个更优雅的方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Lambda表达式"><span class="nav-number">1.2.</span> <span class="nav-text">使用Lambda表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#保持简短"><span class="nav-number">1.2.1.</span> <span class="nav-text">保持简短</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#明确的"><span class="nav-number">1.2.2.</span> <span class="nav-text">明确的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#针对-Lambda-表达式进行设计"><span class="nav-number">1.3.</span> <span class="nav-text">针对 Lambda 表达式进行设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IntelliJ-IDEA-可以帮助你引入一个函数化的参数"><span class="nav-number">1.3.1.</span> <span class="nav-text">IntelliJ IDEA 可以帮助你引入一个函数化的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用已有的函数接口"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用已有的函数接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为函数接口添加-FunctionalInterface-注解"><span class="nav-number">1.3.3.</span> <span class="nav-text">为函数接口添加 @FunctionalInterface 注解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Streams"><span class="nav-number">1.4.</span> <span class="nav-text">Streams</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#流式风格"><span class="nav-number">1.4.1.</span> <span class="nav-text">流式风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法引用"><span class="nav-number">1.4.2.</span> <span class="nav-text">使用方法引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当对集合进行元素迭代时，尽可能的使用-Streams-API"><span class="nav-number">1.4.3.</span> <span class="nav-text">当对集合进行元素迭代时，尽可能的使用 Streams API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历数组时请用-for-循环"><span class="nav-number">1.4.4.</span> <span class="nav-text">遍历数组时请用 for 循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">1.4.5.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
