@@ -1,0 +1,784 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="消息系统" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
+小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="谈小米的高可用推送系统设计">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
+小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta property="og:image" content="http://img0.tuicool.com/77bYN3f.jpg!web">
+<meta property="og:image" content="http://img1.tuicool.com/nuueEf6.jpg!web">
+<meta property="og:image" content="http://img0.tuicool.com/quA3eiB.jpg!web">
+<meta property="og:image" content="http://img0.tuicool.com/VNraaef.png!web">
+<meta property="og:updated_time" content="2016-12-14T15:25:09.227Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="谈小米的高可用推送系统设计">
+<meta name="twitter:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
+小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta name="twitter:image" content="http://img0.tuicool.com/77bYN3f.jpg!web">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/"/>
+
+
+  <title> 谈小米的高可用推送系统设计 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                谈小米的高可用推送系统设计
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-14T23:25:42+08:00" content="2016-12-14">
+              2016-12-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/MQ/" itemprop="url" rel="index">
+                    <span itemprop="name">MQ</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/14/谈小米的高可用推送系统设计/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/14/谈小米的高可用推送系统设计/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="谈小米的高可用推送系统设计"><a href="#谈小米的高可用推送系统设计" class="headerlink" title="谈小米的高可用推送系统设计"></a>谈小米的高可用推送系统设计</h1><p>原文：<a href="http://www.uml.org.cn/zjjs/201612141.asp?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">http://www.uml.org.cn/zjjs/201612141.asp</a></p>
+<p>小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。<br> <a id="more"></a></p>
+<ol>
+<li><p>推送系统的高可用性以及 如何提高可用性</p>
+</li>
+<li><p>缓冲机制与 服务解耦</p>
+</li>
+<li><p>无状态服务以及多机房部署</p>
+</li>
+<li><p>过载保护与分级机制</p>
+</li>
+</ol>
+<p>小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前接入APP 7000+家，日活跃设备突破3亿，日消息量突破50亿。</p>
+<p>之所以取得如此的成绩，一方面得益于我们在小米手机上系统级的连接，使我们有更高的消息送达率，另一方面是因为我们本身的服务质量不低于业内其他的推送服务提供商。目前我们在小米手机上的日活为1亿+，而在非小米手机上的日活突破2亿，在iOS上的累计接入设备也达到3亿以上，从这些非MIUI的数据也可以看出，开发者对我们的推送质量是比较认可的。</p>
+<p>我们是面向开发者的服务，主要职责是将开发者的消息实时准确的推送到目标设备上，是连接开发者与用户设备之间的一条高速消息通道。这中间涉及很多环节，提高系统可用性就是提高每个环节的可用性，只有系统无短板，高可用性才有可能。</p>
+<h3 id="什么是高可用性"><a href="#什么是高可用性" class="headerlink" title="什么是高可用性"></a>什么是高可用性</h3><p>在介绍如何提高系统可用性之前， 我们首先需要先了解一下什么是系统可用性 。</p>
+<p>基于业务性质的差异，每个业务对可用性的定义也不尽相同，不过一般情况下，大多以系统可用时间占总服务时间的比例做为可用性的定义。例如我们常说的4个9的可用性，就是可用时间占比超过9999/10000，即只有不到万分之一的时间不可用，也即一年只有不到60分钟的不可用时间。因此设计、维持一个高可用的系统是非常困难的，这不仅要求我们的系统基本不出问题，在出现问题之后也要以尽可能短的时间内恢复可用。</p>
+<p>小米推送是面向开发者的服务，从本质上来说我们从事于服务行业，系统是否可用除了使用上面的可用时间占比来衡量之外，开发者主观或客观的使用感受也是衡量我们服务质量的重要标准，例如网络连接的稳定性，API的可用性，设备的连通率等。从上面的各种指标中抽象出来，我们重点关注的有两点，一个是消息的送达率，第二个是消息的送达延迟。</p>
+<p>由于送达率关联因素很多，不好准确量化，因此除了上面的可用性定义之外，我们还以消息的送达延迟作为可用性的另一计算标准。比如在线设备送达延迟（从开发者消息开始处理到送达到设备上）在N（1、5、15、30）分钟的比例占比高于多少我们认为系统可用，否则认为系统可用性低。</p>
+<h3 id="如何提高系统可用性"><a href="#如何提高系统可用性" class="headerlink" title="如何提高系统可用性"></a>如何提高系统可用性</h3><p>那我们如何提高系统可用性呢？</p>
+<p>由可用性的定义可知，要想提高系统可用性，唯有将系统不可用时间降低到最低。一方面我们要尽量减少系统不可用（故障）出现的几率，另一方面，在故障发生后，我们要尽量减少故障带来的影响，减少故障恢复所需要的时间，将损失降低到最低。</p>
+<p>要做到这几点，我们需要清楚的知道，我们所面临的主要挑战和风险是什么，只有弄清楚所面临的风险点，才能提前想好对策加以应对。对自己的业务性质加以剖析，理清楚风险因素与主要矛盾，是做一个高可用系统的第一步。</p>
+<p>具体到推送系统来说，我们所面临的挑战和风险主要有以下几点：</p>
+<ol>
+<li><p>我们面临的开发者众多，每个开发者的水平良莠不齐，而他们对推送的理解也不尽相同，很可能跟我们预期的使用方式千差万别，开发者无意中的使用，很可能对我们的系统造成“攻击”行为。而开发者在高峰期“扎堆”推送消息，也给我们带来过载的风险。</p>
+</li>
+<li><p>我们的量级比较庞大（同时在线1.5亿+，日消息量50亿+），别的业务不容易遇到的事情在我们这边更容易发生，例如性能问题。</p>
+</li>
+<li><p>我们面临的运营环境不尽完善，机房故障、网络故障、磁盘故障、机器死机等情况时有发生，如何从设计上避免这些故障带给我们的风险也是我们需要考虑的重点。</p>
+</li>
+<li><p>我们使用的一些第三方组件不一定是非常可靠的，如何选取合适的组件，如何规避地基不稳带来的影响，在架构设计和技术选型时也要特别注意。</p>
+</li>
+<li><p>来自我们自身的挑战，我们无法保证自己的程序不出bug，也无法保证自己的操作不出意外，如何从流程和规范上尽量避免人为因素造成的影响也是非常重要的。</p>
+</li>
+</ol>
+<p>理清风险因素之后，剩下的事情就是去一一解决这些风险，规避风险的发生，良好的架构设计、谨慎的技术选型和合理规范的流程是其中的三剂良方。下面将重点从缓冲、解耦、服务去状态、服务分级等几方面介绍一下小米推送在提高系统可用性方面做的一些尝试。</p>
+<h4 id="缓冲机制"><a href="#缓冲机制" class="headerlink" title="缓冲机制"></a>缓冲机制</h4><p>架构设计是高可用性的根基，一个好的架构可以避免绝大多数风险的发生，将影响可用性的风险因素扼杀在摇篮里。在做架构设计时，我们需要明白我们要解决的首要矛盾是什么。</p>
+<p>对于推送系统来说，我们面临的主要问题是系统流量随时间分布不均衡以及系统容易过载的问题。我们面临的请求来源主要是两个，<code>一是来自设备的请求</code>，这部分连接数多，请求量大，但总体可控，只要我们设计好足够的系统容量，基本不会出很大的问题；<code>另一个是来自开发者的请求</code>，这类请求属于不可控类型，所有的开发者都希望在尽可能短的时间内将自己的消息推送出去，我们无法提前得知开发者请求发送的时间以及发送的数量，它属于脉冲式的访问类型。由于设备活跃时间的原因，开发者的请求时间一般极为集中。</p>
+<p>对于这类请求，我们不可能为峰值准备足够的容量，这会造成极大的资源浪费。但如果我们不做提前预防，极有可能我们的系统会被高峰期的瞬发流量压垮，因此我们需要引入一个<code>缓冲机制</code>。</p>
+<p>这属于典型的<code>消息队列（Message Queue）</code>的使用场景。消息队列是一种服务间数据通信的常见中间件，一般使用<code>producer-consumer</code>模式或<code>publisher-subscriber</code>模式，除了缓冲的作用之外，解耦和扩展性也是我们采用它的重要原因。常见的消息队列组件有<code>Kafka</code>、<code>RabbitMQ</code>、<code>ActiveMQ</code>等等，可以根据业务性质以及队列的特点选择合适的组件。</p>
+<p><img src="http://img0.tuicool.com/77bYN3f.jpg!web" alt=""></p>
+<p><img src="http://img1.tuicool.com/nuueEf6.jpg!web" alt=""></p>
+<p>在推送系统中我们大量使用了<code>消息队列（MQ）</code>组件，将开发者的请求缓存在消息队列中，然后逐渐消费，缓解开发者集中式的推送带给我们系统的瞬间压力。上面<code>第一张图</code>是我们接入层接收到的开发者请求量，高峰期的请求量是平时的数倍甚至数十倍，<code>第二张图</code>是我们业务层使用<code>MQ</code>之后处理的请求量，可以看到曲线平滑了许多，缓冲效果相当明显。（这是在我们系统本身处理能力非常强大的情况下，否则缓冲作用会更加明显）</p>
+<h4 id="服务解耦"><a href="#服务解耦" class="headerlink" title="服务解耦"></a>服务解耦</h4><p>耦合度是判断一个系统是否健壮的重要标准之一。耦合度高的系统在稳定性、容灾和扩展性方面都不容乐观，常常会因局部故障扩散传染到其他模块，而导致故障恶化，受影响面扩大，甚至影响整个系统的可用性，给系统带来较高风险。因此，系统解耦是我们设计一个分布式系统时需要重点考虑的问题。架构分层、服务拆分、通信解耦、代码重构等是降低系统耦合度的比较常见的解决方案。</p>
+<h5 id="首先是代码解耦。"><a href="#首先是代码解耦。" class="headerlink" title="首先是代码解耦。"></a>首先是代码解耦。</h5><p>代码耦合会使代码的维护变得异常困难，极大的增加了代码阅读和理解的难度，并增大了出现bug的几率，另一方面，代码的耦合也常常使模块逻辑上的关系变得复杂。因此，采取一定的手段进行代码解耦是我们提高系统可用性的基础一步，例如更加良好的代码结构设计，更加巧妙的抽象层次，定期的代码重构等等。</p>
+<h5 id="其次是功能解耦。"><a href="#其次是功能解耦。" class="headerlink" title="其次是功能解耦。"></a>其次是功能解耦。</h5><p><code>功能耦合是系统设计的大忌</code>，常常会使功能之间的可用性相互影响。</p>
+<p>例如一个变更频繁的功能A和一个比较稳定的功能B耦合在一个服务模块中，功能A的频繁发布变更必然会导致引入故障的几率增加（发布是可用性的最大杀手），这样虽然B功能较为稳定，但由于它和A处于同一进程中，A功能的故障很可能导致B功能无法使用。</p>
+<p>这就要求我们对服务进行拆分，根据功能之间的关联将服务尽可能的拆分为简单单一的模块，每个功能模块间的耦合尽可能的降到最低，从而保证某一个功能模块出故障时，其他模块不受影响。</p>
+<p><code>服务拆分</code>可以分为<code>垂直拆分</code>与<code>水平拆分</code>。<code>垂直拆分</code>指的是系统的分层扩展能力，大多情况下，为了架构的清晰与逻辑的解耦，我们一般将系统根据一定原则分为若干层级，例如根据请求的处理时序分为接入层、业务层、存储层等，或者根据数据的访问情况分为代理层、逻辑层、<code>Cache</code>层、<code>DB层</code>等，良好的层次不仅有利于后续的维护，对于服务解耦和性能提升也有很多的帮助。<code>水平拆分</code>指的是系统在水平方向上的扩展能力，例如在业务层有若干模块处理若干事项，当一个新功能出现时，我们可以通过增加一个业务模块的方式去处理新增加的业务逻辑，从而做到了功能之间的 解耦，增强了系统的稳定性。</p>
+<p>既然服务拆分有那么多好处，是不是拆分的粒度越细越好呢？也不尽然，需要根据具体情况进行分析，服务拆分之后进程内通信势必要变为服务间通信，性能会受到一定影响，需要根据业务性质以及对性能的要求进行综合考虑。（<code>服务拆分还可能会产生数据一致性的问题，解决该问题使用的事务机制也会极大的降低系统性能以及增加系统复杂度</code>）</p>
+<h5 id="再次是服务间的通信解耦"><a href="#再次是服务间的通信解耦" class="headerlink" title="再次是服务间的通信解耦"></a>再次是服务间的通信解耦</h5><p>有时候<code>服务拆分之后系统的耦合度依然很高，服务间的通信方式可能会导致拆分效果大打折扣</code>。</p>
+<p>例如A、B、C三个服务模块，A调用B相关的接口，B调用C相关的接口，如果都是同步调用，或相互之间有其他时序或逻辑上的依赖，C一旦出问题，可能会导致A、B同时陷入故障状态，从而导致连锁反应（甚至产生逻辑死锁），故障在服务之间传染。</p>
+<p><code>解决的方法就是避免服务间的逻辑（或时序）依赖关系，采用一定的异步访问策略</code>，如消息队列、异步调用等，可以根据业务性质与数据的重要性灵活选取。需要着重提一下的是消息队列(MQ)，一般MQ的实现中都提供了良好的解耦机制，生产者在接收到请求后，将请求放入MQ，然后继续处理其他事情，而消费者在适当的时候对请求进行处理，生产者和消费者之间不用相互依赖，降低了模块之间的关联，对提升系统的稳定性有很大帮助。<code>在推送系统中，接入层对内部系统的访问都使用异步调用方式，其他重要的处理路径使用消息队列进行通信，而非关键路径(可丢弃)使用udp进行通信（内网稳定性丢包率极低）</code>。</p>
+<p>总体上来说，<code>解耦的关键点是做到故障隔离，保证故障发生时影响面尽可能小，故障不会从一个模块传染到另一个模块</code>。</p>
+<p><img src="http://img0.tuicool.com/quA3eiB.jpg!web" alt=""></p>
+<p>上图是小米推送的系统架构图。整个系统根据业务性质分为在线、离线、旁路三个子系统。其中在线系统负责处理线上业务逻辑，根据请求处理过程分成接入层(以及设备接入层)、业务层、Cache层、存储层等四个层级，业务层根据功能或功能组合拆分为若干模块。旁路系统负责实时监控在线系统并对在线系统进行反馈，离线系统对日志进行分析并生成统计报表。各个模块（子系统）功能简单，逻辑清晰，稳定性、可扩展性和可用性得到一定保障。</p>
+<h4 id="无状态服务与多机房部署"><a href="#无状态服务与多机房部署" class="headerlink" title="无状态服务与多机房部署"></a>无状态服务与多机房部署</h4><p>单点和过载是可用性的另外两个重要杀手。</p>
+<p>由于机器、磁盘、网络等多种不可控因素的存在，集群局部故障发生的概率很大，如何在局部故障发生时维持对外的可用性是我们必须要面对的问题。应对这个问题的方案就是做到<code>容量冗余</code>，也就是在系统本身的容量之外预留一定的处理能力，这样在局部故障发生时，由于容量buffer的存在，不会导致系统停摆或出现过载。而要做到这一点，就要求我们的服务有良好的可扩展性，可以比较容易的进行扩容或缩容，更不能有单点的存在。</p>
+<p><code>单点一般意义上是指某个模块只有一个节点对外提供服务</code>，一般属于设计上的缺陷，由于模块内部状态过于复杂而无法进行多点部署。单点意味着系统要承受极大的可用性压力，在过载或节点发生故障时，该模块将无法对外提供服务。<code>因此我们在做系统设计时一定要避免产生单点服务，这其中的关键点是去除或降低对服务的内部状态的依赖性，做到节点间的无差别服务，也就是应尽力做到服务的去状态化</code>。</p>
+<p><code>状态在代码设计上一般表现为节点间数据的差异性</code>，例如某接入层服务模块，节点A管理一部分连接，节点B管理另一部分连接，从而导致某些请求必须在节点A或节点B处理，从而产生数据差异，导致节点间状态的产生。消<code>除状态的过程也就是去除数据差异的过程</code>，例如去除模块节点缓存的数据，或者将模块数据转移至其他模块去存储。</p>
+<p><code>无状态服务有诸多好处，比较显著的就是极大的增强了服务的可扩展性以及应对局部故障的能力</code>。我们可以非常容易的增加或者删除一个节点，在某个节点故障时，该节点的请求会自动被其他节点处理，从而实现故障的自动恢复。（failover）</p>
+<p><code>而有时候有些模块因为某些原因（如性能或复杂度）无法做到去状态化，这时候可以采用一定的路由策略</code>，如<code>一致性hash算法</code>，来降低节点状态带来的影响。</p>
+<p>除了刚才说的单点之外，还有<code>另外一种意义上的单点——部署机房的单点</code>。虽说机房整体故障的概率不大，但如果不加以重视，一旦出现将会给我们带来灭顶之灾。因此，我们要将服务部署在多个机房以规避这种风险。</p>
+<p>那我们的服务需要在几个机房部署呢？这需要根据实际情况来决定，理论上越多越好，机房数量越多，每个机房需要担负的冗余容量会越少，造成的资源浪费也就越少。在机房数量=N时，假如某机房发生故障，剩余其他机房需要有承担所有流量的能力，即N-1的机房需要承担的流量为1，则总体资源占用为 N/(N-1)，N越大，资源占用总量越小，浪费也越少。</p>
+<p><code>在多机房部署时，需要特别考虑一下多机房之间数据同步的问题。经验告诉我们，一定要在设计上避免对机房间数据同步机制产生依赖，否则很容易带来数据一致性的问题。</code>例如某数据在机房A写入，在机房B读取，但读取时很可能数据并没有从A同步完毕，从而导致B读取的数据与实际数据不一致，产生数据一致性问题，<code>如果数据存在缓存机制，则会加大这种不一致带来的风险</code>。</p>
+<p><img src="http://img0.tuicool.com/VNraaef.png!web" alt=""></p>
+<p>上图是我们经过若干次演变之后的多机房访问策略。我们将请求根据资源使用情况映射到0~1之间的浮点数，每个机房处理一部分请求，而同一资源相关的请求也只能被同一个机房的服务处理，从而避免了同一资源在多机房读写带来的数据一致性问题。</p>
+<blockquote>
+<p>1）接入层接收到请求之后，将请求放入本机房的MQ中，避免跨机房访问带来的接入层稳定性的降低。</p>
+<p>2）每个机房的业务层同时处理所有机房MQ中的数据，然后根据一定的过滤规则过滤掉不属于本节点相关的请求。</p>
+<p>3）相当于使用相对宽裕的内网流量换取了架构的简单与可用性的提升。</p>
+</blockquote>
+<h4 id="过载保护与分级机制"><a href="#过载保护与分级机制" class="headerlink" title="过载保护与分级机制"></a>过载保护与分级机制</h4><p>虽说消息队列的缓冲机制能给我们系统带来很大的保护，防止我们被洪水猛兽般的请求量冲垮。但系统不出问题并不代表系统可用，请求堆积在消息队列中得不到处理，一样不是我们希望看到的。因此过载保护一样是我们需要考虑的问题。在过载保护方面，我们所做的有以下几点：</p>
+<ol>
+<li><p>接入层建立自我保护机制，对开发者的请求频率加以限制，对异常请求提前拒绝。</p>
+</li>
+<li><p>建立旁路监控系统，实时分析出异常请求，并反馈给在线系统。对于逻辑异常的请求及早拒绝，对于数量异常的请求降低处理优先级，防止单个开发者的请求影响到整个系统服务可用性。</p>
+</li>
+<li><p>在系统过载时，及时丢弃失效请求。系统过载时，大量请求可能堆积在消息队列中，这些请求很可能已经失效，客户端已经超时，继续处理这些请求毫无价值，及早的发现并忽略这些请求有助于系统的快速恢复。</p>
+</li>
+<li><p>建立模块分级机制。每个模块功能不同，重要性也不一样，在系统超载时，降低非核心模块的优先级，保障核心模块的运行，可以最大程度上保障核心功能的可用性。</p>
+</li>
+<li><p>建立消息分级机制。对于消息量异常或逻辑异常的APP请求，适时自动降低消息处理优先级，降低处理速度，从而保障大多数正常开发者的使用。</p>
+</li>
+</ol>
+<h4 id="流程与规范"><a href="#流程与规范" class="headerlink" title="流程与规范"></a>流程与规范</h4><p><code>影响可用性的因素很多，发布、单点、过载是最常见的三种情况</code>，后两种可以通过精心的架构设计加以规避，但发布却无法通过架构上的设计加以规避。人的因素是可用性的最大敌人，如果一个服务在设计好之后没有任何变更，相信良好的设计可以使可用性长期稳定在一个很高的水平之上。但不做变更基本不可能，而服务变更势必增加了风险引入的可能，如何规避人的因素带来的风险，是提高可用性的最重要的一步。在大多数情况下，我们无法完全避免风险的发生，我们可做的就是降低风险发生的概率，以及在风险发生时有足够的措施可以降低它带来的影响。这就<code>需要有一套完善的流程来规范我们的行为</code>（说易行难，贵在坚持）：</p>
+<h5 id="开发阶段"><a href="#开发阶段" class="headerlink" title="开发阶段"></a>开发阶段</h5><ul>
+<li><p>测试用例先行，全方位的用例覆盖</p>
+</li>
+<li><p>任何功能都要增加开关控制，以便在发生故障时可以及时关闭有问题特性</p>
+</li>
+<li><p>有足够的日志、完善的监控证明功能正确性</p>
+</li>
+<li><p>交叉code review，规避个人盲点</p>
+</li>
+</ul>
+<h5 id="上线阶段"><a href="#上线阶段" class="headerlink" title="上线阶段"></a>上线阶段</h5><ul>
+<li><p>必须所有测试用例全部通过方可上线，并在线上环境实时运行测试case</p>
+</li>
+<li><p>变更通告，周知相关人，以便及早发现问题</p>
+</li>
+<li><p>灰度：节点灰度，流量灰度等</p>
+</li>
+<li><p>记录发布日志，便于后续追查问题</p>
+</li>
+</ul>
+<h5 id="故障阶段"><a href="#故障阶段" class="headerlink" title="故障阶段"></a>故障阶段</h5><ul>
+<li><p>优先关闭开关、回滚服务</p>
+</li>
+<li><p>故障恢复后再追查问题原因，避免因追查问题导致影响增大</p>
+</li>
+<li><p>事后总结，完善测试用例及相关监控，防止类似事件再次发生</p>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>转眼小米推送已经成立四年多了，这期间经历了从无到有，从漏洞百出到逐步稳定，踩过许多坑，迈过许多坎，架构经历了数次调整，代码也经过若干次重构，系统的可用性终于有了稳步的提高，服务质量也逐渐得到认可。下面总结了一些我们在提高系统可用性、提高服务质量方面的一些小小经验，以供参考。</p>
+<p><code>KISS(Keep It Simple Stupid!)</code>。<code>无论是代码还是架构，都要尽可能的保持简单</code>，如果一个系统（或代码）复杂到需要小心维护，那它离大规模风险爆发也就不远了。架构不是一成不变的，它往往是为了解决当时的问题而做出的设计，随着时间的变化和业务的发展，有时并不能很好的适应当前的需要。<code>定时对系统架构（和代码）进行审视，并根据需要做出调整（或重构），可以有效的提高系统的可用性</code>。</p>
+<p><code>技术选型要慎重</code>。技术选型决定后续系统实现的难度以及稳定性等，需要根据团队成员的知识结构以及选用技术的掌握难度、社区活跃程度等慎重选择。<code>做后台服务首要的就是稳定性与可用性</code>，新技术可以从边缘模块进行尝试，成熟后再在核心系统使用，贸然在核心系统中使用新技术，往往会付出难以承受的代价。现在开源技术比较火热，系统中对开源组件的使用也越来越多，<code>在技术选型确定后，对系统中使用的每个组件都要进行深入了解，不能只是简单的会用，而是要用好。理解每深入一分，系统的性能和稳定性也会增加一分</code>。</p>
+<p><code>给自己留足后路。</code>要想保持系统稳定完全不出问题其实很难，人都会犯错，关键是要给自己留足后路。<code>我们不是在面向对象编程，我们其实是在面向bug编程</code>，首先假设bug可能会出现，然后在设计上、编码上预防（或解决）这些可能出现的问题，预留足够的开关以便在bug真的发生时可以随时补救，<code>设计足够多的测试case并在线上循环运行，上报足够的监控数据验证系统运行的正确性，打印充分的日志以便在故障发生时快速的定位问题，开发足够的工具以提高我们定位、解决问题的效率。</code></p>
+<p><code>重视暴露的每个小问题</code>。每次曲线异常、每次报警触发、每个case fail、每个用户反馈，每个小问题的背后都可能是隐藏着的大风险，重视每个出现的小问题，<code>深究下去</code>，直到系统变得更稳健。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MQ/" rel="tag">#MQ</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/13/跟着 Github 学习 Restful HTTP API 设计/" rel="next" title="跟着 Github 学习 Restful HTTP API 设计">
+                <i class="fa fa-chevron-left"></i> 跟着 Github 学习 Restful HTTP API 设计
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/14/谈小米的高可用推送系统设计/"
+           data-title="谈小米的高可用推送系统设计" data-url="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">32</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#谈小米的高可用推送系统设计"><span class="nav-number">1.</span> <span class="nav-text">谈小米的高可用推送系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是高可用性"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是高可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何提高系统可用性"><span class="nav-number">1.0.2.</span> <span class="nav-text">如何提高系统可用性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓冲机制"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">缓冲机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务解耦"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">服务解耦</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#首先是代码解耦。"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">首先是代码解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其次是功能解耦。"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">其次是功能解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#再次是服务间的通信解耦"><span class="nav-number">1.0.2.2.3.</span> <span class="nav-text">再次是服务间的通信解耦</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无状态服务与多机房部署"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">无状态服务与多机房部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过载保护与分级机制"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">过载保护与分级机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程与规范"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">流程与规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发阶段"><span class="nav-number">1.0.2.5.1.</span> <span class="nav-text">开发阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#上线阶段"><span class="nav-number">1.0.2.5.2.</span> <span class="nav-text">上线阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#故障阶段"><span class="nav-number">1.0.2.5.3.</span> <span class="nav-text">故障阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.0.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
