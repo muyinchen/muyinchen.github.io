@@ -99,7 +99,7 @@
     <link href="https://muyinchen.github.io/2016/12/16/%E4%BD%BF%E7%94%A8redis3.0%E5%AE%9E%E7%8E%B0tomcat%E9%9B%86%E7%BE%A4session%E5%85%B1%E4%BA%AB/"/>
     <id>https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/</id>
     <published>2016-12-16T14:46:57.666Z</published>
-    <updated>2016-12-16T14:52:55.170Z</updated>
+    <updated>2016-12-16T14:55:27.104Z</updated>
     
     <content type="html"><![CDATA[<h1 id="使用redis3-0实现tomcat集群session共享"><a href="#使用redis3-0实现tomcat集群session共享" class="headerlink" title="使用redis3.0实现tomcat集群session共享"></a>使用redis3.0实现tomcat集群session共享</h1> <a id="more"></a>
 <ol>
