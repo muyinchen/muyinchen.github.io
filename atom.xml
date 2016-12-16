@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-12-14T15:25:09.227Z</updated>
+  <updated>2016-12-16T14:44:54.400Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,52 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用redis3.0实现tomcat集群session共享</title>
+    <link href="https://muyinchen.github.io/2016/12/16/%E4%BD%BF%E7%94%A8redis3.0%E5%AE%9E%E7%8E%B0tomcat%E9%9B%86%E7%BE%A4session%E5%85%B1%E4%BA%AB/"/>
+    <id>https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/</id>
+    <published>2016-12-16T14:46:57.666Z</published>
+    <updated>2016-12-16T14:44:54.400Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="使用redis3-0实现tomcat集群session共享"><a href="#使用redis3-0实现tomcat集群session共享" class="headerlink" title="使用redis3.0实现tomcat集群session共享"></a>使用redis3.0实现tomcat集群session共享</h1> <a id="more"></a>
+<ol>
+<li>部署两个<code>tomcat</code>节点，<a href="https://muyinchen.github.io/2016/11/10/Migo%E5%95%86%E5%9F%8E2.0%C2%A0Nginx%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%20%E4%B8%89/">使用nginx实现集群</a></li>
+</ol>
+<ol>
+<li><p><a href="https://muyinchen.github.io/2016/12/08/Migo%E5%95%86%E5%9F%8E2.0%20%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E4%B8%AD%E6%B7%BB%E5%8A%A0redis%20%E7%BC%93%E5%AD%98(1"> <code>redis</code>安装 </a>%20%E5%8D%81%E4%B9%9D/) </p>
+</li>
+<li><p>建一个简单的<code>web项目</code>，打包发布到各个<code>tomcat</code>中，用于测试<code>session</code>是否真的实现了共享（自己想办法怎么建测试项目）</p>
+</li>
+<li><p>下载开源组件<code>tomcat-redis-session-manager</code></p>
+</li>
+</ol>
+<p>​       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</div><div class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</div><div class="line"></div><div class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">jedis-2.8.0.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">RedisDataCache.properties</div></pre></td></tr></table></figure>
+<p>5、将上面<code>jar</code>包拷贝到各个<code>tomcat</code>的<code>lib</code>目录下， 将<code>RedisDataCache.properties</code>拷到<code>tomcat</code>的<code>conf目录</code>下。</p>
+<p>6、配置文件修改</p>
+<p>（1）修改<code>RedisDataCache.properties</code>配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</div><div class="line"></div><div class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</div><div class="line"></div><div class="line"># Redis Password</div><div class="line"></div><div class="line">redis.password= redis （REDIS配置文件中设置的密码）</div><div class="line"></div><div class="line"># set true to enable redis cluster mode</div><div class="line"></div><div class="line">redis.cluster.enabled=false</div></pre></td></tr></table></figure>
+<p>（2）在<code>tomcat/conf/context.xml</code>文件中增加以下两行：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></div><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>（3)设置<code>tomcat/conf/web.xml</code> 中<code>session</code>有效期</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line"></div><div class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 如果项目里也配置了<code>session</code>有效期，则以项目中有准。</p>
+<p>7、先启动<code>redis</code>,再启动<code>tomcat</code>，访问测试项目进行测试。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;使用redis3-0实现tomcat集群session共享&quot;&gt;&lt;a href=&quot;#使用redis3-0实现tomcat集群session共享&quot; class=&quot;headerlink&quot; title=&quot;使用redis3.0实现tomcat集群session共享&quot;&gt;&lt;/a&gt;使用redis3.0实现tomcat集群session共享&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="redis" scheme="https://muyinchen.github.io/categories/redis/"/>
+    
+    
+      <category term="redis" scheme="https://muyinchen.github.io/tags/redis/"/>
+    
+  </entry>
   
   <entry>
     <title>谈小米的高可用推送系统设计</title>
@@ -1572,84 +1618,6 @@ iv.             后端团队可以在接口处添加缓存逻辑
     
       &lt;h2 id=&quot;Migo商城2-0-商品规格参数的实现-2-十一&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品规格参数的实现-2-十一&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品规格参数的实现(2)  十一&quot;&gt;&lt;/a&gt;Migo商城2.0  商品规格参数的实现(2)  十一&lt;/h2&gt;&lt;p&gt;   接上篇&lt;/p&gt;
 &lt;h4 id=&quot;初始化类目选择组件里的回调函数的执行：&quot;&gt;&lt;a href=&quot;#初始化类目选择组件里的回调函数的执行：&quot; class=&quot;headerlink&quot; title=&quot;初始化类目选择组件里的回调函数的执行：&quot;&gt;&lt;/a&gt;初始化类目选择组件里的回调函数的执行：&lt;/h4&gt;&lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/mubanhuidiao.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
-    
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Migo商城2.0 商品规格参数的实现(1) 十</title>
-    <link href="https://muyinchen.github.io/2016/11/14/Migo%E5%95%86%E5%9F%8E2.0%20%20%E5%95%86%E5%93%81%E8%A7%84%E6%A0%BC%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0(1)%20%E5%8D%81/"/>
-    <id>https://muyinchen.github.io/2016/11/14/Migo商城2.0  商品规格参数的实现(1) 十/</id>
-    <published>2016-11-14T15:30:46.983Z</published>
-    <updated>2016-11-14T15:36:46.131Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Migo商城2-0-商品规格参数的实现-1-十"><a href="#Migo商城2-0-商品规格参数的实现-1-十" class="headerlink" title="Migo商城2.0  商品规格参数的实现(1) 十"></a>Migo商城2.0  商品规格参数的实现(1) 十</h2><p>先看看一张jd的商品规格的截图吧</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/guigecanshu.png" alt=""></p>
-<p>分析：</p>
-<a id="more"></a>
-<p>规格参数：</p>
-<p>1、同一类商品的规格分类相同</p>
-<p>2、同一类商品的规格项一致</p>
-<p>3、不同商品的规格参数不同</p>
-<p>思路：</p>
-<p>第一种方式：</p>
-<blockquote>
-<p>可以把数据保存到表中</p>
-<p>表就不画了，单单这个功能所涉及的表：<code>商品分类表</code> <code>规格参数-分类表</code> <code>商品表</code>  <code>规格参数-商品规格参数</code>  <code>规格参数-规格项表</code></p>
-<p>想想就觉得 查询的sql语句比较复杂，需要关联的表很多，会给数据库造成很大压力。不推荐使用此方法</p>
-</blockquote>
-<p>第二种方法：</p>
-<blockquote>
-<p>1、可以把规格分组和规格项使用json数据表示，保存到一个字段中。规格参数模板。</p>
-<p>2、添加商品时读取规格参数的模板，根据模板生成表单，供客户输入规格参数。</p>
-<p>3、把动态表单中的内容读取出来生成json数据保存到数据库中。</p>
-<p>4、展示规格参数时，根据商品id读取规格参数json数据生成html展示到jsp页面</p>
-</blockquote>
-<p><img src="http://og0sybnix.bkt.clouddn.com/mubanliucheng.png" alt=""></p>
-<p>具体实现：</p>
-<p>1、  模板如何存储？</p>
-<p>a)        存储到数据库</p>
-<p>b)        字段不能固定</p>
-<ol>
-<li>Map</li>
-<li>Json   这里选择这种</li>
-</ol>
-<p>2、  存储的json结构 以后添加(TODO) 不想打开上个项目单独拿数据了，请原谅我的懒惰！</p>
-<h3 id="模板结构"><a href="#模板结构" class="headerlink" title="模板结构"></a>模板结构</h3><h3 id="数据库表结构"><a href="#数据库表结构" class="headerlink" title="数据库表结构"></a>数据库表结构</h3><p><img src="http://og0sybnix.bkt.clouddn.com/guigembb.png" alt=""></p>
-<p>后台实现</p>
-<p>添加mapper：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/addmapper.png" alt=""></p>
-<p>创建service：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/14.</div><div class="line">*/</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemParmService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ItemParam</span>&gt; </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/14.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemParamItemService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ItemParamItem</span>&gt; </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>选择类目</p>
-<p>根据选择的类目进行判断，如果该类目所对应的模板存在，提醒用户已经存在，如果模板不存在，可以创建模板</p>
-<p>根据商品的分类id查询tb_item_param表，如果查询到结果说明此模板已经添加</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/lm1.png" alt=""></p>
-<p>这里js代码改造下，使其更加适合restful格式化：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">				   type: <span class="string">"GET"</span>,</div><div class="line">				   url: <span class="string">"/rest/item/param/"</span> + node.id,</div><div class="line">				   statusCode : &#123;</div><div class="line">					   <span class="number">200</span> : function()&#123;</div><div class="line">						   <span class="comment">//模板存在</span></div><div class="line">						   $.messager.alert(<span class="string">"提示"</span>, <span class="string">"该类目已经添加，请选择其他类目。"</span>, undefined, function()&#123;</div><div class="line">								 $(<span class="string">"#itemParamAddTable .selectItemCat"</span>).click();</div><div class="line">							  &#125;);</div><div class="line">					   &#125;,</div><div class="line">					   <span class="number">404</span> : function()&#123;</div><div class="line">						   <span class="comment">//模板不存在</span></div><div class="line">						   $(<span class="string">".addGroupTr"</span>).show();</div><div class="line">					   &#125;,</div><div class="line">					   <span class="number">500</span> : function()&#123;</div><div class="line">						   alert(<span class="string">"error"</span>);</div><div class="line">					   &#125;</div><div class="line">				   &#125;</div><div class="line">				&#125;);</div></pre></td></tr></table></figure>
-<blockquote>
-<p>请求的url：<code>/item/param/{cid}</code></p>
-<p>参数：<code>cid</code></p>
-</blockquote>
-<p>controller:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ItemParam;</div><div class="line"><span class="keyword">import</span> com.migo.service.ItemParmService;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.PathVariable;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/14.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"item/param"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemParamController</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Logger logger= LoggerFactory.getLogger(ItemParamController.class);</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemParmService itemParmService;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"&#123;itemCatId&#125;"</span> ,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;ItemParam&gt; <span class="title">getItemParamByCid</span><span class="params">(@PathVariable(<span class="string">"itemCatId"</span>)</span> Long itemCatId)</span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</div><div class="line">                logger.info(<span class="string">"查询某商品规格模板参数模板 itemCatId= &#123;&#125;"</span>,itemCatId);</div><div class="line">            &#125;</div><div class="line">            ItemParam example=<span class="keyword">new</span> ItemParam();</div><div class="line">            example.setItemCatId(itemCatId);</div><div class="line">            ItemParam itemParam = <span class="keyword">this</span>.itemParmService.queryOne(example);</div><div class="line">            <span class="keyword">if</span> (itemParam==<span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (logger.isInfoEnabled()) &#123;</div><div class="line">                    logger.info(<span class="string">"所查询商品规格模板参数模板 不存在 itemCatId= &#123;&#125;"</span>,itemCatId);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line"></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> ResponseEntity.ok(itemParam);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            logger.error(<span class="string">"查询某商品规格模板参数模板 失败 itemCatId= &#123;&#125;"</span>,itemCatId,e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行测试结果：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/spleimucx.png" alt=""></p>
-<p>今天晚上有点事，耽搁了，就到这里吧，明天继续</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Migo商城2-0-商品规格参数的实现-1-十&quot;&gt;&lt;a href=&quot;#Migo商城2-0-商品规格参数的实现-1-十&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  商品规格参数的实现(1) 十&quot;&gt;&lt;/a&gt;Migo商城2.0  商品规格参数的实现(1) 十&lt;/h2&gt;&lt;p&gt;先看看一张jd的商品规格的截图吧&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/guigecanshu.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;分析：&lt;/p&gt;
     
     </summary>
     

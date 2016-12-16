@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="redis" />
 
 
 
@@ -86,15 +86,16 @@
 
 
 
-<meta name="description" content="只记空山，只念新雨">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一叶知秋">
-<meta property="og:url" content="https://muyinchen.github.io/page/4/index.html">
+<meta name="description" content="使用redis3.0实现tomcat集群session共享">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用redis3.0实现tomcat集群session共享">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="只记空山，只念新雨">
+<meta property="og:description" content="使用redis3.0实现tomcat集群session共享">
+<meta property="og:updated_time" content="2016-12-16T14:44:54.400Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一叶知秋">
-<meta name="twitter:description" content="只记空山，只念新雨">
+<meta name="twitter:title" content="使用redis3.0实现tomcat集群session共享">
+<meta name="twitter:description" content="使用redis3.0实现tomcat集群session共享">
 
 
 
@@ -115,10 +116,10 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/page/4/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/"/>
 
 
-  <title> 一叶知秋 </title>
+  <title> 使用redis3.0实现tomcat集群session共享 | 一叶知秋 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -148,9 +149,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
@@ -229,9 +228,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
   
@@ -251,10 +250,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/11/07/Migo商城2.0  框架搭建 一/" itemprop="url">
-                  Migo商城2.0  框架搭建 一
-                </a>
+                使用redis3.0实现tomcat集群session共享
               
             
           </h1>
@@ -266,8 +262,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-07T14:47:22+08:00" content="2016-11-07">
-              2016-11-07
+            <time itemprop="dateCreated" datetime="2016-12-16T22:46:57+08:00" content="2016-12-16">
+              2016-12-16
             </time>
           </span>
 
@@ -280,8 +276,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
-                    <span itemprop="name">Migo商城2.0</span>
+                  <a href="/categories/redis/" itemprop="url" rel="index">
+                    <span itemprop="name">redis</span>
                   </a>
                 </span>
 
@@ -296,8 +292,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/07/Migo商城2.0  框架搭建 一/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/07/Migo商城2.0  框架搭建 一/" itemprop="commentsCount"></span>
+                <a href="/2016/12/16/使用redis3.0实现tomcat集群session共享/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -308,6 +304,11 @@
           
           
 
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
           
         </div>
       </header>
@@ -320,259 +321,84 @@
       
 
       
-        
-          <h2 id="Migo商城2-0-框架搭建-一"><a href="#Migo商城2-0-框架搭建-一" class="headerlink" title="Migo商城2.0  框架搭建 一"></a>Migo商城2.0  框架搭建 一</h2><p>1.0版本github链接：<a href="https://github.com/muyinchen/migoShop">https://github.com/muyinchen/migoShop</a><br>2.0版本github链接：<a href="https://github.com/muyinchen/migoshop2.0">https://github.com/muyinchen/migoshop2.0</a></p>
-<h3 id="开发技术"><a href="#开发技术" class="headerlink" title="开发技术"></a>开发技术</h3><p>Spring<br>Springmvc<br>Mybatis</p>
-<p>Redis<br>Solr<br>RabbitMQ<br>Dubbo<br>httpclient(调用系统服务)<br>nginx<br>fastdfs 5.0.5<br>MysqL</p>
-<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>IDEA 2016.1.3(64)<br>maven 3.2.9<br>tomcat 7<br>jdk 1.7<br>MySQL 5.6<br>nginx 1.11.4<br>redis 3.2.4<br>solr 6.2.1</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/07/Migo商城2.0  框架搭建 一/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+        <h1 id="使用redis3-0实现tomcat集群session共享"><a href="#使用redis3-0实现tomcat集群session共享" class="headerlink" title="使用redis3.0实现tomcat集群session共享"></a>使用redis3.0实现tomcat集群session共享</h1> <a id="more"></a>
+<ol>
+<li>部署两个<code>tomcat</code>节点，<a href="https://muyinchen.github.io/2016/11/10/Migo%E5%95%86%E5%9F%8E2.0%C2%A0Nginx%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%20%E4%B8%89/">使用nginx实现集群</a></li>
+</ol>
+<ol>
+<li><p><a href="https://muyinchen.github.io/2016/12/08/Migo%E5%95%86%E5%9F%8E2.0%20%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E4%B8%AD%E6%B7%BB%E5%8A%A0redis%20%E7%BC%93%E5%AD%98(1"> <code>redis</code>安装 </a>%20%E5%8D%81%E4%B9%9D/) </p>
+</li>
+<li><p>建一个简单的<code>web项目</code>，打包发布到各个<code>tomcat</code>中，用于测试<code>session</code>是否真的实现了共享（自己想办法怎么建测试项目）</p>
+</li>
+<li><p>下载开源组件<code>tomcat-redis-session-manager</code></p>
+</li>
+</ol>
+<p>​       </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</div><div class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</div><div class="line"></div><div class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">jedis-2.8.0.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">RedisDataCache.properties</div></pre></td></tr></table></figure>
+<p>5、将上面<code>jar</code>包拷贝到各个<code>tomcat</code>的<code>lib</code>目录下， 将<code>RedisDataCache.properties</code>拷到<code>tomcat</code>的<code>conf目录</code>下。</p>
+<p>6、配置文件修改</p>
+<p>（1）修改<code>RedisDataCache.properties</code>配置文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</div><div class="line"></div><div class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</div><div class="line"></div><div class="line"># Redis Password</div><div class="line"></div><div class="line">redis.password= redis （REDIS配置文件中设置的密码）</div><div class="line"></div><div class="line"># set true to enable redis cluster mode</div><div class="line"></div><div class="line">redis.cluster.enabled=false</div></pre></td></tr></table></figure>
+<p>（2）在<code>tomcat/conf/context.xml</code>文件中增加以下两行：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></div><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>（3)设置<code>tomcat/conf/web.xml</code> 中<code>session</code>有效期</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line"></div><div class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<p> 如果项目里也配置了<code>session</code>有效期，则以项目中有准。</p>
+<p>7、先启动<code>redis</code>,再启动<code>tomcat</code>，访问测试项目进行测试。</p>
+
       
     </div>
 
     <div>
       
+        
+
+      
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
     <footer class="post-footer">
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/06/hexo常用命令笔记/" itemprop="url">
-                  hexo常用命令笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-06T09:44:21+08:00" content="2016-11-06">
-              2016-11-06
-            </time>
-          </span>
-
+        <div class="post-tags">
           
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/06/hexo常用命令笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/06/hexo常用命令笔记/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
+            <a href="/tags/redis/" rel="tag">#redis</a>
           
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">npm install hexo -g #安装  </div><div class="line">npm update hexo -g #升级  </div><div class="line">hexo init #初始化</div></pre></td></tr></table></figure>
-<h3 id="简写"><a href="#简写" class="headerlink" title="简写"></a>简写</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">hexo n &quot;我的博客&quot; == hexo new &quot;我的博客&quot; #新建文章</div><div class="line">hexo p == hexo publish</div><div class="line">hexo g == hexo generate#生成</div><div class="line">hexo s == hexo server #启动服务预览</div><div class="line">hexo d == hexo deploy#部署</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/06/hexo常用命令笔记/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/14/谈小米的高可用推送系统设计/" rel="next" title="谈小米的高可用推送系统设计">
+                <i class="fa fa-chevron-left"></i> 谈小米的高可用推送系统设计
+              </a>
+            
           </div>
-        
-      
-    </div>
 
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
+          <div class="post-nav-prev post-nav-item">
             
-            
-              
-                
-                <a class="post-title-link" href="/2016/11/03/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-03T01:57:03+08:00" content="2016-11-03">
-              2016-11-03
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/03/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/03/hello-world/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/11/03/hello-world/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-  </section>
 
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
-  </nav>
-
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -580,6 +406,14 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/"
+           data-title="使用redis3.0实现tomcat集群session共享" data-url="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -599,8 +433,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
@@ -657,6 +500,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用redis3-0实现tomcat集群session共享"><span class="nav-number">1.</span> <span class="nav-text">使用redis3.0实现tomcat集群session共享</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -769,6 +623,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
 
   
 
