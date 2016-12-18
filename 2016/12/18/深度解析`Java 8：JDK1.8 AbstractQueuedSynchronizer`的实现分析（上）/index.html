@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="并发源码解读" />
 
 
 
@@ -86,16 +86,12 @@
 
 
 
-<meta name="description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
-title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
-keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta name="description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）更多多线程API解析请参考jdk8 版本并发源码解读">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一叶知秋">
+<meta property="og:title" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
-title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
-keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta property="og:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）更多多线程API解析请参考jdk8 版本并发源码解读">
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png">
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730001.png">
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730002.png">
@@ -113,12 +109,10 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730014.png">
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730015.png">
 <meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730016.png">
-<meta property="og:updated_time" content="2016-12-18T15:17:01.693Z">
+<meta property="og:updated_time" content="2016-12-18T15:19:52.862Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一叶知秋">
-<meta name="twitter:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
-title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
-keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta name="twitter:title" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）">
+<meta name="twitter:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）更多多线程API解析请参考jdk8 版本并发源码解读">
 <meta name="twitter:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png">
 
 
@@ -143,7 +137,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
   <link rel="canonical" href="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/"/>
 
 
-  <title>  | 一叶知秋 </title>
+  <title> 深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上） | 一叶知秋 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +268,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
             
             
               
-                
+                深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
               
             
           </h1>
@@ -291,6 +285,25 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/并发源码解读/" itemprop="url" rel="index">
+                    <span itemprop="name">并发源码解读</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
@@ -326,9 +339,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
       
 
       
-        <h1 id="深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><a href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）" class="headerlink" title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）"></a>深度解析<code>Java 8：JDK1.8 AbstractQueuedSynchronizer</code>的实现分析（上）</h1><hr>
-<p>title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）<br>categories:  并发源码解读<br>tags:  并发源码解读</p>
-<h2 id="keywords-并发源码解读"><a href="#keywords-并发源码解读" class="headerlink" title="keywords:  并发源码解读"></a>keywords:  并发源码解读</h2><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="external"><code>jdk8</code> 版本并发源码解读</a></p>
+        <h1 id="深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><a href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）" class="headerlink" title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）"></a>深度解析<code>Java 8：JDK1.8 AbstractQueuedSynchronizer</code>的实现分析（上）</h1><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="external"><code>jdk8</code> 版本并发源码解读</a></p>
  <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Java中的<code>FutureTask</code>作为可异步执行任务并可获取执行结果而被大家所熟知。通常可以使用<code>future.get()</code>来获取线程的执行结果，在线程执行结束之前，<code>get方法</code>会一直阻塞状态，直到<code>call()</code>返回，其<code>优点</code>是使用线程异步执行任务的情况下还可以获取到线程的执行结果，但是<code>FutureTask</code>的以上功能却是依靠通过一个叫<code>AbstractQueuedSynchronizer</code>的类来实现，至少在<code>JDK 1.5、JDK1.6</code>版本是这样的（从<code>1.7</code>开始<code>FutureTask</code>已经被其作者<code>Doug Lea</code>修改为<code>不再依赖AbstractQueuedSynchronizer实现</code>了，这是<code>JDK1.7的变化之一</code>）。但是<code>AbstractQueuedSynchronizer</code>在<code>JDK1.8</code>中还有如下图所示的众多子类：</p>
 <p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png" alt=""></p>
@@ -433,6 +444,12 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/并发源码解读/" rel="tag">#并发源码解读</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -471,7 +488,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/"
-           data-title="" data-url="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/">
+           data-title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）" data-url="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/">
       </div>
     
   </div>
@@ -524,7 +541,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分类</span>
               
             </div>
@@ -533,7 +550,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -569,7 +586,7 @@ keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><span class="nav-number">1.</span> <span class="nav-text">深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#keywords-并发源码解读"><span class="nav-number">1.1.</span> <span class="nav-text">keywords:  并发源码解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细说AQS"><span class="nav-number">1.3.</span> <span class="nav-text">细说AQS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独占锁"><span class="nav-number">1.3.1.</span> <span class="nav-text">独占锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><span class="nav-number">1.</span> <span class="nav-text">深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细说AQS"><span class="nav-number">1.2.</span> <span class="nav-text">细说AQS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独占锁"><span class="nav-number">1.2.1.</span> <span class="nav-text">独占锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
