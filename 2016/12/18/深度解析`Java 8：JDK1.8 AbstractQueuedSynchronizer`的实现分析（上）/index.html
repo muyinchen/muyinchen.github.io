@@ -1,0 +1,743 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
+title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
+keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一叶知秋">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
+title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
+keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730001.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730002.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730003.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730004.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730005.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730006.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730007.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730008.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730009.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/07300010.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730011.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730012.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730013.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730014.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730015.png">
+<meta property="og:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730016.png">
+<meta property="og:updated_time" content="2016-12-18T15:17:01.693Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一叶知秋">
+<meta name="twitter:description" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
+title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）categories:  并发源码解读tags:  并发源码解读
+keywords:  并发源码解读更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta name="twitter:image" content="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/"/>
+
+
+  <title>  | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-18T23:17:21+08:00" content="2016-12-18">
+              2016-12-18
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><a href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）" class="headerlink" title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）"></a>深度解析<code>Java 8：JDK1.8 AbstractQueuedSynchronizer</code>的实现分析（上）</h1><hr>
+<p>title:  深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）<br>categories:  并发源码解读<br>tags:  并发源码解读</p>
+<h2 id="keywords-并发源码解读"><a href="#keywords-并发源码解读" class="headerlink" title="keywords:  并发源码解读"></a>keywords:  并发源码解读</h2><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="external"><code>jdk8</code> 版本并发源码解读</a></p>
+ <a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Java中的<code>FutureTask</code>作为可异步执行任务并可获取执行结果而被大家所熟知。通常可以使用<code>future.get()</code>来获取线程的执行结果，在线程执行结束之前，<code>get方法</code>会一直阻塞状态，直到<code>call()</code>返回，其<code>优点</code>是使用线程异步执行任务的情况下还可以获取到线程的执行结果，但是<code>FutureTask</code>的以上功能却是依靠通过一个叫<code>AbstractQueuedSynchronizer</code>的类来实现，至少在<code>JDK 1.5、JDK1.6</code>版本是这样的（从<code>1.7</code>开始<code>FutureTask</code>已经被其作者<code>Doug Lea</code>修改为<code>不再依赖AbstractQueuedSynchronizer实现</code>了，这是<code>JDK1.7的变化之一</code>）。但是<code>AbstractQueuedSynchronizer</code>在<code>JDK1.8</code>中还有如下图所示的众多子类：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730000.png" alt=""></p>
+<p>这些<code>JDK</code>中的工具类或多或少都被大家用过不止一次，比如ReentrantLock，我们知道<code>ReentrantLock</code>的功能是实现代码段的并发访问控制，也就是通常意义上所说的锁，在没有看到<code>AbstractQueuedSynchronizer</code>前，可能会以为它的实现是通过类似于<code>synchronized</code>，通过对<code>对象</code>加锁来实现的。但事实上它仅仅是一个工具类！没有使用更“高级”的机器指令，不是关键字，也不依靠<code>JDK编译</code>时的特殊处理，仅仅作为一个普普通通的类就完成了代码块的并发访问控制，这就更让人疑问它怎么实现的代码块的并发访问控制的了。那就让我们一起来仔细看下<code>Doug Lea</code>怎么去实现的这个锁。为了方便，本文中使用<code>AQS</code>代替<code>AbstractQueuedSynchronizer</code>。</p>
+<h2 id="细说AQS"><a href="#细说AQS" class="headerlink" title="细说AQS"></a>细说<code>AQS</code></h2><p>在深入分析<code>AQS</code>之前，我想先从<code>AQS</code>的功能上说明下<code>AQS</code>，站在使用者的角度，<code>AQS</code>的功能可以分为两类：独占功能和共享功能，它的所有子类中，要么实现并使用了它独占功能的<code>API</code>，要么使用了共享锁的功能，而不会同时使用两套<code>API</code>，即便是它最有名的子类<code>ReentrantReadWriteLock</code>，也是通过两个内部类：读锁和写锁，分别实现的两套<code>API</code>来实现的，为什么这么做，后面我们再分析，到目前为止，我们只需要明白<code>AQS</code>在功能上有独占控制和共享控制两种功能即可。</p>
+<h3 id="独占锁"><a href="#独占锁" class="headerlink" title="独占锁"></a>独占锁</h3><p>在真正对解读<code>AQS</code>之前，我想先从使用了它独占控制功能的子类<code>ReentrantLock</code>说起，分析<code>ReentrantLock</code>的同时看一看<code>AQS</code>的实现，再推理出<code>AQS</code>独特的设计思路和实现方式。最后，再看其共享控制功能的实现。</p>
+<p>对于<code>ReentrantLock</code>，使用过的同学应该都知道，通常是这么用它的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">reentrantLock.lock()</div><div class="line">        <span class="comment">//do something</span></div><div class="line">        reentrantLock.unlock()</div></pre></td></tr></table></figure>
+<p><code>ReentrantLock</code>会保证 <code>do something</code>在同一时间只有一个线程在执行这段代码，或者说，同一时刻只有一个线程的lock方法会返回。其余线程会被挂起，直到获取锁。从这里可以看出，其实<code>ReentrantLock</code>实现的就是一个独占锁的功能：有且只有一个线程获取到锁，其余线程全部挂起，直到该拥有锁的线程释放锁，被挂起的线程被唤醒重新开始竞争锁。没错，<code>ReentrantLock</code>使用的就是AQS的独占<code>API</code>实现的。</p>
+<p>那现在我们就从<code>ReentrantLock</code>的实现开始一起看看重入锁是怎么实现的。</p>
+<p>首先看lock方法：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730001.png" alt=""></p>
+<p>如<code>FutureTask（JDK1.6）</code>一样，<code>ReentrantLock</code>内部有代理类完成具体操作，<code>ReentrantLock</code>只是封装了统一的一套<code>API</code>而已。值得注意的是，使用过<code>ReentrantLock</code>的同学应该知道，<code>ReentrantLock</code>又分为公平锁和非公平锁，所以，<code>ReentrantLock</code>内部只有两个sync的实现：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730002.png" alt=""></p>
+<p>公平锁：每个线程抢占锁的顺序为先后调用<code>lock方法</code>的顺序依次获取锁，类似于排队吃饭。</p>
+<p>非公平锁：每个线程抢占锁的顺序不定，谁运气好，谁就获取到锁，和调用lock方法的先后顺序无关，类似于堵车时，加塞的那些XXXX。</p>
+<p>到这里，通过<code>ReentrantLock</code>的功能和锁的所谓排不排队的方式，我们是否可以这么猜测<code>ReentrantLock</code>或者<code>AQS</code>的实现（现在不清楚谁去实现这些功能）：有那么一个被<code>volatile</code>修饰的标志位叫做<code>key</code>，用来表示有没有线程拿走了锁，或者说，锁还存不存在，还需要一个线程安全的队列，维护一堆被挂起的线程，以至于当锁被归还时，能通知到这些被挂起的线程，可以来竞争获取锁了。</p>
+<p>至于公平锁和非公平锁，唯一的区别是在获取锁的时候是直接去获取锁，还是进入队列排队的问题了。为了验证我们的猜想，我们继续看一下<code>ReentrantLock</code>中公平锁的实现：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730003.png" alt=""></p>
+<p>调用到了<code>AQS</code>的acquire方法：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730004.png" alt=""></p>
+<p>从方法名字上看语义是，尝试获取锁，获取不到则创建一个<code>waiter</code>（当前线程）后放到队列中，这和我们猜测的好像很类似。<a href="$">[G1]</a></p>
+<p>先看下<code>tryAcquire</code>方法:</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730005.png" alt=""></p>
+<p>留空了，<code>Doug Lea</code>是想留给子类去实现（既然要给子类实现，应该用抽象方法，但是Doug Lea没有这么做，原因是<code>AQS</code>有两种功能，面向两种使用场景，需要给子类定义的方法都是抽象方法了，会导致子类无论如何都需要实现另外一种场景的抽象方法，显然，这对子类来说是不友好的。）</p>
+<p>看下<code>FairSync</code>的<code>tryAcquire</code>方法：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730006.png" alt=""></p>
+<p><code>getState方法</code>是<code>AQS</code>的方法，因为在<code>AQS</code>里面有个叫<code>statede</code>的标志位 :</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730007.png" alt=""></p>
+<p>事实上，这个<code>state</code>就是前面我们猜想的那个“<code>key</code>”！</p>
+<p>回到<code>tryAcquire</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</div><div class="line">            <span class="keyword">final</span> Thread current = Thread.currentThread();<span class="comment">//获取当前线程</span></div><div class="line">            <span class="keyword">int</span> c = getState();  <span class="comment">//获取父类AQS中的标志位</span></div><div class="line">            <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (!hasQueuedPredecessors() &amp;&amp; </div><div class="line">                    <span class="comment">//如果队列中没有其他线程  说明没有线程正在占有锁！</span></div><div class="line">                    compareAndSetState(<span class="number">0</span>, acquires)) &#123; </div><div class="line">                    <span class="comment">//修改一下状态位，注意：这里的acquires是在lock的时候传递来的，从上面的图中可以知道，这个值是写死的1</span></div><div class="line">                    setExclusiveOwnerThread(current);</div><div class="line">                    <span class="comment">//如果通过CAS操作将状态为更新成功则代表当前线程获取锁，因此，将当前线程设置到AQS的一个变量中，说明这个线程拿走了锁。</span></div><div class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</div><div class="line">             <span class="comment">//如果不为0 意味着，锁已经被拿走了，但是，因为ReentrantLock是重入锁，</span></div><div class="line">             <span class="comment">//是可以重复lock,unlock的，只要成对出现行。一次。这里还要再判断一次 获取锁的线程是不是当前请求锁的线程。</span></div><div class="line">                <span class="keyword">int</span> nextc = c + acquires;<span class="comment">//如果是的，累加在state字段上就可以了。</span></div><div class="line">                <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>)</div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">"Maximum lock count exceeded"</span>);</div><div class="line">                setState(nextc);</div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>到此，如果如果获取锁，<code>tryAcquire</code>返回<code>true</code>，反之，返回<code>false</code>，回到<code>AQS</code>的acquire方法。</p>
+<p>如果没有获取到锁，按照我们的描述，应该将当前线程放到队列中去，只不过，在放之前，需要做些包装。</p>
+<p>先看<code>addWaiter</code>方法：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730008.png" alt=""></p>
+<p>用当前线程去构造一个<code>Node</code>对象，<code>mode</code>是一个表示<code>Node</code>类型的字段，仅仅表示这个节点是独占的，还是共享的，或者说，<code>AQS</code>的这个队列中，哪些节点是独占的，哪些是共享的。</p>
+<p>这里<code>lock</code>调用的是<code>AQS</code>独占的<code>API</code>，当然，可以写死是独占状态的节点。</p>
+<p>创建好节点后，将节点加入到队列尾部，此处，在队列不为空的时候，先尝试通过<code>cas</code>方式修改尾节点为最新的节点，如果修改失败，意味着有并发，这个时候才会进入<code>enq</code>中死循环，“自旋”方式修改。</p>
+<p>将线程的节点接入到队里中后，当然还需要做一件事:将当前线程挂起！这个事，由acquireQueued来做。</p>
+<p>在解释acquireQueued之前，我们需要先看下<code>AQS</code>中队列的内存结构，我们知道，队列由Node类型的节点组成，其中至少有两个变量，一个封装线程，一个封装节点类型。</p>
+<p>而实际上，它的内存结构是这样的（第一次节点插入时，第一个节点是一个空节点，代表有一个线程已经获取锁，事实上，队列的第一个节点就是代表持有锁的节点）：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730009.png" alt=""></p>
+<p>黄色节点为队列默认的头节点，每次有线程竞争失败，进入队列后其实都是插入到队列的尾节点（<code>tail</code>后面）后面。这个从<code>enq方法</code>可以看出来，上文中有提到<code>enq方法</code>为将节点插入队列的方法:</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/07300010.png" alt=""></p>
+<p>再回来看看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">acquireQueued</span><span class="params">(<span class="keyword">final</span> Node node, <span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">        <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">boolean</span> interrupted = <span class="keyword">false</span>;</div><div class="line">            <span class="keyword">for</span> (;;) &#123;</div><div class="line">                <span class="keyword">final</span> Node p = node.predecessor();</div><div class="line">                <span class="keyword">if</span> (p == head &amp;&amp; tryAcquire(arg)) &#123;</div><div class="line">             <span class="comment">//如果当前的节点是head说明他是队列中第一个“有效的”节点，因此尝试获取，上文中有提到这个类是交给子类去扩展的。</span></div><div class="line">                    setHead(node);<span class="comment">//成功后，将上图中的黄色节点移除，Node1变成头节点。</span></div><div class="line">                    p.next = <span class="keyword">null</span>; <span class="comment">// help GC</span></div><div class="line">                    failed = <span class="keyword">false</span>;</div><div class="line">                    <span class="keyword">return</span> interrupted;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp; </div><div class="line">                <span class="comment">//否则，检查前一个节点的状态为，看当前获取锁失败的线程是否需要挂起。</span></div><div class="line">                    parkAndCheckInterrupt()) </div><div class="line">               <span class="comment">//如果需要，借助JUC包下的LockSopport类的静态方法Park挂起当前线程。知道被唤醒。</span></div><div class="line">                    interrupted = <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (failed) <span class="comment">//如果有异常</span></div><div class="line">                cancelAcquire(node);<span class="comment">// 取消请求，对应到队列操作，就是将当前节点从队列中移除。</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>这块代码有几点需要说明：</p>
+<p>1. <code>Node节点</code>中，除了存储当前线程，节点类型，队列中前后元素的变量，还有一个叫<code>waitStatus</code>的变量，改变量用于描述节点的状态，为什么需要这个状态呢？</p>
+<p>原因是：<code>AQS</code>的队列中，在有并发时，肯定会存取一定数量的节点，每个节点<a href="$-0">[G4]</a> 代表了一个线程的状态，有的线程可能“等不及”获取锁了，需要放弃竞争，退出队列，有的线程在等待一些条件满足，满足后才恢复执行（这里的描述很像某个<code>J.U.C</code>包下的工具类，<code>ReentrankLock的Condition</code>，事实上，<code>Condition</code>同样也是<code>AQS</code>的子类）等等，总之，各个线程有各个线程的状态，但总需要一个变量来描述它，这个变量就叫waitStatus,它有四种状态：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730011.png" alt=""></p>
+<p>分别表示：</p>
+<ol>
+<li>节点取消</li>
+<li>节点等待触发</li>
+<li>节点等待条件</li>
+<li>节点状态需要向后传播。</li>
+</ol>
+<p>只有当前节点的前一个节点为<code>SIGNAL</code>时，才能当前节点才能被挂起。</p>
+<ol>
+<li>对线程的挂起及唤醒操作是通过使用<code>UNSAFE类</code>调用<code>JNI方法</code>实现的。当然，还提供了挂起指定时间后唤醒的<code>API</code>，在后面我们会讲到。</li>
+</ol>
+<p>到此为止，一个线程对于锁的一次竞争才告于段落，结果有两种，要么成功获取到锁（不用进入到<code>AQS</code>队列中），要么，获取失败，被挂起，等待下次唤醒后继续循环尝试获取锁，值得注意的是，<code>AQS</code>的队列为FIFO队列，所以，每次被CPU假唤醒，且当前线程不是出在头节点的位置，也是会被挂起的。<code>AQS</code>通过这样的方式，实现了竞争的排队策略。</p>
+<p>看完了获取锁，在看看释放锁，具体看代码之前，我们可以先继续猜下，释放操作需要做哪些事情：</p>
+<ol>
+<li>因为获取锁的线程的节点，此时在<code>AQS</code>的头节点位置，所以，可能需要将头节点移除。</li>
+<li>而应该是直接释放锁，然后找到<code>AQS</code>的头节点，通知它可以来竞争锁了。</li>
+</ol>
+<p>是不是这样呢?我们继续来看下，同样我们用<code>ReentrantLock</code>的<code>FairSync</code>来说明：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730012.png" alt=""></p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730013.png" alt=""></p>
+<p><code>unlock方法</code>调用了<code>AQS</code>的<code>release</code>方法，同样传入了参数1，和获取锁的相应对应，获取一个锁，标示为+1，释放一个锁，标志位-1。</p>
+<p>同样，<code>release</code>为空方法，子类自己实现逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">       <span class="keyword">int</span> c = getState() - releases; </div><div class="line">       <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread()) <span class="comment">//如果释放的线程和获取锁的线程不是同一个，抛出非法监视器状         态异常。</span></div><div class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">       <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">       <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;<span class="comment">//因为是重入的关系，不是每次释放锁c都等于0，直到最后一次释放锁时，才通知AQS不需要再记录哪个线程正在获取锁。</span></div><div class="line">           free = <span class="keyword">true</span>;</div><div class="line">           setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">       &#125;</div><div class="line">       setState(c);</div><div class="line">       <span class="keyword">return</span> free;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>释放锁，成功后，找到<code>AQS</code>的头节点，并唤醒它即可：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730014.png" alt=""></p>
+<p>值得注意的是，寻找的顺序是从队列尾部开始往前去找的最前面的一个<code>waitStatus</code>小于0的节点。</p>
+<p>到此，<code>ReentrantLock</code>的<code>lock和unlock方法</code>已经基本解析完毕了，唯独还剩下一个非公平锁<code>NonfairSync</code>没说，其实，它和公平锁的唯一区别就是获取锁的方式不同，一个是按前后顺序一次获取锁，一个是抢占式的获取锁，那<code>ReentrantLock</code>是怎么实现的呢？再看两段代码：</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730015.png" alt=""></p>
+<p>非公平锁的<code>lock方法</code>的处理方式是: 在<code>lock</code>的时候先直接<code>cas</code>修改一次<code>state变量</code>（尝试获取锁），成功就返回，不成功再排队，从而达到不排队直接抢占的目的。</p>
+<p><img src="http://cdn4.infoqstatic.com/statics_s2_20161214-0550/resource/articles/jdk1.8-abstractqueuedsynchronizer/zh/resources/0730016.png" alt=""></p>
+<p>而对于公平锁：则是老老实实的开始就走<code>AQS</code>的流程排队获取锁。如果前面有人调用过其<code>lock</code>方法，则排在队列中前面，也就更有机会更早的获取锁，从而达到“公平”的目的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇文章，我们从<code>ReentrantLock</code>出发，完整的分析了<code>AQS</code>独占功能的<code>API</code>及内部实现，总的来说，思路其实并不复杂，还是使用的标志位+队列的方式，记录获取锁、竞争锁、释放锁等一系列锁的状态，或许用更准确一点的描述的话，应该是使用的标志位+队列的方式，记录锁、竞争、释放等一系列独占的状态，因为站在<code>AQS</code>的层面state可以表示锁，也可以表示其他状态，它并不关心它的子类把它变成一个什么工具类，而只是提供了一套维护一个独占状态。甚至，最准确的是<code>AQS</code>只是维护了一个状态，因为，别忘了，它还有一套共享状态的<code>API</code>，所以，<code>AQS</code>只是维护一个状态，一个控制各个线程何时可以访问的状态，它只对状态负责，而这个状态表示什么含义，由子类自己去定义。</p>
+<p>转自 <a href="http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer" target="_blank" rel="external">http://www.infoq.com/cn/articles/jdk1.8-abstractqueuedsynchronizer</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/16/Redis 集群操作/" rel="next" title="Redis 集群操作">
+                <i class="fa fa-chevron-left"></i> Redis 集群操作
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/"
+           data-title="" data-url="https://muyinchen.github.io/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">35</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深度解析Java-8：JDK1-8-AbstractQueuedSynchronizer的实现分析（上）"><span class="nav-number">1.</span> <span class="nav-text">深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#keywords-并发源码解读"><span class="nav-number">1.1.</span> <span class="nav-text">keywords:  并发源码解读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#细说AQS"><span class="nav-number">1.3.</span> <span class="nav-text">细说AQS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#独占锁"><span class="nav-number">1.3.1.</span> <span class="nav-text">独占锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
