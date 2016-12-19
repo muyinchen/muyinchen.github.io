@@ -1,0 +1,704 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="单点登录 Migo商城2.0" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="单点登录的实现原理单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单点登录的实现原理">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="单点登录的实现原理单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。">
+<meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222043593482457.png">
+<meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222046506453455.png">
+<meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222048373015306.png">
+<meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222049506614217.png">
+<meta property="og:updated_time" content="2016-12-19T12:31:36.269Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单点登录的实现原理">
+<meta name="twitter:description" content="单点登录的实现原理单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。">
+<meta name="twitter:image" content="http://images.cnitblog.com/i/548874/201406/222043593482457.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/"/>
+
+
+  <title> 单点登录的实现原理 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                单点登录的实现原理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-19T20:32:04+08:00" content="2016-12-19">
+              2016-12-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/19/单点登录的实现原理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/19/单点登录的实现原理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="单点登录的实现原理"><a href="#单点登录的实现原理" class="headerlink" title="单点登录的实现原理"></a>单点登录的实现原理</h1><p>单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。<br><a id="more"></a></p>
+<h2 id="一、共享Session"><a href="#一、共享Session" class="headerlink" title="一、共享Session"></a>一、共享<code>Session</code></h2><p>　　共享<code>Session</code>可谓是实现单点登录最直接、最简单的方式。将用户认证信息保存于<code>Session</code>中，即以<code>Session</code>内存储的值为用户凭证，这在单个站点内使用是很正常也很容易实现的，而在用户验证、用户信息管理与业务应用分离的场景下即会遇到单点登录的问题，在应用体系简单，子系统很少的情况下，可以考虑采用<code>Session</code>共享的方法来处理这个问题。</p>
+<p><img src="http://images.cnitblog.com/i/548874/201406/222043593482457.png" alt=""></p>
+<p>　　这个架构我使用了基于Redis的<code>Session</code>共享方案。将<code>Session</code>存储于<code>Redis</code>上，然后将整个系统的全局<code>Cookie Domain</code>设置于顶级域名上，这样<code>SessionID</code>就能在各个子系统间共享。</p>
+<p>　　这个方案存在着严重的扩展性问题，首先，ASP.NET的<code>Session</code>存储必须为<code>SessionStateItemCollection</code>对象，而存储的结构是经过序列化后经过加密存储的。并且当用户访问应用时，他首先做的就是将存储容器里的所有内容全部取出，并且反序列化为SessionStateItemCollection对象。这就决定了他具有以下约束：</p>
+<p>　　1、  <code>Session</code>中所涉及的类型必须是子系统中共同拥有的（即程序集、类型都需要一致），这导致<code>Session</code>的使用受到诸多限制；</p>
+<p>　　2、  跨顶级域名的情况完全无法处理；</p>
+<h2 id="二、基于OpenId的单点登录"><a href="#二、基于OpenId的单点登录" class="headerlink" title="　　二、基于OpenId的单点登录"></a>　　二、基于<code>OpenId</code>的单点登录</h2><p>　　这种单点登录将用户的身份标识信息简化为<code>OpenId</code>存放于客户端，当用户登录某个子系统时，将<code>OpenId</code>传送到服务端，服务端根据<code>OpenId</code>构造用户验证信息，多用于<code>C/S</code>与<code>B/S</code>相结合的系统，流程如下：</p>
+<p><img src="http://images.cnitblog.com/i/548874/201406/222046506453455.png" alt=""></p>
+<p>　　由上图可以看到，这套单点登录依赖于<code>OpenId</code>的传递，其验证的基础在于<code>OpenId</code>的存储以及发送。</p>
+<p>　　　1、当用户第一次登录时，将用户名密码发送给验证服务；</p>
+<p>　　　2、验证服务将用户标识<code>OpenId</code>返回到客户端；</p>
+<p>　　   3、客户端进行存储；</p>
+<p>　　　4、访问子系统时，将<code>OpenId</code>发送到子系统；</p>
+<p>　　　5、子系统将<code>OpenId</code>转发到验证服务；</p>
+<p>　　　6、验证服务将用户认证信息返回给子系统；</p>
+<p>　　　7、子系统构建用户验证信息后将授权后的内容返回给客户端。</p>
+<p>　　这套单点登录验证机制的主要问题在于他基于<code>C/S</code>架构下将用户的<code>OpenId</code>存储于客户端，在子系统之间发送<code>OpenId</code>，而<code>B/S模式</code>下要做到这一点就显得较为困难。为了处理这个问题我们将引出下一种方式，这种方式将解决<code>B/S</code>模式下的<code>OpenId</code>的存储、传递问题。</p>
+<h2 id="三、基于Cookie的OpenId存储方案"><a href="#三、基于Cookie的OpenId存储方案" class="headerlink" title="　　三、基于Cookie的OpenId存储方案"></a>　　三、基于<code>Cookie</code>的<code>OpenId</code>存储方案</h2><p>　　我们知道，<code>Cookie</code>的作用在于充当一个信息载体在<code>Server端</code>和<code>Browser端</code>进行信息传递，而<code>Cookie</code>一般是以域名为分割的，例如<code>a.xxx.com</code>与<code>b.xxx.com</code>的<code>Cookie</code>是不能互相访问的，但是子域名是可以访问上级域名的<code>Cookie</code>的。即<code>a.xxx.com</code>和<code>b.xxx.com</code>是可以访问<code>xxx.com</code>下的<code>Cookie</code>的，于是就能将顶级域名的<code>Cookie</code>作为<code>OpenId</code>的载体。</p>
+<p>　　<img src="http://images.cnitblog.com/i/548874/201406/222048373015306.png" alt=""></p>
+<p>　　验证步骤和上第二个方法非常相似：</p>
+<p>　　1、  在提供验证服务的站点里登录；</p>
+<p>　　2、  将<code>OpenId</code>写入顶级域名<code>Cookie</code>里；</p>
+<p>　　3、  访问子系统（<code>Cookie</code>里带有<code>OpenId</code>）</p>
+<p>　　4、  子系统取出<code>OpenId</code>通过并向验证服务发送<code>OpenId</code></p>
+<p>　　5、  返回用户认证信息</p>
+<p>　　6、  返回授权后的内容</p>
+<p>　　在以上两种方法中我们都可以看到通过OpenId解耦了<code>Session</code>共享方案中的类型等问题，并且构造用户验证信息将更灵活，子系统间的验证是相互独立的，但是在第三种方案里，我们基于所有子系统都是同一个顶级域名的假设，而在实际生产环境里有多个域名是很正常的事情，那么就不得不考虑跨域问题究竟如何解决。</p>
+<h2 id="四、B-S多域名环境下的单点登录处理"><a href="#四、B-S多域名环境下的单点登录处理" class="headerlink" title="　　四、B/S多域名环境下的单点登录处理"></a>　　四、B/S多域名环境下的单点登录处理</h2><p>　　　在多个顶级域名的情况下，我们将无法让各个子系统的<code>OpenId</code>共享。处理<code>B/S</code>环境下的跨域问题，我们首先就应该想到<code>JSONP</code>的方案。</p>
+<p><img src="http://images.cnitblog.com/i/548874/201406/222049506614217.png" alt=""></p>
+<p>　　验证步骤如下：</p>
+<p>　　1、  用户通过登录子系统进行用户登录；</p>
+<p>　　2、  用户登录子系统记录了用户的登录状态、<code>OpenId</code>等信息；</p>
+<p>　　3、  用户使用业务子系统；</p>
+<p>　　4、  若用户未登录业务子系统则将用户跳转至用户登录子系统；</p>
+<p>　　5、  用户子系统通过<code>JSONP</code>接口将用户<code>OpenId</code>传给业务子系统；</p>
+<p>　　6、  业务子系统通过<code>OpenId</code>调用验证服务；</p>
+<p>　　7、  验证服务返回认证信息、业务子系统构造用户登录凭证；（此时用户客户端已经与子业务系统的验证信息已经一一对应）</p>
+<p>　　8、  将用户登录结果返回用户登录子系统，若成功登录则将用户跳转回业务子系统；</p>
+<p>　　9、  将授权后的内容返回客户端；</p>
+<h2 id="五、安全问题"><a href="#五、安全问题" class="headerlink" title="　　五、安全问题"></a>　　五、安全问题</h2><p>　　经过以上步骤，跨域情况下的单点登录问题已经可以得到解决。而在整个开发过程初期，我们采用用户表中纪录一个<code>OpenId字段</code>来保存用户<code>OpenId</code>，而这个机制下很明显存在一些安全性、扩展性问题。这个扩展性问题主要体现在一个方面：<code>OpenId</code>的安全性和用户体验的矛盾。</p>
+<p>　　整个单点登录的机制决定了<code>OpenId</code>是会出现在客户端的，所以<code>OpenId</code>需要有过期机制，假如用户在一个终端登录的话可以选择在用户每次登录或者每次退出时刷新<code>OpenId</code>，而在多终端登录的情况下就会出现矛盾：当一个终端刷新了<code>OpenId</code>之后其他终端将无法正常授权。而最终，我采用了单用户<code>多OpenId</code>的解决方案。每次用户通过用户名/密码登录时，产生一个<code>OpenId</code>保存在<code>Redis</code>里，并且设定过期时间，这样多个终端登录就会有<code>多个OpenId</code>与之对应，<code>不再会存在一个OpenId失效所有终端验证都失效的情况</code>。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Migo商城2-0/" rel="tag">#Migo商城2.0</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/18/深度解析`Java 8：JDK1.8 AbstractQueuedSynchronizer`的实现分析（上）/" rel="next" title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）">
+                <i class="fa fa-chevron-left"></i> 深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（上）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/19/单点登录的实现原理/"
+           data-title="单点登录的实现原理" data-url="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单点登录的实现原理"><span class="nav-number">1.</span> <span class="nav-text">单点登录的实现原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、共享Session"><span class="nav-number">1.1.</span> <span class="nav-text">一、共享Session</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、基于OpenId的单点登录"><span class="nav-number">1.2.</span> <span class="nav-text">　　二、基于OpenId的单点登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、基于Cookie的OpenId存储方案"><span class="nav-number">1.3.</span> <span class="nav-text">　　三、基于Cookie的OpenId存储方案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、B-S多域名环境下的单点登录处理"><span class="nav-number">1.4.</span> <span class="nav-text">　　四、B/S多域名环境下的单点登录处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、安全问题"><span class="nav-number">1.5.</span> <span class="nav-text">　　五、安全问题</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
