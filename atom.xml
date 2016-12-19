@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-12-19T12:36:41.123Z</updated>
+  <updated>2016-12-19T12:39:13.285Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,9 +20,10 @@
     <link href="https://muyinchen.github.io/2016/12/19/%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%60Java%208%EF%BC%9AAbstractQueuedSynchronizer%60%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%88%86%E6%9E%90%EF%BC%88%E4%B8%8B%EF%BC%89/"/>
     <id>https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/</id>
     <published>2016-12-19T12:36:56.833Z</published>
-    <updated>2016-12-19T12:36:41.123Z</updated>
+    <updated>2016-12-19T12:39:13.285Z</updated>
     
     <content type="html"><![CDATA[<h1 id="深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）"><a href="#深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）" class="headerlink" title="深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）"></a>深度解析<code>Java 8：AbstractQueuedSynchronizer</code>的实现分析（下）</h1><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="external"><code>jdk8</code> 版本并发源码解读</a></p>
+<a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>经过本系列的上半部分<a href="">JDK1.8 AbstractQueuedSynchronizer的实现分析（上）</a>的解读，相信很多读者已经对<code>AbstractQueuedSynchronizer</code>(下文简称AQS)的独占功能了然于胸,那么这次我们通过对另一个工具类:<code>CountDownLatch</code>的分析来解读<code>AQS</code>的另外一个功能：共享功能。</p>
 <h2 id="AQS共享功能的实现"><a href="#AQS共享功能的实现" class="headerlink" title="AQS共享功能的实现"></a><code>AQS</code>共享功能的实现</h2><p>在开始解读<code>AQS</code>的共享功能前，我们再重温一下<code>CountDownLatch</code>，<code>CountDownLatch</code>为<code>java.util.concurrent</code>包下的计数器工具类，常被用在多线程环境下，它在初始时需要指定一个计数器的大小，然后可被多个线程并发的实现减1操作，并在计数器为0后调用<code>await</code>方法的线程被唤醒，从而实现多线程间的协作。它在多线程环境下的基本使用方式为：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main thread</span></div><div class="line">      <span class="comment">// 新建一个CountDownLatch，并指制定一个初始大小</span></div><div class="line">      CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">3</span>);</div><div class="line">      <span class="comment">// 调用await方法后，main线程将阻塞在这里，直到countDownLatch 中的计数为0 </span></div><div class="line">      countDownLatch.await();</div><div class="line">      System.out.println(<span class="string">"over"</span>);</div><div class="line"></div><div class="line">     <span class="comment">//thread1</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div><div class="line"></div><div class="line">     <span class="comment">//thread2</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div><div class="line"></div><div class="line">       <span class="comment">//thread3</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div></pre></td></tr></table></figure>
@@ -117,7 +118,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）&quot;&gt;&lt;a href=&quot;#深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）&quot; class=&quot;headerlink&quot; title=&quot;深度
+      &lt;h1 id=&quot;深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）&quot;&gt;&lt;a href=&quot;#深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）&quot; class=&quot;headerlink&quot; title=&quot;深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）&quot;&gt;&lt;/a&gt;深度解析&lt;code&gt;Java 8：AbstractQueuedSynchronizer&lt;/code&gt;的实现分析（下）&lt;/h1&gt;&lt;p&gt;更多多线程&lt;code&gt;API&lt;/code&gt;解析请参考&lt;a href=&quot;https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB&quot;&gt;&lt;code&gt;jdk8&lt;/code&gt; 版本并发源码解读&lt;/a&gt;&lt;/p&gt;
     
     </summary>
     
