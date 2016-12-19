@@ -252,6 +252,145 @@
             
               
                 
+                <a class="post-title-link" href="/2016/11/10/Migo商城  对代码的二次优化封装  四/" itemprop="url">
+                  Migo商城2.0 参考通用mapper思想对service代码的二次优化封装  四
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-10T21:13:25+08:00" content="2016-11-10">
+              2016-11-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
+                    <span itemprop="name">Migo商城2.0</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/11/10/Migo商城  对代码的二次优化封装  四/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/10/Migo商城  对代码的二次优化封装  四/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Migo商城-参考通用mapper思想对service代码的二次优化封装-四"><a href="#Migo商城-参考通用mapper思想对service代码的二次优化封装-四" class="headerlink" title="Migo商城  参考通用mapper思想对service代码的二次优化封装  四"></a>Migo商城  参考通用mapper思想对service代码的二次优化封装  四</h2><p>上一篇通过域名访问，nginx反向代理的效果图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/nginx%E6%95%88%E6%9E%9C.png" alt=""></p>
+<p>然后步入正题：</p>
+<p>对比第一版的代码，这里再贴段的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ItemCatService</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ItemCatMapper itemCatMapper;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> List&lt;ItemCat&gt; <span class="title">getItemCatList</span><span class="params">(Long parentId)</span> </span>&#123;</div><div class="line">        ItemCat example = <span class="keyword">new</span> ItemCat();</div><div class="line">        example.setParentId(parentId);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.itemCatMapper.select(example);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>其实很多service都会用到这些增删改查，既然通用mapper可以做封装，我们何不学通用mapper做过通用service？自己造个适合自己的小轮子</p>
+<p>要添加的通用方法：</p>
+<p>1、  <code>queryById</code></p>
+<p>2、  <code>queryAll</code></p>
+<p>3、  <code>queryOne</code></p>
+<p>4、  <code>queryListByWhere</code></p>
+<p>5、  <code>queryPageListByWhere</code></p>
+<p>6、  <code>save</code></p>
+<p>7、  <code>update</code></p>
+<p>8、  <code>deleteById</code></p>
+<p>9、  <code>deleteByIds</code></p>
+<p>10、 <code>deleteByWhere</code><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/11/10/Migo商城  对代码的二次优化封装  四/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/11/10/Migo商城2.0 Nginx的安装与使用 三/" itemprop="url">
                   Migo商城2.0 Nginx的安装与使用 三
                 </a>
@@ -992,7 +1131,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
