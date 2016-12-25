@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="缓存 redis" />
+  <meta name="keywords" content="AOP，Spring" />
 
 
 
@@ -86,22 +86,16 @@
 
 
 
-<meta name="description" content="缓存浅析 一  常用的缓存技术1、常见的两种缓存
-本地缓存：不需要序列化，速度快，缓存的数量与大小受限于本机内存
-分布式缓存：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）">
+<meta name="description" content="谈 AOP 的通俗理解最近在翻译Spring Framework 5.0.0.M3中文文档 ,看到AOP时索性把自己的理解写写。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="缓存浅析 一  常用的缓存技术">
-<meta property="og:url" content="https://muyinchen.github.io/2016/11/18/缓存浅析 一  常用的缓存技术 /index.html">
+<meta property="og:title" content="谈 `AOP` 的通俗理解">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/25/谈 `AOP` 的通俗理解/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="缓存浅析 一  常用的缓存技术1、常见的两种缓存
-本地缓存：不需要序列化，速度快，缓存的数量与大小受限于本机内存
-分布式缓存：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）">
-<meta property="og:updated_time" content="2016-11-18T11:40:35.709Z">
+<meta property="og:description" content="谈 AOP 的通俗理解最近在翻译Spring Framework 5.0.0.M3中文文档 ,看到AOP时索性把自己的理解写写。">
+<meta property="og:updated_time" content="2016-12-25T03:43:19.592Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="缓存浅析 一  常用的缓存技术">
-<meta name="twitter:description" content="缓存浅析 一  常用的缓存技术1、常见的两种缓存
-本地缓存：不需要序列化，速度快，缓存的数量与大小受限于本机内存
-分布式缓存：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）">
+<meta name="twitter:title" content="谈 `AOP` 的通俗理解">
+<meta name="twitter:description" content="谈 AOP 的通俗理解最近在翻译Spring Framework 5.0.0.M3中文文档 ,看到AOP时索性把自己的理解写写。">
 
 
 
@@ -122,10 +116,10 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/11/18/缓存浅析 一  常用的缓存技术 /"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/25/谈 `AOP` 的通俗理解/"/>
 
 
-  <title> 缓存浅析 一  常用的缓存技术 | 一叶知秋 </title>
+  <title> 谈 `AOP` 的通俗理解 | 一叶知秋 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -256,7 +250,7 @@
             
             
               
-                缓存浅析 一  常用的缓存技术
+                谈 `AOP` 的通俗理解
               
             
           </h1>
@@ -268,8 +262,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-18T19:40:48+08:00" content="2016-11-18">
-              2016-11-18
+            <time itemprop="dateCreated" datetime="2016-12-25T11:43:52+08:00" content="2016-12-25">
+              2016-12-25
             </time>
           </span>
 
@@ -282,8 +276,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/缓存/" itemprop="url" rel="index">
-                    <span itemprop="name">缓存</span>
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
                   </a>
                 </span>
 
@@ -298,8 +292,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/11/18/缓存浅析 一  常用的缓存技术 /#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/18/缓存浅析 一  常用的缓存技术 /" itemprop="commentsCount"></span>
+                <a href="/2016/12/25/谈 `AOP` 的通俗理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/25/谈 `AOP` 的通俗理解/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -327,36 +321,16 @@
       
 
       
-        <h2 id="缓存浅析-一-常用的缓存技术"><a href="#缓存浅析-一-常用的缓存技术" class="headerlink" title="缓存浅析 一  常用的缓存技术"></a>缓存浅析 一  常用的缓存技术</h2><h3 id="1、常见的两种缓存"><a href="#1、常见的两种缓存" class="headerlink" title="1、常见的两种缓存"></a>1、常见的两种缓存</h3><ul>
-<li><code>本地缓存</code>：不需要序列化，速度快，缓存的数量与大小受限于本机内存</li>
-<li><p><code>分布式缓存</code>：需要序列化，速度相较于本地缓存较慢，但是理论上缓存的数量与大小无限（因为缓存机器可以不断扩展）</p>
-<a id="more"></a>
-<h3 id="2、本地缓存"><a href="#2、本地缓存" class="headerlink" title="2、本地缓存"></a>2、本地缓存</h3></li>
-<li><p><code>Google guava cache</code>：当下最好用的本地缓存</p>
-</li>
-<li><code>Ehcache</code>：<code>spring</code>默认集成的一个缓存，以spring cache的底层缓存实现类形式去操作缓存的话，非常方便，但是欠缺灵活，如果想要灵活使用，还是要单独使用<code>Ehcache</code></li>
-<li><code>Oscache</code>：最经典简单的页面缓存</li>
-</ul>
-<h3 id="3、分布式缓存"><a href="#3、分布式缓存" class="headerlink" title="3、分布式缓存"></a>3、分布式缓存</h3><ol>
-<li><code>memcached</code>：分布式缓存的标配</li>
-<li><code>Redis</code>：新一代的分布式缓存，有替代memcached的趋势</li>
-</ol>
-<h4 id="3-1、memcached"><a href="#3-1、memcached" class="headerlink" title="3.1、memcached"></a>3.1、memcached</h4><ul>
-<li><code>经典的一致性hash算法</code></li>
-<li><code>基于slab的内存模型有效防止内存碎片的产生</code>（但同时也需要估计好启动参数，否则会浪费很多的内存）</li>
-<li><code>集群中机器之间互不通信</code>（相较于Jboss cache等集群中机器之间的相互通信的缓存，速度更快&lt;–因为少了同步更新缓存的开销，且更适合于大型分布式系统中使用）</li>
-<li><code>使用方便</code>（这一点是相较于Redis在构建客户端的时候而言的，尽管redis的使用也不困难）</li>
-<li><code>很专一</code>（专做缓存，这一点也是相较于Redis而言的）</li>
-</ul>
-<h4 id="3-2、Redis"><a href="#3-2、Redis" class="headerlink" title="3.2、Redis"></a>3.2、Redis</h4><blockquote>
-<p><code>可以存储复杂的数据结构（5种）</code><br>strings–&gt;即简单的key-value，就是memcached可以存储的唯一的一种形式，接下来的四种是memcached不能直接存储的四种格式（当然理论上可以先将下面的一些数据结构中的东西封装成对象，然后存入memcached，但是不推荐将大对象存入memcached，因memcached的单一value的最大存储为1M，可能即使采用了压缩算法也不够，即使够，可能存取的效率也不高，而redis的value最大为1G）<br>hashs–&gt;看做hashTable<br>lists–&gt;看做LinkedList<br>sets–&gt;看做hashSet，事实上底层是一个hashTable<br>sorted sets–&gt;底层是一个skipList<br><code>有两种方式可以对缓存数据进行持久化</code><br>RDB<br>AOF<br><code>事件调度</code><br><code>发布订阅等</code></p>
-</blockquote>
-<h4 id="4、集成缓存"><a href="#4、集成缓存" class="headerlink" title="4、集成缓存"></a>4、集成缓存</h4><p>专指spring cache，spring cache自己继承了ehcache作为了缓存的实现类，我们也可以使用guava cache、memcached、redis<br>自己来实现spring cache的底层。当然，spring cache可以根据实现类来将缓存存在本地还是存在远程机器上。</p>
-<h4 id="5、页面缓存"><a href="#5、页面缓存" class="headerlink" title="5、页面缓存"></a>5、页面缓存</h4><p>在使用jsp的时候，我们会将一些复杂的页面使用O scache进行页面缓存，使用非常简单，就是几个标签的事儿；但是，现在一般的企业，<br>前台都会使用velocity、freemaker这两种模板引擎，本身速度就已经很快了，页面缓存使用的也就很少了。</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><blockquote>
-<p>在实际生产中，我们通常会使用guava cache做本地缓存+redis做分布式缓存+spring cache就集成缓存（底层使用redis来实现）的形式<br>guava cache使用在更快的获取缓存数据，同时缓存的数据量并不大的情况<br>spring cache集成缓存是为了简单便捷的去使用缓存（以注解的方式即可），使用redis做其实现类是为了可以存更多的数据在机器上<br>redis缓存单独使用是为了弥补spring cache集成缓存的不灵活<br>就我个人而言，如果需要使用分布式缓存，那么首先redis是必选的，因为在实际开发中，我们会缓存各种各样的数据类型，在使用了redis的同时，memcached就完全可以舍弃了，但是现在还有很多公司在同时使用memcached和redis两种缓存。<br>接下来的介绍中，会介绍在分布式情况下guava cache、memcached、redis、spring cache的使用与原理。</p>
-</blockquote>
-
+        <h1 id="谈-AOP-的通俗理解"><a href="#谈-AOP-的通俗理解" class="headerlink" title="谈 AOP 的通俗理解"></a>谈 <code>AOP</code> 的通俗理解</h1><p>最近在翻译<a href="https://www.gitbook.com/book/muyinchen/spring-framework-5-0-0-m3/details" target="_blank" rel="external">Spring Framework 5.0.0.M3中文文档</a> ,看到<code>AOP</code>时索性把自己的理解写写。<br><a id="more"></a><br>Spring的面向方面的编程（<code>AOP</code>）,国内大都说面向切面，其实我还是觉得面向方面最恰当，何解？那就扯一扯。</p>
+<p><strong>1.</strong> <code>AOP</code>相关的概念</p>
+<p>1） <em><code>Aspect</code></em> ：切面，切入系统的一个切面。比如事务管理是一个切面，权限管理也是一个切面；</p>
+<p>2） <em><code>Join point</code></em> ：连接点，也就是可以进行横向切入的位置；</p>
+<p>3） <em><code>Advice</code></em> ：通知，切面在某个连接点执行的操作(分为: <em><code>Before advice</code></em> , <em><code>After returning advice</code></em> , <em><code>After throwing advice</code></em> , <em><code>After (finally) advice</code></em> , <em><code>Around advice</code></em> )；</p>
+<p>4） <em><code>Pointcut</code></em> ：切点，符合切点表达式的连接点，也就是真正被切入的地方；</p>
+<p>​      这就好比一团面，都是一团白面，根据食谱的不同，我们做什么样的面食即可，厨师关心的是做法，而客人关心的是色香味，再进一步的说，我同样的做面方法，完全可以用不一样的面粉(白面，玉米面，荞麦面等等)，由此便可抽象出面团便是所谓的切点，而面团的加工，比如加水，放鸡蛋，放油，盐等的各种加工便是面的前置方法<em><code>Before advice</code></em>，将面团炸，煎，煮等做出成品来便是其后置方法<em><code>After advice</code></em> ，期间有所谓的环绕方法<em><code>Around advice</code></em> ，而客人的品评则是<em><code>finally  advice</code></em> 中间出现问题了所造成的事件 <em><code>After throwing advice</code></em>   仅供理解，里面可能有不恰当的地方，但自己写代码的时注意即可，由此，这个做面的过程便是面向方面编程即所谓的一个切面(<em><code>Aspect</code></em> )</p>
+<p>​     而<code>AOP</code>的核心思想所在便是要求程序员专注于自己的逻辑业务，而非这团面，得以更好的去处理各种问题，从本质上进行解耦。</p>
+<p>​    最后，再贴上一段代码来做参考对比：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="meta">@Component</span> <span class="comment">// for auto scan</span></div><div class="line"><span class="comment">//@Order(2)</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogInterceptor</span> </span>&#123;	</div><div class="line">	<span class="meta">@Pointcut</span>(<span class="string">"execution(public * net.aazj.service..*.getUser(..))"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">myMethod</span><span class="params">()</span></span>&#123;&#125;;</div><div class="line">	<span class="meta">@Before</span>(<span class="string">"myMethod()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"method start"</span>);</div><div class="line">	&#125; </div><div class="line">	<span class="meta">@After</span>(<span class="string">"myMethod()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">after</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"method after"</span>);</div><div class="line">	&#125; </div><div class="line">	<span class="meta">@AfterReturning</span>(<span class="string">"execution(public * net.aazj.mapper..*.*(..))"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AfterReturning</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"method AfterReturning"</span>);</div><div class="line">	&#125; </div><div class="line">	<span class="meta">@AfterThrowing</span>(<span class="string">"execution(public * net.aazj.mapper..*.*(..))"</span>)</div><div class="line"><span class="comment">//  @Around("execution(public * net.aazj.mapper..*.*(..))")</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AfterThrowing</span><span class="params">()</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"method AfterThrowing"</span>);</div><div class="line">	&#125; </div><div class="line">	<span class="meta">@Around</span>(<span class="string">"execution(public * net.aazj.mapper..*.*(..))"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">Around</span><span class="params">(ProceedingJoinPoint jp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">		System.out.println(<span class="string">"method Around"</span>);</div><div class="line">		SourceLocation sl = jp.getSourceLocation();</div><div class="line">		Object ret = jp.proceed();</div><div class="line">		System.out.println(jp.getTarget());</div><div class="line">		<span class="keyword">return</span> ret;</div><div class="line">	&#125; </div><div class="line">	<span class="meta">@Before</span>(<span class="string">"execution(public * net.aazj.service..*.getUser(..)) &amp;&amp; args(userId,..)"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before3</span><span class="params">(<span class="keyword">int</span> userId)</span> </span>&#123;</div><div class="line">		System.out.println(<span class="string">"userId-----"</span> + userId);</div><div class="line">	&#125;  </div><div class="line">	<span class="meta">@Before</span>(<span class="string">"myMethod()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before2</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		Object[] args = jp.getArgs();</div><div class="line">		System.out.println(<span class="string">"userId11111: "</span> + (Integer)args[<span class="number">0</span>]);</div><div class="line">		System.out.println(jp.getTarget());</div><div class="line">		System.out.println(jp.getThis());</div><div class="line">		System.out.println(jp.getSignature());</div><div class="line">		System.out.println(<span class="string">"method start"</span>);</div><div class="line">	&#125;	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -378,7 +352,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/缓存-redis/" rel="tag">#缓存 redis</a>
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
           
         </div>
       
@@ -387,17 +361,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/17/Migo商城2.0  门户首页左侧商品类目显示 十四/" rel="next" title="Migo商城2.0  门户首页左侧商品类目显示 十四">
-                <i class="fa fa-chevron-left"></i> Migo商城2.0  门户首页左侧商品类目显示 十四
+              <a href="/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/" rel="next" title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下）">
+                <i class="fa fa-chevron-left"></i> 深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下）
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/20/Migo商城2.0  门户首页大广告位显示(1) 十五/" rel="prev" title="Migo商城2.0 门户首页大广告位显示(1) 十五">
-                Migo商城2.0 门户首页大广告位显示(1) 十五 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,8 +393,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/18/缓存浅析 一  常用的缓存技术 /"
-           data-title="缓存浅析 一  常用的缓存技术" data-url="https://muyinchen.github.io/2016/11/18/缓存浅析 一  常用的缓存技术 /">
+      <div class="ds-thread" data-thread-key="2016/12/25/谈 `AOP` 的通俗理解/"
+           data-title="谈 `AOP` 的通俗理解" data-url="https://muyinchen.github.io/2016/12/25/谈 `AOP` 的通俗理解/">
       </div>
     
   </div>
@@ -522,7 +492,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存浅析-一-常用的缓存技术"><span class="nav-number">1.</span> <span class="nav-text">缓存浅析 一  常用的缓存技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、常见的两种缓存"><span class="nav-number">1.1.</span> <span class="nav-text">1、常见的两种缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、本地缓存"><span class="nav-number">1.2.</span> <span class="nav-text">2、本地缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、分布式缓存"><span class="nav-number">1.3.</span> <span class="nav-text">3、分布式缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1、memcached"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1、memcached</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2、Redis"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2、Redis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、集成缓存"><span class="nav-number">1.3.3.</span> <span class="nav-text">4、集成缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、页面缓存"><span class="nav-number">1.3.4.</span> <span class="nav-text">5、页面缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">1.4.</span> <span class="nav-text">总结：</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#谈-AOP-的通俗理解"><span class="nav-number">1.</span> <span class="nav-text">谈 AOP 的通俗理解</span></a></li></ol></div>
             
           </div>
         </section>
