@@ -1,0 +1,793 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RabbitMQ" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Messaging with RabbitMQ本文翻译自：https://spring.io/guides/gs/messaging-rabbitmq/打算翻译一批Spring的各种指引文档，此为第一篇
+本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Messaging with RabbitMQ">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/27/Messaging with RabbitMQ/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Messaging with RabbitMQ本文翻译自：https://spring.io/guides/gs/messaging-rabbitmq/打算翻译一批Spring的各种指引文档，此为第一篇
+本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。">
+<meta property="og:updated_time" content="2016-12-27T03:06:00.255Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Messaging with RabbitMQ">
+<meta name="twitter:description" content="Messaging with RabbitMQ本文翻译自：https://spring.io/guides/gs/messaging-rabbitmq/打算翻译一批Spring的各种指引文档，此为第一篇
+本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/27/Messaging with RabbitMQ/"/>
+
+
+  <title> Messaging with RabbitMQ | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Messaging with RabbitMQ
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-27T11:06:33+08:00" content="2016-12-27">
+              2016-12-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spring指南/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring指南</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/27/Messaging with RabbitMQ/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/27/Messaging with RabbitMQ/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Messaging-with-RabbitMQ"><a href="#Messaging-with-RabbitMQ" class="headerlink" title="Messaging with RabbitMQ"></a>Messaging with RabbitMQ</h1><p>本文翻译自：<a href="https://spring.io/guides/gs/messaging-rabbitmq/" target="_blank" rel="external">https://spring.io/guides/gs/messaging-rabbitmq/</a><br>打算翻译一批Spring的各种指引文档，此为第一篇</p>
+<p>本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。<br><a id="more"></a></p>
+<h2 id="What-you’ll-build"><a href="#What-you’ll-build" class="headerlink" title="What you’ll build"></a>What you’ll build</h2><p>您将使用Spring AMQP的<code>RabbitTemplate</code>构建一个发布消息的应用程序，并使用<code>MessageListenerAdapter</code>订阅<a href="https://spring.io/understanding/POJO" target="_blank" rel="external">POJO</a>上的消息。</p>
+<h2 id="What-you’ll-need"><a href="#What-you’ll-need" class="headerlink" title="What you’ll need"></a>What you’ll need</h2><ul>
+<li>约15分钟</li>
+<li>最喜欢的文本编辑器或IDE</li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">JDK 1.8</a>或更高版本</li>
+<li><a href="http://www.gradle.org/downloads" target="_blank" rel="external">Gradle 2.3+</a>或<a href="http://maven.apache.org/download.cgi" target="_blank" rel="external">Maven 3.0+</a></li>
+<li>您也可以从本指南导入代码，以及直接在<a href="https://spring.io/guides/gs/sts" target="_blank" rel="external">Spring Tool Suite(STS)</a>中查看网页，并从那里开始工作 。</li>
+<li>RabbitMQ服务器(安装说明如下)<h2 id="How-to-complete-this-guide"><a href="#How-to-complete-this-guide" class="headerlink" title="How to complete this guide"></a>How to complete this guide</h2></li>
+</ul>
+<p>与大多数Spring <a href="https://spring.io/guides" target="_blank" rel="external">入门指南</a>一样，您可以从头开始并完成每个步骤，也可以绕过已经熟悉的基本设置步骤。 无论如何，你最终得到工作代码。</p>
+<p>要从头开始**，请转到<a href="https://spring.io/guides/gs/messaging-rabbitmq/#scratch" target="_blank" rel="external">使用Gradle构建</a>。</p>
+<p>要跳过基本操作**，请执行以下操作：</p>
+<ul>
+<li><a href="https://github.com/spring-guides/gs-messaging-rabbitmq/archive/master.zip" target="_blank" rel="external">下载</a>并解压缩本指南的源代码仓库，或使用<a href="https：// spring.io/understanding/Git">Git</a>：<code>git clone https：// github.com / spring-guides / gs-messaging-rabbitmq.git</code></li>
+<li>cd到<code>gs-messaging-rabbitmq / initial</code></li>
+<li>跳转到<a href="https://spring.io/guides/gs/messaging-rabbitmq/#initial" target="_blank" rel="external">创建RabbitMQ消息接收器</a>。</li>
+</ul>
+<p><strong>完成</strong>后，您可以根据<code>gs-messaging-rabbitmq / complete</code>中的代码检查结果。</p>
+<h2 id="Build-with-Gradle"><a href="#Build-with-Gradle" class="headerlink" title="Build with Gradle"></a>Build with Gradle</h2><h2 id="Build-with-Maven"><a href="#Build-with-Maven" class="headerlink" title="Build with Maven"></a>Build with Maven</h2><h2 id="Build-with-your-IDE"><a href="#Build-with-your-IDE" class="headerlink" title="Build with your IDE"></a>Build with your IDE</h2><h2 id="Set-up-RabbitMQ-broker"><a href="#Set-up-RabbitMQ-broker" class="headerlink" title="Set up RabbitMQ broker"></a>Set up RabbitMQ broker</h2><p>在构建消息传递应用程序之前，您需要设置将处理接收和发送消息的服务器。</p>
+<p>RabbitMQ是一个AMQP服务器。 服务器可以免费访问[<a href="http://www.rabbitmq.com/download.html&quot;(http://www.rabbitmq.com/download.html）。" target="_blank" rel="external">http://www.rabbitmq.com/download.html&quot;(http://www.rabbitmq.com/download.html）。</a> 你可以手动下载，或者如果你使用Mac与homebrew：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install rabbitmq</div></pre></td></tr></table></figure>
+<p>解压缩服务器并使用默认设置启动它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmq-server</div></pre></td></tr></table></figure>
+<p>你应该会看到这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">            RabbitMQ 3.1.3. Copyright (C) 2007-2013 VMware, Inc.</div><div class="line"><span class="comment">##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/</span></div><div class="line"><span class="comment">##  ##</span></div><div class="line"><span class="comment">##########  Logs: /usr/local/var/log/rabbitmq/rabbit@localhost.log</span></div><div class="line"><span class="comment">######  ##        /usr/local/var/log/rabbitmq/rabbit@localhost-sasl.log</span></div><div class="line"><span class="comment">##########</span></div><div class="line">            Starting broker... completed with 6 plugins.</div></pre></td></tr></table></figure>
+<p>如果Docker在本地运行，您还可以使用[Docker Compose]（<a href="https://docs.docker.com/compose/）快速启动RabbitMQ服务器。" target="_blank" rel="external">https://docs.docker.com/compose/）快速启动RabbitMQ服务器。</a> 在Github的“完整”项目的根目录中有一个<code>docker-compose.yml</code>。 很简单：</p>
+<p><code>docker-compose.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">rabbitmq:</div><div class="line">  image: rabbitmq:management</div><div class="line">  ports:</div><div class="line">    - &quot;5672:5672&quot;</div><div class="line">    - &quot;15672:15672&quot;</div></pre></td></tr></table></figure>
+<p>有了这个文件在当前目录中，你可以运行<code>docker-compose up</code>来使RabbitMQ在容器中运行</p>
+<h2 id="Create-a-RabbitMQ-message-receiver"><a href="#Create-a-RabbitMQ-message-receiver" class="headerlink" title="Create a RabbitMQ message receiver"></a>Create a RabbitMQ message receiver</h2><p>对于任何基于消息的应用程序，您需要创建一个接收器来响应已发布的消息。</p>
+<p><code>src/main/java/hello/Receiver.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receiver</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> CountDownLatch latch = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receiveMessage</span><span class="params">(String message)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Received &lt;"</span> + message + <span class="string">"&gt;"</span>);</div><div class="line">        latch.countDown();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> CountDownLatch <span class="title">getLatch</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> latch;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>`Receiver’是一个简单的POJO，它定义了一个接收消息的方法。 当您注册它以接收消息时，您可以将其命名为任何您想要的。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>为了方便起见，这个POJO也有一个<code>CountDownLatch</code>。 这允许它发信号通知接收到消息。 这是你不可能在生产应用程序中实现的东西。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Register-the-listener-and-send-a-message"><a href="#Register-the-listener-and-send-a-message" class="headerlink" title="Register the listener and send a message"></a>Register the listener and send a message</h2><p>Spring AMQP的`RabbitTemplate’提供了使用RabbitMQ发送和接收消息所需的一切。 具体来说，您需要配置：</p>
+<ul>
+<li>消息侦听器容器</li>
+<li>声明队列，交换和它们之间的绑定</li>
+<li>发送一些消息以测试侦听器的组件</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>Spring Boot自动创建一个连接工厂和一个RabbitTemplate，减少了你必须编写的代码量。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>你将使用<code>RabbitTemplate</code>来发送消息，你将使用消息监听器容器注册一个<code>Receiver</code>来接收消息。 连接工厂并驱动两者，允许它们连接到RabbitMQ服务器。</p>
+<p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.Binding;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.BindingBuilder;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.Queue;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.TopicExchange;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.connection.ConnectionFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">static</span> String queueName = <span class="string">"spring-boot"</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">Queue <span class="title">queue</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Queue(queueName, <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">TopicExchange <span class="title">exchange</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TopicExchange(<span class="string">"spring-boot-exchange"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">Binding <span class="title">binding</span><span class="params">(Queue queue, TopicExchange exchange)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> BindingBuilder.bind(queue).to(exchange).with(queueName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">SimpleMessageListenerContainer <span class="title">container</span><span class="params">(ConnectionFactory connectionFactory,</span></span></div><div class="line">            MessageListenerAdapter listenerAdapter) &#123;</div><div class="line">        SimpleMessageListenerContainer container = <span class="keyword">new</span> SimpleMessageListenerContainer();</div><div class="line">        container.setConnectionFactory(connectionFactory);</div><div class="line">        container.setQueueNames(queueName);</div><div class="line">        container.setMessageListener(listenerAdapter);</div><div class="line">        <span class="keyword">return</span> container;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">MessageListenerAdapter <span class="title">listenerAdapter</span><span class="params">(Receiver receiver)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MessageListenerAdapter(receiver, <span class="string">"receiveMessage"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        SpringApplication.run(Application.class, args);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@ SpringBootApplication</code>是一个方便的注解，添加了以下所有内容：</p>
+<ul>
+<li><code>@ Configuration</code>将类标记为应用程序上下文的bean定义的来源。</li>
+<li><code>@ EnableAutoConfiguration</code>告诉Spring Boot根据类路径设置，其他bean和各种属性设置开始添加bean。</li>
+<li>通常你会为Spring MVC应用程序添加<code>@ EnableWebMvc</code>，但是Spring Boot在类路径上看到<strong> spring-webmvc </strong>时会自动添加它。这将应用程序标记为Web应用程序，并激活关键行为，如设置一个“DispatcherServlet”。</li>
+<li><code>@ ComponentScan</code>告诉Spring在<code>hello</code>包中寻找其他组件，配置和服务，允许它找到控制器。</li>
+</ul>
+<p><code>main（）</code>方法使用Spring Boot的<code>SpringApplication.run（）</code>方法来启动应用程序。你有注意到一行XML？没有<strong> web.xml </strong>文件。这个Web应用程序是100％纯Java，你不必处理配置任何管道或基础设施。</p>
+<p>在<code>listenerAdapter（）</code>方法中定义的bean被注册为在<code>container（）</code>中定义的容器中的消息侦听器。它将监听“spring-boot”队列上的消息。因为<code>Receiver</code>类是一个POJO，它需要被包装在<code>MessageListenerAdapter</code>中，你可以指定它来调用<code>receiveMessage</code>。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>JMS队列和AMQP队列具有不同的语义。 例如，JMS仅向一个使用者发送排队的消息。 虽然AMQP队列做同样的事情，AMQP生产者不直接发送消息到队列。 相反，消息发送到交换，可以转到单个队列，或扇出到多个队列(1-&gt;1,1-&gt;n)，模拟JMS主题的概念。 更多，见<a href="https://spring.io/understanding/AMQP" target="_blank" rel="external">Understanding AMQP</a>.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>消息侦听器容器和receiver beans都是您侦听消息所需要的。 要发送消息，您还需要一个Rabbit模板。</p>
+<p><code>queue（）</code>方法创建一个AMQP队列。 <code>exchange（）</code>方法创建一个主题交换。 <code>binding（）</code>方法将这两个绑定在一起，定义当RabbitTemplate发布到交换时发生的行为。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>Spring AMQP要求将“Queue”，“TopicExchange”和“Binding”声明为顶级Spring bean，以便正确设置。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Send-a-Test-Message"><a href="#Send-a-Test-Message" class="headerlink" title="Send a Test Message"></a>Send a Test Message</h2><p>测试消息由<code>CommandLineRunner</code>发送，它也等待接收器中的锁存器(此处原文： the latch in the receiver )并关闭应用程序上下文：</p>
+<p><code>src/main/java/hello/Runner.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.core.RabbitTemplate;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.context.ConfigurableApplicationContext;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Runner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RabbitTemplate rabbitTemplate;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Receiver receiver;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConfigurableApplicationContext context;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Runner</span><span class="params">(Receiver receiver, RabbitTemplate rabbitTemplate,</span></span></div><div class="line">            ConfigurableApplicationContext context) &#123;</div><div class="line">        <span class="keyword">this</span>.receiver = receiver;</div><div class="line">        <span class="keyword">this</span>.rabbitTemplate = rabbitTemplate;</div><div class="line">        <span class="keyword">this</span>.context = context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Sending message..."</span>);</div><div class="line">        rabbitTemplate.convertAndSend(Application.queueName, <span class="string">"Hello from RabbitMQ!"</span>);</div><div class="line">        receiver.getLatch().await(<span class="number">10000</span>, TimeUnit.MILLISECONDS);</div><div class="line">        context.close();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The runner可以在测试中模拟出来，以便接收器可以单独测试。</p>
+<h2 id="Run-the-Application"><a href="#Run-the-Application" class="headerlink" title="Run the Application"></a>Run the Application</h2><p><code>main（）</code>方法通过创建一个Spring应用程序上下文来启动这个过程。 这将启动消息侦听容器，它将开始侦听消息。 有一个<code>Runner</code> bean然后自动执行：它从应用程序上下文中检索<code>RabbitTemplate</code>，并发送一个“RabbitMQ！”。 消息在“spring-boot”队列。 最后，它关闭Spring应用程序上下文，应用程序结束。</p>
+<h2 id="Build-an-executable-JAR"><a href="#Build-an-executable-JAR" class="headerlink" title="Build an executable JAR"></a>Build an executable JAR</h2><p>您可以使用Gradle或Maven从命令行运行应用程序。 或者，您可以构建单个可执行文件，其中包含所有必需的依赖关系，类和资源，并运行它。 这使得在整个开发生命周期中，跨不同环境等等，易于将服务作为应用程序进行发布，版本和部署。</p>
+<p>如果您使用Gradle，可以使用<code>./gradlew bootRun</code>运行应用程序。 或者你可以使用<code>./gradlew build</code>来构建JAR文件。 然后可以运行JAR文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar build/libs/gs-messaging-rabbitmq-0.1.0.jar</div></pre></td></tr></table></figure></p>
+<p>如果您使用Maven，可以使用<code>./maven spring-boot：run</code>运行应用程序。 或者你可以用<code>./mvn clean package</code>构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar target/gs-messaging-rabbitmq-0.1.0.jar</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>上面的过程将创建一个可运行的JAR。 您也可以选择[构建传统的WAR文件]（<a href="https://spring.io/guides/gs/convert-jar-to-war/" target="_blank" rel="external">https://spring.io/guides/gs/convert-jar-to-war/</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>您应该看到以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sending message...</div><div class="line">Received &lt;Hello from RabbitMQ!&gt;</div></pre></td></tr></table></figure>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>恭喜！ 你刚刚用Spring和RabbitMQ开发了一个简单的发布和订阅应用程序。 <a href="http://docs.spring.io/spring-amqp/reference/html/_introduction.html#quick-tour" target="_blank" rel="external">more you can do with Spring and RabbitMQ</a>比这里涵盖的内容更多，但这应该提供一个好的 开始。</p>
+<p>想要写一个新的指南或贡献现有的？ 查看我们的 <a href="https://github.com/spring-guides/getting-started-guides/wiki" target="_blank" rel="external">contribution guidelines</a>.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring指南/" rel="tag">#Spring指南</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/25/谈 `AOP` 的通俗理解/" rel="next" title="谈 `AOP` 的通俗理解">
+                <i class="fa fa-chevron-left"></i> 谈 `AOP` 的通俗理解
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/27/Messaging with RabbitMQ/"
+           data-title="Messaging with RabbitMQ" data-url="https://muyinchen.github.io/2016/12/27/Messaging with RabbitMQ/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">39</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Messaging-with-RabbitMQ"><span class="nav-number">1.</span> <span class="nav-text">Messaging with RabbitMQ</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-build"><span class="nav-number">1.1.</span> <span class="nav-text">What you’ll build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-need"><span class="nav-number">1.2.</span> <span class="nav-text">What you’ll need</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-complete-this-guide"><span class="nav-number">1.3.</span> <span class="nav-text">How to complete this guide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Gradle"><span class="nav-number">1.4.</span> <span class="nav-text">Build with Gradle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Maven"><span class="nav-number">1.5.</span> <span class="nav-text">Build with Maven</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-your-IDE"><span class="nav-number">1.6.</span> <span class="nav-text">Build with your IDE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set-up-RabbitMQ-broker"><span class="nav-number">1.7.</span> <span class="nav-text">Set up RabbitMQ broker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-RabbitMQ-message-receiver"><span class="nav-number">1.8.</span> <span class="nav-text">Create a RabbitMQ message receiver</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Register-the-listener-and-send-a-message"><span class="nav-number">1.9.</span> <span class="nav-text">Register the listener and send a message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Send-a-Test-Message"><span class="nav-number">1.10.</span> <span class="nav-text">Send a Test Message</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Run-the-Application"><span class="nav-number">1.11.</span> <span class="nav-text">Run the Application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-an-executable-JAR"><span class="nav-number">1.12.</span> <span class="nav-text">Build an executable JAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">1.13.</span> <span class="nav-text">Summary</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

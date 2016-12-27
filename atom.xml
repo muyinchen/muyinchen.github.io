@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2016-12-25T03:43:19.592Z</updated>
+  <updated>2016-12-27T03:06:00.255Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,162 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Messaging with RabbitMQ</title>
+    <link href="https://muyinchen.github.io/2016/12/27/Messaging%20with%20RabbitMQ/"/>
+    <id>https://muyinchen.github.io/2016/12/27/Messaging with RabbitMQ/</id>
+    <published>2016-12-27T03:06:33.560Z</published>
+    <updated>2016-12-27T03:06:00.255Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Messaging-with-RabbitMQ"><a href="#Messaging-with-RabbitMQ" class="headerlink" title="Messaging with RabbitMQ"></a>Messaging with RabbitMQ</h1><p>本文翻译自：<a href="https://spring.io/guides/gs/messaging-rabbitmq/" target="_blank" rel="external">https://spring.io/guides/gs/messaging-rabbitmq/</a><br>打算翻译一批Spring的各种指引文档，此为第一篇</p>
+<p>本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。<br><a id="more"></a></p>
+<h2 id="What-you’ll-build"><a href="#What-you’ll-build" class="headerlink" title="What you’ll build"></a>What you’ll build</h2><p>您将使用Spring AMQP的<code>RabbitTemplate</code>构建一个发布消息的应用程序，并使用<code>MessageListenerAdapter</code>订阅<a href="https://spring.io/understanding/POJO" target="_blank" rel="external">POJO</a>上的消息。</p>
+<h2 id="What-you’ll-need"><a href="#What-you’ll-need" class="headerlink" title="What you’ll need"></a>What you’ll need</h2><ul>
+<li>约15分钟</li>
+<li>最喜欢的文本编辑器或IDE</li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">JDK 1.8</a>或更高版本</li>
+<li><a href="http://www.gradle.org/downloads" target="_blank" rel="external">Gradle 2.3+</a>或<a href="http://maven.apache.org/download.cgi" target="_blank" rel="external">Maven 3.0+</a></li>
+<li>您也可以从本指南导入代码，以及直接在<a href="https://spring.io/guides/gs/sts" target="_blank" rel="external">Spring Tool Suite(STS)</a>中查看网页，并从那里开始工作 。</li>
+<li>RabbitMQ服务器(安装说明如下)<h2 id="How-to-complete-this-guide"><a href="#How-to-complete-this-guide" class="headerlink" title="How to complete this guide"></a>How to complete this guide</h2></li>
+</ul>
+<p>与大多数Spring <a href="https://spring.io/guides" target="_blank" rel="external">入门指南</a>一样，您可以从头开始并完成每个步骤，也可以绕过已经熟悉的基本设置步骤。 无论如何，你最终得到工作代码。</p>
+<p>要从头开始**，请转到<a href="https://spring.io/guides/gs/messaging-rabbitmq/#scratch" target="_blank" rel="external">使用Gradle构建</a>。</p>
+<p>要跳过基本操作**，请执行以下操作：</p>
+<ul>
+<li><a href="https://github.com/spring-guides/gs-messaging-rabbitmq/archive/master.zip" target="_blank" rel="external">下载</a>并解压缩本指南的源代码仓库，或使用<a href="https：// spring.io/understanding/Git">Git</a>：<code>git clone https：// github.com / spring-guides / gs-messaging-rabbitmq.git</code></li>
+<li>cd到<code>gs-messaging-rabbitmq / initial</code></li>
+<li>跳转到<a href="https://spring.io/guides/gs/messaging-rabbitmq/#initial" target="_blank" rel="external">创建RabbitMQ消息接收器</a>。</li>
+</ul>
+<p><strong>完成</strong>后，您可以根据<code>gs-messaging-rabbitmq / complete</code>中的代码检查结果。</p>
+<h2 id="Build-with-Gradle"><a href="#Build-with-Gradle" class="headerlink" title="Build with Gradle"></a>Build with Gradle</h2><h2 id="Build-with-Maven"><a href="#Build-with-Maven" class="headerlink" title="Build with Maven"></a>Build with Maven</h2><h2 id="Build-with-your-IDE"><a href="#Build-with-your-IDE" class="headerlink" title="Build with your IDE"></a>Build with your IDE</h2><h2 id="Set-up-RabbitMQ-broker"><a href="#Set-up-RabbitMQ-broker" class="headerlink" title="Set up RabbitMQ broker"></a>Set up RabbitMQ broker</h2><p>在构建消息传递应用程序之前，您需要设置将处理接收和发送消息的服务器。</p>
+<p>RabbitMQ是一个AMQP服务器。 服务器可以免费访问[<a href="http://www.rabbitmq.com/download.html&quot;(http://www.rabbitmq.com/download.html）。" target="_blank" rel="external">http://www.rabbitmq.com/download.html&quot;(http://www.rabbitmq.com/download.html）。</a> 你可以手动下载，或者如果你使用Mac与homebrew：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install rabbitmq</div></pre></td></tr></table></figure>
+<p>解压缩服务器并使用默认设置启动它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rabbitmq-server</div></pre></td></tr></table></figure>
+<p>你应该会看到这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">            RabbitMQ 3.1.3. Copyright (C) 2007-2013 VMware, Inc.</div><div class="line"><span class="comment">##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/</span></div><div class="line"><span class="comment">##  ##</span></div><div class="line"><span class="comment">##########  Logs: /usr/local/var/log/rabbitmq/rabbit@localhost.log</span></div><div class="line"><span class="comment">######  ##        /usr/local/var/log/rabbitmq/rabbit@localhost-sasl.log</span></div><div class="line"><span class="comment">##########</span></div><div class="line">            Starting broker... completed with 6 plugins.</div></pre></td></tr></table></figure>
+<p>如果Docker在本地运行，您还可以使用[Docker Compose]（<a href="https://docs.docker.com/compose/）快速启动RabbitMQ服务器。" target="_blank" rel="external">https://docs.docker.com/compose/）快速启动RabbitMQ服务器。</a> 在Github的“完整”项目的根目录中有一个<code>docker-compose.yml</code>。 很简单：</p>
+<p><code>docker-compose.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">rabbitmq:</div><div class="line">  image: rabbitmq:management</div><div class="line">  ports:</div><div class="line">    - &quot;5672:5672&quot;</div><div class="line">    - &quot;15672:15672&quot;</div></pre></td></tr></table></figure>
+<p>有了这个文件在当前目录中，你可以运行<code>docker-compose up</code>来使RabbitMQ在容器中运行</p>
+<h2 id="Create-a-RabbitMQ-message-receiver"><a href="#Create-a-RabbitMQ-message-receiver" class="headerlink" title="Create a RabbitMQ message receiver"></a>Create a RabbitMQ message receiver</h2><p>对于任何基于消息的应用程序，您需要创建一个接收器来响应已发布的消息。</p>
+<p><code>src/main/java/hello/Receiver.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.CountDownLatch;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receiver</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> CountDownLatch latch = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receiveMessage</span><span class="params">(String message)</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Received &lt;"</span> + message + <span class="string">"&gt;"</span>);</div><div class="line">        latch.countDown();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> CountDownLatch <span class="title">getLatch</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> latch;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>`Receiver’是一个简单的POJO，它定义了一个接收消息的方法。 当您注册它以接收消息时，您可以将其命名为任何您想要的。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>为了方便起见，这个POJO也有一个<code>CountDownLatch</code>。 这允许它发信号通知接收到消息。 这是你不可能在生产应用程序中实现的东西。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Register-the-listener-and-send-a-message"><a href="#Register-the-listener-and-send-a-message" class="headerlink" title="Register the listener and send a message"></a>Register the listener and send a message</h2><p>Spring AMQP的`RabbitTemplate’提供了使用RabbitMQ发送和接收消息所需的一切。 具体来说，您需要配置：</p>
+<ul>
+<li>消息侦听器容器</li>
+<li>声明队列，交换和它们之间的绑定</li>
+<li>发送一些消息以测试侦听器的组件</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>Spring Boot自动创建一个连接工厂和一个RabbitTemplate，减少了你必须编写的代码量。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>你将使用<code>RabbitTemplate</code>来发送消息，你将使用消息监听器容器注册一个<code>Receiver</code>来接收消息。 连接工厂并驱动两者，允许它们连接到RabbitMQ服务器。</p>
+<p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.Binding;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.BindingBuilder;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.Queue;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.core.TopicExchange;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.connection.ConnectionFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">final</span> <span class="keyword">static</span> String queueName = <span class="string">"spring-boot"</span>;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">Queue <span class="title">queue</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Queue(queueName, <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">TopicExchange <span class="title">exchange</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TopicExchange(<span class="string">"spring-boot-exchange"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">Binding <span class="title">binding</span><span class="params">(Queue queue, TopicExchange exchange)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> BindingBuilder.bind(queue).to(exchange).with(queueName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">SimpleMessageListenerContainer <span class="title">container</span><span class="params">(ConnectionFactory connectionFactory,</span></span></div><div class="line">            MessageListenerAdapter listenerAdapter) &#123;</div><div class="line">        SimpleMessageListenerContainer container = <span class="keyword">new</span> SimpleMessageListenerContainer();</div><div class="line">        container.setConnectionFactory(connectionFactory);</div><div class="line">        container.setQueueNames(queueName);</div><div class="line">        container.setMessageListener(listenerAdapter);</div><div class="line">        <span class="keyword">return</span> container;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function">MessageListenerAdapter <span class="title">listenerAdapter</span><span class="params">(Receiver receiver)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MessageListenerAdapter(receiver, <span class="string">"receiveMessage"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        SpringApplication.run(Application.class, args);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@ SpringBootApplication</code>是一个方便的注解，添加了以下所有内容：</p>
+<ul>
+<li><code>@ Configuration</code>将类标记为应用程序上下文的bean定义的来源。</li>
+<li><code>@ EnableAutoConfiguration</code>告诉Spring Boot根据类路径设置，其他bean和各种属性设置开始添加bean。</li>
+<li>通常你会为Spring MVC应用程序添加<code>@ EnableWebMvc</code>，但是Spring Boot在类路径上看到<strong> spring-webmvc </strong>时会自动添加它。这将应用程序标记为Web应用程序，并激活关键行为，如设置一个“DispatcherServlet”。</li>
+<li><code>@ ComponentScan</code>告诉Spring在<code>hello</code>包中寻找其他组件，配置和服务，允许它找到控制器。</li>
+</ul>
+<p><code>main（）</code>方法使用Spring Boot的<code>SpringApplication.run（）</code>方法来启动应用程序。你有注意到一行XML？没有<strong> web.xml </strong>文件。这个Web应用程序是100％纯Java，你不必处理配置任何管道或基础设施。</p>
+<p>在<code>listenerAdapter（）</code>方法中定义的bean被注册为在<code>container（）</code>中定义的容器中的消息侦听器。它将监听“spring-boot”队列上的消息。因为<code>Receiver</code>类是一个POJO，它需要被包装在<code>MessageListenerAdapter</code>中，你可以指定它来调用<code>receiveMessage</code>。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>JMS队列和AMQP队列具有不同的语义。 例如，JMS仅向一个使用者发送排队的消息。 虽然AMQP队列做同样的事情，AMQP生产者不直接发送消息到队列。 相反，消息发送到交换，可以转到单个队列，或扇出到多个队列(1-&gt;1,1-&gt;n)，模拟JMS主题的概念。 更多，见<a href="https://spring.io/understanding/AMQP" target="_blank" rel="external">Understanding AMQP</a>.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>消息侦听器容器和receiver beans都是您侦听消息所需要的。 要发送消息，您还需要一个Rabbit模板。</p>
+<p><code>queue（）</code>方法创建一个AMQP队列。 <code>exchange（）</code>方法创建一个主题交换。 <code>binding（）</code>方法将这两个绑定在一起，定义当RabbitTemplate发布到交换时发生的行为。</p>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>Spring AMQP要求将“Queue”，“TopicExchange”和“Binding”声明为顶级Spring bean，以便正确设置。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Send-a-Test-Message"><a href="#Send-a-Test-Message" class="headerlink" title="Send a Test Message"></a>Send a Test Message</h2><p>测试消息由<code>CommandLineRunner</code>发送，它也等待接收器中的锁存器(此处原文： the latch in the receiver )并关闭应用程序上下文：</p>
+<p><code>src/main/java/hello/Runner.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.core.RabbitTemplate;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.context.ConfigurableApplicationContext;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Runner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> RabbitTemplate rabbitTemplate;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Receiver receiver;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> ConfigurableApplicationContext context;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Runner</span><span class="params">(Receiver receiver, RabbitTemplate rabbitTemplate,</span></span></div><div class="line">            ConfigurableApplicationContext context) &#123;</div><div class="line">        <span class="keyword">this</span>.receiver = receiver;</div><div class="line">        <span class="keyword">this</span>.rabbitTemplate = rabbitTemplate;</div><div class="line">        <span class="keyword">this</span>.context = context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        System.out.println(<span class="string">"Sending message..."</span>);</div><div class="line">        rabbitTemplate.convertAndSend(Application.queueName, <span class="string">"Hello from RabbitMQ!"</span>);</div><div class="line">        receiver.getLatch().await(<span class="number">10000</span>, TimeUnit.MILLISECONDS);</div><div class="line">        context.close();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The runner可以在测试中模拟出来，以便接收器可以单独测试。</p>
+<h2 id="Run-the-Application"><a href="#Run-the-Application" class="headerlink" title="Run the Application"></a>Run the Application</h2><p><code>main（）</code>方法通过创建一个Spring应用程序上下文来启动这个过程。 这将启动消息侦听容器，它将开始侦听消息。 有一个<code>Runner</code> bean然后自动执行：它从应用程序上下文中检索<code>RabbitTemplate</code>，并发送一个“RabbitMQ！”。 消息在“spring-boot”队列。 最后，它关闭Spring应用程序上下文，应用程序结束。</p>
+<h2 id="Build-an-executable-JAR"><a href="#Build-an-executable-JAR" class="headerlink" title="Build an executable JAR"></a>Build an executable JAR</h2><p>您可以使用Gradle或Maven从命令行运行应用程序。 或者，您可以构建单个可执行文件，其中包含所有必需的依赖关系，类和资源，并运行它。 这使得在整个开发生命周期中，跨不同环境等等，易于将服务作为应用程序进行发布，版本和部署。</p>
+<p>如果您使用Gradle，可以使用<code>./gradlew bootRun</code>运行应用程序。 或者你可以使用<code>./gradlew build</code>来构建JAR文件。 然后可以运行JAR文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar build/libs/gs-messaging-rabbitmq-0.1.0.jar</div></pre></td></tr></table></figure></p>
+<p>如果您使用Maven，可以使用<code>./maven spring-boot：run</code>运行应用程序。 或者你可以用<code>./mvn clean package</code>构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar target/gs-messaging-rabbitmq-0.1.0.jar</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>上面的过程将创建一个可运行的JAR。 您也可以选择[构建传统的WAR文件]（<a href="https://spring.io/guides/gs/convert-jar-to-war/" target="_blank" rel="external">https://spring.io/guides/gs/convert-jar-to-war/</a>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>您应该看到以下输出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Sending message...</div><div class="line">Received &lt;Hello from RabbitMQ!&gt;</div></pre></td></tr></table></figure>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>恭喜！ 你刚刚用Spring和RabbitMQ开发了一个简单的发布和订阅应用程序。 <a href="http://docs.spring.io/spring-amqp/reference/html/_introduction.html#quick-tour" target="_blank" rel="external">more you can do with Spring and RabbitMQ</a>比这里涵盖的内容更多，但这应该提供一个好的 开始。</p>
+<p>想要写一个新的指南或贡献现有的？ 查看我们的 <a href="https://github.com/spring-guides/getting-started-guides/wiki" target="_blank" rel="external">contribution guidelines</a>.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;Messaging-with-RabbitMQ&quot;&gt;&lt;a href=&quot;#Messaging-with-RabbitMQ&quot; class=&quot;headerlink&quot; title=&quot;Messaging with RabbitMQ&quot;&gt;&lt;/a&gt;Messaging with RabbitMQ&lt;/h1&gt;&lt;p&gt;本文翻译自：&lt;a href=&quot;https://spring.io/guides/gs/messaging-rabbitmq/&quot;&gt;https://spring.io/guides/gs/messaging-rabbitmq/&lt;/a&gt;&lt;br&gt;打算翻译一批Spring的各种指引文档，此为第一篇&lt;/p&gt;
+&lt;p&gt;本指南将引导您完成建立一个发布和订阅消息的RabbitMQ AMQP服务器的过程。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Spring指南" scheme="https://muyinchen.github.io/categories/Spring%E6%8C%87%E5%8D%97/"/>
+    
+    
+      <category term="Spring指南" scheme="https://muyinchen.github.io/tags/Spring%E6%8C%87%E5%8D%97/"/>
+    
+  </entry>
   
   <entry>
     <title>谈 `AOP` 的通俗理解</title>
@@ -1624,94 +1780,6 @@
     
       &lt;h1 id=&quot;Cookie-和-session详解&quot;&gt;&lt;a href=&quot;#Cookie-和-session详解&quot; class=&quot;headerlink&quot; title=&quot;Cookie 和 session详解&quot;&gt;&lt;/a&gt;Cookie 和 session详解&lt;/h1&gt;&lt;p&gt;因为要写单点登录系统，有些基本的东西想想还是说下的&lt;/p&gt;
 &lt;p&gt;在将cookie 和 session 之前需要先理解什么是会话&lt;br&gt;会话：&lt;br&gt;用户打开一个浏览器，点击多个超链接，访问多个web资源，然后关闭浏览器，整个过程称为一个会话。&lt;br&gt;http协议是无状态的，一旦数据交换完毕，客户端与服务器端的连接就会关闭，再次交换建立新的连接，也就是说，服务器无法跟踪会话。而cookie 和 session 就是用与解决这种问题。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
-    
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Migo商城2.0 门户首页大广告位显示(1) 十五</title>
-    <link href="https://muyinchen.github.io/2016/11/20/Migo%E5%95%86%E5%9F%8E2.0%20%20%E9%97%A8%E6%88%B7%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%B9%BF%E5%91%8A%E4%BD%8D%E6%98%BE%E7%A4%BA(1)%20%E5%8D%81%E4%BA%94/"/>
-    <id>https://muyinchen.github.io/2016/11/20/Migo商城2.0  门户首页大广告位显示(1) 十五/</id>
-    <published>2016-11-20T15:52:22.470Z</published>
-    <updated>2016-11-29T16:04:54.363Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页大广告位显示-1-十五"><a href="#Migo商城2-0-门户首页大广告位显示-1-十五" class="headerlink" title="Migo商城2.0  门户首页大广告位显示(1) 十五"></a>Migo商城2.0  门户首页大广告位显示(1) 十五</h2><p>操作失误，将之前的稿子搞没了，又得重新敲，坑。。。</p>
-<p>来一张效果图：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/dgg.png" alt=""></p>
-<h3 id="轮播图的实现"><a href="#轮播图的实现" class="headerlink" title="轮播图的实现"></a>轮播图的实现</h3><blockquote>
-<p>1、  将首页显示的广告都抽象的看作是内容</p>
-<p>2、  在后台系统中创建一张内容表<br><a id="more"></a><br>3、  创建一个内容分类表用于区分内容的分类</p>
-<p>4、  后台系统对内容表以及分类表进行CRUD</p>
-<p>5、  对外提供接口服务</p>
-<p>6、  前端系统通过接口获取数据，进行封装，即可实现</p>
-</blockquote>
-<h4 id="首页动态展示分析"><a href="#首页动态展示分析" class="headerlink" title="首页动态展示分析"></a>首页动态展示分析</h4><blockquote>
-<p>1、网页内容可以进行分组</p>
-<p>2、组中的每个项目包含一张图片</p>
-<p>3、项目包含一个url</p>
-<p>4、项目包含一个title</p>
-<p>5、项目可能包含价格</p>
-<p>6、大组下还可以有小组，小组下还可以再分组。</p>
-</blockquote>
-<p>内容归类：</p>
-<blockquote>
-<ol>
-<li>需要有内容分组，需要是一个树形结构。</li>
-<li>组下有项目</li>
-</ol>
-<ul>
-<li>a)        包含图片</li>
-<li>b)       Url</li>
-<li>c)        Title</li>
-<li>d)       价格</li>
-</ul>
-</blockquote>
-<p>可以使用两个表来保存，</p>
-<p>一个是内容分组表：<code>tb_content_category</code></p>
-<p>一个内容项目表。<code>tb_content</code></p>
-<p>于是引出一个概念 <code>内容管理系统（CMS）</code> 具体可以谷歌一下</p>
-<h4 id="内容分类管理分析"><a href="#内容分类管理分析" class="headerlink" title="内容分类管理分析"></a>内容分类管理分析</h4><h5 id="功能分析："><a href="#功能分析：" class="headerlink" title="功能分析："></a>功能分析：</h5><blockquote>
-<p>操作的数据库是tb_content_category，向表中插入数据。</p>
-<p>页面：</p>
-<ol>
-<li>初始化树形控件。</li>
-<li>添加节点</li>
-<li>重命名节点</li>
-<li>删除节点</li>
-</ol>
-</blockquote>
-<h4 id="初始化树形控件"><a href="#初始化树形控件" class="headerlink" title="初始化树形控件"></a>初始化树形控件</h4><p>如图：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/sp161129_235719.png" alt=""></p>
-<p>请求的url：/rest/content/category</p>
-<p>参数：id，当前节点的id，根据id查询子节点。</p>
-<p>返回值：json数据</p>
-<p>格式：(api查询所得)</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[&#123;    </div><div class="line">    <span class="attr">"id"</span>: <span class="number">1</span>,    </div><div class="line">    <span class="attr">"text"</span>: <span class="string">"Node 1"</span>,    </div><div class="line">    <span class="attr">"state"</span>: <span class="string">"closed"</span>,    </div><div class="line">    <span class="attr">"children"</span>: [&#123;    </div><div class="line">        <span class="attr">"id"</span>: <span class="number">11</span>,    </div><div class="line">        <span class="attr">"text"</span>: <span class="string">"Node 11"</span>   </div><div class="line">    &#125;,&#123;    </div><div class="line">        <span class="attr">"id"</span>: <span class="number">12</span>,    </div><div class="line">        <span class="attr">"text"</span>: <span class="string">"Node 12"</span>   </div><div class="line">    &#125;]    </div><div class="line">&#125;,&#123;    </div><div class="line">    <span class="attr">"id"</span>: <span class="number">2</span>,    </div><div class="line">    <span class="attr">"text"</span>: <span class="string">"Node 2"</span>,    </div><div class="line">    <span class="attr">"state"</span>: <span class="string">"closed"</span>   </div><div class="line">&#125;]</div></pre></td></tr></table></figure>
-<p>可以使用<code>EUTreeNode</code>(第一版)  2.0版本是<code>ContentCategory</code> 主要是为省查到结果后重新遍历转换为<code>EUTreeNode</code>，造成性能浪费 具体不同的地方请自行对比</p>
-<p><code>ContentCategory</code> </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.pojo;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.persistence.Column;</div><div class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</div><div class="line"><span class="keyword">import</span> javax.persistence.GenerationType;</div><div class="line"><span class="keyword">import</span> javax.persistence.Id;</div><div class="line"><span class="keyword">import</span> javax.persistence.Table;</div><div class="line"></div><div class="line"><span class="meta">@Table</span>(name = <span class="string">"tb_content_category"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentCategory</span> <span class="keyword">extends</span> <span class="title">BasePojo</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Id</span></div><div class="line">    <span class="meta">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)</div><div class="line">    <span class="keyword">private</span> Long id;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"parent_id"</span>)</div><div class="line">    <span class="keyword">private</span> Long parentId;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Integer status;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"sort_order"</span>)</div><div class="line">    <span class="keyword">private</span> Integer sortOrder;</div><div class="line"></div><div class="line">    <span class="meta">@Column</span>(name = <span class="string">"is_parent"</span>)</div><div class="line">    <span class="keyword">private</span> Boolean isParent;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getParentId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> parentId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParentId</span><span class="params">(Long parentId)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.parentId = parentId;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getStatus</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> status;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStatus</span><span class="params">(Integer status)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.status = status;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getSortOrder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> sortOrder;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSortOrder</span><span class="params">(Integer sortOrder)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.sortOrder = sortOrder;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Boolean <span class="title">getIsParent</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> isParent;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsParent</span><span class="params">(Boolean isParent)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.isParent = isParent;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 扩展字段，支持EasyUItree的显示,这样就可以避免再写一个第一版中的EasyuiTreeNode类，同时也省了第一版中</span></div><div class="line">    <span class="comment">//在service中的一系列对easyuiTreeNode的处理</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getText</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> getName();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getState</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> getIsParent() ? <span class="string">"closed"</span> : <span class="string">"open"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>操作的数据库是<code>tb_content_category</code>，属于单表操作，可以使用<code>通用mapper</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.mapper;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> tk.mybatis.mapper.common.Mapper;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ContentCategoryMapper</span> <span class="keyword">extends</span> <span class="title">Mapper</span>&lt;<span class="title">ContentCategory</span>&gt; </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Service层"><a href="#Service层" class="headerlink" title="Service层"></a>Service层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentCategoryService</span> <span class="keyword">extends</span> <span class="title">BaseService</span>&lt;<span class="title">ContentCategory</span>&gt;</span>&#123;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.pojo.ContentCategory;</div><div class="line"><span class="keyword">import</span> com.migo.service.ContentCategoryService;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestParam;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/20.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"content/category"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ContentCategoryController</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger= LoggerFactory.getLogger(ContentCategoryController.class);</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ContentCategoryService contentCategoryService;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 根据父节点id查询节点列表</div><div class="line">     * <span class="doctag">@param</span> parentId</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(method = RequestMethod.GET)</div><div class="line">    <span class="keyword">public</span> ResponseEntity&lt;List&lt;ContentCategory&gt;&gt; getContentCatList(</div><div class="line">            <span class="meta">@RequestParam</span>(value = <span class="string">"id"</span>, defaultValue = <span class="string">"0"</span>) Long parentId) &#123;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (logger.isInfoEnabled())&#123;</div><div class="line">                logger.info(<span class="string">"根据父节点id查询节点列表 parentId = &#123;&#125;"</span>,parentId);</div><div class="line">            &#125;</div><div class="line">            ContentCategory example=<span class="keyword">new</span> ContentCategory();</div><div class="line">            example.setParentId(parentId);</div><div class="line">            List&lt;ContentCategory&gt; categoryList = <span class="keyword">this</span>.contentCategoryService.queryListByWhere(example);</div><div class="line">            <span class="keyword">if</span> (categoryList==<span class="keyword">null</span>||categoryList.isEmpty())&#123;</div><div class="line">                <span class="keyword">if</span> (logger.isInfoEnabled())&#123;</div><div class="line">                    logger.info(<span class="string">"根据父节点id查询节点列表 未找到 parentId = &#123;&#125;"</span>,parentId);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span>  ResponseEntity.status(HttpStatus.NOT_FOUND).body(<span class="keyword">null</span>);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span>  ResponseEntity.ok(categoryList);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           logger.error(<span class="string">"根据父节点id查询节点列表 服务器傲娇了 parentId = &#123;&#125;"</span>,parentId,e);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(<span class="keyword">null</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行项目，显示效果：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/catgery.png" alt=""></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Migo商城2-0-门户首页大广告位显示-1-十五&quot;&gt;&lt;a href=&quot;#Migo商城2-0-门户首页大广告位显示-1-十五&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0  门户首页大广告位显示(1) 十五&quot;&gt;&lt;/a&gt;Migo商城2.0  门户首页大广告位显示(1) 十五&lt;/h2&gt;&lt;p&gt;操作失误，将之前的稿子搞没了，又得重新敲，坑。。。&lt;/p&gt;
-&lt;p&gt;来一张效果图：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://og0sybnix.bkt.clouddn.com/dgg.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;轮播图的实现&quot;&gt;&lt;a href=&quot;#轮播图的实现&quot; class=&quot;headerlink&quot; title=&quot;轮播图的实现&quot;&gt;&lt;/a&gt;轮播图的实现&lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;1、  将首页显示的广告都抽象的看作是内容&lt;/p&gt;
-&lt;p&gt;2、  在后台系统中创建一张内容表&lt;br&gt;
     
     </summary>
     

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://muyinchen.github.io/2016/12/27/Messaging%20with%20RabbitMQ/</loc>
+    
+    <lastmod>2016-12-27T03:06:00.255Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://muyinchen.github.io/2016/12/25/%E8%B0%88%20%60AOP%60%20%E7%9A%84%E9%80%9A%E4%BF%97%E7%90%86%E8%A7%A3/</loc>
     
     <lastmod>2016-12-25T03:43:19.592Z</lastmod>
