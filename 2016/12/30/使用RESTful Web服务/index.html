@@ -1,0 +1,760 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RESTful Web" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="使用RESTful Web服务本指南将指导您完成创建使用REST式Web服务的应用程序的过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用RESTful Web服务">
+<meta property="og:url" content="https://muyinchen.github.io/2016/12/30/使用RESTful Web服务/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="使用RESTful Web服务本指南将指导您完成创建使用REST式Web服务的应用程序的过程。">
+<meta property="og:updated_time" content="2016-12-30T09:50:13.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用RESTful Web服务">
+<meta name="twitter:description" content="使用RESTful Web服务本指南将指导您完成创建使用REST式Web服务的应用程序的过程。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/30/使用RESTful Web服务/"/>
+
+
+  <title> 使用RESTful Web服务 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用RESTful Web服务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-30T17:50:47+08:00" content="2016-12-30">
+              2016-12-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spring指南/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring指南</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/12/30/使用RESTful Web服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/30/使用RESTful Web服务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用RESTful-Web服务"><a href="#使用RESTful-Web服务" class="headerlink" title="使用RESTful Web服务"></a>使用RESTful Web服务</h1><p>本指南将指导您完成创建使用REST式Web服务的应用程序的过程。<br><a id="more"></a></p>
+<h2 id="What-you’ll-build"><a href="#What-you’ll-build" class="headerlink" title="What you’ll build"></a>What you’ll build</h2><p>你将构建一个使用Spring的<code>RestTemplate</code>来检索随机Spring Boot引用的应用程序 <a href="https://gturnquist-quoters.cfapps.io/api/random" target="_blank" rel="external">http://gturnquist-quoters.cfapps.io/api/random</a>.</p>
+<h2 id="What-you’ll-need"><a href="#What-you’ll-need" class="headerlink" title="What you’ll need"></a>What you’ll need</h2><ul>
+<li>约15分钟</li>
+<li>最喜欢的文本编辑器或IDE</li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">JDK 1.8</a>或更高版本</li>
+<li><a href="http://www.gradle.org/downloads" target="_blank" rel="external">Gradle 2.3+</a>或<a href="http://maven.apache.org/download.cgi" target="_blank" rel="external">Maven 3.0+</a></li>
+<li>您也可以从本指南导入代码，以及直接在<a href="https://spring.io/guides/gs/sts" target="_blank" rel="external">Spring Tool Suite(STS)</a>中查看网页，并从那里开始工作 。<h2 id="How-to-complete-this-guide"><a href="#How-to-complete-this-guide" class="headerlink" title="How to complete this guide"></a>How to complete this guide</h2></li>
+</ul>
+<p>与大多数Spring <a href="https://spring.io/guides" target="_blank" rel="external">入门指南</a>一样，您可以从头开始并完成每个步骤，也可以绕过已经熟悉的基本设置步骤。 无论如何，你最终得到工作代码。<br> <strong>要从头开始</strong>, 请转到<a href="https://spring.io/guides/gs/consuming-rest/#scratch" target="_blank" rel="external">使用Gradle构建</a>.</p>
+<p> <strong>要跳过基本操作</strong>,请执行以下操作：</p>
+<ul>
+<li><a href="https://github.com/spring-guides/gs-consuming-rest/archive/master.zip" target="_blank" rel="external">Download</a> 并解压缩本指南的源代码仓库，或使用 <a href="https://spring.io/understanding/Git" target="_blank" rel="external">Git</a>: <code>git clone https://github.com/spring-guides/gs-consuming-rest.git</code></li>
+<li>cd 到 <code>gs-consuming-rest/initial</code></li>
+<li>跳转到 <a href="https://spring.io/guides/gs/consuming-rest/#initial" target="_blank" rel="external">Fetch a REST resource</a>.</li>
+</ul>
+<p><strong>完成</strong>, 你可以根据 <code>gs-consuming-rest/complete</code>中的代码检查结果.</p>
+<h2 id="Build-with-Gradle"><a href="#Build-with-Gradle" class="headerlink" title="Build with Gradle"></a>Build with Gradle</h2><p>首先你设置一个基本的构建脚本。 你可以使用任何你喜欢的一个来构建项目，当使用Spring构建应用程序时，但是需要使用<a href="http://gradle.org" target="_blank" rel="external">Gradle</a>和<a href="https://maven.apache.org" target="_blank" rel="external">Maven</a> 来写你的代码。 如果你不熟悉任何一个，请参考<a href="https://spring.io/guides/gs/gradle" target="_blank" rel="external">使用Gradle构建Java项目</a>或<a href="https://spring.io/guides/gs/maven" target="_blank" rel="external">使用Maven构建Java项目</a>。</p>
+<h3 id="Create-the-directory-structure"><a href="#Create-the-directory-structure" class="headerlink" title="Create the directory structure"></a>Create the directory structure</h3><p>在您选择的项目目录中，创建以下子目录结构; 例如，在<em> nix</em>系统上使用`mkdir -p src / main / java / hello’：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">└── src</div><div class="line">    └── main</div><div class="line">        └── java</div><div class="line">            └── hello</div></pre></td></tr></table></figure>
+<h3 id="Create-a-Gradle-build-file"><a href="#Create-a-Gradle-build-file" class="headerlink" title="Create a Gradle build file"></a>Create a Gradle build file</h3><p>下面是 <a href="https://github.com/spring-guides/gs-consuming-rest/blob/master/initial/build.gradle" target="_blank" rel="external">initial Gradle build file</a>.</p>
+<p><code>build.gradle</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line">        mavenCentral()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath(<span class="string">"org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">apply plugin: <span class="string">'java'</span></div><div class="line">apply plugin: <span class="string">'eclipse'</span></div><div class="line">apply plugin: <span class="string">'idea'</span></div><div class="line">apply plugin: <span class="string">'org.springframework.boot'</span></div><div class="line"></div><div class="line">jar &#123;</div><div class="line">    baseName = <span class="string">'gs-consuming-rest'</span></div><div class="line">    version =  <span class="string">'0.1.0'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">repositories &#123;</div><div class="line">    mavenCentral()</div><div class="line">&#125;</div><div class="line"></div><div class="line">sourceCompatibility = <span class="number">1.8</span></div><div class="line">targetCompatibility = <span class="number">1.8</span></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile(<span class="string">"org.springframework.boot:spring-boot-starter"</span>)</div><div class="line">    compile(<span class="string">"org.springframework:spring-web"</span>)</div><div class="line">    compile(<span class="string">"com.fasterxml.jackson.core:jackson-databind"</span>)</div><div class="line">    testCompile(<span class="string">"junit:junit"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-tools/spring-boot-gradle-plugin" target="_blank" rel="external">Spring Boot gradle插件</a>提供了许多方便的功能：</p>
+<ul>
+<li>它收集类路径上的所有jar，并构建一个单独的，可运行的“über-jar”，这使得执行和传递服务更加方便。</li>
+<li>它搜索<code>public static void main()</code>方法来标记为可运行类。</li>
+<li>它提供了一个内置的依赖解析器，设置版本号匹配<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml" target="_blank" rel="external">Spring Boot dependencies]</a>. 你可以覆盖任何你想要的版本，但它会默认为Boot的选择的版本集。</li>
+</ul>
+<h2 id="Build-with-Maven"><a href="#Build-with-Maven" class="headerlink" title="Build with Maven"></a>Build with Maven</h2><p>首先你设置一个基本的构建脚本。 你可以使用任何你喜欢的一个来构建项目，当使用Spring构建应用程序，但是需要使用<a href="https://maven.apache.org" target="_blank" rel="external">Maven</a>来构建你的代码。 如果你不熟悉Maven，请参考<a href="https://spring.io/guides/gs/maven" target="_blank" rel="external">使用Maven构建Java项目</a>.</p>
+<h3 id="Create-the-directory-structure-1"><a href="#Create-the-directory-structure-1" class="headerlink" title="Create the directory structure"></a>Create the directory structure</h3><p>在您选择的项目目录中，创建以下子目录结构; 例如，在<em> nix</em>系统上使用`mkdir -p src / main / java / hello’：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">└── src</div><div class="line">    └── main</div><div class="line">        └── java</div><div class="line">            └── hello</div></pre></td></tr></table></figure>
+<p><code>pom.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>gs-consuming-rest<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.3.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jackson-databind<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-tools/spring-boot-maven-plugin" target="_blank" rel="external">Spring Boot Maven插件</a> 提供了许多方便的功能：</p>
+<ul>
+<li>它收集类路径上的所有jar，并构建一个单独的，可运行的“über-jar”，这使得执行和运输服务更加方便。</li>
+<li>它搜索<code>public static void main()</code>方法来标记为可运行类。</li>
+<li>它提供了一个内置的依赖解析器，设置版本号匹配<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml" target="_blank" rel="external">Spring Boot dependencies</a>. 你可以覆盖任何你想要的版本，但它会默认为Boot的选择的版本集。</li>
+</ul>
+<h2 id="Build-with-your-IDE"><a href="#Build-with-your-IDE" class="headerlink" title="Build with your IDE"></a>Build with your IDE</h2><ul>
+<li>阅读如何通过本指南直接导入<a href="https://spring.io/guides/gs/sts/" target="_blank" rel="external">Spring Tool Suite</a>。</li>
+<li>阅读如何在<a href="https://spring.io/guides/gs/intellij-idea" target="_blank" rel="external">IntelliJ IDEA</a>上使用本指南。</li>
+</ul>
+<h2 id="获取REST资源"><a href="#获取REST资源" class="headerlink" title="获取REST资源"></a>获取REST资源</h2><p>完成项目设置后，您可以创建一个使用RESTful服务的简单应用程序。</p>
+<p>一个RESTful服务已经在<a href="https://gturnquist-quoters.cfapps.io/api/random" target="_blank" rel="external">http://gturnquist-quoters.cfapps.io/api/random</a> 上建立了起来。 它随机获取关于Spring Boot的引用，并将它们作为JSON字符串返回。</p>
+<p>如果您通过Web浏览器或curl请求该网址，您会收到一个JSON字符串，如下所示：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">   type: "success",</div><div class="line">   value: &#123;</div><div class="line">      id: 10,</div><div class="line">      quote: "Really loving Spring Boot, makes stand alone Spring apps easy."</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Easy enough, but not terribly useful when fetched through a browser or through curl.</p>
+<p>A more useful way to consume a REST web service is programmatically. To help you with that task, Spring provides a convenient template class called <a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html" target="_blank" rel="external"><code>RestTemplate</code></a>. <code>RestTemplate</code> makes interacting with most RESTful services a one-line incantation. And it can even bind that data to custom domain types.</p>
+<p>First, create a domain class to contain the data that you need.<br>足够简单吧，不过通过浏览器或通过curl去获取，终究不是长久之事。</p>
+<p>一种更有用的方式来测试REST Web服务是以编程方式。 为了帮助你完成这个任务，Spring提供了一个方便的模板类<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.html" target="_blank" rel="external"><code>RestTemplate</code></a>。 <code>RestTemplate</code>使得与大多数RESTful服务进行交互是一种享受。 它甚至可以将该数据绑定到自定义域类型。</p>
+<p>首先，创建一个domain类以包含所需的数据。<br><code>src/main/java/hello/Quote.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonIgnoreProperties;</div><div class="line"></div><div class="line"><span class="meta">@JsonIgnoreProperties</span>(ignoreUnknown = <span class="keyword">true</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Quote</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String type;</div><div class="line">    <span class="keyword">private</span> Value value;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Quote</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getType</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> type;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setType</span><span class="params">(String type)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.type = type;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Value <span class="title">getValue</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValue</span><span class="params">(Value value)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.value = value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Quote&#123;"</span> +</div><div class="line">                <span class="string">"type='"</span> + type + <span class="string">'\''</span> +</div><div class="line">                <span class="string">", value="</span> + value +</div><div class="line">                <span class="string">'&#125;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正如你所看到的，这是一个简单的Java类，有几个属性和相应的getter方法。 当使用来自Jackson JSON处理库的<code>@ JsonIgnoreProperties</code>进行注释，代表在此类中未绑定的任何属性都应该被忽略。</p>
+<p>需要一个额外的类来嵌入内部引用本身。</p>
+<p><code>src/main/java/hello/Value.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.annotation.JsonIgnoreProperties;</div><div class="line"></div><div class="line"><span class="meta">@JsonIgnoreProperties</span>(ignoreUnknown = <span class="keyword">true</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Value</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Long id;</div><div class="line">    <span class="keyword">private</span> String quote;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Value</span><span class="params">()</span> </span>&#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Long <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getQuote</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.quote;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Long id)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.id = id;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQuote</span><span class="params">(String quote)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.quote = quote;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Value&#123;"</span> +</div><div class="line">                <span class="string">"id="</span> + id +</div><div class="line">                <span class="string">", quote='"</span> + quote + <span class="string">'\''</span> +</div><div class="line">                <span class="string">'&#125;'</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里通过使用相同的注解，但可以很轻松地映射到其他数据字段。</p>
+<h2 id="使应用程序可以执行"><a href="#使应用程序可以执行" class="headerlink" title="使应用程序可以执行"></a>使应用程序可以执行</h2><p>虽然可以将此服务打包为用于部署到外部应用程序服务器的传统<a href="https://spring.io/understanding/WAR" target="_blank" rel="external">WAR</a> 文件，但下面演示的创建一个独立应用程序的方法更简单。 你把一切都包装在一个可执行的JAR文件中，由一个大家初学Java时的Java<code>main()</code>方法驱动。 整个过程，你使用Spring支持嵌入的<a href="https://spring.io/understanding/Tomcat" target="_blank" rel="external">Tomcat</a>servlet容器作为HTTP运行时的容器，而不是部署到外部实例中去。</p>
+<p>现在你可以写使用<code>RestTemplate</code>的<code>Application</code>类来从我们的Spring Boot引用服务并且获取数据。<br><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger log = LoggerFactory.getLogger(Application.class);</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">        RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</div><div class="line">        Quote quote = restTemplate.getForObject(<span class="string">"http://gturnquist-quoters.cfapps.io/api/random"</span>, Quote.class);</div><div class="line">        log.info(quote.toString());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因为Jackson JSON处理库在类路径中，<code>RestTemplate</code>将使用它（通过<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/http/converter/HttpMessageConverter.html" target="_blank" rel="external">message converter</a>）将传入的JSON数据转换为一个“Quote”对象。 从那里，<code>Quote</code>对象的内容将被记录到控制台。</p>
+<p>这里你只使用<code>RestTemplate</code>来做一个HTTP<code>GET</code>请求。 但是RestTemplate也支持其他HTTP动词，例如<code>POST</code>，<code>PUT</code>和<code>DELETE</code>。</p>
+<h2 id="使用Spring-Boot管理应用程序生命周期"><a href="#使用Spring-Boot管理应用程序生命周期" class="headerlink" title="使用Spring Boot管理应用程序生命周期"></a>使用Spring Boot管理应用程序生命周期</h2><p>到目前为止，我们没有在我们的应用程序中使用Spring Boot，Spring Bootd 一些优点，使用起来并不难。 其中的一个优点是我们可能想让Spring Boot管理<code>RestTemplate</code>中的消息转换器，以便定制很容易声明性地添加。 为此，就像在任何Spring Boot应用程序中一样，我们在主类上使用<code>@ SpringBootApplication</code>，并转换main方法来启动它。 最后，我们将<code>RestTemplate</code>移动到<code>CommandLineRunner</code>回调，所以它在启动时由Spring Boot执行：</p>
+<p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.web.client.RestTemplateBuilder;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"><span class="keyword">import</span> org.springframework.web.client.RestTemplate;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger log = LoggerFactory.getLogger(Application.class);</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</div><div class="line">		SpringApplication.run(Application.class);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Bean</span></div><div class="line">	<span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">(RestTemplateBuilder builder)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> builder.build();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Bean</span></div><div class="line">	<span class="function"><span class="keyword">public</span> CommandLineRunner <span class="title">run</span><span class="params">(RestTemplate restTemplate)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">return</span> args -&gt; &#123;</div><div class="line">			Quote quote = restTemplate.getForObject(</div><div class="line">					<span class="string">"http://gturnquist-quoters.cfapps.io/api/random"</span>, Quote.class);</div><div class="line">			log.info(quote.toString());</div><div class="line">		&#125;;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>RestTemplateBuilder</code>是由Spring注入的，如果你使用它来创建一个<code>RestTemplate</code>，那么你将受益于在Spring Boot中使用消息转换器和请求工厂发生的所有自动配置。 我们还将<code>RestTemplate</code>注解为<code>@ Bean</code>，以便更容易测试（它可以更容易地被测试）。</p>
+<h3 id="构建可执行JAR"><a href="#构建可执行JAR" class="headerlink" title="构建可执行JAR"></a>构建可执行JAR</h3><p>您可以使用Gradle或Maven从命令行运行应用程序。 或者，您可以构建单个可执行文件，其中包含所有必需的依赖关系，类和资源，并运行它。 这使得在整个开发生命周期中，易于跨不同环境将服务作为应用程序进行发布，维护版本和部署等等。</p>
+<p>如果您使用Gradle，可以使用<code>./gradlew bootRun</code>运行应用程序。 或者你可以使用<code>./gradlew build</code>来构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar build/libs/gs-consuming-rest-0.1.0.jar</div></pre></td></tr></table></figure>
+<p>如果您使用Maven，可以使用<code>./maven spring-boot：run</code>运行应用程序。 或者你可以用<code>./mvn clean package</code>构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar target/gs-consuming-rest-0.1.0.jar</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>上面的过程将创建一个可运行的JAR。 您也可以选择<a href="https://spring.io/guides/gs/convert-jar-to-war/" target="_blank" rel="external">build a classic WAR file</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>您应该看到类似下面的输出，带有随机引用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2015-09-23 14:22:26.415  INFO 23613 --- [main] hello.Application  : Quote&#123;type=&apos;success&apos;, value=Value&#123;id=12, quote=&apos;@springboot with @springframework is pure productivity! Who said in #java one has to write double the code than in other langs? #newFavLib&apos;&#125;&#125;</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>如果您看到错误<code>Could not extract response: no suitable HttpMessageConverter found for response type [class hello.Quote]</code>“无法提取响应：没有找到适合响应类型[类hello.Quote]的HttpMessageConverter”，可能是在一个环境中无法连接到后端服务（如果可以到达它发送JSON）。 也许你是在使用其他网络代理？ 尝试将标准系统属性<code>http.proxyHost</code>和<code>http.proxyPort</code>设置为适合您的环境的值。</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>恭喜！ 你刚刚使用Spring开发了一个简单的REST客户端。</p>
+<p>想要写一个新的指南或贡献现有的？ 查看我们的<a href="https://github.com/spring-guides/getting-started-guides/wiki" target="_blank" rel="external">贡献指南</a>.</p>
+<p>翻译自：<a href="https://spring.io/guides/gs/consuming-rest/" target="_blank" rel="external">https://spring.io/guides/gs/consuming-rest/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring指南/" rel="tag">#Spring指南</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/27/Messaging with RabbitMQ/" rel="next" title="Messaging with RabbitMQ">
+                <i class="fa fa-chevron-left"></i> Messaging with RabbitMQ
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/30/使用RESTful Web服务/"
+           data-title="使用RESTful Web服务" data-url="https://muyinchen.github.io/2016/12/30/使用RESTful Web服务/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">40</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用RESTful-Web服务"><span class="nav-number">1.</span> <span class="nav-text">使用RESTful Web服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-build"><span class="nav-number">1.1.</span> <span class="nav-text">What you’ll build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-need"><span class="nav-number">1.2.</span> <span class="nav-text">What you’ll need</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-complete-this-guide"><span class="nav-number">1.3.</span> <span class="nav-text">How to complete this guide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Gradle"><span class="nav-number">1.4.</span> <span class="nav-text">Build with Gradle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-the-directory-structure"><span class="nav-number">1.4.1.</span> <span class="nav-text">Create the directory structure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-Gradle-build-file"><span class="nav-number">1.4.2.</span> <span class="nav-text">Create a Gradle build file</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Maven"><span class="nav-number">1.5.</span> <span class="nav-text">Build with Maven</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-the-directory-structure-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">Create the directory structure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-your-IDE"><span class="nav-number">1.6.</span> <span class="nav-text">Build with your IDE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取REST资源"><span class="nav-number">1.7.</span> <span class="nav-text">获取REST资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使应用程序可以执行"><span class="nav-number">1.8.</span> <span class="nav-text">使应用程序可以执行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Spring-Boot管理应用程序生命周期"><span class="nav-number">1.9.</span> <span class="nav-text">使用Spring Boot管理应用程序生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建可执行JAR"><span class="nav-number">1.9.1.</span> <span class="nav-text">构建可执行JAR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">1.10.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
