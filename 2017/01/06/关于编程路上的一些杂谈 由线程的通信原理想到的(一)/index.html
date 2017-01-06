@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="redis" />
+  <meta name="keywords" content="多线程 zookeeper 分布式锁" />
 
 
 
@@ -86,16 +86,19 @@
 
 
 
-<meta name="description" content="使用redis3.0实现tomcat集群session共享">
+<meta name="description" content="关于编程路上的一些杂谈 由线程的通信原理想到的(一)​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用redis3.0实现tomcat集群session共享">
-<meta property="og:url" content="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/index.html">
+<meta property="og:title" content="关于编程路上的一些杂谈 由线程的通信原理想到的(一)">
+<meta property="og:url" content="https://muyinchen.github.io/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="使用redis3.0实现tomcat集群session共享">
-<meta property="og:updated_time" content="2016-12-16T14:55:27.104Z">
+<meta property="og:description" content="关于编程路上的一些杂谈 由线程的通信原理想到的(一)​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170106_162517.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170106_171258.png">
+<meta property="og:updated_time" content="2017-01-06T09:25:48.158Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用redis3.0实现tomcat集群session共享">
-<meta name="twitter:description" content="使用redis3.0实现tomcat集群session共享">
+<meta name="twitter:title" content="关于编程路上的一些杂谈 由线程的通信原理想到的(一)">
+<meta name="twitter:description" content="关于编程路上的一些杂谈 由线程的通信原理想到的(一)​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170106_162517.png">
 
 
 
@@ -116,10 +119,10 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/"/>
 
 
-  <title> 使用redis3.0实现tomcat集群session共享 | 一叶知秋 </title>
+  <title> 关于编程路上的一些杂谈 由线程的通信原理想到的(一) | 一叶知秋 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +253,7 @@
             
             
               
-                使用redis3.0实现tomcat集群session共享
+                关于编程路上的一些杂谈 由线程的通信原理想到的(一)
               
             
           </h1>
@@ -262,8 +265,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-12-16T22:46:57+08:00" content="2016-12-16">
-              2016-12-16
+            <time itemprop="dateCreated" datetime="2017-01-06T17:23:38+08:00" content="2017-01-06">
+              2017-01-06
             </time>
           </span>
 
@@ -276,8 +279,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/redis/" itemprop="url" rel="index">
-                    <span itemprop="name">redis</span>
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
                   </a>
                 </span>
 
@@ -292,8 +295,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/12/16/使用redis3.0实现tomcat集群session共享/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/" itemprop="commentsCount"></span>
+                <a href="/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -321,30 +324,20 @@
       
 
       
-        <h1 id="使用redis3-0实现tomcat集群session共享"><a href="#使用redis3-0实现tomcat集群session共享" class="headerlink" title="使用redis3.0实现tomcat集群session共享"></a>使用redis3.0实现tomcat集群session共享</h1> <a id="more"></a>
+        <h1 id="关于编程路上的一些杂谈-由线程的通信原理想到的-一"><a href="#关于编程路上的一些杂谈-由线程的通信原理想到的-一" class="headerlink" title="关于编程路上的一些杂谈 由线程的通信原理想到的(一)"></a>关于编程路上的一些杂谈 由线程的通信原理想到的(一)</h1><p>​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。<br><a id="more"></a><br>时常听说身边和网友说自己遇到瓶颈，接下来不知道该往哪里走，我给的建议就是：<code>请回归基础</code>.</p>
+<p>​    为何这样说，先拿一个大家都知道的东西来说，并发编程中 ，线程之间如何通信及线程之间如何同步 ，线程之间的通信机制有两种：共享内存和消息传递 ，如图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170106_162517.png" alt=""></p>
+<p>如果线程A与线程B之间要通信的话，必须要经历下面2个步骤：</p>
 <ol>
-<li>部署两个<code>tomcat</code>节点，<a href="https://muyinchen.github.io/2016/11/10/Migo%E5%95%86%E5%9F%8E2.0%C2%A0Nginx%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%20%E4%B8%89/">使用nginx实现集群</a></li>
+<li>线程A把本地内存A中更新过的共享变量刷新到主内存中去。</li>
+<li>线程B到主内存中去读取线程A之前已更新过的共享变量。 </li>
 </ol>
-<ol>
-<li><p><a href="https://muyinchen.github.io/2016/12/08/Migo%E5%95%86%E5%9F%8E2.0%20%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E4%B8%AD%E6%B7%BB%E5%8A%A0redis%20%E7%BC%93%E5%AD%98\(1\"> <code>redis</code>安装 </a>%20%E5%8D%81%E4%B9%9D/) </p>
-</li>
-<li><p>建一个简单的<code>web项目</code>，打包发布到各个<code>tomcat</code>中，用于测试<code>session</code>是否真的实现了共享（自己想办法怎么建测试项目）</p>
-</li>
-<li><p>下载开源组件<code>tomcat-redis-session-manager</code></p>
-</li>
-</ol>
-<p>​       </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</div><div class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</div><div class="line"></div><div class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">jedis-2.8.0.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">RedisDataCache.properties</div></pre></td></tr></table></figure>
-<p>5、将上面<code>jar</code>包拷贝到各个<code>tomcat</code>的<code>lib</code>目录下， 将<code>RedisDataCache.properties</code>拷到<code>tomcat</code>的<code>conf目录</code>下。</p>
-<p>6、配置文件修改</p>
-<p>（1）修改<code>RedisDataCache.properties</code>配置文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</div><div class="line"></div><div class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</div><div class="line"></div><div class="line"># Redis Password</div><div class="line"></div><div class="line">redis.password= redis （REDIS配置文件中设置的密码）</div><div class="line"></div><div class="line"># set true to enable redis cluster mode</div><div class="line"></div><div class="line">redis.cluster.enabled=false</div></pre></td></tr></table></figure>
-<p>（2）在<code>tomcat/conf/context.xml</code>文件中增加以下两行：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></div><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></div></pre></td></tr></table></figure>
-<p>（3)设置<code>tomcat/conf/web.xml</code> 中<code>session</code>有效期</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line"></div><div class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
-<p> 如果项目里也配置了<code>session</code>有效期，则以项目中有准。</p>
-<p>7、先启动<code>redis</code>,再启动<code>tomcat</code>，访问测试项目进行测试。</p>
+<p>好了，就言仅于此，接下来我们跳过这里看一个让人感觉离的比较远的东西。</p>
+<p>​    就拿大家觉得比较在上层的<code>zookeeper</code>来讲，<code>分布式锁</code>这个概念相信不少人都听过，Linux文件系统的组成相信大家也一定知道点，最起码的是这个<code>文件系统</code>是以<code>树</code>的形式组织起来的,知道这个其实你就已经理解了三分之一了，因为<code>zookeeper</code>的数据结构也是这么组织的，也是一棵树的形式，其实大家很自然就想到了b+树这个概念，这也是面试里为何会经常问到b+树到底是个什么东西，回到正题，当大家一谈分布式这个概念的时候，往往就会觉得头大，不想触碰，我觉得无非就是几份同样的代码给分放到不同的机器里来运行，各自有各自的web服务器，而我们可以很自然的把相应的服务器看成是一个容器，也就是上下文，其实也就是上图里A和B线程相当于是两台机器，而共享变量的副本其实就是各自机器里的上下文而已，这么看来，所谓的分布式不也就是我们在单机上操作的多线程么，又有何高大上可言。</p>
+<p>​    既然搞分布式，那么我们接下来要解决的就是两台机器间的通信问题，也就是线程之间如何通信及线程之间如何同步变成了分布式环境下两台机器如何进行通信和同步，同样的，我们需要一个所谓的<code>主存</code>，这里的主存就是<code>zookeeper</code>,这里先对大致的原理说下，在以后的文章里会对细节各种说道的，使用过zookeeper的都知道，我们可以通过相应的API(个人推荐Curator)在zookeeper里创建一个临时的节点，一个<code>操作session</code>结束这个节点的生命周期也就结束销毁了,利用这个特性，我们在A机器修改某一个共享变量的时候，会先在zookeeper里获取下有没有这个节点，没有则创建，有则等待(因为是同一份代码，所以创建的节点也会相同)，这样便不会对共享变量同时进行多次操作，具体的实现细节以后再说，其实这个api的写法和Java底层的源码没多大区别，用法也没多少区别。</p>
+<p>​    其实所说的就是分布式锁的原理，其实我们是可以从volatile 的语义联系到锁的语义的，拿<code>ReentrantLock</code>来说，<code>其底层也无非是维护一个节点(请看下图)</code>，用的也是volatile语义，再回头看看zookeeper的这种操作方式，难道还有疑虑么，所谓的抽象出来的高度的东西，其实还是底层的一些实现，用的代码也逃不出底层代码那些套路，包括zookeeper里的barrier，计数器等等。</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170106_171258.png" alt=""></p>
+<p>​    这次就暂时说到这里了，篇幅长了大家也没人看，下一篇想想，最近两个月一直在用通用mapper，不如来讲下通用mapper是如何根据mybatis生成的东西做的一系列组合封装，方便大家项目中使用相应的思想，后面依然会回到基础和上层一些架构框架之间的联系上来，不仅仅是多线程这块的东西.</p>
 
       
     </div>
@@ -367,7 +360,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/redis/" rel="tag">#redis</a>
+            <a href="/tags/杂谈/" rel="tag">#杂谈</a>
           
         </div>
       
@@ -376,17 +369,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/14/谈小米的高可用推送系统设计/" rel="next" title="谈小米的高可用推送系统设计">
-                <i class="fa fa-chevron-left"></i> 谈小米的高可用推送系统设计
+              <a href="/2017/01/05/Messaging with Redis/" rel="next" title="使用Redis进行消息传递">
+                <i class="fa fa-chevron-left"></i> 使用Redis进行消息传递
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/16/Redis 集群操作/" rel="prev" title="Redis 集群操作">
-                Redis 集群操作 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -412,8 +401,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/"
-           data-title="使用redis3.0实现tomcat集群session共享" data-url="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/">
+      <div class="ds-thread" data-thread-key="2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/"
+           data-title="关于编程路上的一些杂谈 由线程的通信原理想到的(一)" data-url="https://muyinchen.github.io/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/">
       </div>
     
   </div>
@@ -511,7 +500,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用redis3-0实现tomcat集群session共享"><span class="nav-number">1.</span> <span class="nav-text">使用redis3.0实现tomcat集群session共享</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于编程路上的一些杂谈-由线程的通信原理想到的-一"><span class="nav-number">1.</span> <span class="nav-text">关于编程路上的一些杂谈 由线程的通信原理想到的(一)</span></a></li></ol></div>
             
           </div>
         </section>

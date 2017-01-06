@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-05T06:37:32.997Z</updated>
+  <updated>2017-01-06T09:25:48.158Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于编程路上的一些杂谈 由线程的通信原理想到的(一)</title>
+    <link href="https://muyinchen.github.io/2017/01/06/%E5%85%B3%E4%BA%8E%E7%BC%96%E7%A8%8B%E8%B7%AF%E4%B8%8A%E7%9A%84%E4%B8%80%E4%BA%9B%E6%9D%82%E8%B0%88%20%E7%94%B1%E7%BA%BF%E7%A8%8B%E7%9A%84%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%E6%83%B3%E5%88%B0%E7%9A%84(%E4%B8%80)/"/>
+    <id>https://muyinchen.github.io/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/</id>
+    <published>2017-01-06T09:23:38.970Z</published>
+    <updated>2017-01-06T09:25:48.158Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="关于编程路上的一些杂谈-由线程的通信原理想到的-一"><a href="#关于编程路上的一些杂谈-由线程的通信原理想到的-一" class="headerlink" title="关于编程路上的一些杂谈 由线程的通信原理想到的(一)"></a>关于编程路上的一些杂谈 由线程的通信原理想到的(一)</h1><p>​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。<br><a id="more"></a><br>时常听说身边和网友说自己遇到瓶颈，接下来不知道该往哪里走，我给的建议就是：<code>请回归基础</code>.</p>
+<p>​    为何这样说，先拿一个大家都知道的东西来说，并发编程中 ，线程之间如何通信及线程之间如何同步 ，线程之间的通信机制有两种：共享内存和消息传递 ，如图：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170106_162517.png" alt=""></p>
+<p>如果线程A与线程B之间要通信的话，必须要经历下面2个步骤：</p>
+<ol>
+<li>线程A把本地内存A中更新过的共享变量刷新到主内存中去。</li>
+<li>线程B到主内存中去读取线程A之前已更新过的共享变量。 </li>
+</ol>
+<p>好了，就言仅于此，接下来我们跳过这里看一个让人感觉离的比较远的东西。</p>
+<p>​    就拿大家觉得比较在上层的<code>zookeeper</code>来讲，<code>分布式锁</code>这个概念相信不少人都听过，Linux文件系统的组成相信大家也一定知道点，最起码的是这个<code>文件系统</code>是以<code>树</code>的形式组织起来的,知道这个其实你就已经理解了三分之一了，因为<code>zookeeper</code>的数据结构也是这么组织的，也是一棵树的形式，其实大家很自然就想到了b+树这个概念，这也是面试里为何会经常问到b+树到底是个什么东西，回到正题，当大家一谈分布式这个概念的时候，往往就会觉得头大，不想触碰，我觉得无非就是几份同样的代码给分放到不同的机器里来运行，各自有各自的web服务器，而我们可以很自然的把相应的服务器看成是一个容器，也就是上下文，其实也就是上图里A和B线程相当于是两台机器，而共享变量的副本其实就是各自机器里的上下文而已，这么看来，所谓的分布式不也就是我们在单机上操作的多线程么，又有何高大上可言。</p>
+<p>​    既然搞分布式，那么我们接下来要解决的就是两台机器间的通信问题，也就是线程之间如何通信及线程之间如何同步变成了分布式环境下两台机器如何进行通信和同步，同样的，我们需要一个所谓的<code>主存</code>，这里的主存就是<code>zookeeper</code>,这里先对大致的原理说下，在以后的文章里会对细节各种说道的，使用过zookeeper的都知道，我们可以通过相应的API(个人推荐Curator)在zookeeper里创建一个临时的节点，一个<code>操作session</code>结束这个节点的生命周期也就结束销毁了,利用这个特性，我们在A机器修改某一个共享变量的时候，会先在zookeeper里获取下有没有这个节点，没有则创建，有则等待(因为是同一份代码，所以创建的节点也会相同)，这样便不会对共享变量同时进行多次操作，具体的实现细节以后再说，其实这个api的写法和Java底层的源码没多大区别，用法也没多少区别。</p>
+<p>​    其实所说的就是分布式锁的原理，其实我们是可以从volatile 的语义联系到锁的语义的，拿<code>ReentrantLock</code>来说，<code>其底层也无非是维护一个节点(请看下图)</code>，用的也是volatile语义，再回头看看zookeeper的这种操作方式，难道还有疑虑么，所谓的抽象出来的高度的东西，其实还是底层的一些实现，用的代码也逃不出底层代码那些套路，包括zookeeper里的barrier，计数器等等。</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170106_171258.png" alt=""></p>
+<p>​    这次就暂时说到这里了，篇幅长了大家也没人看，下一篇想想，最近两个月一直在用通用mapper，不如来讲下通用mapper是如何根据mybatis生成的东西做的一系列组合封装，方便大家项目中使用相应的思想，后面依然会回到基础和上层一些架构框架之间的联系上来，不仅仅是多线程这块的东西.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;关于编程路上的一些杂谈-由线程的通信原理想到的-一&quot;&gt;&lt;a href=&quot;#关于编程路上的一些杂谈-由线程的通信原理想到的-一&quot; class=&quot;headerlink&quot; title=&quot;关于编程路上的一些杂谈 由线程的通信原理想到的(一)&quot;&gt;&lt;/a&gt;关于编程路上的一些杂谈 由线程的通信原理想到的(一)&lt;/h1&gt;&lt;p&gt;​    写这个其实想了很多，到底该用什么方式来写，最后还是按照自己的随意来随意的拉拉家常算了。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="杂谈" scheme="https://muyinchen.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+      <category term="杂谈" scheme="https://muyinchen.github.io/tags/%E6%9D%82%E8%B0%88/"/>
+    
+  </entry>
   
   <entry>
     <title>使用Redis进行消息传递</title>
@@ -1921,37 +1957,6 @@
     
     
       <category term="Migo商城2.0 redis 缓存" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0-redis-%E7%BC%93%E5%AD%98/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Migo商城2.0 门户首页大广告位显示(4) 十八</title>
-    <link href="https://muyinchen.github.io/2016/12/04/Migo%E5%95%86%E5%9F%8E2.0%20%E9%97%A8%E6%88%B7%E9%A6%96%E9%A1%B5%E5%A4%A7%E5%B9%BF%E5%91%8A%E4%BD%8D%E6%98%BE%E7%A4%BA(4)%20%E5%8D%81%E5%85%AB/"/>
-    <id>https://muyinchen.github.io/2016/12/04/Migo商城2.0 门户首页大广告位显示(4) 十八/</id>
-    <published>2016-12-04T15:42:53.081Z</published>
-    <updated>2016-12-04T15:42:35.832Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Migo商城2-0-门户首页大广告位显示-4-十八"><a href="#Migo商城2-0-门户首页大广告位显示-4-十八" class="headerlink" title="Migo商城2.0 门户首页大广告位显示(4) 十八"></a>Migo商城2.0 门户首页大广告位显示(4) 十八</h2><p>关于<code>httpclient</code>的东西就不说了，不懂的可以百度谷歌的<br><a id="more"></a></p>
-<h4 id="在common工程中导入httpclient工具类"><a href="#在common工程中导入httpclient工具类" class="headerlink" title="在common工程中导入httpclient工具类"></a>在<code>common</code>工程中导入<code>httpclient工具类</code></h4><p><img src="http://og0sybnix.bkt.clouddn.com/sp161204_211557.png" alt=""></p>
-<h4 id="首页通过EL表达式输出到页面显示："><a href="#首页通过EL表达式输出到页面显示：" class="headerlink" title="首页通过EL表达式输出到页面显示："></a>首页通过EL表达式输出到页面显示：</h4><p><img src="http://og0sybnix.bkt.clouddn.com/sp161204_223203.png" alt=""></p>
-<h4 id="前台系统service代码："><a href="#前台系统service代码：" class="headerlink" title="前台系统service代码："></a>前台系统<code>service</code>代码：</h4><p>此处代码和1版做了很大修改，之前的migoResult在做转换的时候出了点问题，索性就自己重新再写下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.portal.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.JsonNode;</div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;</div><div class="line"><span class="keyword">import</span> com.fasterxml.jackson.databind.node.ArrayNode;</div><div class="line"><span class="keyword">import</span> com.migo.portal.pojo.Content;</div><div class="line"><span class="keyword">import</span> com.migo.utils.HttpClientUtil;</div><div class="line"><span class="keyword">import</span> com.migo.utils.JsonUtils;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.ArrayList;</div><div class="line"><span class="keyword">import</span> java.util.LinkedHashMap;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/12/4.</div><div class="line"> */</div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;MIGO_MANAGE_URL&#125;"</span>)</div><div class="line">    <span class="keyword">private</span> String MIGO_MANAGE_URL;</div><div class="line"></div><div class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;AD1_URL&#125;"</span>)</div><div class="line">    <span class="keyword">private</span> String AD1_URL;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ObjectMapper MAPPER = <span class="keyword">new</span> ObjectMapper();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">queryAD1</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">//调用后台管理系统的接口服务获取数据</span></div><div class="line">            String url=MIGO_MANAGE_URL+AD1_URL;</div><div class="line">            String jsonData = HttpClientUtil.doGet(url);</div><div class="line">            <span class="keyword">if</span> (jsonData==<span class="keyword">null</span>)&#123;</div><div class="line">                <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//解析json数据</span></div><div class="line">            JsonNode jsonNode = MAPPER.readTree(jsonData);</div><div class="line">            ArrayNode rows = (ArrayNode) jsonNode.get(<span class="string">"rows"</span>);</div><div class="line">            List&lt;Content&gt; contents = JsonUtils.jsonToList(String.valueOf(rows), Content.class);</div><div class="line">            List&lt;Map&lt;String,Object&gt;&gt; result1=<span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">            <span class="keyword">for</span> (Content content : contents) &#123;</div><div class="line">                Map&lt;String,Object&gt; map=<span class="keyword">new</span> LinkedHashMap&lt;&gt;();</div><div class="line">                map.put(<span class="string">"srcB"</span>,content.getPic());</div><div class="line">                map.put(<span class="string">"height"</span>,<span class="number">240</span>);</div><div class="line">                map.put(<span class="string">"alt"</span>,content.getTitle());</div><div class="line">                map.put(<span class="string">"width"</span>,<span class="number">670</span>);</div><div class="line">                map.put(<span class="string">"src"</span>,content.getPic2());</div><div class="line">                map.put(<span class="string">"widthB"</span>,<span class="number">550</span>);</div><div class="line">                map.put(<span class="string">"href"</span>,content.getUrl());</div><div class="line">                map.put(<span class="string">"heightB"</span>,<span class="number">240</span>);</div><div class="line">                result1.add(map);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            <span class="keyword">return</span> JsonUtils.objectToJson(result1);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line"></div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="controller代码"><a href="#controller代码" class="headerlink" title="controller代码"></a><code>controller</code>代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.migo.portal.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.migo.portal.service.IndexService;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Controller;</div><div class="line"><span class="keyword">import</span> org.springframework.ui.Model;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by kauw on 2016/11/16.</div><div class="line"> */</div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexController</span> </span>&#123;</div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> IndexService indexService;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 首页</div><div class="line">     */</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"index"</span>,method=RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">index</span><span class="params">(Model model)</span></span>&#123;</div><div class="line"></div><div class="line">        String ad1 = <span class="keyword">this</span>.indexService.queryAD1();</div><div class="line">        <span class="comment">//传递给页面</span></div><div class="line">        model.addAttribute(<span class="string">"indexAd1"</span>,ad1);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="string">"index"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行测试：</p>
-<p><img src="http://og0sybnix.bkt.clouddn.com/sp161204_233410.png" alt=""></p>
-<p>其他的广告位就暂时不写了，都一个套路，后台写个服务，前台系统查下，然后写到<code>model</code>里面，最后也没调用<code>el</code>表达式完成，至此，大广告位显示完成</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Migo商城2-0-门户首页大广告位显示-4-十八&quot;&gt;&lt;a href=&quot;#Migo商城2-0-门户首页大广告位显示-4-十八&quot; class=&quot;headerlink&quot; title=&quot;Migo商城2.0 门户首页大广告位显示(4) 十八&quot;&gt;&lt;/a&gt;Migo商城2.0 门户首页大广告位显示(4) 十八&lt;/h2&gt;&lt;p&gt;关于&lt;code&gt;httpclient&lt;/code&gt;的东西就不说了，不懂的可以百度谷歌的&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/categories/Migo%E5%95%86%E5%9F%8E2-0/"/>
-    
-    
-      <category term="Migo商城2.0" scheme="https://muyinchen.github.io/tags/Migo%E5%95%86%E5%9F%8E2-0/"/>
     
   </entry>
   
