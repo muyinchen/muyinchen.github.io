@@ -1,0 +1,711 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="多线程 zookeeper 分布式锁" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="关于编程路上的一些杂谈 多线程中锁的秘密(二)接上篇关于编程路上的一些杂谈 由线程的通信原理想到的(一)
+其实已经讨论一些锁的实现了，这里再深入一下，把问题讲明白。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于编程路上的一些杂谈 多线程中锁的秘密(二)">
+<meta property="og:url" content="https://muyinchen.github.io/2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="关于编程路上的一些杂谈 多线程中锁的秘密(二)接上篇关于编程路上的一些杂谈 由线程的通信原理想到的(一)
+其实已经讨论一些锁的实现了，这里再深入一下，把问题讲明白。">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_213212.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_215402.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_222450.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_225458.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_231634.png">
+<meta property="og:updated_time" content="2017-01-07T15:44:07.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于编程路上的一些杂谈 多线程中锁的秘密(二)">
+<meta name="twitter:description" content="关于编程路上的一些杂谈 多线程中锁的秘密(二)接上篇关于编程路上的一些杂谈 由线程的通信原理想到的(一)
+其实已经讨论一些锁的实现了，这里再深入一下，把问题讲明白。">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170107_213212.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/"/>
+
+
+  <title> 关于编程路上的一些杂谈 多线程中锁的秘密(二) | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于编程路上的一些杂谈 多线程中锁的秘密(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-07T23:44:27+08:00" content="2017-01-07">
+              2017-01-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/杂谈/" itemprop="url" rel="index">
+                    <span itemprop="name">杂谈</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="关于编程路上的一些杂谈-多线程中锁的秘密-二"><a href="#关于编程路上的一些杂谈-多线程中锁的秘密-二" class="headerlink" title="关于编程路上的一些杂谈 多线程中锁的秘密(二)"></a>关于编程路上的一些杂谈 多线程中锁的秘密(二)</h1><p>接上篇<a href="https://muyinchen.github.io/categories/%E6%9D%82%E8%B0%88/">关于编程路上的一些杂谈 由线程的通信原理想到的(一)</a></p>
+<p>其实已经讨论一些锁的实现了，这里再深入一下，把问题讲明白。<br><a id="more"></a></p>
+<h2 id="底层实现原理"><a href="#底层实现原理" class="headerlink" title="底层实现原理"></a>底层实现原理</h2><pre><code>有volatile变量修饰的共享变量进行写操作的时候会多出第二行汇编代码，通过查IA-32架构软件开发者手册可知，Lock前缀的指令在多核处理器下会引发了两件事情。
+</code></pre><ol>
+<li><p><strong>将当前处理器缓存行的数据写回到系统内存。</strong></p>
+</li>
+<li><p><strong>这个写回内存的操作会使在其他CPU里缓存了该内存地址的数据无效。</strong></p>
+<p>为了提高处理速度，处理器不直接和内存进行通信，而是先将系统内存的数据读到内部缓存（L1，L2或其他）后再进行操作，但操作完不知道何时会写到内存。如果对声明了volatile的变量进行写操作，JVM就会向处理器发送一条Lock前缀的指令，将这个变量所在缓存行的数据写回到系统内存。但是，就算写回到内存，如果其他处理器缓存的值还是旧的，再执行计算操作就会有问题。所以，在多处理器下，为了保证各个处理器的缓存是一致的，就会实现缓存一致性协议，每个处理器通过嗅探在总线上传播的数据来检查自己缓存的值是不是过期了，当处理器发现自己缓存行对应的内存地址被修改，就会将当前处理器的缓存行设置成无效状态，当处理器对这个数据进行修改操作的时候，会重新从系统内存中把数据读到处理器缓存里。 </p>
+</li>
+</ol>
+<p>   同样，参照上面所说的，对于volatile来说，它的实现也不外乎需要达到以下两种实现效果：</p>
+<p><strong>1）Lock前缀指令会引起处理器缓存回写到内存Lock前缀指令会引起处理器缓存回写到内存</strong></p>
+<p><strong>2）一个处理器的缓存回写到内存会导致其他处理器的缓存无效</strong></p>
+<h2 id="对象头"><a href="#对象头" class="headerlink" title="对象头"></a>对象头</h2><p>对象头：包括两部分信息。第一部分用于存储对象自身的运行时数据，如哈希码，GC分代年龄、锁状态、线程持有锁、等等。这部分数据的长度在32为或64位，官方称之为“MarkWord”。对象头的另一部分是类型指针，即对象指向它的类元素的指针，通过这个指针来确定这个对象时那个类的实例。（如果Java对象时一个数组，则对象头还必须有一块用于记录数组长度的数据。因为Java数组元数据中没有数组大小的记录）</p>
+<h2 id="偏向锁的概念"><a href="#偏向锁的概念" class="headerlink" title="偏向锁的概念"></a>偏向锁的概念</h2><p>HotSpot的作者经过研究发现，大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁。当一个线程访问同步块并获取锁时，会在对象头和栈帧中的锁记录里存储锁偏向的线程ID，以后该线程在进入和退出同步块时不需要进行CAS操作来加锁和解锁，只需简单地测试一下对象头的Mark Word里是否存储着指向当前线程的偏向锁。如果测试成功，表示线程已经获得了锁。如果测试失败，则需要再测试一下Mark Word中偏向锁的标识是否设置成1（表示当前是偏向锁）：如果没有设置，则使用CAS竞争锁；如果设置了，则尝试使用CAS将对象头的偏向锁指向当前线程。 </p>
+<h2 id="进入正题"><a href="#进入正题" class="headerlink" title="进入正题"></a>进入正题</h2><p>在<a href="https://muyinchen.github.io/categories/%E6%9D%82%E8%B0%88/">关于编程路上的一些杂谈 由线程的通信原理想到的(一)</a>其实已经有讲到volatile 的实现方式的，通过上面的深入想必已经有更细致的了解，然后也相信大家对于像i++  这种复合操作不具有原子性(i是volatile变量 )很是疑惑，这里要说一个概念： </p>
+<h3 id="程序计数器PC"><a href="#程序计数器PC" class="headerlink" title="程序计数器PC"></a>程序计数器PC</h3><p>程序计数器即指令地址寄存器。在某些计算机中用来存放当前正在执行的指令地址；而在另一些计算机中则用来存放即将要执行的下一条指令地址；而在有指令预取功能的计算机中，一般还要增加一个程序计数器用来存放下一条要取出的指令地址。程序计数器用以指出下条指令在主存中的存放地址，CPU根据PC的内容去主存取得指令。因程序中指令是顺序执行的，所以PC有自增功能。</p>
+<p><code>也就是说其实i++可以理解成一条指令，而i=i+1便是两条指令了包括i+1和将结果赋给i，应该不需要我再深入了，已经很明了了。</code></p>
+<h3 id="锁的语义"><a href="#锁的语义" class="headerlink" title="锁的语义"></a>锁的语义</h3><p>这里在<a href="https://muyinchen.github.io/categories/%E6%9D%82%E8%B0%88/">关于编程路上的一些杂谈 由线程的通信原理想到的(一)</a>已经有说其底层还是依靠volatile来实现，接下来就通过<code>ReentrantLock</code>源码来具体对其进行分析：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170107_213212.png" alt=""></p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170107_215402.png" alt=""></p>
+<p>对于<code>compareAndSetState</code>来说：</p>
+<p>CAS, CPU指令，在大多数处理器架构，包括IA32、Space中采用的都是CAS指令，CAS的语义是“我认为V的值应该为A，如果是，那么将V的值更新为B，否则不修改并告诉V的值实际为多少”，CAS是项 <strong>乐观锁</strong> 技术，当多个线程尝试使用CAS同时更新同一个变量时，只有其中一个线程能更新变量的值，而其它线程都失败，失败的线程并不会被挂起，而是被告知这次竞争中失败，并可以再次尝试。</p>
+<p>CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。</p>
+<p>对于<code>compareAndSetState</code>来说：它是个原子方法,原理就是是CAS.这个是高效,而且是原子的,不用加锁. 也会因为其他值改了而产生误操作,应为会先判断当前值,符合期望才去改变,而我们所要操作的值无非就是<code>state</code>而已</p>
+<p>对于上面截图的代码说的直白点就是对于一个线程如果当前没有竞争，则直接拿到或者上锁，否则，尝试获取即acquire(1)方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Sync object for non-fair locks</div><div class="line">     */</div><div class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">NonfairSync</span> <span class="keyword">extends</span> <span class="title">Sync</span> </span>&#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">7316153563782823691L</span>;</div><div class="line"></div><div class="line">        <span class="comment">/**</span></div><div class="line">         * Performs lock.  Try immediate barge, backing up to normal</div><div class="line">         * acquire on failure.</div><div class="line">         */</div><div class="line">        <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</div><div class="line">                setExclusiveOwnerThread(Thread.currentThread());</div><div class="line">            <span class="keyword">else</span></div><div class="line">                acquire(<span class="number">1</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryAcquire</span><span class="params">(<span class="keyword">int</span> acquires)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> nonfairTryAcquire(acquires);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170107_222450.png" alt=""></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">    * Acquires in exclusive mode, ignoring interrupts.  Implemented</div><div class="line">    * by invoking at least once &#123;<span class="doctag">@link</span> #tryAcquire&#125;,</div><div class="line">    * returning on success.  Otherwise the thread is queued, possibly</div><div class="line">    * repeatedly blocking and unblocking, invoking &#123;<span class="doctag">@link</span></div><div class="line">    * #tryAcquire&#125; until success.  This method can be used</div><div class="line">    * to implement method &#123;<span class="doctag">@link</span> Lock#lock&#125;.</div><div class="line">    *</div><div class="line">    * <span class="doctag">@param</span> arg the acquire argument.  This value is conveyed to</div><div class="line">    *        &#123;<span class="doctag">@link</span> #tryAcquire&#125; but is otherwise uninterpreted and</div><div class="line">    *        can represent anything you like.</div><div class="line">    */</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">acquire</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</div><div class="line">           acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</div><div class="line">           selfInterrupt();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170107_225458.png" alt=""></p>
+<p>首先通过tryAcquire()方法尝试获取，如果不能的话，则通过AddWaiter()方法，用当前线程生成一个Node放入队尾，而acquireQueued()则是一种自旋锁的实现方式。最后把当前线程interrupt。这里可以发现，java的 AQS的实现很巧妙的一个地方就是把tryAcquire延迟到子类去实现。公平锁和非公平锁的实现方式是不一样的。非公平锁的tryAcquire()的是通过nonfairTryAcquire()。</p>
+<p>然后看acquireQueued(),其实就是一个无限循环，直到获得锁为止。通过上图源码可以看到在shouldParkAfterFailedAcquire()方法中，通过前一个Node的waitStatus来判断是否应该把当前线程阻塞(所以用了双&amp;&amp;开关语义)，阻塞是通过parkAndCheckInterrupt()中的<strong>LockSupport</strong>.park()实现。</p>
+<p>再看一下释放锁：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Attempts to release this lock.</div><div class="line">     *</div><div class="line">     * &lt;p&gt;If the current thread is the holder of this lock then the hold</div><div class="line">     * count is decremented.  If the hold count is now zero then the lock</div><div class="line">     * is released.  If the current thread is not the holder of this</div><div class="line">     * lock then &#123;<span class="doctag">@link</span> IllegalMonitorStateException&#125; is thrown.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@throws</span> IllegalMonitorStateException if the current thread does not</div><div class="line">     *         hold this lock</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</div><div class="line">        sync.release(<span class="number">1</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>release：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">     * Releases in exclusive mode.  Implemented by unblocking one or</div><div class="line">     * more threads if &#123;<span class="doctag">@link</span> #tryRelease&#125; returns true.</div><div class="line">     * This method can be used to implement method &#123;<span class="doctag">@link</span> Lock#unlock&#125;.</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> arg the release argument.  This value is conveyed to</div><div class="line">     *        &#123;<span class="doctag">@link</span> #tryRelease&#125; but is otherwise uninterpreted and</div><div class="line">     *        can represent anything you like.</div><div class="line">     * <span class="doctag">@return</span> the value returned from &#123;<span class="doctag">@link</span> #tryRelease&#125;</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">release</span><span class="params">(<span class="keyword">int</span> arg)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (tryRelease(arg)) &#123;</div><div class="line">            Node h = head;</div><div class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h.waitStatus != <span class="number">0</span>)</div><div class="line">                unparkSuccessor(h);</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">tryRelease</span><span class="params">(<span class="keyword">int</span> releases)</span> </span>&#123;</div><div class="line">           <span class="keyword">int</span> c = getState() - releases;</div><div class="line">           <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</div><div class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> IllegalMonitorStateException();</div><div class="line">           <span class="keyword">boolean</span> free = <span class="keyword">false</span>;</div><div class="line">           <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</div><div class="line">               free = <span class="keyword">true</span>;</div><div class="line">               setExclusiveOwnerThread(<span class="keyword">null</span>);</div><div class="line">           &#125;</div><div class="line">           setState(c);</div><div class="line">           <span class="keyword">return</span> free;</div><div class="line">       &#125;</div></pre></td></tr></table></figure>
+<p>可以看出tryRelease和tryAcquire一样，也是延迟到子类(Sync)实现的。c==0的时候，才能成功释放锁，所以多次锁定(看源码就可以lock一次c就+1)就需要多次释放才能解锁。<br>释放锁之后，就会唤醒队列的一个node中的线程</p>
+<p>先这段代码目的在于找出第一个可以unpark的线程，一般说来head.next == head，Head就是第一个线程，但Head.next可能会被置为null(参考acquireQueued()源码)，因此比较稳妥的办法是从后往前找第一个可用线程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">    * Wakes up node&apos;s successor, if one exists.</div><div class="line">    *</div><div class="line">    * @param node the node</div><div class="line">    */</div><div class="line">   private void unparkSuccessor(Node node) &#123;</div><div class="line">       /*</div><div class="line">        * If status is negative (i.e., possibly needing signal) try</div><div class="line">        * to clear in anticipation of signalling.  It is OK if this</div><div class="line">        * fails or if status is changed by waiting thread.</div><div class="line">        */</div><div class="line">       int ws = node.waitStatus;</div><div class="line">       if (ws &lt; 0)</div><div class="line">           compareAndSetWaitStatus(node, ws, 0);</div><div class="line"></div><div class="line">       /*</div><div class="line">        * Thread to unpark is held in successor, which is normally</div><div class="line">        * just the next node.  But if cancelled or apparently null,</div><div class="line">        * traverse backwards from tail to find the actual</div><div class="line">        * non-cancelled successor.</div><div class="line">        */</div><div class="line">       Node s = node.next;</div><div class="line">       if (s == null || s.waitStatus &gt; 0) &#123;</div><div class="line">           s = null;</div><div class="line">           for (Node t = tail; t != null &amp;&amp; t != node; t = t.prev)</div><div class="line">               if (t.waitStatus &lt;= 0)</div><div class="line">                   s = t;</div><div class="line">       &#125;</div><div class="line">       if (s != null)</div><div class="line">           LockSupport.unpark(s.thread);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170107_231634.png" alt=""></p>
+<p>其实我们在设计代码的时候也是可以通过静态内部类的方式来实现一些自己想要的功能，不过我们经常会用Spring框架，其通过动态代理已经实现了这个按需的延迟加载这些特性，也无须去头疼这些那些的</p>
+<p>其实关键点也就这些，绕来绕去其实就一句话，假如有A和B两个线程，A符合期望的话，那么A就可以入主东宫了，B还老老实实的做它的嫔妃就是</p>
+<p>通过以上这些解释，其实我们发现，锁的底层其实也是在反复操作一个volatile 变量，而多线程的其他操作也是基于volatile 的特性来实现的，包括计数器，barrier，各种安全工具类，理解这个其他自然都不是什么问题，包括很多并发框架的和事务等的设计，先就扯到这里吧。</p>
+<p>参考文献：Java并发编程的艺术</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/杂谈/" rel="tag">#杂谈</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/关于编程路上的一些杂谈 由线程的通信原理想到的(一)/" rel="next" title="关于编程路上的一些杂谈 由线程的通信原理想到的(一)">
+                <i class="fa fa-chevron-left"></i> 关于编程路上的一些杂谈 由线程的通信原理想到的(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/"
+           data-title="关于编程路上的一些杂谈 多线程中锁的秘密(二)" data-url="https://muyinchen.github.io/2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于编程路上的一些杂谈-多线程中锁的秘密-二"><span class="nav-number">1.</span> <span class="nav-text">关于编程路上的一些杂谈 多线程中锁的秘密(二)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#底层实现原理"><span class="nav-number">1.1.</span> <span class="nav-text">底层实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象头"><span class="nav-number">1.2.</span> <span class="nav-text">对象头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁的概念"><span class="nav-number">1.3.</span> <span class="nav-text">偏向锁的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入正题"><span class="nav-number">1.4.</span> <span class="nav-text">进入正题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#程序计数器PC"><span class="nav-number">1.4.1.</span> <span class="nav-text">程序计数器PC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁的语义"><span class="nav-number">1.4.2.</span> <span class="nav-text">锁的语义</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
