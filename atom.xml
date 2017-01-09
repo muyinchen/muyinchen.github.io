@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-09T14:52:52.891Z</updated>
+  <updated>2017-01-09T14:57:23.818Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2017/01/09/%E5%9C%A8Spring%20Framework%205.0%E4%B8%AD%E5%BC%95%E5%85%A5Kotlin%E6%94%AF%E6%8C%81/"/>
     <id>https://muyinchen.github.io/2017/01/09/在Spring Framework 5.0中引入Kotlin支持/</id>
     <published>2017-01-09T14:48:07.633Z</published>
-    <updated>2017-01-09T14:52:52.891Z</updated>
+    <updated>2017-01-09T14:57:23.818Z</updated>
     
     <content type="html"><![CDATA[<h1 id="在Spring-Framework-5-0中引入Kotlin支持"><a href="#在Spring-Framework-5-0中引入Kotlin支持" class="headerlink" title="在Spring Framework 5.0中引入Kotlin支持"></a>在Spring Framework 5.0中引入Kotlin支持</h1><p>因最近一直在业余做<a href="https://www.gitbook.com/book/muyinchen/spring-framework-5-0-0-m3/details" target="_blank" rel="external">Spring Framework 5.0 M4</a> 文档的翻译工作(也就进度稍慢了)，所以对5里面的各种比较关注，尤其是新东西，发现就拿来先翻译分享给大家了<br><a id="more"></a></p>
 <p>我们几个月前有介绍关于<a href="https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin" target="_blank" rel="external">Kotlin在start.spring.io上的支持</a>，我们有一直在进行工作，以确保Spring和<a href="https://kotlin.link/" target="_blank" rel="external">Kotlin</a>在一起玩得很好。 Kotlin的一个关键优势是它提供了一个与用Java编写的库之间非常好的<a href="https://kotlinlang.org/docs/reference/java-interop.html" target="_blank" rel="external">互操作性</a>。但是有更多的方法可以进一步，允许编写完全成熟的Kotlin代码，当开发您的下一个Spring应用程序。除了Spring Framework对Java 8的支持，Kotlin应用程序可以利用类似功能的Web或bean注册API，还有其他Kotlin专用功能，应该可以让你的生产力水平达到一个新的高度。</p>
@@ -82,7 +82,7 @@
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>我使用Kotlin编写Spring Boot应用程序越多，我觉得这两种技术有着共同的目标，允许您使用表达性，简短和可读的代码来更高效地编写应用程序，而Spring Framework 5 Kotlin支持将这些技术以更加自然，简单和强大的方式来展现给我们。</p>
 <p>Kotlin可以用来编写<a href="https://github.com/sdeleuze/spring-boot-kotlin-demo" target="_blank" rel="external">基于注解的Spring Boot应用程序</a>，但作为一种新的<a href="https://github.com/mix-it/mixit/" target="_blank" rel="external">functional and reactive applications</a>也将是一种很好的尝试，Spring Framework 5.0将会启用。</p>
 <p>Kotlin团队做了一个伟大的工作，修复几乎所有的bug点，我们报告，所以非常感谢他们。即将到来的Kotlin 1.1版本预计也修复<a href="https://youtrack.jetbrains.com/issue/KT-11235" target="_blank" rel="external">KT-11235</a>，以允许指定数组注解标记单个属性值，无须使用<code>arrayOf()</code>。你将面临的主要问题可能是<a href="https://youtrack.jetbrains.com/issue/KT-14984" target="_blank" rel="external">KT-14984</a>，它将需要明确指定lambda类型（如<code>Supplier {}</code>或<code>HandlerFunction {}</code>）其中只需指定<code>{}</code>应该就足够了。</p>
-<p>通过转到<a href="https://start.spring.io/#!language=kotlin" target="_blank" rel="external">start.spring.io</a>并生成一个Spring Boot<code>2.0.0（SNAPSHOT）</code>项目，可以自由测试Spring Framework 5.0 Kotlin支持并在这里或者在[Kotlin Slack]的“＃spring”频道(<a href="http://slack.kotlinlang.org/)向我们发送您的反馈。你也可以[贡献](https://github.com/spring-projects/spring-framework/pulls)你需要的Kotlin扩展;-" target="_blank" rel="external">http://slack.kotlinlang.org/)向我们发送您的反馈。你也可以[贡献](https://github.com/spring-projects/spring-framework/pulls)你需要的Kotlin扩展;-</a>)</p>
+<p>通过转到<a href="https://start.spring.io/#!language=kotlin" target="_blank" rel="external">start.spring.io</a>并生成一个Spring Boot<code>2.0.0（SNAPSHOT）</code>项目，可以自由测试Spring Framework 5.0 Kotlin支持并在这里或者在<a href="http://slack.kotlinlang.org/" target="_blank" rel="external">Kotlin Slack</a>的“＃spring”频道向我们发送您的反馈。你也可以<a href="https://github.com/spring-projects/spring-framework/pulls" target="_blank" rel="external">贡献</a>你需要的Kotlin扩展;-)</p>
 <p>翻译自：<a href="https://spring.io/blog/2017/01/04/introducing-kotlin-support-in-spring-framework-5-0" target="_blank" rel="external">https://spring.io/blog/2017/01/04/introducing-kotlin-support-in-spring-framework-5-0</a></p>
 <p>[ 转载请保留原文出处、译者和译文链接。]</p>
 ]]></content>
