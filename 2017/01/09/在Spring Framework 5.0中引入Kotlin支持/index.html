@@ -92,7 +92,7 @@
 <meta property="og:url" content="https://muyinchen.github.io/2017/01/09/在Spring Framework 5.0中引入Kotlin支持/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="在Spring Framework 5.0中引入Kotlin支持因最近一直在业余做Spring Framework 5.0 M4 文档的翻译工作(也就进度稍慢了)，所以对5里面的各种比较关注，尤其是新东西，发现就拿来先翻译分享给大家了">
-<meta property="og:updated_time" content="2017-01-09T14:57:23.818Z">
+<meta property="og:updated_time" content="2017-01-09T15:34:27.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在Spring Framework 5.0中引入Kotlin支持">
 <meta name="twitter:description" content="在Spring Framework 5.0中引入Kotlin支持因最近一直在业余做Spring Framework 5.0 M4 文档的翻译工作(也就进度稍慢了)，所以对5里面的各种比较关注，尤其是新东西，发现就拿来先翻译分享给大家了">
@@ -357,7 +357,7 @@
 <li><a href="https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/kotlin/org/springframework/beans/factory/ListableBeanFactoryExtension.kt" target="_blank" rel="external">ListableBeanFactoryExtension</a></li>
 <li><a href="https://github.com/spring-projects/spring-framework/blob/master/spring-context/src/main/kotlin/org/springframework/context/support/GenericApplicationContextExtension.kt" target="_blank" rel="external">GenericApplicationContextExtension</a></li>
 </ul>
-<h2 id="No-need-to-declare-your-bean-class-as-open-anymore"><a href="#No-need-to-declare-your-bean-class-as-open-anymore" class="headerlink" title="No need to declare your bean class as open anymore"></a>No need to declare your bean class as open anymore</h2><p>直到现在，使用Kotlin构建Spring Boot应用程序时遇到的几个问题之一是需要在每个类上添加一个<code>open</code>关键字，并且使用CGLIB（如<code>@Configuration</code>类）来代替Spring bean的成员函数。 这个需求的根本原因来自于事实，在Kotlin， <a href="https://discuss.kotlinlang.org/t/classes-final-by-default/166" target="_blank" rel="external">classes are final by default</a>。</p>
+<h2 id="No-need-to-declare-your-bean-class-as-open-anymore"><a href="#No-need-to-declare-your-bean-class-as-open-anymore" class="headerlink" title="No need to declare your bean class as open anymore"></a>No need to declare your bean class as open anymore</h2><p>直到现在，使用Kotlin构建Spring Boot应用程序时遇到的几个问题之一是需要在每个类上添加一个<code>open</code>关键字，并且使用CGLIB（如<code>@Configuration</code>类）来代替Spring bean的成员函数。在Kotlin， 这个需求的根本原因来自于<a href="https://discuss.kotlinlang.org/t/classes-final-by-default/166" target="_blank" rel="external">classes are final by default</a>这个事实。</p>
 <p>幸运的是，Kotlin 1.0.6现在提供了一个<code>kotlin-spring</code>插件，在默认情况下打开类和它们的成员函数，注解或元注解使用以下注解之一：</p>
 <ul>
 <li><code>@Component</code></li>
