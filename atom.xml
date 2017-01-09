@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-09T15:34:27.670Z</updated>
+  <updated>2017-01-09T15:42:44.391Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2017/01/09/%E5%9C%A8Spring%20Framework%205.0%E4%B8%AD%E5%BC%95%E5%85%A5Kotlin%E6%94%AF%E6%8C%81/"/>
     <id>https://muyinchen.github.io/2017/01/09/在Spring Framework 5.0中引入Kotlin支持/</id>
     <published>2017-01-09T14:48:07.633Z</published>
-    <updated>2017-01-09T15:34:27.670Z</updated>
+    <updated>2017-01-09T15:42:44.391Z</updated>
     
     <content type="html"><![CDATA[<h1 id="在Spring-Framework-5-0中引入Kotlin支持"><a href="#在Spring-Framework-5-0中引入Kotlin支持" class="headerlink" title="在Spring Framework 5.0中引入Kotlin支持"></a>在Spring Framework 5.0中引入Kotlin支持</h1><p>因最近一直在业余做<a href="https://www.gitbook.com/book/muyinchen/spring-framework-5-0-0-m3/details" target="_blank" rel="external">Spring Framework 5.0 M4</a> 文档的翻译工作(也就进度稍慢了)，所以对5里面的各种比较关注，尤其是新东西，发现就拿来先翻译分享给大家了<br><a id="more"></a></p>
 <p>我们几个月前有介绍关于<a href="https://spring.io/blog/2016/02/15/developing-spring-boot-applications-with-kotlin" target="_blank" rel="external">Kotlin在start.spring.io上的支持</a>，我们有一直在进行工作，以确保Spring和<a href="https://kotlin.link/" target="_blank" rel="external">Kotlin</a>在一起玩得很好。 Kotlin的一个关键优势是它提供了一个与用Java编写的库之间非常好的<a href="https://kotlinlang.org/docs/reference/java-interop.html" target="_blank" rel="external">互操作性</a>。但是有更多的方法可以进一步，允许编写完全成熟的Kotlin代码，当开发您的下一个Spring应用程序。除了Spring Framework对Java 8的支持，Kotlin应用程序可以利用类似功能的Web或bean注册API，还有其他Kotlin专用功能，应该可以让你的生产力水平达到一个新的高度。</p>
@@ -58,7 +58,7 @@
 <li><a href="https://github.com/spring-projects/spring-framework/blob/master/spring-beans/src/main/kotlin/org/springframework/beans/factory/ListableBeanFactoryExtension.kt" target="_blank" rel="external">ListableBeanFactoryExtension</a></li>
 <li><a href="https://github.com/spring-projects/spring-framework/blob/master/spring-context/src/main/kotlin/org/springframework/context/support/GenericApplicationContextExtension.kt" target="_blank" rel="external">GenericApplicationContextExtension</a></li>
 </ul>
-<h2 id="No-need-to-declare-your-bean-class-as-open-anymore"><a href="#No-need-to-declare-your-bean-class-as-open-anymore" class="headerlink" title="No need to declare your bean class as open anymore"></a>No need to declare your bean class as open anymore</h2><p>直到现在，使用Kotlin构建Spring Boot应用程序时遇到的几个问题之一是需要在每个类上添加一个<code>open</code>关键字，并且使用CGLIB（如<code>@Configuration</code>类）来代替Spring bean的成员函数。在Kotlin， 这个需求的根本原因来自于<a href="https://discuss.kotlinlang.org/t/classes-final-by-default/166" target="_blank" rel="external">classes are final by default</a>这个事实。</p>
+<h2 id="No-need-to-declare-your-bean-class-as-open-anymore"><a href="#No-need-to-declare-your-bean-class-as-open-anymore" class="headerlink" title="No need to declare your bean class as open anymore"></a>No need to declare your bean class as open anymore</h2><p>直到现在，使用Kotlin构建Spring Boot应用程序时遇到的几个问题之一是需要在每个类上添加一个<code>open</code>关键字，并且使用CGLIB（如<code>@Configuration</code>类）来代替Spring bean的成员函数。 这个需求的根本原因来自于在Kotlin里的<a href="https://discuss.kotlinlang.org/t/classes-final-by-default/166" target="_blank" rel="external">classes are final by default</a>这个事实。</p>
 <p>幸运的是，Kotlin 1.0.6现在提供了一个<code>kotlin-spring</code>插件，在默认情况下打开类和它们的成员函数，注解或元注解使用以下注解之一：</p>
 <ul>
 <li><code>@Component</code></li>
