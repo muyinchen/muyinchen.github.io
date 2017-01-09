@@ -1,0 +1,767 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="springcache  缓存" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="使用Spring缓存数据本指南将指导您完成在Spring所托管bean上启用缓存的过程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Spring缓存数据">
+<meta property="og:url" content="https://muyinchen.github.io/2017/01/09/使用Spring缓存数据/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="使用Spring缓存数据本指南将指导您完成在Spring所托管bean上启用缓存的过程。">
+<meta property="og:updated_time" content="2017-01-09T09:55:38.091Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Spring缓存数据">
+<meta name="twitter:description" content="使用Spring缓存数据本指南将指导您完成在Spring所托管bean上启用缓存的过程。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/01/09/使用Spring缓存数据/"/>
+
+
+  <title> 使用Spring缓存数据 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                使用Spring缓存数据
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-09T17:55:50+08:00" content="2017-01-09">
+              2017-01-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Spring指南/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring指南</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/09/使用Spring缓存数据/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/09/使用Spring缓存数据/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用Spring缓存数据"><a href="#使用Spring缓存数据" class="headerlink" title="使用Spring缓存数据"></a>使用Spring缓存数据</h1><p>本指南将指导您完成在Spring所托管bean上启用缓存的过程。<br><a id="more"></a></p>
+<h2 id="What-you’ll-build"><a href="#What-you’ll-build" class="headerlink" title="What you’ll build"></a>What you’ll build</h2><p>您将构建一个应用程序，在一个简单的book repository中启用缓存。</p>
+<h2 id="What-you’ll-need"><a href="#What-you’ll-need" class="headerlink" title="What you’ll need"></a>What you’ll need</h2><ul>
+<li>约15分钟</li>
+<li>最喜欢的文本编辑器或IDE</li>
+<li><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_blank" rel="external">JDK 1.8</a>或更高版本</li>
+<li><a href="http://www.gradle.org/downloads" target="_blank" rel="external">Gradle 2.3+</a>或<a href="http://maven.apache.org/download.cgi" target="_blank" rel="external">Maven 3.0+</a></li>
+<li>您也可以从本指南导入代码，以及直接在<a href="https://spring.io/guides/gs/sts" target="_blank" rel="external">Spring Tool Suite(STS)</a>中查看网页，并从那        里开始工作 。</li>
+</ul>
+<h2 id="How-to-complete-this-guide"><a href="#How-to-complete-this-guide" class="headerlink" title="How to complete this guide"></a>How to complete this guide</h2><p>与大多数[Spring 入门指南]一样(<a href="https://spring.io/guides)，您可以从头开始并完成每个步骤，也可以绕过已经熟悉的基本设置步骤。" target="_blank" rel="external">https://spring.io/guides)，您可以从头开始并完成每个步骤，也可以绕过已经熟悉的基本设置步骤。</a> 无论如何，你最终得到工作代码。</p>
+<ul>
+<li><a href="https://github.com/spring-guides/gs-caching/archive/master.zip" target="_blank" rel="external">Download</a>  并解压缩本指南的源代码仓库，或使用  <a href="https://spring.io/understanding/Git" target="_blank" rel="external">Git</a>: <code>git clone https://github.com/spring-guides/gs-caching.git</code></li>
+<li>cd 到 <code>gs-caching/initial</code></li>
+<li>跳转到<a href="https://spring.io/guides/gs/caching/#initial" target="_blank" rel="external">Create a Redis message receiver</a>.</li>
+</ul>
+<p><strong>当你做完这一切</strong>,  你可以根据 <code>gs-caching/complete</code>中的代码检查结果.</p>
+<h2 id="Build-with-Gradle"><a href="#Build-with-Gradle" class="headerlink" title="Build with Gradle"></a>Build with Gradle</h2><p>首先你设置一个基本的构建脚本。 你可以使用任何你喜欢的一个来构建项目，当使用Spring构建应用程序时，但是需要使用<a href="http://gradle.org" target="_blank" rel="external">Gradle</a>和<a href="https://maven.apache.org" target="_blank" rel="external">Maven</a> 来写你的代码。 如果你不熟悉任何一个，请参考<a href="https://spring.io/guides/gs/gradle" target="_blank" rel="external">使用Gradle构建Java项目</a>或<a href="https://spring.io/guides/gs/maven" target="_blank" rel="external">使用Maven构建Java项目</a>。</p>
+<h3 id="Create-the-directory-structure"><a href="#Create-the-directory-structure" class="headerlink" title="Create the directory structure"></a>Create the directory structure</h3><p>在您选择的项目目录中，创建以下子目录结构; 例如，在<em> nix</em>系统上使用`mkdir -p src / main / java / hello’：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">└── src</div><div class="line">    └── main</div><div class="line">        └── java</div><div class="line">            └── hello</div></pre></td></tr></table></figure>
+<h3 id="Create-a-Gradle-build-file"><a href="#Create-a-Gradle-build-file" class="headerlink" title="Create a Gradle build file"></a>Create a Gradle build file</h3><p>下面是 <a href="https://github.com/spring-guides/gs-caching/blob/master/initial/build.gradle" target="_blank" rel="external">initial Gradle build file</a>.<br><code>build.gradle</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line">        mavenCentral()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath(<span class="string">"org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">apply plugin: <span class="string">'java'</span></div><div class="line">apply plugin: <span class="string">'eclipse'</span></div><div class="line">apply plugin: <span class="string">'idea'</span></div><div class="line">apply plugin: <span class="string">'org.springframework.boot'</span></div><div class="line"></div><div class="line">jar &#123;</div><div class="line">    baseName = <span class="string">'gs-caching'</span></div><div class="line">    version =  <span class="string">'0.1.0'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">repositories &#123;</div><div class="line">    mavenCentral()</div><div class="line">&#125;</div><div class="line"></div><div class="line">sourceCompatibility = <span class="number">1.8</span></div><div class="line">targetCompatibility = <span class="number">1.8</span></div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile(<span class="string">"org.springframework.boot:spring-boot-starter-cache"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-tools/spring-boot-gradle-plugin" target="_blank" rel="external">Spring Boot gradle插件</a>提供了许多方便的功能：</p>
+<ul>
+<li>它收集类路径上的所有jar，并构建一个单独的，可运行的“über-jar”，这使得执行和传递服务更加方便。</li>
+<li>它搜索<code>public static void main()</code>方法来标记为可运行类。</li>
+<li>它提供了一个内置的依赖解析器，设置版本号匹配<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml" target="_blank" rel="external">Spring Boot dependencies</a>. 你可以覆盖任何你想要的版本，但它会默认为Boot的选择的版本集。</li>
+</ul>
+<h2 id="Build-with-Maven"><a href="#Build-with-Maven" class="headerlink" title="Build with Maven"></a>Build with Maven</h2><p>首先你设置一个基本的构建脚本。 你可以使用任何你喜欢的一个来构建项目，当使用Spring构建应用程序，但是需要使用<a href="https://maven.apache.org" target="_blank" rel="external">Maven</a>来构建你的代码。 如果你不熟悉Maven，请参考<a href="https://spring.io/guides/gs/maven" target="_blank" rel="external">使用Maven构建Java项目</a>.</p>
+<h3 id="Create-the-directory-structure-1"><a href="#Create-the-directory-structure-1" class="headerlink" title="Create the directory structure"></a>Create the directory structure</h3><p>在您选择的项目目录中，创建以下子目录结构; 例如，在<em> nix</em>系统上使用`mkdir -p src / main / java / hello’：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">└── src</div><div class="line">    └── main</div><div class="line">        └── java</div><div class="line">            └── hello</div></pre></td></tr></table></figure>
+<p><code>pom.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>gs-caching<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.3.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-cache<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">build</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">build</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><a href="https://github.com/spring-projects/spring-boot/tree/master/spring-boot-tools/spring-boot-maven-plugin" target="_blank" rel="external">Spring Boot Maven插件</a> 提供了许多方便的功能：</p>
+<ul>
+<li>它收集类路径上的所有jar，并构建一个单独的，可运行的“über-jar”，这使得执行和运输服务更加方便。</li>
+<li>它搜索<code>public static void main()</code>方法来标记为可运行类。</li>
+<li>它提供了一个内置的依赖解析器，设置版本号匹配<a href="https://github.com/spring-projects/spring-boot/blob/master/spring-boot-dependencies/pom.xml" target="_blank" rel="external">Spring Boot dependencies</a>. 你可以覆盖任何你想要的版本，但它会默认为Boot的选择的版本集。</li>
+</ul>
+<h2 id="Build-with-your-IDE"><a href="#Build-with-your-IDE" class="headerlink" title="Build with your IDE"></a>Build with your IDE</h2><ul>
+<li>阅读如何通过本指南直接导入<a href="https://spring.io/guides/gs/sts/" target="_blank" rel="external">Spring Tool Suite</a>。</li>
+<li>阅读如何在<a href="https://spring.io/guides/gs/intellij-idea" target="_blank" rel="external">IntelliJ IDEA</a>上使用本指南。</li>
+</ul>
+<h2 id="Create-a-book-repository"><a href="#Create-a-book-repository" class="headerlink" title="Create a book repository"></a>Create a book repository</h2><p>首先，让我们为你的book创建一个非常简单的模型</p>
+<p><code>src/main/java/hello/Book.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String isbn;</div><div class="line">    <span class="keyword">private</span> String title;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">(String isbn, String title)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.isbn = isbn;</div><div class="line">        <span class="keyword">this</span>.title = title;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getIsbn</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> isbn;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIsbn</span><span class="params">(String isbn)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.isbn = isbn;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTitle</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> title;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTitle</span><span class="params">(String title)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.title = title;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Book&#123;"</span> + <span class="string">"isbn='"</span> + isbn + <span class="string">'\''</span> + <span class="string">", title='"</span> + title + <span class="string">'\''</span> + <span class="string">'&#125;'</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>和该model的存储库：</p>
+<p><code>src/main/java/hello/BookRepository.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BookRepository</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function">Book <span class="title">getByIsbn</span><span class="params">(String isbn)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>您可以使用<a href="http://projects.spring.io/spring-data/" target="_blank" rel="external">Spring Data</a>在很多的SQL或NoSQL stores中提供repository仓库的实现，但是出于本指南的目的， 将使用模拟一些延迟（网络服务，慢延迟等）进行简单地的实现。</p>
+<p><code>src/main/java/hello/SimpleBookRepository.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleBookRepository</span> <span class="keyword">implements</span> <span class="title">BookRepository</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Book <span class="title">getByIsbn</span><span class="params">(String isbn)</span> </span>&#123;</div><div class="line">        simulateSlowService();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Book(isbn, <span class="string">"Some book"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Don't do this at home</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">simulateSlowService</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">long</span> time = <span class="number">3000L</span>;</div><div class="line">            Thread.sleep(time);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>simulateSlowService</code>是故意在每个<code>getByIsbn</code>调用中插入一个三秒延迟。 这是一个例子，稍后，你可以通过加入缓存来看到加速的效果。</p>
+<h2 id="Using-the-repository"><a href="#Using-the-repository" class="headerlink" title="Using the repository"></a>Using the repository</h2><p>接下来，连接repository库并使用它访问一些书。</p>
+<p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(Application.class, args);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>@ SpringBootApplication是一个方便的注解，添加了以下所有内容：</p>
+<ul>
+<li>@ Configuration将类标记为应用程序上下文的bean定义的来源。</li>
+<li>@ EnableAutoConfiguration告诉Spring Boot根据类路径设置，其他bean和各种属性设置开始添加bean。</li>
+<li>通常你会为Spring MVC应用程序添加@ EnableWebMvc，但是Spring Boot在类路径上看到<strong> spring-webmvc </strong>时会自动添加它。这将应用程序标记为Web应用程序，并激活关键行为，如设置一个“DispatcherServlet”。</li>
+<li>@ ComponentScan告诉Spring在hello包中寻找其他组件，配置和服务，允许它找到控制器。</li>
+</ul>
+<p>main()方法使用Spring Boot的SpringApplication.run()方法来启动应用程序。你有注意到一行XML？没有<strong> web.xml </strong>文件。这个Web应用程序是100％纯Java，你不必处理配置任何管道或基础设施。</p>
+<p>还有一个<a href="http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-command-line-runner" target="_blank" rel="external"><code>CommandLineRunner</code></a>，注入<code>BookRepository</code>和 用不同的参数调用它几次。</p>
+<p><code>src/main/java/hello/AppRunner.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.CommandLineRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppRunner</span> <span class="keyword">implements</span> <span class="title">CommandLineRunner</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = LoggerFactory.getLogger(AppRunner.class);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> BookRepository bookRepository;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AppRunner</span><span class="params">(BookRepository bookRepository)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.bookRepository = bookRepository;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(String... args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        logger.info(<span class="string">".... Fetching books"</span>);</div><div class="line">        logger.info(<span class="string">"isbn-1234 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-1234"</span>));</div><div class="line">        logger.info(<span class="string">"isbn-4567 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-4567"</span>));</div><div class="line">        logger.info(<span class="string">"isbn-1234 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-1234"</span>));</div><div class="line">        logger.info(<span class="string">"isbn-4567 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-4567"</span>));</div><div class="line">        logger.info(<span class="string">"isbn-1234 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-1234"</span>));</div><div class="line">        logger.info(<span class="string">"isbn-1234 --&gt;"</span> + bookRepository.getByIsbn(<span class="string">"isbn-1234"</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你尝试在此时运行应用程序，您会注意到它很慢，即使您几次检索完全相同的书。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014-06-05 12:15:35.783  ... : .... Fetching books</div><div class="line">2014-06-05 12:15:40.783  ... : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2014-06-05 12:15:43.784  ... : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2014-06-05 12:15:46.786  ... : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div></pre></td></tr></table></figure>
+<p>从时间戳可以看出，每本书花了大约三秒钟来检索，即使它是相同的标题被重复抓取。</p>
+<h2 id="Enable-caching"><a href="#Enable-caching" class="headerlink" title="Enable caching"></a>Enable caching</h2><p>让我们在你的SimpleBookRepository上启用缓存，这样书就会被缓存在<code>books</code>缓存中。</p>
+<p><code>src/main/java/hello/SimpleBookRepository.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.cache.annotation.Cacheable;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleBookRepository</span> <span class="keyword">implements</span> <span class="title">BookRepository</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="meta">@Cacheable</span>(<span class="string">"books"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> Book <span class="title">getByIsbn</span><span class="params">(String isbn)</span> </span>&#123;</div><div class="line">        simulateSlowService();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Book(isbn, <span class="string">"Some book"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Don't do this at home</span></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">simulateSlowService</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">long</span> time = <span class="number">3000L</span>;</div><div class="line">            Thread.sleep(time);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>您现在需要启用缓存注解的处理</p>
+<p><code>src/main/java/hello/Application.java</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> hello;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.cache.annotation.EnableCaching;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="meta">@EnableCaching</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(Application.class, args);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html" target="_blank" rel="external"><code>@EnableCaching</code></a>注解触发检查并处理每个Spring bean用于存在对公共方法的缓存注解。如果找到这样的注解，则自动创建代理以拦截方法调用并相应地处理缓存行为。</p>
+<p>缓存处理的相应注解是<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/Cacheable.html" target="_blank" rel="external"><code>Cacheable</code></a>，<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/CachePut.html" target="_blank" rel="external"> <code>CachePut</code></a>和<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/CacheEvict.html" target="_blank" rel="external"><code>CacheEvict</code></a>.有关更多详细信息，可以参考javadocs和<a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html" target="_blank" rel="external">文档</a>。</p>
+<p>Spring Boot会自动配置一个合适的<a href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/CacheManager.html" target="_blank" rel="external"><code>CacheManager</code></a>，作为相关缓存。有关更多详细信息，请参阅<a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html" target="_blank" rel="external">Spring Boot文档</a>。</p>
+<p>我们的示例不使用特定的缓存库，因此我们的缓存存储是使用<code>ConcurrentHashMap</code>的简单回退。缓存抽象支持各种各样的缓存库，并完全符合JSR-107（JCache）。</p>
+<h3 id="Build-an-executable-JAR"><a href="#Build-an-executable-JAR" class="headerlink" title="Build an executable JAR"></a>Build an executable JAR</h3><p>您可以使用Gradle或Maven从命令行运行应用程序。 或者，您可以构建单个可执行文件，其中包含所有必需的依赖关系，类和资源，并运行它。 这使得在整个开发生命周期中，易于跨不同环境将服务作为应用程序进行发布，维护版本和部署等等。</p>
+<p>如果您使用Gradle，可以使用<code>./gradlew bootRun</code>运行应用程序。 或者你可以使用<code>./gradlew build</code>来构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar build/libs/gs-caching-0.1.0.jar</div></pre></td></tr></table></figure>
+<p>如果您使用Maven，可以使用<code>./mvnw spring-boot:run</code>运行应用程序。 或者你可以用<code>./mvnw clean package</code>构建JAR文件。 然后可以运行JAR文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java -jar target/gs-caching-0.1.0.jar</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>**</th>
+<th>上面的过程将创建一个可运行的JAR。 您也可以选择<a href="https://spring.io/guides/gs/convert-jar-to-war/" target="_blank" rel="external">build a classic WAR file</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="Test-the-application"><a href="#Test-the-application" class="headerlink" title="Test the application"></a>Test the application</h2><p>现在缓存已启用，您可以再次执行它，并通过添加或不使用相同的isbn的额外调用查看差异。 你应该可以看到其产生明显的区别。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">2016-09-01 11:12:47.033  .. : .... Fetching books</div><div class="line">2016-09-01 11:12:50.039  .. : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2016-09-01 11:12:53.044  .. : isbn-4567 --&gt;Book&#123;isbn=<span class="string">'isbn-4567'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2016-09-01 11:12:53.045  .. : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2016-09-01 11:12:53.045  .. : isbn-4567 --&gt;Book&#123;isbn=<span class="string">'isbn-4567'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2016-09-01 11:12:53.045  .. : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div><div class="line">2016-09-01 11:12:53.045  .. : isbn-1234 --&gt;Book&#123;isbn=<span class="string">'isbn-1234'</span>, title=<span class="string">'Some book'</span>&#125;</div></pre></td></tr></table></figure>
+<p>This excerpt from the console shows that the first time to fetch each title took three seconds, but each subsequent call was near instantaneous.<br>从控制台的这段日志显示，第一次获取每个标题花了三秒钟，但每个后续的访问接近瞬间。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>恭喜！ 你刚刚通过Springcache在托管bean上启用了缓存。</p>
+<p>翻译自：<a href="https://spring.io/guides/gs/caching/" target="_blank" rel="external">https://spring.io/guides/gs/caching/</a></p>
+<p>[ 转载请保留原文出处、译者和译文链接。]</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring指南/" rel="tag">#Spring指南</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/07/关于编程路上的一些杂谈 多线程中锁的秘密(二)/" rel="next" title="关于编程路上的一些杂谈 多线程中锁的秘密(二)">
+                <i class="fa fa-chevron-left"></i> 关于编程路上的一些杂谈 多线程中锁的秘密(二)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/09/使用Spring缓存数据/"
+           data-title="使用Spring缓存数据" data-url="https://muyinchen.github.io/2017/01/09/使用Spring缓存数据/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Spring缓存数据"><span class="nav-number">1.</span> <span class="nav-text">使用Spring缓存数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-build"><span class="nav-number">1.1.</span> <span class="nav-text">What you’ll build</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-you’ll-need"><span class="nav-number">1.2.</span> <span class="nav-text">What you’ll need</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-complete-this-guide"><span class="nav-number">1.3.</span> <span class="nav-text">How to complete this guide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Gradle"><span class="nav-number">1.4.</span> <span class="nav-text">Build with Gradle</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-the-directory-structure"><span class="nav-number">1.4.1.</span> <span class="nav-text">Create the directory structure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-Gradle-build-file"><span class="nav-number">1.4.2.</span> <span class="nav-text">Create a Gradle build file</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-Maven"><span class="nav-number">1.5.</span> <span class="nav-text">Build with Maven</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-the-directory-structure-1"><span class="nav-number">1.5.1.</span> <span class="nav-text">Create the directory structure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-with-your-IDE"><span class="nav-number">1.6.</span> <span class="nav-text">Build with your IDE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-book-repository"><span class="nav-number">1.7.</span> <span class="nav-text">Create a book repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Using-the-repository"><span class="nav-number">1.8.</span> <span class="nav-text">Using the repository</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enable-caching"><span class="nav-number">1.9.</span> <span class="nav-text">Enable caching</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Build-an-executable-JAR"><span class="nav-number">1.9.1.</span> <span class="nav-text">Build an executable JAR</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-the-application"><span class="nav-number">1.10.</span> <span class="nav-text">Test the application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">1.11.</span> <span class="nav-text">最后</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
