@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-14T13:03:03.888Z</updated>
+  <updated>2017-01-14T13:04:09.070Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C)/"/>
     <id>https://muyinchen.github.io/2017/01/14/重走Java基础之Streams(二)/</id>
     <published>2017-01-14T12:59:28.217Z</published>
-    <updated>2017-01-14T13:03:03.888Z</updated>
+    <updated>2017-01-14T13:04:09.070Z</updated>
     
     <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-二"><a href="#重走Java基础之Streams-二" class="headerlink" title="重走Java基础之Streams(二)"></a>重走Java基础之Streams(二)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80">重走Java基础之Streams(一)</a>/)</p>
 <h2 id="Processing-Order"><a href="#Processing-Order" class="headerlink" title="Processing Order"></a>Processing Order</h2><p>  <code>Stream</code>对象的处理可以是顺序或<a href="http://stackoverflow.com/documentation/java/88/streams/2785/parallel-stream#t=201607281158351104612" target="_blank" rel="external">并行</a>.<br>  <a id="more"></a><br>     在<strong> sequential </strong>模式中，按照“Stream”的源的顺序处理元素。 如果<code>Stream</code>是有序的（例如<a href="https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html" target="_blank" rel="external"><code>SortedMap</code></a> 实现或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code> </a>），处理过程保证匹配源的排序。 然而，在其他情况下，应注意不要依赖于顺序（参见：<a href="http://stackoverflow.com/q/1882762/1667004" target="_blank" rel="external">是Java的<code>HashMap``keySet()</code>迭代顺序一致？</a>）。</p>
@@ -94,8 +94,7 @@
 <p>Three<br>Four<br>One<br>Two<br>Five</p>
 </blockquote>
 <p>顺序可能会改变，因为所有的元素被并行处理（这个<em>可能</em>使它更快）。当顺序无关紧要时使用<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--" target="_blank" rel="external"><code>parallelStream</code></a>。</p>
-<p>####性能影响</p>
-<p>在涉及网络的情况下，并行的 <code>Stream</code>可以降低应用的整体性能，因为所有并行的 <code>Stream</code>对于网络使用公共的fork-join线程池。</p>
+<h4 id="性能影响"><a href="#性能影响" class="headerlink" title="性能影响"></a>性能影响</h4><p>在涉及网络的情况下，并行的 <code>Stream</code>可以降低应用的整体性能，因为所有并行的 <code>Stream</code>对于网络使用公共的fork-join线程池。</p>
 <p>另一方面，在许多其他情况下，根据当前运行的CPU中可用内核的数量，并行的 <code>Stream</code>可以显着提高性能。</p>
 ]]></content>
     
