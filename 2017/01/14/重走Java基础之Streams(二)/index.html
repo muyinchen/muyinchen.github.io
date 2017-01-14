@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java 8  Streams" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="重走Java基础之Streams(二)接上篇重走Java基础之Streams(一)/)
+Processing Order  Stream对象的处理可以是顺序或并行.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重走Java基础之Streams(二)">
+<meta property="og:url" content="https://muyinchen.github.io/2017/01/14/重走Java基础之Streams(二)/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="重走Java基础之Streams(二)接上篇重走Java基础之Streams(一)/)
+Processing Order  Stream对象的处理可以是顺序或并行.">
+<meta property="og:image" content="http://i.stack.imgur.com/lrwjM.jpg">
+<meta property="og:updated_time" content="2017-01-14T12:58:46.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重走Java基础之Streams(二)">
+<meta name="twitter:description" content="重走Java基础之Streams(二)接上篇重走Java基础之Streams(一)/)
+Processing Order  Stream对象的处理可以是顺序或并行.">
+<meta name="twitter:image" content="http://i.stack.imgur.com/lrwjM.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/01/14/重走Java基础之Streams(二)/"/>
+
+
+  <title> 重走Java基础之Streams(二) | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                重走Java基础之Streams(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-14T20:59:28+08:00" content="2017-01-14">
+              2017-01-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/14/重走Java基础之Streams(二)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/14/重走Java基础之Streams(二)/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="重走Java基础之Streams-二"><a href="#重走Java基础之Streams-二" class="headerlink" title="重走Java基础之Streams(二)"></a>重走Java基础之Streams(二)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80">重走Java基础之Streams(一)</a>/)</p>
+<h2 id="Processing-Order"><a href="#Processing-Order" class="headerlink" title="Processing Order"></a>Processing Order</h2><p>  <code>Stream</code>对象的处理可以是顺序或<a href="http://stackoverflow.com/documentation/java/88/streams/2785/parallel-stream#t=201607281158351104612" target="_blank" rel="external">并行</a>.<br>  <a id="more"></a><br>     在<strong> sequential </strong>模式中，按照“Stream”的源的顺序处理元素。 如果<code>Stream</code>是有序的（例如<a href="https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html" target="_blank" rel="external"><code>SortedMap</code></a> 实现或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code> </a>），处理过程保证匹配源的排序。 然而，在其他情况下，应注意不要依赖于顺序（参见：<a href="http://stackoverflow.com/q/1882762/1667004" target="_blank" rel="external">是Java的<code>HashMap``keySet()</code>迭代顺序一致？</a>）。</p>
+<p>  <strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">42</span>); </div><div class="line"></div><div class="line"><span class="comment">// sequential </span></div><div class="line"><span class="keyword">long</span> howManyOddNumbers = integerList.stream()</div><div class="line">                                    .filter(e -&gt; (e % <span class="number">2</span>) == <span class="number">1</span>).count(); </div><div class="line"></div><div class="line">System.out.println(howManyOddNumbers); <span class="comment">// Output: 2</span></div></pre></td></tr></table></figure>
+<p>  <a href="https://ideone.com/FuMz1c" target="_blank" rel="external">Live on Ideone</a></p>
+<p><strong>Parallel(并行)</strong>模式允许在多个核上使用多个线程，但不能保证处理元素的顺序。</p>
+<p>   如果在顺序的<code>Stream</code>上调用多个方法，则不必调用每个方法。 例如，如果一个<code>Stream</code>被过滤，并且元素的数量减少到一，则不会发生对诸如<code>sort</code>的方法的后续调用。 这可以提高顺序的<code>Stream</code>的性能 - 这是一个并行的<code>Stream</code>不可能实现的优化。<br>  <strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// parallel</span></div><div class="line"><span class="keyword">long</span> howManyOddNumbersParallel = integerList.parallelStream()</div><div class="line">                                            .filter(e -&gt; (e % <span class="number">2</span>) == <span class="number">1</span>).count();</div><div class="line"></div><div class="line">System.out.println(howManyOddNumbersParallel); <span class="comment">// Output: 2</span></div></pre></td></tr></table></figure>
+<p>  <a href="https://ideone.com/FuMz1c" target="_blank" rel="external">Live on Ideone</a></p>
+<hr>
+<h2 id="Differences-from-Containers-or-Collections"><a href="#Differences-from-Containers-or-Collections" class="headerlink" title="Differences from Containers (or Collections)"></a>Differences from Containers (or Collections)</h2><p>  虽然一些操作可以在Containers和Streams上执行，但它们最终用于不同的目的并支持不同的操作。 容器更注重元素的存储方式以及如何有效地访问这些元素。 另一方面，<code>Stream</code>不提供对其元素的直接访问和操纵; 它更专用于作为集体实体的对象组并且作为整体对该实体执行操作。 <code>Stream</code>和<code>Collection</code>是用于这些不同目的的单独的高级抽象。</p>
+<p>  ​</p>
+<p>  ​</p>
+<h3 id="Consuming-Streams"><a href="#Consuming-Streams" class="headerlink" title="Consuming Streams"></a>Consuming Streams</h3><p>  ​</p>
+<p>A <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>将仅在有<em>终端操作</em>时被遍历，如<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#count--" target="_blank" rel="external"> <code>count()</code></a>，<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#collect-java.util.stream.Collector-" target="_blank" rel="external"><code>collect()</code></a> 或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#forEach-java.util.function.Consumer-" target="_blank" rel="external"><code>forEach()</code></a>。否则，不会对<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a> 执行任何操作。</p>
+<p>  在下面的示例中，没有将终端操作添加到<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>，因此<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#filter-java.util.function.Predicate-" target="_blank" rel="external"> <code>filter()</code></a> 操作不会调用，并且不会产生输出，因为<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#peek-java.util.function.Consumer-" target="_blank" rel="external"><code>peek()</code></a>不是<em>终端操作</em>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">IntStream.range(<span class="number">1</span>, <span class="number">10</span>).filter(a -&gt; a % <span class="number">2</span> == <span class="number">0</span>).peek(System.out::println);</div></pre></td></tr></table></figure>
+<p>  <a href="https://ideone.com/YDijRj" target="_blank" rel="external">Live on Ideone</a></p>
+<p>  这是一个具有有效<em>终端操作</em>的 <code>Stream</code> 序列，因此产生一个输出。</p>
+<p>   你也可以使用<code>forEach</code>而不是<code>peek</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">IntStream.range(<span class="number">1</span>, <span class="number">10</span>).filter(a -&gt; a % <span class="number">2</span> == <span class="number">0</span>).forEach(System.out::println);</div></pre></td></tr></table></figure>
+<p>  <a href="https://ideone.com/LzUoM6" target="_blank" rel="external">Live on Ideone</a></p>
+<p>  Output:</p>
+<blockquote>
+<p>2<br>4<br>6<br>8</p>
+</blockquote>
+<p>  在执行终端操作之后， <code>Stream</code> 被执行消耗，不能被重复使用。</p>
+<hr>
+<p> 一般来说，<code>Stream</code>的操作如下图所示：</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a href="http://i.stack.imgur.com/lrwjM.jpg" target="_blank" rel="external"><img src="http://i.stack.imgur.com/lrwjM.jpg" alt="Stream Operation"></a></h2><p>  <strong>NOTE</strong>: 即使没有<em>终端操作，也始终执行参数检查</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    IntStream.range(<span class="number">1</span>, <span class="number">10</span>).filter(<span class="keyword">null</span>);</div><div class="line">&#125; <span class="keyword">catch</span> (NullPointerException e) &#123;</div><div class="line">    System.out.println(<span class="string">"We got a NullPointerException as null was passed as an argument to filter()"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>  <a href="https://ideone.com/zrkoRz" target="_blank" rel="external">Live on Ideone</a></p>
+<p>  Output:</p>
+<blockquote>
+<p>We got a NullPointerException as null was passed as an argument to filter()</p>
+</blockquote>
+<p>  ​</p>
+<p>  ​</p>
+<h3 id="Creating-a-Frequency-Map"><a href="#Creating-a-Frequency-Map" class="headerlink" title="Creating a Frequency Map"></a>Creating a Frequency Map</h3><p>  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#groupingBy-java.util.function.Function-" target="_blank" rel="external"><code>groupingBy（classifier，downstream）</code></a>collector允许将<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>元素集合通过对组中的每个元素进行分类到一个<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" target="_blank" rel="external"><code>Map</code></a>，并对分类在同一组中的元素执行后续操作。</p>
+<p>  这个原则的一个典型例子是使用<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Map.html" target="_blank" rel="external"><code>Map</code></a> 来计算<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>。在这个例子中，分类器是简单的identity函数，它返回元素as-is。后续操作计算等于元素的数量，使用<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#counting--" target="_blank" rel="external"><code>counting()</code></a>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Stream.of(<span class="string">"apple"</span>, <span class="string">"orange"</span>, <span class="string">"banana"</span>, <span class="string">"apple"</span>)</div><div class="line">      .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))</div><div class="line">      .entrySet()</div><div class="line">      .forEach(System.out::println);</div></pre></td></tr></table></figure>
+<p>  后续操作本身是一个收集器（<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#counting--" target="_blank" rel="external"><code>Collectors.counting()</code></a> ），对String类型的元素进行操作，并生成类型为<code>Long</code>的结果。 <code>collect</code>方法调用的结果是一个<code>Map</code>。</p>
+<p>  This would produce the following output:</p>
+<blockquote>
+<p>banana=1<br>orange=1<br>apple=2</p>
+</blockquote>
+<h3 id="Infinite-Streams-无限流"><a href="#Infinite-Streams-无限流" class="headerlink" title="Infinite Streams 无限流"></a>Infinite Streams <code>无限流</code></h3><p>可以生成一个不结束的<code>Stream</code>。 在无限的<code>Stream</code>上调用终端方法导致<code>Stream</code>进入无限循环。 一个<code>Stream</code>的<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#limit-long-" target="_blank" rel="external"><code>limit</code></a>方法可以用于 限制Java处理的<code>Stream</code>的术语数。</p>
+<p>这个例子生成一个所有自然数的<code>Stream</code>，从数字1开始。<code>Stream</code>的每个连续项比上一个高一个。 通过调用这个<code>Stream</code>的limit方法，只有<code>Stream</code>的前5个项被考虑和打印。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Generate infinite stream - 1, 2, 3, 4, 5, 6, 7, ...</span></div><div class="line">IntStream naturalNumbers = IntStream.iterate(<span class="number">1</span>, x -&gt; x + <span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="comment">// Print out only the first 5 terms</span></div><div class="line">naturalNumbers.limit(<span class="number">5</span>).forEach(System.out::println);</div></pre></td></tr></table></figure></p>
+<p>Output:</p>
+<blockquote>
+<p>1<br>2<br>3<br>4<br>5</p>
+</blockquote>
+<h3 id="Collect-Elements-of-a-Stream-into-a-Collection-将流的元素收集到集合中"><a href="#Collect-Elements-of-a-Stream-into-a-Collection-将流的元素收集到集合中" class="headerlink" title="Collect Elements of a Stream into a Collection 将流的元素收集到集合中"></a>Collect Elements of a Stream into a Collection <code>将流的元素收集到集合中</code></h3><h4 id="Collect-with-toList-and-toSet"><a href="#Collect-with-toList-and-toSet" class="headerlink" title="Collect with toList() and toSet()"></a>Collect with <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toList--" target="_blank" rel="external"><code>toList()</code></a> and <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--" target="_blank" rel="external"><code>toSet()</code></a></h4><p>Elements from a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a> can be easily collected into a container by using the <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#collect-java.util.stream.Collector-" target="_blank" rel="external"><code>Stream.collect</code></a> operation:</p>
+<p>通过<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#collect-java.util.stream.Collector-" target="_blank" rel="external"><code>Stream.collect</code></a>操作可以轻松地将<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>元素收集到容器中 ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">System.out.println(Arrays</div><div class="line">    .asList(<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"pear"</span>, <span class="string">"kiwi"</span>, <span class="string">"orange"</span>)</div><div class="line">    .stream()</div><div class="line">    .filter(s -&gt; s.contains(<span class="string">"a"</span>))</div><div class="line">    .collect(Collectors.toList())</div><div class="line">);</div><div class="line"><span class="comment">// prints: [apple, banana, pear, orange]</span></div></pre></td></tr></table></figure>
+<p>Other collection instances, such as a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" target="_blank" rel="external"><code>Set</code></a>, can be made by using other <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html" target="_blank" rel="external"><code>Collectors</code></a> built-in methods. For example, <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--" target="_blank" rel="external"><code>Collectors.toSet()</code></a> collects the elements of a <code>Stream</code> into a [<code>Set</code>]c.</p>
+<p>其他集合实例，例如<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" target="_blank" rel="external"><code>Set</code></a>，可以通过使用其他<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html" target="_blank" rel="external"><code>Collectors</code> </a> 内置方法。 例如，<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--" target="_blank" rel="external"><code>Collectors.toSet()</code></a>收集 <code>Stream</code> into到一个 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--" target="_blank" rel="external"><code>Set</code></a>中。</p>
+<hr>
+<h4 id="Explicit-显式-control-over-the-implementation-of-List-or-Set"><a href="#Explicit-显式-control-over-the-implementation-of-List-or-Set" class="headerlink" title="Explicit(显式) control over the implementation of List or Set"></a>Explicit(显式) control over the implementation of <a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code></a> or <a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" target="_blank" rel="external"><code>Set</code></a></h4><p>根据<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toList--" target="_blank" rel="external"><code>Collectors＃toList（）</code></a>和<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toSet--" target="_blank" rel="external"><code>Collectors#toSet()</code></a>文档，不能保证所返回<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code></a>或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Set.html" target="_blank" rel="external"><code>Set</code></a>的类型，可变性， 序列化或线程安全。</p>
+<p>为了显式控制要返回的实现，可以使用<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collectors.html#toCollection-java.util.function.Supplier-" target="_blank" rel="external"><code>Collectors＃toCollection（Supplier）</code></a>，从而可以返回一个指定类型的新的空集合。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// syntax with method reference</span></div><div class="line">System.out.println(strings</div><div class="line">        .stream()</div><div class="line">        .filter(s -&gt; s != <span class="keyword">null</span> &amp;&amp; s.length() &lt;= <span class="number">3</span>)</div><div class="line">        .collect(Collectors.toCollection(ArrayList::<span class="keyword">new</span>))</div><div class="line">);</div><div class="line"></div><div class="line"><span class="comment">// syntax with lambda</span></div><div class="line">System.out.println(strings</div><div class="line">        .stream()</div><div class="line">        .filter(s -&gt; s != <span class="keyword">null</span> &amp;&amp; s.length() &lt;= <span class="number">3</span>)</div><div class="line">        .collect(Collectors.toCollection(() -&gt; <span class="keyword">new</span> LinkedHashSet&lt;&gt;()))</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h3 id="Parallel-Stream"><a href="#Parallel-Stream" class="headerlink" title="Parallel Stream"></a>Parallel Stream</h3><p><strong>Note:</strong> 在决定使用哪个<code>Stream</code>之前，请先看看<a href="http://stackoverflow.com/a/20375622/585398" target="_blank" rel="external">ParallelStream vs Sequential Stream的对比</a>.</p>
+<p>当你想同时并发执行<code>Stream</code>操作时，你可以使用这些方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">List&lt;String&gt; data = Arrays.asList(<span class="string">"One"</span>, <span class="string">"Two"</span>, <span class="string">"Three"</span>, <span class="string">"Four"</span>, <span class="string">"Five"</span>);</div><div class="line">Stream&lt;String&gt; aParallelStream = data.stream().parallel();</div></pre></td></tr></table></figure>
+<p>Or:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Stream&lt;String&gt; aParallelStream = data.parallelStream();</div></pre></td></tr></table></figure>
+<p>要执行为并行流定义的操作，请调用终端运算符：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aParallelStream.forEach(System.out::println);</div></pre></td></tr></table></figure>
+<p>(A possible) output from the parallel <code>Stream</code>:</p>
+<blockquote>
+<p>Three<br>Four<br>One<br>Two<br>Five</p>
+</blockquote>
+<p>顺序可能会改变，因为所有的元素被并行处理（这个<em>可能</em>使它更快）。当顺序无关紧要时使用<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--" target="_blank" rel="external"><code>parallelStream</code></a>。</p>
+<p>####性能影响</p>
+<p>在涉及网络的情况下，并行的 <code>Stream</code>可以降低应用的整体性能，因为所有并行的 <code>Stream</code>对于网络使用公共的fork-join线程池。</p>
+<p>另一方面，在许多其他情况下，根据当前运行的CPU中可用内核的数量，并行的 <code>Stream</code>可以显着提高性能。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/10/重走Java基础之Streams(一)/" rel="next" title="重走Java基础之Streams(一)">
+                <i class="fa fa-chevron-left"></i> 重走Java基础之Streams(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/14/重走Java基础之Streams(二)/"
+           data-title="重走Java基础之Streams(二)" data-url="https://muyinchen.github.io/2017/01/14/重走Java基础之Streams(二)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">48</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重走Java基础之Streams-二"><span class="nav-number">1.</span> <span class="nav-text">重走Java基础之Streams(二)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Processing-Order"><span class="nav-number">1.1.</span> <span class="nav-text">Processing Order</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Differences-from-Containers-or-Collections"><span class="nav-number">1.2.</span> <span class="nav-text">Differences from Containers (or Collections)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Consuming-Streams"><span class="nav-number">1.2.1.</span> <span class="nav-text">Consuming Streams</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.3.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Creating-a-Frequency-Map"><span class="nav-number">1.3.1.</span> <span class="nav-text">Creating a Frequency Map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Infinite-Streams-无限流"><span class="nav-number">1.3.2.</span> <span class="nav-text">Infinite Streams 无限流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collect-Elements-of-a-Stream-into-a-Collection-将流的元素收集到集合中"><span class="nav-number">1.3.3.</span> <span class="nav-text">Collect Elements of a Stream into a Collection 将流的元素收集到集合中</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Collect-with-toList-and-toSet"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Collect with toList() and toSet()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Explicit-显式-control-over-the-implementation-of-List-or-Set"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">Explicit(显式) control over the implementation of List or Set</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallel-Stream"><span class="nav-number">1.3.4.</span> <span class="nav-text">Parallel Stream</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
