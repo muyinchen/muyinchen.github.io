@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-15T10:57:17.733Z</updated>
+  <updated>2017-01-15T10:59:45.786Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,10 +20,11 @@
     <link href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89)/"/>
     <id>https://muyinchen.github.io/2017/01/15/重走Java基础之Streams(三)/</id>
     <published>2017-01-15T10:57:44.920Z</published>
-    <updated>2017-01-15T10:57:17.733Z</updated>
+    <updated>2017-01-15T10:59:45.786Z</updated>
     
     <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-三"><a href="#重走Java基础之Streams-三" class="headerlink" title="重走Java基础之Streams(三)"></a>重走Java基础之Streams(三)</h1><p>接<a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C">重走Java基础之Streams(二)</a>)</p>
-<h3 id="Creating-a-Stream"><a href="#Creating-a-Stream" class="headerlink" title="Creating a Stream"></a>Creating a Stream</h3><p>所有java<code>Collection</code>都有<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#stream--" target="_blank" rel="external"><code>stream()</code></a> 和<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--" target="_blank" rel="external"><code>parallelStream()</code></a>方法可以从中构造一个<code>Stream</code>：</p>
+<h3 id="Creating-a-Stream"><a href="#Creating-a-Stream" class="headerlink" title="Creating a Stream"></a>Creating a Stream</h3><a id="more"></a>
+<p>所有java<code>Collection</code>都有<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#stream--" target="_blank" rel="external"><code>stream()</code></a> 和<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--" target="_blank" rel="external"><code>parallelStream()</code></a>方法可以从中构造一个<code>Stream</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Collection&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">Stream&lt;String&gt; stringStream = stringList.parallelStream();</div></pre></td></tr></table></figure>
 <p>可以使用以下两种方法之一从数组创建<code>Stream</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">String[] values = &#123; <span class="string">"aaa"</span>, <span class="string">"bbbb"</span>, <span class="string">"ddd"</span>, <span class="string">"cccc"</span> &#125;;</div><div class="line">Stream&lt;String&gt; stringStream = Arrays.stream(values);</div><div class="line">Stream&lt;String&gt; stringStreamAlternative = Stream.of(values);</div></pre></td></tr></table></figure>
@@ -95,7 +96,8 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-三&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-三&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(三)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(三)&lt;/h1&gt;&lt;p&gt;接&lt;a 
+      &lt;h1 id=&quot;重走Java基础之Streams-三&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-三&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(三)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(三)&lt;/h1&gt;&lt;p&gt;接&lt;a href=&quot;https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C&quot;&gt;重走Java基础之Streams(二)&lt;/a&gt;)&lt;/p&gt;
+&lt;h3 id=&quot;Creating-a-Stream&quot;&gt;&lt;a href=&quot;#Creating-a-Stream&quot; class=&quot;headerlink&quot; title=&quot;Creating a Stream&quot;&gt;&lt;/a&gt;Creating a Stream&lt;/h3&gt;
     
     </summary>
     
