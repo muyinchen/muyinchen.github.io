@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-16T20:02:24.622Z</updated>
+  <updated>2017-01-16T20:06:55.280Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E5%9B%9B)/"/>
     <id>https://muyinchen.github.io/2017/01/16/重走Java基础之Streams(四)/</id>
     <published>2017-01-16T15:34:06.899Z</published>
-    <updated>2017-01-16T20:02:24.622Z</updated>
+    <updated>2017-01-16T20:06:55.280Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams(四)"></a>重走Java基础之Streams(四)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams(三)</a>)</p>
+    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams(四)"></a>重走Java基础之Streams(四)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams 三</a>/)</p>
 <h3 id="使用Map-Entry的流在转换后保留初始值"><a href="#使用Map-Entry的流在转换后保留初始值" class="headerlink" title="使用Map.Entry的流在转换后保留初始值"></a>使用Map.Entry的流在转换后保留初始值</h3><a id="more"></a>
 <p>当你有一个<code>Stream</code>，你需要映射转换但是想保留初始值，你可以使用下面的实用程序方法将’Stream`映射到Map.Entry：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; Function&lt;K, Map.Entry&lt;K, V&gt;&gt; entryMapper(Function&lt;K, V&gt; mapper)&#123;</div><div class="line">    <span class="keyword">return</span> (k)-&gt;<span class="keyword">new</span> AbstractMap.SimpleEntry&lt;&gt;(k, mapper.apply(k));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -144,7 +144,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-四&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-四&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(四)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(四)&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89&quot;&gt;重走Java基础之Streams(三)&lt;/a&gt;)&lt;/p&gt;
+      &lt;h1 id=&quot;重走Java基础之Streams-四&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-四&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(四)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(四)&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89&quot;&gt;重走Java基础之Streams 三&lt;/a&gt;/)&lt;/p&gt;
 &lt;h3 id=&quot;使用Map-Entry的流在转换后保留初始值&quot;&gt;&lt;a href=&quot;#使用Map-Entry的流在转换后保留初始值&quot; class=&quot;headerlink&quot; title=&quot;使用Map.Entry的流在转换后保留初始值&quot;&gt;&lt;/a&gt;使用Map.Entry的流在转换后保留初始值&lt;/h3&gt;
     
     </summary>
