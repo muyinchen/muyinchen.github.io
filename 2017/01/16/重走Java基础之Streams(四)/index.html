@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/T2QAXlXJBaXXXXXXXX_%21%2190219132.jpg">
 <meta property="og:image" content="http://i.stack.imgur.com/2Krwx.png">
 <meta property="og:image" content="http://i.stack.imgur.com/sCqVF.png">
-<meta property="og:updated_time" content="2017-01-16T15:33:30.728Z">
+<meta property="og:updated_time" content="2017-01-16T15:37:54.230Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重走Java基础之Streams(四)">
 <meta name="twitter:description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三)/)
@@ -348,9 +348,9 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Stream&lt;String&gt; characters = Stream.of(<span class="string">"A"</span>, <span class="string">"B"</span>, <span class="string">"B"</span>, <span class="string">"C"</span>);</div><div class="line"></div><div class="line">Map&lt;Integer, String&gt; map = characters</div><div class="line">            .collect(Collectors.toMap(</div><div class="line">                element -&gt; element.hashCode(),</div><div class="line">                element -&gt; element,</div><div class="line">                (existingVal, newVal) -&gt; (existingVal + newVal)));</div><div class="line"></div><div class="line"><span class="comment">// map = &#123;65=A, 66=BB, 67=C&#125;</span></div></pre></td></tr></table></figure>
 <p>传递给<code>Collectors.toMap(...)</code>的<code>BinaryOperator</code>生成在发生重复冲突情况下要存储的值。 它可以：</p>
 <ul>
-<li><p>返回旧值，以便流中的第一个值优先，</p>
+<li><p>返回旧值，以流中的第一个值优先，</p>
 </li>
-<li><p>返回新值，以便流中的最后一个值优先，或</p>
+<li><p>返回新值，以流中的最后一个值优先，</p>
 </li>
 <li><p>组合旧值和新值</p>
 <p><strong>按值分组</strong></p>
