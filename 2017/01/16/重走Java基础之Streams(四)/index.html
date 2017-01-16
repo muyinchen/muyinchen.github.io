@@ -86,23 +86,23 @@
 
 
 
-<meta name="description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三)/)
+<meta name="description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三))
 使用Map.Entry的流在转换后保留初始值">
 <meta property="og:type" content="article">
 <meta property="og:title" content="重走Java基础之Streams(四)">
 <meta property="og:url" content="https://muyinchen.github.io/2017/01/16/重走Java基础之Streams(四)/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三)/)
+<meta property="og:description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三))
 使用Map.Entry的流在转换后保留初始值">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170116_214851.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/T24A8mXUJXXXXXXXXX_%21%2190219132.jpg">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/T2QAXlXJBaXXXXXXXX_%21%2190219132.jpg">
 <meta property="og:image" content="http://i.stack.imgur.com/2Krwx.png">
 <meta property="og:image" content="http://i.stack.imgur.com/sCqVF.png">
-<meta property="og:updated_time" content="2017-01-16T15:40:43.744Z">
+<meta property="og:updated_time" content="2017-01-16T20:02:24.622Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重走Java基础之Streams(四)">
-<meta name="twitter:description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三)/)
+<meta name="twitter:description" content="重走Java基础之Streams(四)接上篇重走Java基础之Streams(三))
 使用Map.Entry的流在转换后保留初始值">
 <meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170116_214851.png">
 
@@ -330,7 +330,7 @@
       
 
       
-        <h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams(四)"></a>重走Java基础之Streams(四)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams(三)</a>/)</p>
+        <h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams(四)"></a>重走Java基础之Streams(四)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams(三)</a>)</p>
 <h3 id="使用Map-Entry的流在转换后保留初始值"><a href="#使用Map-Entry的流在转换后保留初始值" class="headerlink" title="使用Map.Entry的流在转换后保留初始值"></a>使用Map.Entry的流在转换后保留初始值</h3><a id="more"></a>
 <p>当你有一个<code>Stream</code>，你需要映射转换但是想保留初始值，你可以使用下面的实用程序方法将’Stream`映射到Map.Entry：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; Function&lt;K, Map.Entry&lt;K, V&gt;&gt; entryMapper(Function&lt;K, V&gt; mapper)&#123;</div><div class="line">    <span class="keyword">return</span> (k)-&gt;<span class="keyword">new</span> AbstractMap.SimpleEntry&lt;&gt;(k, mapper.apply(k));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
