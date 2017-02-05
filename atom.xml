@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-02-05T07:55:32.764Z</updated>
+  <updated>2017-02-05T08:05:46.517Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API</title>
+    <link href="https://muyinchen.github.io/2017/02/05/%E9%80%9A%E8%BF%87IntelliJ%20IDEA%202016.3%20EAP%E6%9D%A5%E6%9B%B4%E5%A5%BD%E4%BD%BF%E7%94%A8Java%208%E7%9A%84Stream%20API/"/>
+    <id>https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API/</id>
+    <published>2017-02-05T08:06:03.739Z</published>
+    <updated>2017-02-05T08:05:46.517Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API"><a href="#通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API" class="headerlink" title="通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API"></a>通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API</h1> <a id="more"></a>
+<p>本文展示了IntelliJ IDEA如何帮助编写正确的和培养使用Java 8的习惯.版本使用IntelliJ IDEA 2016.3， 通过扩展了IDEA现有的检查以支持这些的案例。</p>
+<p>现在，如果在上面定义的局部变量的循环递增中单击Alt + Enter，IDE将提示您使用以count()结尾的一系列蒸汽API调用来替换它。 注意，如果循环是嵌套的，IDE将使用flatMap():</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_1.gif" alt="img"></p>
+<p>如果变量从另一个方法返回的数字增加，IDE将使用mapToInt()/ mapToLong()/ mapToDouble():</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_2.gif" alt="img"></p>
+<p>如果循环将非原始对象添加到集合中，而不是递增变量，IDE将用以collect()结尾的调用链替换它:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_5.gif" alt="img"></p>
+<p>如果要添加到集合的对象是另一种方法的结果，IDE将使用map()以惯用的方式处理它:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_10.gif" alt="img"></p>
+<p>这些检查所支持的代码细节多么？ 相当多。 考虑一个大量使用continue语句的循环:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_11.gif" alt="img"></p>
+<p>与continue类似，IDE也将使用anyMatch()正确处理返回语句:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_7.gif" alt="img"></p>
+<p>如果您决定使用这些检查，请务必调整默认代码样式设置，以避免超过长方法链的右边距。 在此，你有一个选择，根据你的喜好来设置。</p>
+<ul>
+<li>下拉链(Chop down chain)方法调用如果它们很长(最适合Java 8)</li>
+</ul>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_chop_down.png" alt="img"></p>
+<ul>
+<li>包装方法( Wrap method )参数调用</li>
+</ul>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_wrap_method_calls.png" alt="img"></p>
+<p>目前我们正在考虑更改这些默认值。</p>
+<p>默认情况下启用检查，但其检查级别设置为最小 - 这意味着没有警告。 这是IntelliJ IDEA 2016的另一个新功能。</p>
+<p>您可以在“设置”中更改任何检查的即便:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_9.png" alt="img"></p>
+<p>如果需要，您可以在你选择的范围上以批处理模式来应用这些检查:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_8.png" alt="img"></p>
+<p>我们希望新的检查将帮助并使你的Java 8代码写更加得心应手，并充分利用stream  API。 那些不熟悉stream API的人，请务必阅读Oracle的教程:第1部分和第2部分。</p>
+<p>最后但并非最不重要的，IDEA还在努力改进VCS Log的布局:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_vcs_log.png" alt="img"></p>
+<ul>
+<li>提交详细信息已移至右侧，为日志本身提供了更多空间。</li>
+<li>表中的提交消息现在对齐，因此更易读。</li>
+<li>更多变化尚未到来。</li>
+</ul>
+<p>关于Java 8 Stream API 的使用，请参考本人的博文:</p>
+<p> <a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%80/">重走Java基础之Streams 一</a><br><a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%BA%8C/">重走Java基础之Streams 二</a><br><a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%89/">重走Java基础之Streams 三</a><br><a href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E5%9B%9B/">重走Java基础之Streams 四</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API&quot;&gt;&lt;a href=&quot;#通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API&quot; class=&quot;headerlink&quot; title=&quot;通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API&quot;&gt;&lt;/a&gt;通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API&lt;/h1&gt;
+    
+    </summary>
+    
+      <category term="基础" scheme="https://muyinchen.github.io/categories/%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="Java 8" scheme="https://muyinchen.github.io/tags/Java-8/"/>
+    
+  </entry>
   
   <entry>
     <title>重走Java基础之Streams 四</title>
@@ -1819,198 +1880,6 @@
     
     
       <category term="MQ" scheme="https://muyinchen.github.io/tags/MQ/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何更好的设计RESTful API</title>
-    <link href="https://muyinchen.github.io/2016/12/13/%E8%B7%9F%E7%9D%80%20Github%20%E5%AD%A6%E4%B9%A0%20Restful%20HTTP%20API%20%E8%AE%BE%E8%AE%A1/"/>
-    <id>https://muyinchen.github.io/2016/12/13/跟着 Github 学习 Restful HTTP API 设计/</id>
-    <published>2016-12-13T14:00:26.202Z</published>
-    <updated>2016-12-27T09:24:30.630Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="如何更好的设计RESTful-API"><a href="#如何更好的设计RESTful-API" class="headerlink" title="如何更好的设计RESTful API"></a>如何更好的设计RESTful API</h1><p>当您的数据模型已开始稳定，您可以为您的网络应用程序创建公共API。 你意识到，很难对你的API进行重大更改，一旦它发布，并希望尽可能得到尽可能多的前面。 现在，互联网对API设计的意见有很多。 但是，因为没有一个广泛采用的标准在所有情况下都有效，所以你前面有一堆选择：你应该接受什么格式？ 你应该如何认证？ 你的API是否应该版本化？<br><a id="more"></a><br>构建API是您可以做的最重要的事情之一，以提高您的服务的价值。 通过使用API，您的服务/核心应用程序有可能成为其他服务增长的平台。 看看当前巨大的科技公司：Facebook，Twitter，谷歌，GitHub，亚马逊，Netflix …没有一个人会像今天一样大，如果他们没有通过API打开他们的数据。 事实上，整个行业存在的唯一目的是消费由所述平台提供的数据。</p>
-<blockquote>
-<p>你的API越简单明了，使用的人就越多。</p>
-</blockquote>
-<p>许多在网络上发现的API设计观点是围绕主观的模糊标准解释的学术讨论，而不是在现实世界中有意义的。 我的目标是描述一个为当今的Web应用程序设计的务实的API的最佳实践。 我没有尝试满足一个标准，如果它不觉得正确。 为了帮助指导决策过程，我写了一些API必须努力达到的要求：</p>
-<ul>
-<li>它应该使用Web标准，他们有意义</li>
-<li>它应该对开发人员友好，可以通过浏览器地址栏探索</li>
-<li>它应该简单，直观和一致，使采用不仅容易，但愉快</li>
-<li>它应该提供足够的灵活性来支持大部分我们所设计的UI</li>
-<li>应该是有效的，同时保持与其他要求的平衡</li>
-</ul>
-<p>API是开发人员的UI - 就像任何UI一样，确保用户的体验被仔细考虑是非常重要的！</p>
-<h3 id="RESTful-API设计定义"><a href="#RESTful-API设计定义" class="headerlink" title="RESTful API设计定义"></a>RESTful API设计定义</h3><p>以下是我将在本文档中使用的一些重要术语：</p>
-<ul>
-<li><strong> Resource </strong>：对象的单个实例。 例如，一只动物。</li>
-<li><strong>集合</strong>：对象的集合。 例如，动物。</li>
-<li><strong> HTTP </strong>：用于通过网络通信的协议。</li>
-<li><strong> Consumer </strong>：能够发出HTTP请求的客户端计算机应用程序。</li>
-<li><strong>第三方开发人员</strong>：不是您项目的一部分，但希望使用您的数据服务的开发人员。</li>
-<li><strong>服务器</strong>：可通过网络从客户端访问的HTTP服务器/应用程序。</li>
-<li><strong>端点</strong>：服务器上的API网址，表示资源或整个集合。</li>
-<li><strong>幂等</strong>：无边际效应，多次操作得到相同的结果。</li>
-<li><strong>网址区段</strong>：网址中的斜线分隔的信息。</li>
-</ul>
-<h3 id="数据设计和抽象"><a href="#数据设计和抽象" class="headerlink" title="数据设计和抽象"></a>数据设计和抽象</h3><p>首先将从你写的开发文档API开始(比如我们可以看到各个开发平台的暴露出来的API文档)，您需要决定如何设计数据，以及您的核心服务/应用程序如何工作。 如果你在做的API是第一次开发，这应该很容易。 如果您要将API附加到现有项目，则可能需要提供更多抽象(毕竟是要按照已有的文档规范来做)。</p>
-<p>有时，集合可以表示数据库表，资源可以表示该表中的一行。 然而，这不是通常的情况。 事实上，你的API应该尽可能多地抽象出你的数据和业务逻辑。 非常重要的一点是，如果您不希望使用您的API，则不要使用任何复杂的应用程序数据压倒第三方开发人员。</p>
-<p>还有你的服务的很多部分，你不应该通过API公开。 一个常见的例子是许多API不允许第三方创建用户。</p>
-<h3 id="设计资源请求"><a href="#设计资源请求" class="headerlink" title="设计资源请求"></a>设计资源请求</h3><p>当然你知道GET和POST请求。当您的浏览器访问不同的网页时，这两个最常用的请求。POST是如此受欢迎，它甚至流行语我们的平常的说话中，即使那些不知道互联网如何工作的人也知道他们可以“发布”的东西在朋友的Facebook上。</p>
-<p>有四个半非常重要的HTTP动词，你需要知道。我说“一半”，因为PATCH动词非常类似于PUT动词，两个通常由许多API开发人员组合。这里是动词，在他们旁边是他们相关的数据库调用（我假设大多数人读这个知道更多关于写入数据库而不是设计一个API）。</p>
-<ul>
-<li><strong> GET </strong>（SELECT）：从服务器检索特定资源，或资源列表。</li>
-<li><strong> POST </strong>（CREATE）：在服务器上创建一个新的资源。</li>
-<li><strong> PUT </strong>（UPDATE）：更新服务器上的资源，提供整个资源。</li>
-<li><strong> PATCH </strong>（UPDATE）：更新服务器上的资源，仅提供更改的属性。</li>
-<li><strong> DELETE </strong>（DELETE）：从服务器删除资源。</li>
-</ul>
-<p>这里有两个较少知名的HTTP动词：</p>
-<ul>
-<li><strong> HEAD </strong> - 检索有关资源的元数据，例如数据的哈希或上次更新时间。</li>
-<li><strong>OPTIONS </strong> - 检索关于客户端被允许对资源做什么的信息。</li>
-</ul>
-<p>一个好的RESTful API将使用四个半HTTP动词，允许第三方与其数据进行交互，并且不会将动作/动词作为URL段。</p>
-<p>通常，GET请求可以被缓存（通常是！）在浏览器，例如将缓存请求头用于第二次用户的POST请求。 HEAD请求基本上是一个没有响应主体的GET，并且也可以被缓存。</p>
-<h3 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h3><p>无论你正在构建什么，无论你事先做了多少规划，你的核心应用程序总会改变，你的数据关系总会改变，属性添加和从你的资源中删除。这只是软件开发的工作原理，尤其是如果你的项目还活着并被许多人使用（如果你正在构建一个API，情况可能就会如此）。</p>
-<p>记住，API是服务器和客户端之间的已发布约定。如果您更改了服务器API，这些更改会破坏向后兼容性，那么你就打破了这个约定，客户端又会要求你重新支持它(谁让客户端依然是之前的版本，调用的还是之前的API)。为了避免这样的事情，并让您的客户端满意，您需要偶尔引入新版本的API，同时仍允许访问旧版本。</p>
-<p>注意，如果你只是为你的API添加新的特性，例如资源上的新属性，或者如果你添加新的端点(比如之前只有查询，现在增加一个修改)，你不需要增加您的API版本号，因为这些更改不会破坏向后兼容性。当然，您将需要更新您的API文档。</p>
-<p>随着时间的推移，您可以弃用API的旧版本。弃用某个功能并不意味着关闭它或者降低它的质量，而是告诉客户端您的API，旧版本将在特定日期删除，并且他们应该升级到较新的版本。</p>
-<p>一个好的RESTful API设计将跟踪URL中的版本。另一个最常见的解决方案是将版本号放在请求头中，但在与许多不同的第三方开发人员合作之后，我可以告诉您，添加这些请求头信息并不像添加网址细分那么容易。</p>
-<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>跟踪客户端使用的API的版本/端点。 这可以像每次请求时在数据库中增加一个整数一样简单。 有很多原因跟踪API Analytics是一个好主意，例如，最常用的API调用应该是高效的。</p>
-<p>为了构建第三方开发者所喜欢的API，最重要的是，当您弃用某个版本的API时，实际上可以使用已弃用的API功能与开发人员联系(在两个异构系统中当对方的开发人员调用本服务时顺带告知对方)。 这是提醒他们在弃用旧API版本之前升级的完美方法。</p>
-<p>第三方开发者通知的过程可以自动化，例如。 每当对一个已弃用的功能发出10,000个请求时，发邮件通知开发人员。</p>
-<h3 id="API-Root-URL"><a href="#API-Root-URL" class="headerlink" title="API Root URL"></a>API Root URL</h3><p>无论你相信与否，您的API的根位置是重要的。当开发人员使用您的API接手旧项目并需要构建新功能时，他们可能根本不知道您有哪些服务。幸好他们知道客户端对外调用的那些URL列表。重要的是，进入您的API的根入口点尽可能简单，因为长的复杂URL将显得令人生畏，并可能使开发人员直接略过而不会采用。</p>
-<p>这里有两个常见的URL根：</p>
-<ul>
-<li><a href="https://example.org/api/v1/*" target="_blank" rel="external">https://example.org/api/v1/*</a></li>
-<li><a href="https://api.example.com/v1/*" target="_blank" rel="external">https://api.example.com/v1/*</a></li>
-</ul>
-<p>如果您的应用程序庞大，或者您预计它会变得庞大，将API放在自己的子域（例如<strong> api。</strong>）上是一个不错的选择。这可以允许在路上一些更灵活的可扩展性。</p>
-<p>如果您预计您的API将不会增长到那么大，或者您想要一个更简单的应用程序设置（例如，您希望从同一个框架托管网站和API），将您的API放置在域根的URL段（例如<strong> / api / </strong>）也有效。</p>
-<p>将内容设为您的API根目录是个好主意。例如，点击GitHub的API的根会返回一个端点列表。就个人而言，我喜欢使用根网址提供给开发人员认为有用的信息，例如，如何获取API的开发人员文档。</p>
-<p>此外，请注意HTTPS前缀。作为一个好的RESTful API，您必须在HTTPS之后托管您的API(一个好的RESTful API总是基于HTTPS来发布的)。</p>
-<h3 id="端点"><a href="#端点" class="headerlink" title="端点"></a>端点</h3><p>端点是您的API中指向特定资源或资源集合的URL。</p>
-<p>如果你正在构建一个虚拟的API来代表几个不同的动物园，每个动物园包含许多动物，员工（可以在多个动物园工作）和跟踪每个动物的物种，你可能有以下端点：</p>
-<ul>
-<li><a href="https://api.example.com/v1/**zoos**" target="_blank" rel="external">https://api.example.com/v1/**zoos**</a></li>
-<li><a href="https://api.example.com/v1/**animals**" target="_blank" rel="external">https://api.example.com/v1/**animals**</a></li>
-<li><a href="https://api.example.com/v1/**animal_types**" target="_blank" rel="external">https://api.example.com/v1/**animal_types**</a></li>
-<li><a href="https://api.example.com/v1/**employees**" target="_blank" rel="external">https://api.example.com/v1/**employees**</a></li>
-</ul>
-<p>当引用每个端点可以做什么时，您需要列出有效的HTTP动词和端点组合。例如，这里有一个半全面的行动列表，可以使用我们虚构的API执行。请注意，我在每个端点之前都有HTTP动词，因为这是在HTTP请求标头中使用的相同符号。</p>
-<ul>
-<li>GET / zoos：列出所有动物园（ID和名称，不要太多细节）</li>
-<li>POST / zoos：创建一个新的Zoo</li>
-<li>GET / zoos / ZID：检索整个Zoo对象</li>
-<li>PUT / zoos / ZID：更新Zoo（整个对象）</li>
-<li>PATCH / zoos / ZID：更新Zoo（部分对象）</li>
-<li>DELETE / zoos / ZID：删除动物园</li>
-<li>GET / zoos / ZID / animals：检索动物列表（ID和名称）。</li>
-<li>GET / animals：列出所有动物（ID和名称）。</li>
-<li>POST / animals：创建一个新的动物</li>
-<li>GET / animals / AID：检索动物对象</li>
-<li>PUT / animals / AID：更新动物（整个对象）</li>
-<li>PATCH / animals / AID：更新动物（部分对象）</li>
-<li>GET / animal_types：检索所有动物类型的列表（ID和名称）</li>
-<li>GET / animal_types / ATID：检索整个动物类型对象</li>
-<li>GET / employees：检索完整的员工列表</li>
-<li>GET / employees / EID：检索特定员工</li>
-<li>GET / zoos / ZID / employees：检索在此动物园工作的员工（ID和名称）的列表</li>
-<li>POST / employees：创建一个新员工</li>
-<li>POST / zoos / ZID / employees：在特定动物园雇用员工</li>
-<li>DELETE / zoos / ZID / employees / EID：从特定的动物园中解雇员工</li>
-</ul>
-<p>在上面的列表中，ZID表示Zoo ID，AID表示动物ID，EID表示Employee ID，ATID表示动物类型ID。在你的文档中有一个键，你选择的任何约定是一个好主意。</p>
-<p>为了简洁，我在上面的示例中省略了常见的API网址前缀。虽然这在通讯期间可能很好，但在实际的API文档中，您应该始终显示每个端点的完整网址（例如GET <a href="http://api.example.com/v1/animal_type/ATID）。" target="_blank" rel="external">http://api.example.com/v1/animal_type/ATID）。</a></p>
-<p>注意数据之间的关系如何显示，特别是雇员和动物园之间的多对多关系。通过添加其他网址细分，您可以执行更具体的互动。当然，对于“FIRE(解雇)”没有HTTP动词，但是通过对位于Zoo内的Employee执行DELETE，我们能够实现相同的效果。</p>
-<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>当客户端请求对象列表时，请务必为它们提供符合所请求条件的每个对象的列表。这个列表可能是巨大的。但是，重要的是不要对数据执行任何任意限制。正是这些任意的限制使第三方开发者很难知道发生了什么。如果他们请求某个集合，并迭代结果，他们从来没有看到超过100个结果，接下来他们就不得不去查找这个限制条件的出处(提供服务端没有问题，就只能是调用端的问题了)。到底是他们的ORM的bug导致的，还是因为网络截断了大数据包？</p>
-<blockquote>
-<p>尽可能减少那些会影响到第三方开发者开发的无谓限制</p>
-</blockquote>
-<p>然而，重要的是，您确实为客户端提供了指定某种过滤/结果限制的能力。这么做最重要的一个原因是可以最小化网络传输，客户端尽快得到结果。第二个重要的原因是客户端可能是懒惰的，如果服务器可以为他们做过滤和分页，一切都更好。还有一个不那么重要的原因，请求资源越少，对服务器的一个很大的好处是，减少了负载。</p>
-<p>过滤主要用于对资源集合执行GET。由于这些是GET请求，因此应通过URL传递过滤信息。以下是您可能想要添加到API的过滤类型的一些示例：</p>
-<ul>
-<li>?limit = 10:减少返回给Consumer的结果数（用于分页）</li>
-<li>?offset = 10:向客户端发送信息集（用于分页）</li>
-<li>?animal_type_id = 1:过滤符合以下条件的记录（WHERE animal_type_id = 1）</li>
-<li>?sortby = name&amp;order = asc:根据指定的属性对结果进行排序（ORDER BY<code>name</code> ASC）</li>
-</ul>
-<p>其中一些过滤可能与端点URLS冗余。例如我之前提到的GET / zoo / ZID / animals。这与GET / animals是一样的吗？zoo_id = ZID。为客户端提供的专用端点将使他们的开发更轻松，这对于您预期他们会做很多的请求尤其如此。在文档中，提及这种冗余，以便第三方开发人员不会留意是否存在差异。</p>
-<p>还有一个要说的是，每当您执行数据的过滤或排序时，请确保您列出客户端可以过滤和排序的列。我们不希望将任何数据库错误发送给客户端！</p>
-<h3 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h3><p>作为RESTful API，使用正确的HTTP状态代码非常重要;他们是一个标准！各种网络设备能够读取这些状态码，例如，负载平衡器可以配置为避免向发送大量50x错误的Web服务器发送请求。有很多<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html" target="_blank" rel="external">HTTP状态代码</a>可供选择，但此列表应该是一个很好的起点：</p>
-<ul>
-<li><strong> 200 </strong> OK - [GET]</li>
-<li>客户端从服务器请求数据，服务器为它们找到它（等幂）</li>
-<li><strong> 201 </strong> CREATED - [POST / PUT / PATCH]</li>
-<li>客户端提供了服务器数据，并且服务器创建了一个资源</li>
-<li><strong> 204 </strong>无内容 - [删除]</li>
-<li>客户端要求服务器删除资源，并且服务器将其删除</li>
-<li><strong> 400 </strong>无效请求 - [POST / PUT / PATCH]</li>
-<li>客户端给服务器的数据不良，服务器没有做任何事情（幂等）</li>
-<li><em>*错误404 - [</em>]<pre><code>*客户端引用了一个不存在的资源或集合，并且服务器什么也不做（幂等）
-</code></pre></li>
-<li><em>*500内部服务器错误 - [</em>]<pre><code>*服务器遇到错误，并且客户端不知道请求是否成功
-</code></pre></li>
-</ul>
-<h4 id="状态码范围"><a href="#状态码范围" class="headerlink" title="状态码范围"></a>状态码范围</h4><p><strong> 1xx </strong>范围保留用于底层HTTP的东西，你很可能永远也用不到。</p>
-<p><strong> 2xx </strong>范围保留用于成功消息，尽可能确保您的服务器尽可能多地向客户端发送这些消息。</p>
-<p><strong> 3xx </strong>范围保留用于重定向。大多数API不使用这些请求很多（不像SEO人使用它们那么频繁），然而，较新的超媒体风格API将更多地使用这些请求。</p>
-<p><strong> 4xx </strong>范围保留用于响应客户端做出的错误，例如。他们提供不良数据或要求不存在的东西。这些请求应该是幂等的，而不是更改服务器的状态。</p>
-<p><strong> 5xx </strong>范围的状态码是保留给服务器端错误用的。这些错误常常是从底层的函数抛出来的，甚至开发人员也通常没法处理，发送这类状态码的目的以确保客户端获得某种响应。当收到5xx响应时，客户端不可能知道服务器的状态，所以这类状态码是要尽可能的避免。</p>
-<p>预期的返回文档</p>
-<p>当使用不同的HTTP动词对服务器端点执行操作时，客户端需要在返回结果里面拿到一系列的信息</p>
-<p>。 下面的列表是非常典型的RESTful API：</p>
-<ul>
-<li>GET / collection：返回资源对象的列表（数组）</li>
-<li>GET / collection / resource：返回单个Resource对象</li>
-<li>POST / collection：返回新创建的Resource对象</li>
-<li>PUT / collection / resource：返回完整的Resource对象</li>
-<li>PATCH / collection / resource：返回完整的Resource对象</li>
-<li>DELETE / collection / resource：返回一个空文档</li>
-</ul>
-<p>请注意，当Consumer创建资源时，他们通常不知道正在创建的资源的ID（也不知道其他属性，如创建和修改的时间戳）（如果适用）。 这些附加属性与后续请求一起返回，当然作为对初始POST的响应。</p>
-<p>###认证</p>
-<p>大多数时候，一个服务器想要知道谁正在做哪些请求。当然，一些API提供公共用户(匿名用户)使用的，但大多数时间的工作是代表某人执行。</p>
-<p><a href="https://tools.ietf.org/html/rfc6749" target="_blank" rel="external">OAuth 2.0</a>提供了一个很好的方法。对于每个请求，您可以确定知道哪个客户正在发出请求，代表他们请求哪个用户，并提供一种（大部分）标准化的方式来过期访问或允许用户撤消来自客户端的访问权，需要第三方客户端知道用户登录凭据。</p>
-<p>还有<a href="http://tools.ietf.org/html/rfc5849" target="_blank" rel="external">OAuth 1.0</a>和<a href="https://dev.twitter.com/docs/oauth/xauth" target="_blank" rel="external">xAuth</a>同样适用这样的场景。无论您选择哪种方法，请确保它是常见的，并且有许多不同的库为您的客户端可能使用的语言/平台编写的文档(比如redis提供Java调用的API)。</p>
-<p>我可以诚实地告诉你，OAuth 1.0a，虽然它是最安全的选项，但是实现起来很痛苦。建议你选择一个替代品。</p>
-<h3 id="内容类型"><a href="#内容类型" class="headerlink" title="内容类型"></a>内容类型</h3><p>目前，最令人兴奋的API提供来自RESTful接口的JSON数据。这包括Facebook，Twitter，GitHub，你命名。 XML似乎已经失去了优势（除了在大型企业环境中）。 SOAP，不幸的是，它过时了，我们真的没有看到太多的API把HTML作为结果返回给客户端（除非你在构建一个爬虫程序）。</p>
-<p>只要你返回给他们有效的数据格式，开发者就可以使用流行的语言和框架进行解析。如果你正在构建一个通用的响应对象并使用不同的序列化器，你也可以很容易的提供之前所提到的那些数据格式（不包括SOAP）。而你所要做的就是把使用方式放在响应数据的接收头里面。</p>
-<p>一些API创建者建议向URL（端点之后）添加.json，.xml或.html文件扩展名以指定要返回的内容类型，但我个人不喜欢这一点。我真的很喜欢Accept头（它是内置在HTTP规范），并且我觉得这么做也比较适当一些。</p>
-<h3 id="超媒体API"><a href="#超媒体API" class="headerlink" title="超媒体API"></a>超媒体API</h3><p>超媒体API很可能是RESTful API设计的未来。 实际上是一个非常好的概念，它回归到了HTTP和HTML如何运作的“本质”。</p>
-<p>当使用非超媒体RESTful API时，URL端点是服务器和使用者之间的约定的一部分。这些端点必须由客户端提前知道，并且更改这些端点意味着客户端不再能够按预期与服务器通信。你可以先假定这是一个限制。</p>
-<p>现在，API客户端已经不仅仅只有那些创建HTTP请求的用户代理了。大多数HTTP请求是由人们通过浏览器产生的。人们不会被哪些预先定义好的RESTful API端点URL所约束。是什么让人们变的如此与众不同？人们可以阅读内容，点击链接，看看有趣的标题，一般来说，探索一个网站，解释内容，去他们想去的地方。即使一个URL改变，人们也不受影响（除非，他们事先给某个页面做了书签，在这种情况下，他们去主页并发现原来有一条新的路径可以去往之前的页面）。</p>
-<p>超媒体API概念的工作方式与人类相同。请求API的根返回一个URL列表，它可能指向每个信息集合，并以客户端可以理解的方式描述每个集合。为每个资源提供ID并不重要（或必需），只要提供了一个URL即可。</p>
-<p>随着超媒体API的客户端爬行链接和收集信息，URL在响应中始终是最新的，并且不需要事先知道作为约定的一部分。如果URL被缓存，并且后续请求返回404，则客户端可以简单地返回到根并再次发现内容。</p>
-<p>在检索集合中的资源列表时，将返回包含各个资源的完整URL的属性。当执行POST / PATCH / PUT时，响应可以是3xx重定向到完整的资源。</p>
-<p>JSON不仅告诉了我们需要定义哪些属性作为URL，也告诉了我们如何将URL与当前文档关联的语义。正如你猜的那样，HTML就提供了这样的信息。我们可能很乐意看到我们的API走完了完整的周期，并回到了处理HTML上来。想一下我们与CSS一起前行了多远，有一天我们甚至可能会看到，API和网站使用完全相同的URL和内容是常见的做法。</p>
-<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><p>老实说，即便你不能百分之百的遵循指南中的条款，你的API不一定是糟糕的。但是，如果你不为API准备文档的话，没有人会知道如何使用它，那它真的会成为一个糟糕的API。</p>
-<p>使您的文档可用于未经身份验证的开发人员。</p>
-<p>不要使用自动文档生成器，或者如果你这样做，你也要保证自己审阅过并使其具有更好的版式。</p>
-<p>不要截断示例请求和响应正文，要展示完整的东西。在文档中使用语法高亮指示符。</p>
-<p>记录每个端点的预期响应代码和可能的错误消息，以及导致这些错误消息可能出现的错误。</p>
-<p>如果您有空闲时间，请构建一个开发人员API控制台，以便开发人员可以立即试用您的API。这不像你想象的那么难，开发者（内部和第三方）也会因此而拥戴你！</p>
-<p>确保您的文档可以打印; CSS是一个强大的东西;不要害怕在打印文档时隐藏侧边栏。即使没有人打印过物理副本，你会惊奇的发现有多少开发者喜欢打印到PDF以供离线阅读。</p>
-<h3 id="勘误：原始的HTTP封包"><a href="#勘误：原始的HTTP封包" class="headerlink" title="勘误：原始的HTTP封包"></a>勘误：原始的HTTP封包</h3><p>因为我们所做的一切都是通过HTTP，我将向你展示一个HTTP包的剖析。 我经常感到惊讶的是，有多少人不知道这些东西是什么样子的！ 当客户端向服务器发送请求时，它们提供一组键/值对，称为标题，以及两个换行符，最后是请求体。 这都是在同一个数据包中发送的。</p>
-<p>服务器然后以所述键/值对格式，用两个换行符然后响应主体进行响应。 HTTP是一个请求/响应协议; 没有“推送”支持（服务器向客户端发送数据未经安全），除非您使用不同的协议，如Websockets。</p>
-<p>在设计API时，您应该能够使用允许查看原始HTTP数据包的工具。 例如，考虑使用<a href="https://www.wireshark.org/" target="_blank" rel="external">Wireshark</a>。 此外，请确保您使用的框架/ Web服务器，允许您阅读和更改尽可能多的这些字段。</p>
-<h4 id="Example-HTTP-Request"><a href="#Example-HTTP-Request" class="headerlink" title="Example HTTP Request"></a>Example HTTP Request</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">POST /v1/animal HTTP/1.1</div><div class="line">Host: api.example.org</div><div class="line">Accept: application/json</div><div class="line">Content-Type: application/json</div><div class="line">Content-Length: 24</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  "name": "Gir",</div><div class="line">  "animal_type": 12</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Example-HTTP-Response"><a href="#Example-HTTP-Response" class="headerlink" title="Example HTTP Response"></a>Example HTTP Response</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">HTTP/1.1 200 OK</div><div class="line">Date: Wed, 18 Dec 2013 06:08:22 GMT</div><div class="line">Content-Type: application/json</div><div class="line">Access-Control-Max-Age: 1728000</div><div class="line">Cache-Control: no-cache</div><div class="line"> </div><div class="line">&#123;</div><div class="line">  "id": 12,</div><div class="line">  "created": 1386363036,</div><div class="line">  "modified": 1386363036,</div><div class="line">  "name": "Gir",</div><div class="line">  "animal_type": 12</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>参考：<a href="https://codeplanet.io/principles-good-restful-api-design/" target="_blank" rel="external">https://codeplanet.io/principles-good-restful-api-design/</a><br> <a href="http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api" target="_blank" rel="external">http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;如何更好的设计RESTful-API&quot;&gt;&lt;a href=&quot;#如何更好的设计RESTful-API&quot; class=&quot;headerlink&quot; title=&quot;如何更好的设计RESTful API&quot;&gt;&lt;/a&gt;如何更好的设计RESTful API&lt;/h1&gt;&lt;p&gt;当您的数据模型已开始稳定，您可以为您的网络应用程序创建公共API。 你意识到，很难对你的API进行重大更改，一旦它发布，并希望尽可能得到尽可能多的前面。 现在，互联网对API设计的意见有很多。 但是，因为没有一个广泛采用的标准在所有情况下都有效，所以你前面有一堆选择：你应该接受什么格式？ 你应该如何认证？ 你的API是否应该版本化？&lt;br&gt;
-    
-    </summary>
-    
-      <category term="基础" scheme="https://muyinchen.github.io/categories/%E5%9F%BA%E7%A1%80/"/>
-    
-    
-      <category term="基础" scheme="https://muyinchen.github.io/tags/%E5%9F%BA%E7%A1%80/"/>
     
   </entry>
   
