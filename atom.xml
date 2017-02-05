@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-01-16T20:06:55.280Z</updated>
+  <updated>2017-02-05T07:55:32.764Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>重走Java基础之Streams(四)</title>
-    <link href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E5%9B%9B)/"/>
-    <id>https://muyinchen.github.io/2017/01/16/重走Java基础之Streams(四)/</id>
+    <title>重走Java基础之Streams 四</title>
+    <link href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E5%9B%9B/"/>
+    <id>https://muyinchen.github.io/2017/01/16/重走Java基础之Streams 四/</id>
     <published>2017-01-16T15:34:06.899Z</published>
-    <updated>2017-01-16T20:06:55.280Z</updated>
+    <updated>2017-02-05T07:55:32.764Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams(四)"></a>重走Java基础之Streams(四)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams 三</a>/)</p>
+    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-四"><a href="#重走Java基础之Streams-四" class="headerlink" title="重走Java基础之Streams 四"></a>重走Java基础之Streams 四</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89">重走Java基础之Streams 三</a>/)</p>
 <h3 id="使用Map-Entry的流在转换后保留初始值"><a href="#使用Map-Entry的流在转换后保留初始值" class="headerlink" title="使用Map.Entry的流在转换后保留初始值"></a>使用Map.Entry的流在转换后保留初始值</h3><a id="more"></a>
 <p>当你有一个<code>Stream</code>，你需要映射转换但是想保留初始值，你可以使用下面的实用程序方法将’Stream`映射到Map.Entry：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;K, V&gt; Function&lt;K, Map.Entry&lt;K, V&gt;&gt; entryMapper(Function&lt;K, V&gt; mapper)&#123;</div><div class="line">    <span class="keyword">return</span> (k)-&gt;<span class="keyword">new</span> AbstractMap.SimpleEntry&lt;&gt;(k, mapper.apply(k));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -144,7 +144,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-四&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-四&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(四)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(四)&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89&quot;&gt;重走Java基础之Streams 三&lt;/a&gt;/)&lt;/p&gt;
+      &lt;h1 id=&quot;重走Java基础之Streams-四&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-四&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams 四&quot;&gt;&lt;/a&gt;重走Java基础之Streams 四&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89&quot;&gt;重走Java基础之Streams 三&lt;/a&gt;/)&lt;/p&gt;
 &lt;h3 id=&quot;使用Map-Entry的流在转换后保留初始值&quot;&gt;&lt;a href=&quot;#使用Map-Entry的流在转换后保留初始值&quot; class=&quot;headerlink&quot; title=&quot;使用Map.Entry的流在转换后保留初始值&quot;&gt;&lt;/a&gt;使用Map.Entry的流在转换后保留初始值&lt;/h3&gt;
     
     </summary>
@@ -157,13 +157,13 @@
   </entry>
   
   <entry>
-    <title>重走Java基础之Streams(三)</title>
-    <link href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%89)/"/>
-    <id>https://muyinchen.github.io/2017/01/15/重走Java基础之Streams(三)/</id>
+    <title>重走Java基础之Streams 三</title>
+    <link href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%89/"/>
+    <id>https://muyinchen.github.io/2017/01/15/重走Java基础之Streams 三/</id>
     <published>2017-01-15T10:57:44.920Z</published>
-    <updated>2017-01-15T10:59:45.786Z</updated>
+    <updated>2017-02-05T07:56:02.780Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-三"><a href="#重走Java基础之Streams-三" class="headerlink" title="重走Java基础之Streams(三)"></a>重走Java基础之Streams(三)</h1><p>接<a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C">重走Java基础之Streams(二)</a>)</p>
+    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-三"><a href="#重走Java基础之Streams-三" class="headerlink" title="重走Java基础之Streams 三"></a>重走Java基础之Streams 三</h1><p>接<a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C">重走Java基础之Streams(二)</a>)</p>
 <h3 id="Creating-a-Stream"><a href="#Creating-a-Stream" class="headerlink" title="Creating a Stream"></a>Creating a Stream</h3><a id="more"></a>
 <p>所有java<code>Collection</code>都有<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#stream--" target="_blank" rel="external"><code>stream()</code></a> 和<a href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html#parallelStream--" target="_blank" rel="external"><code>parallelStream()</code></a>方法可以从中构造一个<code>Stream</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Collection&lt;String&gt; stringList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">Stream&lt;String&gt; stringStream = stringList.parallelStream();</div></pre></td></tr></table></figure>
@@ -237,7 +237,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-三&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-三&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(三)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(三)&lt;/h1&gt;&lt;p&gt;接&lt;a href=&quot;https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C&quot;&gt;重走Java基础之Streams(二)&lt;/a&gt;)&lt;/p&gt;
+      &lt;h1 id=&quot;重走Java基础之Streams-三&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-三&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams 三&quot;&gt;&lt;/a&gt;重走Java基础之Streams 三&lt;/h1&gt;&lt;p&gt;接&lt;a href=&quot;https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C&quot;&gt;重走Java基础之Streams(二)&lt;/a&gt;)&lt;/p&gt;
 &lt;h3 id=&quot;Creating-a-Stream&quot;&gt;&lt;a href=&quot;#Creating-a-Stream&quot; class=&quot;headerlink&quot; title=&quot;Creating a Stream&quot;&gt;&lt;/a&gt;Creating a Stream&lt;/h3&gt;
     
     </summary>
@@ -250,13 +250,13 @@
   </entry>
   
   <entry>
-    <title>重走Java基础之Streams(二)</title>
-    <link href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%BA%8C)/"/>
-    <id>https://muyinchen.github.io/2017/01/14/重走Java基础之Streams(二)/</id>
+    <title>重走Java基础之Streams 二</title>
+    <link href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%BA%8C/"/>
+    <id>https://muyinchen.github.io/2017/01/14/重走Java基础之Streams 二/</id>
     <published>2017-01-14T12:59:28.217Z</published>
-    <updated>2017-01-14T13:09:21.235Z</updated>
+    <updated>2017-02-05T07:56:31.922Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-二"><a href="#重走Java基础之Streams-二" class="headerlink" title="重走Java基础之Streams(二)"></a>重走Java基础之Streams(二)</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80">重走Java基础之Streams(一)</a>/)</p>
+    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-二"><a href="#重走Java基础之Streams-二" class="headerlink" title="重走Java基础之Streams 二"></a>重走Java基础之Streams 二</h1><p>接上篇<a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80">重走Java基础之Streams(一)</a>/)</p>
 <h2 id="Processing-Order"><a href="#Processing-Order" class="headerlink" title="Processing Order"></a>Processing Order</h2><p>  <code>Stream</code>对象的处理可以是顺序或<a href="http://stackoverflow.com/documentation/java/88/streams/2785/parallel-stream#t=201607281158351104612" target="_blank" rel="external">并行</a>.<br>  <a id="more"></a><br>     在<strong> sequential </strong>模式中，按照“Stream”的源的顺序处理元素。 如果<code>Stream</code>是有序的（例如<a href="https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html" target="_blank" rel="external"><code>SortedMap</code></a> 实现或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code> </a>），处理过程保证匹配源的排序。 然而，在其他情况下，应注意不要依赖于顺序（参见：<a href="http://stackoverflow.com/q/1882762/1667004" target="_blank" rel="external">是Java的<code>HashMap``keySet()</code>迭代顺序一致？</a>）。</p>
 <p>  <strong>Example:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">42</span>); </div><div class="line"></div><div class="line"><span class="comment">// sequential </span></div><div class="line"><span class="keyword">long</span> howManyOddNumbers = integerList.stream()</div><div class="line">                                    .filter(e -&gt; (e % <span class="number">2</span>) == <span class="number">1</span>).count(); </div><div class="line"></div><div class="line">System.out.println(howManyOddNumbers); <span class="comment">// Output: 2</span></div></pre></td></tr></table></figure>
@@ -332,7 +332,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-二&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-二&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(二)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(二)&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80&quot;&gt;重走Java基础之Streams(一)&lt;/a&gt;/)&lt;/p&gt;
+      &lt;h1 id=&quot;重走Java基础之Streams-二&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-二&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams 二&quot;&gt;&lt;/a&gt;重走Java基础之Streams 二&lt;/h1&gt;&lt;p&gt;接上篇&lt;a href=&quot;https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80&quot;&gt;重走Java基础之Streams(一)&lt;/a&gt;/)&lt;/p&gt;
 &lt;h2 id=&quot;Processing-Order&quot;&gt;&lt;a href=&quot;#Processing-Order&quot; class=&quot;headerlink&quot; title=&quot;Processing Order&quot;&gt;&lt;/a&gt;Processing Order&lt;/h2&gt;&lt;p&gt;  &lt;code&gt;Stream&lt;/code&gt;对象的处理可以是顺序或&lt;a href=&quot;http://stackoverflow.com/documentation/java/88/streams/2785/parallel-stream#t=201607281158351104612&quot;&gt;并行&lt;/a&gt;.&lt;br&gt;
     
     </summary>
@@ -345,13 +345,13 @@
   </entry>
   
   <entry>
-    <title>重走Java基础之Streams(一)</title>
-    <link href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams(%E4%B8%80)/"/>
-    <id>https://muyinchen.github.io/2017/01/10/重走Java基础之Streams(一)/</id>
+    <title>重走Java基础之Streams 一</title>
+    <link href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%80/"/>
+    <id>https://muyinchen.github.io/2017/01/10/重走Java基础之Streams 一/</id>
     <published>2017-01-10T09:31:05.585Z</published>
-    <updated>2017-01-10T09:34:13.282Z</updated>
+    <updated>2017-02-05T07:54:26.163Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-一"><a href="#重走Java基础之Streams-一" class="headerlink" title="重走Java基础之Streams(一)"></a>重走Java基础之Streams(一)</h1><p>因为经常逛<code>stackoverflow</code>,最近也在看reactive和storm以及前一阵子也用流式ORM框架<code>speedment</code>与<code>Springboot</code>整合改造了<a href="https://github.com/muyinchen/migoshop2.0" target="_blank" rel="external">migo2.0</a>中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把<code>stackoverflow</code>一些东西自己拿过来整理翻译一下，里面也会加入一些自己的理解 版本只关注于Java SE 8<br> <a id="more"></a></p>
+    <content type="html"><![CDATA[<h1 id="重走Java基础之Streams-一"><a href="#重走Java基础之Streams-一" class="headerlink" title="重走Java基础之Streams 一"></a>重走Java基础之Streams 一</h1><p>因为经常逛<code>stackoverflow</code>,最近也在看reactive和storm以及前一阵子也用流式ORM框架<code>speedment</code>与<code>Springboot</code>整合改造了<a href="https://github.com/muyinchen/migoshop2.0" target="_blank" rel="external">migo2.0</a>中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把<code>stackoverflow</code>一些东西自己拿过来整理翻译一下，里面也会加入一些自己的理解 版本只关注于Java SE 8<br> <a id="more"></a></p>
 <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>流表示一系列元素并支持不同类型的操作来对这些元素执行计算。在Java 8中，Collection接口有两种方法来生成Stream </p>
 <ul>
 <li>1）stream()和  </li>
@@ -416,7 +416,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;重走Java基础之Streams-一&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-一&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams(一)&quot;&gt;&lt;/a&gt;重走Java基础之Streams(一)&lt;/h1&gt;&lt;p&gt;因为经常逛&lt;code&gt;stackoverflow&lt;/code&gt;,最近也在看reactive和storm以及前一阵子也用流式ORM框架&lt;code&gt;speedment&lt;/code&gt;与&lt;code&gt;Springboot&lt;/code&gt;整合改造了&lt;a href=&quot;https://github.com/muyinchen/migoshop2.0&quot;&gt;migo2.0&lt;/a&gt;中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把&lt;code&gt;stackoverflow&lt;/code&gt;一些东西自己拿过来整理翻译一下，里面也会加入一些自己的理解 版本只关注于Java SE 8&lt;br&gt;
+      &lt;h1 id=&quot;重走Java基础之Streams-一&quot;&gt;&lt;a href=&quot;#重走Java基础之Streams-一&quot; class=&quot;headerlink&quot; title=&quot;重走Java基础之Streams 一&quot;&gt;&lt;/a&gt;重走Java基础之Streams 一&lt;/h1&gt;&lt;p&gt;因为经常逛&lt;code&gt;stackoverflow&lt;/code&gt;,最近也在看reactive和storm以及前一阵子也用流式ORM框架&lt;code&gt;speedment&lt;/code&gt;与&lt;code&gt;Springboot&lt;/code&gt;整合改造了&lt;a href=&quot;https://github.com/muyinchen/migoshop2.0&quot;&gt;migo2.0&lt;/a&gt;中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把&lt;code&gt;stackoverflow&lt;/code&gt;一些东西自己拿过来整理翻译一下，里面也会加入一些自己的理解 版本只关注于Java SE 8&lt;br&gt;
     
     </summary>
     

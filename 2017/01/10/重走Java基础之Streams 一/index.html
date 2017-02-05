@@ -1,0 +1,731 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java 8  Streams" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="重走Java基础之Streams 一因为经常逛stackoverflow,最近也在看reactive和storm以及前一阵子也用流式ORM框架speedment与Springboot整合改造了migo2.0中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把stackoverflow一些东西自己拿过来整理翻译一下，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重走Java基础之Streams 一">
+<meta property="og:url" content="https://muyinchen.github.io/2017/01/10/重走Java基础之Streams 一/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="重走Java基础之Streams 一因为经常逛stackoverflow,最近也在看reactive和storm以及前一阵子也用流式ORM框架speedment与Springboot整合改造了migo2.0中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把stackoverflow一些东西自己拿过来整理翻译一下，">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/6p8aM.png">
+<meta property="og:updated_time" content="2017-02-05T07:54:26.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="重走Java基础之Streams 一">
+<meta name="twitter:description" content="重走Java基础之Streams 一因为经常逛stackoverflow,最近也在看reactive和storm以及前一阵子也用流式ORM框架speedment与Springboot整合改造了migo2.0中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把stackoverflow一些东西自己拿过来整理翻译一下，">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/6p8aM.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/01/10/重走Java基础之Streams 一/"/>
+
+
+  <title> 重走Java基础之Streams 一 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                重走Java基础之Streams 一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-10T17:31:05+08:00" content="2017-01-10">
+              2017-01-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/01/10/重走Java基础之Streams 一/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/01/10/重走Java基础之Streams 一/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="重走Java基础之Streams-一"><a href="#重走Java基础之Streams-一" class="headerlink" title="重走Java基础之Streams 一"></a>重走Java基础之Streams 一</h1><p>因为经常逛<code>stackoverflow</code>,最近也在看reactive和storm以及前一阵子也用流式ORM框架<code>speedment</code>与<code>Springboot</code>整合改造了<a href="https://github.com/muyinchen/migoshop2.0" target="_blank" rel="external">migo2.0</a>中的单点登录,深深的感受到java8已经融入我们很深了，尤其是Spring5对其进行大力支持，觉得有必要再对自己的知识整理一下，顺带就把<code>stackoverflow</code>一些东西自己拿过来整理翻译一下，里面也会加入一些自己的理解 版本只关注于Java SE 8<br> <a id="more"></a></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>流表示一系列元素并支持不同类型的操作来对这些元素执行计算。在Java 8中，Collection接口有两种方法来生成Stream </p>
+<ul>
+<li>1）stream()和  </li>
+<li>2） parallelStream()<br> 流操作包括中间或终端。 中间操作返回一个流，所以我们可以链接多个中间操作而不使用分号。 终端操作是void的或返回非流结果。</li>
+</ul>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><h4 id="Using-Streams"><a href="#Using-Streams" class="headerlink" title="Using Streams"></a>Using Streams</h4><p>A <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>是可以执行顺序和并行聚合操作的一系列元素 。 任何给定的“Stream”都可能有无限量的数据流过它。 你所得到的结果是从“Stream”接收的数据在到达时被单独处理，而不是完全对数据执行批处理。 当与<a href="https://stackoverflow.com/documentation/java/91/lambda-expressions" target="_blank" rel="external">lambda表达式</a> 结合时，它们提供了使用函数方法对数据序列执行操作的简明方法。</p>
+<p><strong>Example:</strong> (<a href="https://ideone.com/IUWRdv" target="_blank" rel="external">see it work on Ideone</a>)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Stream&lt;String&gt; fruitStream = Stream.of(<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"pear"</span>, <span class="string">"kiwi"</span>, <span class="string">"orange"</span>);</div><div class="line"></div><div class="line">fruitStream.filter(s -&gt; s.contains(<span class="string">"a"</span>))</div><div class="line">           .map(String::toUpperCase)</div><div class="line">           .sorted()</div><div class="line">           .forEach(System.out::println);</div></pre></td></tr></table></figure>
+<p><strong>Output:</strong></p>
+<blockquote>
+<p>APPLE<br>BANANA<br>ORANGE<br>PEAR</p>
+</blockquote>
+<p>上述代码执行的操作可以总结如下：</p>
+<ol>
+<li><p>使用静态工厂方法<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#of-T...-" target="_blank" rel="external"><code>Stream.of(values)</code></a>创建一个包含fruit <code>String</code>的顺序排序<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a>的<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html" target="_blank" rel="external"><code>Stream</code></a> 元素</p>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#filter-java.util.function.Predicate-" target="_blank" rel="external"><code>filter()</code></a>操作仅保留与给定谓词（由谓词返回true测试时的元素）匹配的元素。 在这种情况下，它保留含有“a”的元素。 谓词作为lambda表达式给出。</p>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#map-java.util.function.Function-" target="_blank" rel="external"><code>map()</code></a> 操作转换 每个元素使用给定的函数，称为映射器。 在这种情况下，每个fruit <code>String</code>使用<a href="https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html" target="_blank" rel="external">method-reference</a>映射到将string字符串转换为大写版本<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html#toUpperCase--" target="_blank" rel="external"><code>String::toUppercase</code></a>。</p>
+<blockquote>
+<p><strong>Note</strong> 如果映射函数返回与其输入参数不同的类型，那么<code>map()</code>操作将返回具有不同泛型类型的流。 例如在一个<code>Stream</code>调用<code>.map(String :: isEmpty)</code>返回一个<code>Stream&lt;Boolean&gt;</code></p>
+</blockquote>
+</li>
+<li><p><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#sorted--" target="_blank" rel="external"><code>sorted()</code></a>操作对<code>Stream</code>的元素进行排序 根据它们的自然排序（根据在’String’的情况下对所在字典的顺序，其实都知道）。</p>
+</li>
+</ol>
+<p>5.最后， <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#forEach-java.util.function.Consumer-" target="_blank" rel="external"><code>forEach(action)</code></a> 操作执行一个动作，作用于“Stream”的每个元素，将其传递给一个 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html#sorted-java.util.Comparator-" target="_blank" rel="external">Consumer</a>。 在该示例中，每个元素只是被打印到控制台。 该操作是终端操作，因此不可能再次进行操作。<br>6.</p>
+<blockquote>
+<p><strong>Note</strong> 在<code>Stream</code>中定义的操作之所以被执行，是因为最后有终端操作。 假如没有终端操作，’Stream’将不被处理，因为’Stream’输出不被任何终端操作使用(省的浪费计算资源，所以很多书上称之为被动式foreach)。</p>
+</blockquote>
+<p>[<img src="http://og0sybnix.bkt.clouddn.com/6p8aM.png" alt="Chained operations"></p>
+<p>操作（如上所示）链接在一起以形成可以被视为对数据的查询</p>
+<hr>
+<h2 id="Reusing-Streams"><a href="#Reusing-Streams" class="headerlink" title="Reusing Streams"></a>Reusing Streams</h2><p>一个<code>Stream</code>不能重复使用。 一旦调用任何中间或终端操作，“Stream”对象将变得不可用。 <code>Stream</code>代替地使用中间<code>Stream</code>对象以便将中间操作链接在一起通过一系列<code>Stream</code>操作来生成一个<code>Stream</code>对象作为中间对象，最后再调用这个生成的<code>Stream</code>对象来完成最终的操作，最后一步的操作只能进行一次，之后，此流已经没了(生命周期已结束)。</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Stream&lt;String&gt; stream =</div><div class="line">    Stream.of(<span class="string">"d2"</span>, <span class="string">"a2"</span>, <span class="string">"b1"</span>, <span class="string">"b3"</span>, <span class="string">"c"</span>)</div><div class="line">        .filter(s -&gt; s.startsWith(<span class="string">"a"</span>));</div><div class="line"></div><div class="line">stream.anyMatch(s -&gt; <span class="keyword">true</span>);  <span class="comment">// The Stream has been used and is now consumed.</span></div><div class="line">stream.noneMatch(s -&gt; <span class="keyword">true</span>); <span class="comment">// IllegalStateException; stream was already used</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="Closing-Streams"><a href="#Closing-Streams" class="headerlink" title="Closing Streams"></a>Closing Streams</h2><p><code>Stream</code>接口扩展了 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html" target="_blank" rel="external"><code>AutoCloseable</code></a>。Streams可以通过调用 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html#close--" target="_blank" rel="external"><code>close</code></a>方法或使用try-with -resource语句来关闭。</p>
+<blockquote>
+<p><strong>请注意，Stream通常不必关闭。</strong>仅需要关闭在IO通道上运行的流。 大多数<code>Stream</code> 型不对资源操作，因此不需要关闭。</p>
+</blockquote>
+<p><code>Stream</code> 应该关闭的示例用例是，当您从文件创建一个<code>Stream</code> 行时：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span>(<span class="keyword">final</span> Stream&lt;String&gt; lines = Files.lines(Paths.get(<span class="string">"somePath"</span>)))&#123;</div><div class="line">    lines.forEach(System.out::println);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Stream</code>接口也声明了<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html#onClose-java.lang.Runnable-" target="_blank" rel="external"><code>Stream.onClose()</code></a> 方法，它允许你注册 <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html" target="_blank" rel="external"><code>Runnable</code></a>处理程序，当 流关闭。 一个示例用例是产生流的代码需要知道它何时被消耗以执行一些清理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> Stream&lt;String&gt;streamAndDelete(Path path) <span class="keyword">throws</span> IOException &#123;</div><div class="line">    <span class="keyword">return</span> Files.lines(path)</div><div class="line">        .onClose(()-&gt;someClass.deletePath(path));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行处理程序只有在调用<code>close()</code> 方法时才会执行，例如通过try-with-resources：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Path myPath = Paths.get(<span class="string">"somePath"</span>);</div><div class="line"></div><div class="line"><span class="keyword">try</span>(<span class="keyword">final</span> Stream&lt;String&gt; lines = streamAndDelete(myPath))&#123;</div><div class="line">    lines.forEach(System.out::println);</div><div class="line">&#125;</div><div class="line">Files.exists(myPath); <span class="comment">// returns false</span></div></pre></td></tr></table></figure>
+<p>If close() isn’t called, explicitly or implicitly, then the handler will not be called either:<br>如果没有明确或隐式地调用<code>close()</code>，那么处理程序不会被调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">streamAndDelete(myPath)</div><div class="line">    .forEach(System.out::println);</div><div class="line">Files.exists(myPath); <span class="comment">// returns true</span></div></pre></td></tr></table></figure>
+<hr>
+<h2 id="Processing-Order"><a href="#Processing-Order" class="headerlink" title="Processing Order"></a>Processing Order</h2><p><code>Stream</code>对象的处理可以是顺序或 <a href="http://stackoverflow.com/documentation/java/88/streams/2785/parallel-stream#t=201607281158351104612" target="_blank" rel="external">parallel(并行)</a>。</p>
+<p>在<strong> sequential </strong>模式中，按照“Stream”的源的顺序处理元素。 如果<code>Stream</code>是有序的（例如 <a href="https://docs.oracle.com/javase/8/docs/api/java/util/SortedMap.html" target="_blank" rel="external"><code>SortedMap</code></a>实现或<a href="https://docs.oracle.com/javase/8/docs/api/java/util/List.html" target="_blank" rel="external"><code>List</code></a>，处理过程保证匹配源的排序。 然而，在其他情况下，应注意不要依赖于顺序（参见：<a href="http://stackoverflow.com/q/1882762/1667004" target="_blank" rel="external">是Java的<code>HashMap`` keySet()</code>迭代顺序一致？</a>）。</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; integerList = Arrays.asList(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">42</span>); </div><div class="line"></div><div class="line"><span class="comment">// sequential </span></div><div class="line"><span class="keyword">long</span> howManyOddNumbers = integerList.stream()</div><div class="line">                                    .filter(e -&gt; (e % <span class="number">2</span>) == <span class="number">1</span>).count(); </div><div class="line"></div><div class="line">System.out.println(howManyOddNumbers); <span class="comment">// Output: 2</span></div></pre></td></tr></table></figure>
+<p><a href="https://ideone.com/FuMz1c" target="_blank" rel="external">Live on Ideone</a></p>
+<p><strong>并行</strong>模式允许在多个核上使用多个线程，但不能保证处理元素的顺序。</p>
+<p>如果在顺序的 <code>Stream</code> 上虽然调用了多个方法，则不一定必须要调用每个方法。 例如，如果一个 <code>Stream</code> 被过滤，并且元素的数量减少到一，则不会发生对诸如<code>sort</code>的方法的后续调用。 这可以提高顺序的<code>Stream</code>的性能 - 这是一个并行的<code>Stream</code>不可能实现的优化。</p>
+<p><strong>Example:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// parallel</span></div><div class="line"><span class="keyword">long</span> howManyOddNumbersParallel = integerList.parallelStream()</div><div class="line">                                            .filter(e -&gt; (e % <span class="number">2</span>) == <span class="number">1</span>).count();</div><div class="line"></div><div class="line">System.out.println(howManyOddNumbersParallel); <span class="comment">// Output: 2</span></div></pre></td></tr></table></figure>
+<p><a href="https://ideone.com/FuMz1c" target="_blank" rel="external">Live on Ideone</a></p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/09/在Spring Framework 5.0中引入Kotlin支持/" rel="next" title="在Spring Framework 5.0中引入Kotlin支持">
+                <i class="fa fa-chevron-left"></i> 在Spring Framework 5.0中引入Kotlin支持
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/14/重走Java基础之Streams 二/" rel="prev" title="重走Java基础之Streams 二">
+                重走Java基础之Streams 二 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/01/10/重走Java基础之Streams 一/"
+           data-title="重走Java基础之Streams 一" data-url="https://muyinchen.github.io/2017/01/10/重走Java基础之Streams 一/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重走Java基础之Streams-一"><span class="nav-number">1.</span> <span class="nav-text">重走Java基础之Streams 一</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Examples"><span class="nav-number">1.2.</span> <span class="nav-text">Examples</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Using-Streams"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">Using Streams</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reusing-Streams"><span class="nav-number">1.3.</span> <span class="nav-text">Reusing Streams</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Closing-Streams"><span class="nav-number">1.4.</span> <span class="nav-text">Closing Streams</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Processing-Order"><span class="nav-number">1.5.</span> <span class="nav-text">Processing Order</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
