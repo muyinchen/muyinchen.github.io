@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-02-05T08:11:52.485Z</updated>
+  <updated>2017-02-05T08:15:03.239Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API</title>
+    <title>通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</title>
     <link href="https://muyinchen.github.io/2017/02/05/%E9%80%9A%E8%BF%87IntelliJ%20IDEA%202016.3%20EAP%E6%9D%A5%E6%9B%B4%E5%A5%BD%E4%BD%BF%E7%94%A8Java%208%E7%9A%84Stream%20API/"/>
     <id>https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API/</id>
     <published>2017-02-05T08:06:03.739Z</published>
-    <updated>2017-02-05T08:11:52.485Z</updated>
+    <updated>2017-02-05T08:15:03.239Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API"><a href="#通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API" class="headerlink" title="通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API"></a>通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API</h1> <a id="more"></a>
+    <content type="html"><![CDATA[<h1 id="通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API"><a href="#通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API" class="headerlink" title="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API"></a>通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</h1> <a id="more"></a>
 <p>本文展示了IntelliJ IDEA如何帮助编写正确的和培养使用Java 8的习惯.版本使用IntelliJ IDEA 2016.3， 通过扩展了IDEA现有的检查以支持这些的案例。</p>
 <p>现在，如果在上面定义的局部变量的循环递增中单击Alt + Enter，IDE将提示您使用以count()结尾的一系列steam的链式 API调用来替换它。 注意，如果循环是嵌套的，IDE将使用flatMap():</p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_1.gif" alt="img"></p>
@@ -56,8 +56,9 @@
 <p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_vcs_log.png" alt="img"></p>
 <ul>
 <li>提交详细信息已移至右侧，为日志本身提供了更多空间。</li>
-<li>表中的提交消息现在对齐，因此更易读。</li>
-<li>更多变化尚未到来。</li>
+<li><p>表中的提交消息现在对齐，因此更易读。</p>
+<p>​</p>
+</li>
 </ul>
 <p>关于Java 8 Stream API 的使用，请参考本人的博文:</p>
 <p> <a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%80/">重走Java基础之Streams 一</a><br><a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%BA%8C/">重走Java基础之Streams 二</a><br><a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%89/">重走Java基础之Streams 三</a><br><a href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E5%9B%9B/">重走Java基础之Streams 四</a></p>
@@ -65,7 +66,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API&quot;&gt;&lt;a href=&quot;#通过IntelliJ-IDEA-2016-3-EAP来更好使用Java-8的Stream-API&quot; class=&quot;headerlink&quot; title=&quot;通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API&quot;&gt;&lt;/a&gt;通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API&lt;/h1&gt;
+      &lt;h1 id=&quot;通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API&quot;&gt;&lt;a href=&quot;#通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API&quot; class=&quot;headerlink&quot; title=&quot;通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API&quot;&gt;&lt;/a&gt;通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API&lt;/h1&gt;
     
     </summary>
     
