@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-02-05T09:37:36.124Z</updated>
+  <updated>2017-02-05T09:39:00.459Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Android Studio和IDEA中一个很有用的内存调试插件</title>
+    <title>Android 说一说Studio和IDEA中一个很有用的内存调试插件</title>
     <link href="https://muyinchen.github.io/2017/02/05/Android%20Studio%E5%92%8CIDEA%E4%B8%AD%E4%B8%80%E4%B8%AA%E5%BE%88%E6%9C%89%E7%94%A8%E7%9A%84%E5%86%85%E5%AD%98%E8%B0%83%E8%AF%95%E6%8F%92%E4%BB%B6/"/>
     <id>https://muyinchen.github.io/2017/02/05/Android Studio和IDEA中一个很有用的内存调试插件/</id>
     <published>2017-02-05T09:34:50.894Z</published>
-    <updated>2017-02-05T09:37:36.124Z</updated>
+    <updated>2017-02-05T09:39:00.459Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Android-Studio和IDEA中一个很有用的内存调试插件"><a href="#Android-Studio和IDEA中一个很有用的内存调试插件" class="headerlink" title="Android Studio和IDEA中一个很有用的内存调试插件"></a>Android Studio和IDEA中一个很有用的内存调试插件</h1> <a id="more"></a>
+    <content type="html"><![CDATA[<h1 id="说一说Android-Studio和IDEA中一个很有用的内存调试插件"><a href="#说一说Android-Studio和IDEA中一个很有用的内存调试插件" class="headerlink" title="说一说Android Studio和IDEA中一个很有用的内存调试插件"></a>说一说Android Studio和IDEA中一个很有用的内存调试插件</h1> <a id="more"></a>
 <p><img src="http://og0sybnix.bkt.clouddn.com/1-fzVh7Fe1lbTWD_JUPw2chg.png" alt="img">JetBrains JVM Debugger Memory View plugin</p>
 <p>在我最近的研发活动期间寻找新的工具，以提高我的开发经验，使Android Studio的生活更轻松，我发现一个有用的插件，我从来没有听说过。 这就是为什么，我决定写这个强大的工具，它如何帮助我与内存调试我的应用程序。</p>
 <hr>
@@ -84,7 +84,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Android-Studio和IDEA中一个很有用的内存调试插件&quot;&gt;&lt;a href=&quot;#Android-Studio和IDEA中一个很有用的内存调试插件&quot; class=&quot;headerlink&quot; title=&quot;Android Studio和IDEA中一个很有用的内存调试插件&quot;&gt;&lt;/a&gt;Android Studio和IDEA中一个很有用的内存调试插件&lt;/h1&gt;
+      &lt;h1 id=&quot;说一说Android-Studio和IDEA中一个很有用的内存调试插件&quot;&gt;&lt;a href=&quot;#说一说Android-Studio和IDEA中一个很有用的内存调试插件&quot; class=&quot;headerlink&quot; title=&quot;说一说Android Studio和IDEA中一个很有用的内存调试插件&quot;&gt;&lt;/a&gt;说一说Android Studio和IDEA中一个很有用的内存调试插件&lt;/h1&gt;
     
     </summary>
     
