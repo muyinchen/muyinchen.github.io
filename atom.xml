@@ -100,7 +100,7 @@
     <link href="https://muyinchen.github.io/2017/02/05/%E9%80%9A%E8%BF%87IntelliJ%20IDEA%202016.3%20EAP%E6%9D%A5%E6%9B%B4%E5%A5%BD%E4%BD%BF%E7%94%A8Java%208%E7%9A%84Stream%20API/"/>
     <id>https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API/</id>
     <published>2017-02-05T08:06:03.739Z</published>
-    <updated>2017-02-05T08:15:03.239Z</updated>
+    <updated>2017-02-05T14:22:46.450Z</updated>
     
     <content type="html"><![CDATA[<h1 id="通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API"><a href="#通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API" class="headerlink" title="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API"></a>通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</h1> <a id="more"></a>
 <p>本文展示了IntelliJ IDEA如何帮助编写正确的和培养使用Java 8的习惯.版本使用IntelliJ IDEA 2016.3， 通过扩展了IDEA现有的检查以支持这些的案例。</p>
@@ -127,7 +127,7 @@
 <p><img src="http://og0sybnix.bkt.clouddn.com/idea_wrap_method_calls.png" alt="img"></p>
 <p>目前我们正在考虑更改这些默认值。</p>
 <p>默认情况下启用检查，但其检查级别设置为最小 - 这意味着没有警告。 这是IntelliJ IDEA 2016的另一个新功能。</p>
-<p>您可以在“设置”中更改任何检查的即便:</p>
+<p>您可以在“设置”中更改任何检查的级别:</p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_9.png" alt="img"></p>
 <p>如果需要，您可以在你选择的范围上以批处理模式来应用这些检查:</p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_8.png" alt="img"></p>
