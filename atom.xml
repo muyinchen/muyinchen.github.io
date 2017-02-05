@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-02-05T09:39:00.459Z</updated>
+  <updated>2017-02-05T09:40:10.142Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Android 说一说Studio和IDEA中一个很有用的内存调试插件</title>
+    <title>说一说Android Studio和IDEA中一个很有用的内存调试插件</title>
     <link href="https://muyinchen.github.io/2017/02/05/Android%20Studio%E5%92%8CIDEA%E4%B8%AD%E4%B8%80%E4%B8%AA%E5%BE%88%E6%9C%89%E7%94%A8%E7%9A%84%E5%86%85%E5%AD%98%E8%B0%83%E8%AF%95%E6%8F%92%E4%BB%B6/"/>
     <id>https://muyinchen.github.io/2017/02/05/Android Studio和IDEA中一个很有用的内存调试插件/</id>
     <published>2017-02-05T09:34:50.894Z</published>
-    <updated>2017-02-05T09:39:00.459Z</updated>
+    <updated>2017-02-05T09:40:10.142Z</updated>
     
     <content type="html"><![CDATA[<h1 id="说一说Android-Studio和IDEA中一个很有用的内存调试插件"><a href="#说一说Android-Studio和IDEA中一个很有用的内存调试插件" class="headerlink" title="说一说Android Studio和IDEA中一个很有用的内存调试插件"></a>说一说Android Studio和IDEA中一个很有用的内存调试插件</h1> <a id="more"></a>
 <p><img src="http://og0sybnix.bkt.clouddn.com/1-fzVh7Fe1lbTWD_JUPw2chg.png" alt="img">JetBrains JVM Debugger Memory View plugin</p>
