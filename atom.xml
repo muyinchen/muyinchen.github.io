@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-02-05T09:41:16.031Z</updated>
+  <updated>2017-03-13T13:53:33.749Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hsweb的系列学习——hsweb-demo使用步骤</title>
+    <link href="https://muyinchen.github.io/2017/03/13/hsweb%E7%9A%84%E7%B3%BB%E5%88%97%E5%AD%A6%E4%B9%A0%E2%80%94%E2%80%94hsweb-demo%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4/"/>
+    <id>https://muyinchen.github.io/2017/03/13/hsweb的系列学习——hsweb-demo使用步骤/</id>
+    <published>2017-03-13T13:53:51.880Z</published>
+    <updated>2017-03-13T13:53:33.749Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="hsweb的系列学习——hsweb-demo使用步骤"><a href="#hsweb的系列学习——hsweb-demo使用步骤" class="headerlink" title="hsweb的系列学习——hsweb-demo使用步骤"></a>hsweb的系列学习——<a href="https://github.com/hs-web/hsweb-demo" target="_blank" rel="external">hsweb-demo</a>使用步骤</h1><h5 id="项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream"><a href="#项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream" class="headerlink" title="项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream"></a>项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream</h5> <a id="more"></a>
+<h2 id="运行步骤："><a href="#运行步骤：" class="headerlink" title="运行步骤："></a>运行步骤：</h2><h4 id="首先导入项目，等待项目构建完毕。"><a href="#首先导入项目，等待项目构建完毕。" class="headerlink" title="首先导入项目，等待项目构建完毕。"></a>首先导入项目，等待项目构建完毕。</h4><h4 id="其次操作步骤看下图看下图"><a href="#其次操作步骤看下图看下图" class="headerlink" title="其次操作步骤看下图看下图:"></a>其次操作步骤看下图看下图:</h4><p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_211309.png" alt=""></p>
+<p>注意，数据库请提前建好，再次运行会重新生成表而报错，和作者沟通过，会在3.0中进行修正</p>
+<h5 id="会生成如下表"><a href="#会生成如下表" class="headerlink" title="会生成如下表:"></a>会生成如下表:</h5><p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_212336.png" alt=""></p>
+<h5 id="管理员-密码同样是admin"><a href="#管理员-密码同样是admin" class="headerlink" title="管理员:(密码同样是admin)"></a>管理员:(密码同样是admin)</h5><p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_213141.png" alt=""></p>
+<h5 id="登录逻辑"><a href="#登录逻辑" class="headerlink" title="登录逻辑:"></a>登录逻辑:</h5><p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_213442.png" alt=""></p>
+<p>定位到这块代码往下找:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_213732.png" alt=""></p>
+<p>找到对外接口服务模块：</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_213955.png" alt=""></p>
+<p>此接口实现模块:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_214255.png" alt=""></p>
+<p>就先到此吧，要不就扯多了</p>
+<h5 id="登录后请看后台输出-可以看出请求走向"><a href="#登录后请看后台输出-可以看出请求走向" class="headerlink" title="登录后请看后台输出:(可以看出请求走向)"></a>登录后请看后台输出:(可以看出请求走向)</h5><p><img src="http://og0sybnix.bkt.clouddn.com/sp170313_213001.png" alt=""></p>
+<p>下节说</p>
+<p>FreeMarker模板引擎与动态页面静态化 在项目中的使用和跳转</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;hsweb的系列学习——hsweb-demo使用步骤&quot;&gt;&lt;a href=&quot;#hsweb的系列学习——hsweb-demo使用步骤&quot; class=&quot;headerlink&quot; title=&quot;hsweb的系列学习——hsweb-demo使用步骤&quot;&gt;&lt;/a&gt;hsweb的系列学习——&lt;a href=&quot;https://github.com/hs-web/hsweb-demo&quot;&gt;hsweb-demo&lt;/a&gt;使用步骤&lt;/h1&gt;&lt;h5 id=&quot;项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream&quot;&gt;&lt;a href=&quot;#项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream&quot; class=&quot;headerlink&quot; title=&quot;项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream&quot;&gt;&lt;/a&gt;项目要求：请提前熟悉Java8里面的各种新增的东西，如lambda和Stream&lt;/h5&gt;
+    
+    </summary>
+    
+      <category term="hsweb" scheme="https://muyinchen.github.io/categories/hsweb/"/>
+    
+    
+      <category term="hsweb" scheme="https://muyinchen.github.io/tags/hsweb/"/>
+    
+  </entry>
   
   <entry>
     <title>说一说Android Studio和IDEA中一个很有用的内存调试插件</title>
@@ -97,8 +135,8 @@
   
   <entry>
     <title>通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</title>
-    <link href="https://muyinchen.github.io/2017/02/05/%E9%80%9A%E8%BF%87IntelliJ%20IDEA%202016.3%20EAP%E6%9D%A5%E6%9B%B4%E5%A5%BD%E4%BD%BF%E7%94%A8Java%208%E7%9A%84Stream%20API/"/>
-    <id>https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 EAP来更好使用Java 8的Stream API/</id>
+    <link href="https://muyinchen.github.io/2017/02/05/%E9%80%9A%E8%BF%87IntelliJ%20IDEA%202016.3%20%E6%9D%A5%E6%9B%B4%E5%A5%BD%E4%BD%BF%E7%94%A8Java%208%E7%9A%84Stream%20API/"/>
+    <id>https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/</id>
     <published>2017-02-05T08:06:03.739Z</published>
     <updated>2017-02-05T14:22:46.450Z</updated>
     
@@ -1766,52 +1804,6 @@
     <summary type="html">
     
       &lt;h1 id=&quot;Redis-集群操作&quot;&gt;&lt;a href=&quot;#Redis-集群操作&quot; class=&quot;headerlink&quot; title=&quot;Redis 集群操作&quot;&gt;&lt;/a&gt;Redis 集群操作&lt;/h1&gt;
-    
-    </summary>
-    
-      <category term="redis" scheme="https://muyinchen.github.io/categories/redis/"/>
-    
-    
-      <category term="redis" scheme="https://muyinchen.github.io/tags/redis/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用redis3.0实现tomcat集群session共享</title>
-    <link href="https://muyinchen.github.io/2016/12/16/%E4%BD%BF%E7%94%A8redis3.0%E5%AE%9E%E7%8E%B0tomcat%E9%9B%86%E7%BE%A4session%E5%85%B1%E4%BA%AB/"/>
-    <id>https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/</id>
-    <published>2016-12-16T14:46:57.666Z</published>
-    <updated>2016-12-16T14:55:27.104Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="使用redis3-0实现tomcat集群session共享"><a href="#使用redis3-0实现tomcat集群session共享" class="headerlink" title="使用redis3.0实现tomcat集群session共享"></a>使用redis3.0实现tomcat集群session共享</h1> <a id="more"></a>
-<ol>
-<li>部署两个<code>tomcat</code>节点，<a href="https://muyinchen.github.io/2016/11/10/Migo%E5%95%86%E5%9F%8E2.0%C2%A0Nginx%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8%20%E4%B8%89/">使用nginx实现集群</a></li>
-</ol>
-<ol>
-<li><p><a href="https://muyinchen.github.io/2016/12/08/Migo%E5%95%86%E5%9F%8E2.0%20%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91%E4%B8%AD%E6%B7%BB%E5%8A%A0redis%20%E7%BC%93%E5%AD%98\(1\"> <code>redis</code>安装 </a>%20%E5%8D%81%E4%B9%9D/) </p>
-</li>
-<li><p>建一个简单的<code>web项目</code>，打包发布到各个<code>tomcat</code>中，用于测试<code>session</code>是否真的实现了共享（自己想办法怎么建测试项目）</p>
-</li>
-<li><p>下载开源组件<code>tomcat-redis-session-manager</code></p>
-</li>
-</ol>
-<p>​       </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</div><div class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</div><div class="line"></div><div class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">jedis-2.8.0.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">RedisDataCache.properties</div></pre></td></tr></table></figure>
-<p>5、将上面<code>jar</code>包拷贝到各个<code>tomcat</code>的<code>lib</code>目录下， 将<code>RedisDataCache.properties</code>拷到<code>tomcat</code>的<code>conf目录</code>下。</p>
-<p>6、配置文件修改</p>
-<p>（1）修改<code>RedisDataCache.properties</code>配置文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</div><div class="line"></div><div class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</div><div class="line"></div><div class="line"># Redis Password</div><div class="line"></div><div class="line">redis.password= redis （REDIS配置文件中设置的密码）</div><div class="line"></div><div class="line"># set true to enable redis cluster mode</div><div class="line"></div><div class="line">redis.cluster.enabled=false</div></pre></td></tr></table></figure>
-<p>（2）在<code>tomcat/conf/context.xml</code>文件中增加以下两行：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></div><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></div></pre></td></tr></table></figure>
-<p>（3)设置<code>tomcat/conf/web.xml</code> 中<code>session</code>有效期</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line"></div><div class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
-<p> 如果项目里也配置了<code>session</code>有效期，则以项目中有准。</p>
-<p>7、先启动<code>redis</code>,再启动<code>tomcat</code>，访问测试项目进行测试。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;使用redis3-0实现tomcat集群session共享&quot;&gt;&lt;a href=&quot;#使用redis3-0实现tomcat集群session共享&quot; class=&quot;headerlink&quot; title=&quot;使用redis3.0实现tomcat集群session共享&quot;&gt;&lt;/a&gt;使用redis3.0实现tomcat集群session共享&lt;/h1&gt;
     
     </summary>
     

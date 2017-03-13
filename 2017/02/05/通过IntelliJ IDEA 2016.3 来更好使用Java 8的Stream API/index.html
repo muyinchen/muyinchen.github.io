@@ -1,0 +1,720 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java 8  Streams  IDEA" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API">
+<meta property="og:url" content="https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_1.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_2.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_5.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_10.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_11.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_7.gif">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_chop_down.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_wrap_method_calls.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_9.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_8.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_vcs_log.png">
+<meta property="og:updated_time" content="2017-02-05T14:22:46.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API">
+<meta name="twitter:description" content="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_1.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/"/>
+
+
+  <title> 通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-05T16:06:03+08:00" content="2017-02-05">
+              2017-02-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API"><a href="#通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API" class="headerlink" title="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API"></a>通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</h1> <a id="more"></a>
+<p>本文展示了IntelliJ IDEA如何帮助编写正确的和培养使用Java 8的习惯.版本使用IntelliJ IDEA 2016.3， 通过扩展了IDEA现有的检查以支持这些的案例。</p>
+<p>现在，如果在上面定义的局部变量的循环递增中单击Alt + Enter，IDE将提示您使用以count()结尾的一系列steam的链式 API调用来替换它。 注意，如果循环是嵌套的，IDE将使用flatMap():</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_1.gif" alt="img"></p>
+<p>如果变量从另一个方法返回的数字增加，IDE将使用mapToInt()/ mapToLong()/ mapToDouble():</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_2.gif" alt="img"></p>
+<p>如果循环将非原始对象添加到集合中，而不是递增变量，IDE将用以collect()结尾的调用链替换它:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_5.gif" alt="img"></p>
+<p>如果要添加到集合的对象是另一种方法的结果，IDE将使用map()以惯用的方式处理它:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_10.gif" alt="img"></p>
+<p>这些检查所支持的代码细节多么？ 相当多。 考虑一个大量使用continue语句的循环:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_11.gif" alt="img"></p>
+<p>与continue类似，IDE也将使用anyMatch()正确处理返回语句:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_7.gif" alt="img"></p>
+<p>如果您决定使用这些检查，请务必调整默认代码样式设置，以避免超过长方法链的右边距。 在此，你有一个选择，根据你的喜好来设置。</p>
+<ul>
+<li>下拉链(Chop down chain)方法调用如果它们很长(最适合Java 8)</li>
+</ul>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_chop_down.png" alt="img"></p>
+<ul>
+<li>包装方法( Wrap method )参数调用</li>
+</ul>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_wrap_method_calls.png" alt="img"></p>
+<p>目前我们正在考虑更改这些默认值。</p>
+<p>默认情况下启用检查，但其检查级别设置为最小 - 这意味着没有警告。 这是IntelliJ IDEA 2016的另一个新功能。</p>
+<p>您可以在“设置”中更改任何检查的级别:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_9.png" alt="img"></p>
+<p>如果需要，您可以在你选择的范围上以批处理模式来应用这些检查:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_streams_intentions_8.png" alt="img"></p>
+<p>我们希望新的检查将帮助并使你的Java 8代码写更加得心应手，并充分利用stream  API。 那些不熟悉stream API的人，请务必阅读Oracle的教程:第1部分和第2部分。</p>
+<p>最后但并非最不重要的，IDEA还在努力改进VCS Log的布局:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/idea_2016_3_vcs_log.png" alt="img"></p>
+<ul>
+<li>提交详细信息已移至右侧，为日志本身提供了更多空间。</li>
+<li><p>表中的提交消息现在对齐，因此更易读。</p>
+<p>​</p>
+</li>
+</ul>
+<p>关于Java 8 Stream API 的使用，请参考本人的博文:</p>
+<p> <a href="https://muyinchen.github.io/2017/01/10/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%80/">重走Java基础之Streams 一</a><br><a href="https://muyinchen.github.io/2017/01/14/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%BA%8C/">重走Java基础之Streams 二</a><br><a href="https://muyinchen.github.io/2017/01/15/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E4%B8%89/">重走Java基础之Streams 三</a><br><a href="https://muyinchen.github.io/2017/01/16/%E9%87%8D%E8%B5%B0Java%E5%9F%BA%E7%A1%80%E4%B9%8BStreams%20%E5%9B%9B/">重走Java基础之Streams 四</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-8/" rel="tag">#Java 8</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/16/重走Java基础之Streams 四/" rel="next" title="重走Java基础之Streams 四">
+                <i class="fa fa-chevron-left"></i> 重走Java基础之Streams 四
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/05/Android Studio和IDEA中一个很有用的内存调试插件/" rel="prev" title="说一说Android Studio和IDEA中一个很有用的内存调试插件">
+                说一说Android Studio和IDEA中一个很有用的内存调试插件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/"
+           data-title="通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API" data-url="https://muyinchen.github.io/2017/02/05/通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">53</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#通过IntelliJ-IDEA-2016-3-来更好使用Java-8的Stream-API"><span class="nav-number">1.</span> <span class="nav-text">通过IntelliJ IDEA 2016.3 来更好使用Java 8的Stream API</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
