@@ -73,6 +73,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
 
@@ -109,7 +111,7 @@
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170314_173753.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170314_153032.png">
 <meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170314_154442.png">
-<meta property="og:updated_time" content="2017-03-14T10:49:16.008Z">
+<meta property="og:updated_time" content="2017-03-14T10:52:12.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑 二">
 <meta name="twitter:description" content="hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑 二FreeMarker基础补强请参考:https://github.com/muyinchen/migo-freemaker">
@@ -362,8 +364,8 @@
 <p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_165911.png" alt=""><br><code>图11</code></p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_173628.png" alt=""><br><code>图12</code></p>
 <p>通过<code>图12</code>可以看到在此对地址进行转换</p>
-<h2 id="对其他访问逻辑的处理"><a href="#对其他访问逻辑的处理" class="headerlink" title="对其他访问逻辑的处理"></a>对其他访问逻辑的处理</h2><p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_165251.png" alt=""><br><code>图13</code></p>
-<h3 id="以点击表单管理为例"><a href="#以点击表单管理为例" class="headerlink" title="以点击表单管理为例:"></a>以点击<code>表单管理</code>为例:</h3><p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_174234.png" alt=""><br><code>图14</code><br>结合图15:</p>
+<h3 id="对其他访问逻辑的处理"><a href="#对其他访问逻辑的处理" class="headerlink" title="对其他访问逻辑的处理"></a>对其他访问逻辑的处理</h3><p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_165251.png" alt=""><br><code>图13</code></p>
+<h4 id="以点击表单管理为例"><a href="#以点击表单管理为例" class="headerlink" title="以点击表单管理为例:"></a>以点击<code>表单管理</code>为例:</h4><p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_174234.png" alt=""><br><code>图14</code><br>结合图15:</p>
 <p>第一个访问连接<code>http://127.0.0.1:8080/admin/form/list.html?_t=769104&amp;_winid=w7605</code>，因为已经经过处理并放入到模型视图(<code>ModelAndView</code> )中，所以会直接访问到下图的<code>list.ftl</code></p>
 <p><img src="http://og0sybnix.bkt.clouddn.com/sp170314_173753.png" alt=""><br><code>图15</code><br>从<code>图15</code>的红色标记可以看出，访问的链接地址将要跳转到:<code>&quot;http://127.0.0.1:8080/form/~latest&quot;</code>,最后，结合<code>图14</code>，访问相应逻辑</p>
 <p>最后再补两张图的,方便理解:</p>
@@ -531,7 +533,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑-二"><span class="nav-number">1.</span> <span class="nav-text">hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑 二</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FreeMarker基础补强请参考-https-github-com-muyinchen-migo-freemaker"><span class="nav-number">1.1.</span> <span class="nav-text">FreeMarker基础补强请参考:https://github.com/muyinchen/migo-freemaker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#首先是对登录逻辑的处理"><span class="nav-number">1.2.</span> <span class="nav-text">首先是对登录逻辑的处理:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过一个ajax来访问，返回的数据信息表示成功就会访问到图17的逻辑"><span class="nav-number">1.2.1.</span> <span class="nav-text">通过一个ajax来访问，返回的数据信息表示成功就会访问到图17的逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#登录之后跳转到index-ftl-在此请看红色标记"><span class="nav-number">1.2.2.</span> <span class="nav-text">登录之后跳转到index.ftl,在此请看红色标记:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过macro来自定义一个指令api-定义内容见图5"><span class="nav-number">1.2.3.</span> <span class="nav-text">通过macro来自定义一个指令api,定义内容见图5</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#index页面js处理逻辑"><span class="nav-number">2.</span> <span class="nav-text">index页面js处理逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对返回的数据进行展示"><span class="nav-number">2.0.1.</span> <span class="nav-text">对返回的数据进行展示:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对onNodeClick事件的处理"><span class="nav-number">2.0.2.</span> <span class="nav-text">对onNodeClick事件的处理:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对图8中Request-BASH-PATH的解读"><span class="nav-number">2.0.3.</span> <span class="nav-text">对图8中Request.BASH_PATH的解读</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对其他访问逻辑的处理"><span class="nav-number">3.</span> <span class="nav-text">对其他访问逻辑的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#以点击表单管理为例"><span class="nav-number">3.1.</span> <span class="nav-text">以点击表单管理为例:</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑-二"><span class="nav-number">1.</span> <span class="nav-text">hsweb的系列学习之FreeMarker模板引擎与动态页面静态化与后台结合的一些处理逻辑 二</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FreeMarker基础补强请参考-https-github-com-muyinchen-migo-freemaker"><span class="nav-number">1.1.</span> <span class="nav-text">FreeMarker基础补强请参考:https://github.com/muyinchen/migo-freemaker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#首先是对登录逻辑的处理"><span class="nav-number">1.2.</span> <span class="nav-text">首先是对登录逻辑的处理:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过一个ajax来访问，返回的数据信息表示成功就会访问到图17的逻辑"><span class="nav-number">1.2.1.</span> <span class="nav-text">通过一个ajax来访问，返回的数据信息表示成功就会访问到图17的逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#登录之后跳转到index-ftl-在此请看红色标记"><span class="nav-number">1.2.2.</span> <span class="nav-text">登录之后跳转到index.ftl,在此请看红色标记:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过macro来自定义一个指令api-定义内容见图5"><span class="nav-number">1.2.3.</span> <span class="nav-text">通过macro来自定义一个指令api,定义内容见图5</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#index页面js处理逻辑"><span class="nav-number">2.</span> <span class="nav-text">index页面js处理逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#对返回的数据进行展示"><span class="nav-number">2.0.1.</span> <span class="nav-text">对返回的数据进行展示:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对onNodeClick事件的处理"><span class="nav-number">2.0.2.</span> <span class="nav-text">对onNodeClick事件的处理:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对图8中Request-BASH-PATH的解读"><span class="nav-number">2.0.3.</span> <span class="nav-text">对图8中Request.BASH_PATH的解读</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对其他访问逻辑的处理"><span class="nav-number">2.1.</span> <span class="nav-text">对其他访问逻辑的处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#以点击表单管理为例"><span class="nav-number">2.1.1.</span> <span class="nav-text">以点击表单管理为例:</span></a></li></ol></li></ol></li></ol></div>
             
           </div>
         </section>
