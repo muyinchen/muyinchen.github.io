@@ -1,0 +1,729 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RPC" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="一个轻量级分布式 RPC 框架 下接一个轻量级分布式 RPC 框架 上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个轻量级分布式 RPC 框架  下">
+<meta property="og:url" content="https://muyinchen.github.io/2017/03/27/一个轻量级分布式 RPC 框架 下/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="一个轻量级分布式 RPC 框架 下接一个轻量级分布式 RPC 框架 上">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170220_022654.png">
+<meta property="og:updated_time" content="2017-03-26T17:03:19.974Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个轻量级分布式 RPC 框架  下">
+<meta name="twitter:description" content="一个轻量级分布式 RPC 框架 下接一个轻量级分布式 RPC 框架 上">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170220_022654.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/03/27/一个轻量级分布式 RPC 框架 下/"/>
+
+
+  <title> 一个轻量级分布式 RPC 框架  下 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                一个轻量级分布式 RPC 框架  下
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-27T01:04:05+08:00" content="2017-03-27">
+              2017-03-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/RPC/" itemprop="url" rel="index">
+                    <span itemprop="name">RPC</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/27/一个轻量级分布式 RPC 框架 下/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/27/一个轻量级分布式 RPC 框架 下/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一个轻量级分布式-RPC-框架-下"><a href="#一个轻量级分布式-RPC-框架-下" class="headerlink" title="一个轻量级分布式 RPC 框架 下"></a>一个轻量级分布式 RPC 框架 下</h1><p>接<a href="https://muyinchen.github.io/2017/03/16/%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E5%B8%83%E5%BC%8F%20RPC%20%E6%A1%86%E6%9E%B6%20%E4%B8%8A/">一个轻量级分布式 RPC 框架 上</a></p>
+<a id="more"></a>
+<h2 id="3，编写客户端模块"><a href="#3，编写客户端模块" class="headerlink" title="3，编写客户端模块"></a>3，编写客户端模块</h2><h3 id="设定Client端的实现功能接口"><a href="#设定Client端的实现功能接口" class="headerlink" title="设定Client端的实现功能接口"></a>设定<code>Client</code>端的实现功能接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.client;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.Response;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.lang.reflect.Method;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 服务的发现与使用</div><div class="line"> *</div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Client</span> </span>&#123;</div><div class="line">    <span class="function">Response <span class="title">sendMessage</span><span class="params">(Class&lt;?&gt; clazz, Method method, Object[] args)</span></span>;</div><div class="line">    &lt;T&gt; <span class="function">T <span class="title">proxyInterface</span><span class="params">(Class&lt;T&gt; serviceInterface)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现-RPC-代理"><a href="#实现-RPC-代理" class="headerlink" title="实现 RPC 代理"></a>实现 RPC 代理</h3><p>因会用到动态代理，那先设计动态代理实现的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.rpcproxy;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.client.Client;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">RpcProxy</span> </span>&#123;</div><div class="line">    &lt;T&gt; <span class="function">T <span class="title">proxyInterface</span><span class="params">(Client client, <span class="keyword">final</span> Class&lt;T&gt; serviceInterface)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里使用CGLib 来实现  RPC 代理（当然也可以使用Java 提供的动态代理技术实现 ），具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.rpcproxy;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.client.Client;</div><div class="line"><span class="keyword">import</span> net.sf.cglib.proxy.Enhancer;</div><div class="line"><span class="keyword">import</span> net.sf.cglib.proxy.MethodInterceptor;</div><div class="line"><span class="keyword">import</span> net.sf.cglib.proxy.MethodProxy;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.lang.reflect.Method;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibRpcProxy</span> <span class="keyword">implements</span> <span class="title">RpcProxy</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">proxyInterface</span><span class="params">(Client client, Class&lt;T&gt; serviceInterface)</span> </span>&#123;</div><div class="line">        Enhancer enhancer = <span class="keyword">new</span> Enhancer();</div><div class="line">        enhancer.setSuperclass(serviceInterface);</div><div class="line">        enhancer.setCallback(<span class="keyword">new</span> CglibInteceptor(client, serviceInterface));</div><div class="line">        Object enhancedObject = enhancer.create();</div><div class="line">        <span class="keyword">return</span> (T)enhancedObject;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 搞个静态内部类来做Method的cglib代理</div><div class="line">     */</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CglibInteceptor</span> <span class="keyword">implements</span> <span class="title">MethodInterceptor</span> </span>&#123;</div><div class="line"></div><div class="line">        <span class="comment">//首先判断所要代理的方法是通用方法，是的话就此返回此代理对象的相关内容</span></div><div class="line"></div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Method hashCodeMethod;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Method equalsMethod;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Method toStringMethod;</div><div class="line"></div><div class="line">        <span class="keyword">static</span> &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                hashCodeMethod = Object.class.getMethod(<span class="string">"hashCode"</span>);</div><div class="line">                equalsMethod = Object.class.getMethod(<span class="string">"equals"</span>, Object.class);</div><div class="line">                toStringMethod = Object.class.getMethod(<span class="string">"toString"</span>);</div><div class="line">            &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchMethodError(e.getMessage());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">/**</span></div><div class="line">         * 针对这几个方法做相应的策略</div><div class="line">         * <span class="doctag">@param</span> proxy</div><div class="line">         * <span class="doctag">@return</span></div><div class="line">         */</div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">proxyHashCode</span><span class="params">(Object proxy)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> System.identityHashCode(proxy);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">proxyEquals</span><span class="params">(Object proxy, Object other)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> (proxy == other);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">private</span> String <span class="title">proxyToString</span><span class="params">(Object proxy)</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> proxy.getClass().getName() + <span class="string">'@'</span> + Integer.toHexString(proxy.hashCode());</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">/**</span></div><div class="line">         * 加入rpc客户端和传入所调用服务的接口</div><div class="line">         */</div><div class="line">        <span class="keyword">private</span> Client client;</div><div class="line"></div><div class="line">        <span class="keyword">private</span> Class&lt;?&gt; serviceInterface;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CglibInteceptor</span><span class="params">(Client client, Class&lt;?&gt; serviceInterface)</span> </span>&#123;</div><div class="line">            <span class="keyword">this</span>.client = client;</div><div class="line">            <span class="keyword">this</span>.serviceInterface = serviceInterface;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Object o, Method method, Object[] args, MethodProxy proxy)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">            <span class="comment">//先对方法进行判断是否是通用方法，假如都不是，最后再通过client来调用</span></div><div class="line">            <span class="keyword">if</span> (hashCodeMethod.equals(method)) &#123;</div><div class="line">                <span class="keyword">return</span> proxyHashCode(proxy);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (equalsMethod.equals(method)) &#123;</div><div class="line">                <span class="keyword">return</span> proxyEquals(proxy, args[<span class="number">0</span>]);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (toStringMethod.equals(method)) &#123;</div><div class="line">                <span class="keyword">return</span> proxyToString(proxy);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> client.sendMessage(serviceInterface, method, args).getResponse();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="客户端handler设计"><a href="#客户端handler设计" class="headerlink" title="客户端handler设计"></a>客户端handler设计</h3><p>在服务端完成处理对服务端的返回信息进行封装:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.utils;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.Response;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ConcurrentHashMap;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ConcurrentMap;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseMapHelper</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> ConcurrentMap&lt;Long, BlockingQueue&lt;Response&gt;&gt; responseMap = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后再客户端对返回信息进行处理:</p>
+<p>因为代码注释很详细，细节就不说了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.client;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.Response;</div><div class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandler;</div><div class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerContext;</div><div class="line"><span class="keyword">import</span> io.netty.channel.SimpleChannelInboundHandler;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.nia.rpc.core.utils.ResponseMapHelper.responseMap;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="meta">@ChannelHandler</span>.Sharable<span class="comment">/*因为要在不同channel中共享使用responseMap的blockingQueue，所以要加此注解*/</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcClientHandler</span> <span class="keyword">extends</span> <span class="title">SimpleChannelInboundHandler</span>&lt;<span class="title">Response</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(RpcClientHandler.class);</div><div class="line"></div><div class="line">    <span class="comment">//因为此处这个要公用，故拿出来单独放到一个类中来调用</span></div><div class="line">   <span class="comment">// public static ConcurrentMap&lt;Long, BlockingQueue&lt;Response&gt;&gt; responseMap = new ConcurrentHashMap&lt;Long, BlockingQueue&lt;Response&gt;&gt;();</span></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">channelRead0</span><span class="params">(ChannelHandlerContext ctx, Response msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="comment">//此处的业务逻辑就是拿到对应id，讲返回信息放入相应blockingQueue中</span></div><div class="line">        BlockingQueue&lt;Response&gt; blockingQueue = responseMap.get(msg.getRequestId());</div><div class="line">        <span class="keyword">if</span> (blockingQueue != <span class="keyword">null</span>) &#123;</div><div class="line">            blockingQueue.put(msg);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        LOGGER.error(<span class="string">"Exception caught on &#123;&#125;, "</span>, ctx.channel(), cause);</div><div class="line">        ctx.channel().close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="客户端创建连接并保存"><a href="#客户端创建连接并保存" class="headerlink" title="客户端创建连接并保存"></a>客户端创建连接并保存</h3><h4 id="commons-pool2-对象池的使用"><a href="#commons-pool2-对象池的使用" class="headerlink" title="commons.pool2 对象池的使用"></a>commons.pool2 对象池的使用</h4><p>在客户端这里建立个对象池来保存并复用和提供服务端连接channel的信息，并在这里进行创建客户端连接然后保存，减少重复创建所带来的资源损耗</p>
+<p>关于此对象池，想进一步了解，请看<a href="https://github.com/muyinchen/woker/blob/master/rpc%E6%A1%86%E6%9E%B6%E6%B6%89%E5%8F%8A%E7%9F%A5%E8%AF%86%E7%82%B9/commons.pool2%20%E5%AF%B9%E8%B1%A1%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8.md" target="_blank" rel="external">commons.pool2 对象池的使用</a>，这里就不多说了</p>
+<p>通过上个说明文档链接先搞个池对象工厂的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.utils;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.client.RpcClientHandler;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.RpcDecoder;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.RpcEncoder;</div><div class="line"><span class="keyword">import</span> io.netty.bootstrap.Bootstrap;</div><div class="line"><span class="keyword">import</span> io.netty.channel.*;</div><div class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</div><div class="line"><span class="keyword">import</span> io.netty.channel.socket.nio.NioSocketChannel;</div><div class="line"><span class="keyword">import</span> io.netty.handler.logging.LogLevel;</div><div class="line"><span class="keyword">import</span> io.netty.handler.logging.LoggingHandler;</div><div class="line"><span class="keyword">import</span> org.apache.commons.pool2.BasePooledObjectFactory;</div><div class="line"><span class="keyword">import</span> org.apache.commons.pool2.PooledObject;</div><div class="line"><span class="keyword">import</span> org.apache.commons.pool2.impl.DefaultPooledObject;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 池对象工厂(PooledObjectFactory接口):</div><div class="line"> * 用来创建池对象, 将不用的池对象进行钝化(passivateObject),</div><div class="line"> * 对要使用的池对象进行激活(activeObject),</div><div class="line"> * 对池对象进行验证(validateObject),</div><div class="line"> * 对有问题的池对象进行销毁(destroyObject)等工作</div><div class="line"> *</div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConnectionObjectFactory</span> <span class="keyword">extends</span> <span class="title">BasePooledObjectFactory</span>&lt;<span class="title">Channel</span>&gt;</span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(ConnectionObjectFactory.class);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String ip;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConnectionObjectFactory</span><span class="params">(String ip, <span class="keyword">int</span> port)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.ip = ip;</div><div class="line">        <span class="keyword">this</span>.port = port;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> Channel <span class="title">createNewConChannel</span><span class="params">()</span> </span>&#123;</div><div class="line">        Bootstrap bootstrap = <span class="keyword">new</span> Bootstrap();</div><div class="line">        bootstrap.channel(NioSocketChannel.class)</div><div class="line">                 .group(<span class="keyword">new</span> NioEventLoopGroup(<span class="number">1</span>))</div><div class="line">                 .handler(<span class="keyword">new</span> ChannelInitializer&lt;Channel&gt;() &#123;</div><div class="line">                     <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(Channel ch)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">                         ch.pipeline().addLast(<span class="keyword">new</span> LoggingHandler(LogLevel.INFO))</div><div class="line">                           .addLast(<span class="keyword">new</span> RpcDecoder(<span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span>))</div><div class="line">                           .addLast(<span class="keyword">new</span> RpcEncoder())</div><div class="line">                           .addLast(<span class="keyword">new</span> RpcClientHandler())</div><div class="line">                         ;</div><div class="line">                     &#125;</div><div class="line">                 &#125;);</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">final</span> ChannelFuture f = bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, <span class="number">3000</span>)</div><div class="line">                                             .option(ChannelOption.TCP_NODELAY, <span class="keyword">true</span>)</div><div class="line">                                             .connect(ip, port).sync();</div><div class="line">            f.addListener((ChannelFutureListener) future -&gt; &#123;</div><div class="line">                <span class="keyword">if</span> (future.isSuccess()) &#123;</div><div class="line">                    LOGGER.info(<span class="string">"Connect success &#123;&#125; "</span>, f);</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">            <span class="keyword">final</span> Channel channel = f.channel();</div><div class="line">            channel.closeFuture().addListener((ChannelFutureListener) future -&gt; LOGGER.info(<span class="string">"Channel Close &#123;&#125; &#123;&#125;"</span>, ip, port));</div><div class="line">            <span class="keyword">return</span> channel;</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Channel <span class="title">create</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">return</span> createNewConChannel();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> PooledObject&lt;Channel&gt; <span class="title">wrap</span><span class="params">(Channel obj)</span> </span>&#123;</div><div class="line">        <span class="comment">//排查出错，之前直接返回个null，未对方法进行重写，导致出错，拿不出对象</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DefaultPooledObject&lt;&gt;(obj);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroyObject</span><span class="params">(PooledObject&lt;Channel&gt; p)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        p.getObject().close().addListener((ChannelFutureListener) future -&gt; LOGGER.info(<span class="string">"Close Finish"</span>));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">validateObject</span><span class="params">(PooledObject&lt;Channel&gt; p)</span> </span>&#123;</div><div class="line">        Channel object = p.getObject();</div><div class="line">        <span class="keyword">return</span> object.isActive();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后做个<code>channel</code>包装:</p>
+<p>主要还是为了得到一个池<code>GenericObjectPool</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.client;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.utils.ConnectionObjectFactory;</div><div class="line"><span class="keyword">import</span> io.netty.channel.Channel;</div><div class="line"><span class="keyword">import</span> lombok.Data;</div><div class="line"><span class="keyword">import</span> org.apache.commons.pool2.ObjectPool;</div><div class="line"><span class="keyword">import</span> org.apache.commons.pool2.impl.GenericObjectPool;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="meta">@Data</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChannelConf</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String connStr;</div><div class="line">    <span class="keyword">private</span> String host;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> ip;</div><div class="line">    <span class="keyword">private</span> Channel channel;</div><div class="line">    <span class="keyword">private</span> ObjectPool&lt;Channel&gt; channelObjectPool;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ChannelConf</span><span class="params">(String host, <span class="keyword">int</span> port)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.host = host;</div><div class="line">        <span class="keyword">this</span>.ip = port;</div><div class="line">        <span class="keyword">this</span>.connStr = host + <span class="string">":"</span> + ip;</div><div class="line">        channelObjectPool = <span class="keyword">new</span> GenericObjectPool&lt;&gt;(<span class="keyword">new</span> ConnectionObjectFactory(host, port));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</div><div class="line">        channelObjectPool.close();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"ChannelConf&#123;"</span>);</div><div class="line">        sb.append(<span class="string">"connStr='"</span>).append(connStr).append(<span class="string">'\''</span>);</div><div class="line">        sb.append(<span class="string">", host='"</span>).append(host).append(<span class="string">'\''</span>);</div><div class="line">        sb.append(<span class="string">", ip="</span>).append(ip);</div><div class="line">        sb.append(<span class="string">", channel="</span>).append(channel);</div><div class="line">        sb.append(<span class="string">", channelObjectPool="</span>).append(channelObjectPool);</div><div class="line">        sb.append(<span class="string">'&#125;'</span>);</div><div class="line">        <span class="keyword">return</span> sb.toString();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="对客户端接口逻辑进行实现"><a href="#对客户端接口逻辑进行实现" class="headerlink" title="对客户端接口逻辑进行实现:"></a>对客户端接口逻辑进行实现:</h3><h4 id="在客户端启动时通过init-做如下逻辑"><a href="#在客户端启动时通过init-做如下逻辑" class="headerlink" title="在客户端启动时通过init()做如下逻辑:"></a>在客户端启动时通过<code>init()</code>做如下逻辑:</h4><ol>
+<li>通过<code>CuratorFrameworkFactory</code>来连接<code>zk</code>;</li>
+<li>通过<code>curator API</code> 的<code>Path Cache</code>用来监控一个<code>ZNode</code>的子节点. 这里是<code>pathChildrenCache</code>，然后开写监控逻辑(方便动态的增加删除<code>channel</code>):<ul>
+<li>先在之前拿到<code>zk</code>下的所有节点，然后根据服务注册规则，所得到拼接服务的节点的<code>key</code>，就可以得到提供服务的所有子节点list,这里是<code>newServiceData</code></li>
+<li>关闭删除本地缓存中多出的<code>channel</code>:<ul>
+<li>​通过遍历<code>channelWrappers</code>来判断<code>newServiceData</code>是否包含有其中的链接，没包含的就清理掉，关闭相应对象池，并从<code>channelWrappers</code>移除;</li>
+</ul>
+</li>
+<li>增加<code>channelWrappers</code>中未存在的服务连接<code>channel</code></li>
+</ul>
+</li>
+<li>回到主线程，通过<code>List&lt;String&gt; strings = children.forPath(serviceZKPath);</code>得到提供服务的所有子节点list</li>
+<li><code>strings</code>为空，则报出无可用服务的运行时异常处理;</li>
+<li>不为空，添加进<code>channelWrappers</code>中</li>
+</ol>
+<h4 id="在客户端调用接口方法时实现的逻辑"><a href="#在客户端调用接口方法时实现的逻辑" class="headerlink" title="在客户端调用接口方法时实现的逻辑:"></a>在客户端调用接口方法时实现的逻辑:</h4><ol>
+<li>对接口方法调用进行<code>request</code>包装;</li>
+<li>根据相应服务来得到<code>channel</code>包装;</li>
+<li>根据<code>channel = channelWrapper.getChannelObjectPool().borrowObject();</code>得到<code>channel</code></li>
+<li>将请求写入<code>channel</code>并刷出去<code>channel.writeAndFlush(request);</code></li>
+<li>然后:(看里面代码注释即可，已经很详细了)</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">     channel.writeAndFlush(request);</div><div class="line">     <span class="comment">//建立一个ResponseMap，将RequestId作为键，服务端回应的内容作为值保存于BlockingQueue，</span></div><div class="line">     <span class="comment">// 最后一起保存在这个ResponseMap中</span></div><div class="line">     BlockingQueue&lt;Response&gt; blockingQueue = <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">1</span>);</div><div class="line">     ResponseMapHelper.responseMap.put(request.getRequestId(), blockingQueue);</div><div class="line">     <span class="comment">//poll(time):取走BlockingQueue里排在首位的对象,若不能立即取出,则可以等time参数规定的时间,取不到时返回null</span></div><div class="line"></div><div class="line">     <span class="keyword">return</span> blockingQueue.poll(requestTimeoutMillis, TimeUnit.MILLISECONDS);</div><div class="line"> &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">     <span class="keyword">throw</span> <span class="keyword">new</span> RequestTimeoutException(<span class="string">"service"</span> + serviceName + <span class="string">" method "</span> + method + <span class="string">" timeout"</span>);</div><div class="line"> &#125; <span class="keyword">finally</span> &#123;</div><div class="line">     <span class="keyword">try</span> &#123;</div><div class="line">         <span class="comment">//拿出去的channel记得还回去</span></div><div class="line">         channelWrapper.getChannelObjectPool().returnObject(channel);</div><div class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">         e.printStackTrace();</div><div class="line">     &#125;</div><div class="line">     <span class="comment">//删除此键值对，help GC</span></div><div class="line">     ResponseMapHelper.responseMap.remove(request.getRequestId());</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h3 id="客户端接口的动态代理逻辑"><a href="#客户端接口的动态代理逻辑" class="headerlink" title="客户端接口的动态代理逻辑"></a>客户端接口的动态代理逻辑</h3><p>由上面实现的<code>CglibRpcProxy</code>通过<code>newInstance()</code>得到个实例,并调用其相关实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">proxyInterface</span><span class="params">(Class&lt;T&gt; serviceInterface)</span> </span>&#123;</div><div class="line">      <span class="keyword">if</span> (clientProxyClass == <span class="keyword">null</span>) &#123;</div><div class="line">          clientProxyClass = CglibRpcProxy.class;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          rpcProxy = clientProxyClass.newInstance();</div><div class="line">      &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException e) &#123;</div><div class="line">          e.printStackTrace();</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> rpcProxy.proxyInterface(<span class="keyword">this</span>, serviceInterface);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="最后，客户端关闭逻辑"><a href="#最后，客户端关闭逻辑" class="headerlink" title="最后，客户端关闭逻辑:"></a>最后，客户端关闭逻辑:</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="comment">//注意要关三处地方，一个是先关闭zookeeper的连接，另一个是channel池对象，最后是netty的断开关闭</span></div><div class="line">       <span class="keyword">if</span> (curatorFramework != <span class="keyword">null</span>) &#123;</div><div class="line">           curatorFramework.close();</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           <span class="keyword">for</span> (ChannelConf cw : channelWrappers) &#123;</div><div class="line">               cw.close();</div><div class="line">           &#125;</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           eventLoopGroup.shutdownGracefully();</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>具体代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.client;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.google.common.base.Splitter;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.exception.RequestTimeoutException;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.Request;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.protocol.Response;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.rpcproxy.CglibRpcProxy;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.rpcproxy.RpcProxy;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.utils.ResponseMapHelper;</div><div class="line"><span class="keyword">import</span> io.netty.channel.Channel;</div><div class="line"><span class="keyword">import</span> io.netty.channel.EventLoopGroup;</div><div class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</div><div class="line"><span class="keyword">import</span> org.apache.commons.collections4.CollectionUtils;</div><div class="line"><span class="keyword">import</span> org.apache.curator.framework.CuratorFramework;</div><div class="line"><span class="keyword">import</span> org.apache.curator.framework.CuratorFrameworkFactory;</div><div class="line"><span class="keyword">import</span> org.apache.curator.framework.api.GetChildrenBuilder;</div><div class="line"><span class="keyword">import</span> org.apache.curator.framework.recipes.cache.PathChildrenCache;</div><div class="line"><span class="keyword">import</span> org.apache.curator.retry.ExponentialBackoffRetry;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.lang.reflect.Method;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Random;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.ArrayBlockingQueue;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.BlockingQueue;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.CopyOnWriteArrayList;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</div><div class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicLong;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.nia.rpc.core.utils.Constant.ZK_DATA_PATH;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/18.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientImpl</span> <span class="keyword">implements</span> <span class="title">Client</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(ClientImpl.class);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> AtomicLong atomicLong = <span class="keyword">new</span> AtomicLong();</div><div class="line">    <span class="comment">// 通过此发布的服务名称,来寻找对应的服务提供者</span></div><div class="line">    <span class="keyword">private</span> String serviceName;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> requestTimeoutMillis = <span class="number">10</span> * <span class="number">1000</span>;</div><div class="line">    <span class="keyword">private</span> EventLoopGroup eventLoopGroup = <span class="keyword">new</span> NioEventLoopGroup(<span class="number">2</span>);</div><div class="line">    <span class="keyword">private</span> String zkConn;</div><div class="line">    <span class="keyword">private</span> CuratorFramework curatorFramework;</div><div class="line">    <span class="keyword">private</span> Class&lt;? extends RpcProxy&gt; clientProxyClass;</div><div class="line">    <span class="keyword">private</span> RpcProxy rpcProxy;</div><div class="line"></div><div class="line">    <span class="comment">// 存放ChannelConf到一个CopyOnWriteArrayList中，这个本就是读多写少的场景(服务注册后很少会发生状态改变)，所以很适用</span></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> CopyOnWriteArrayList&lt;ChannelConf&gt; channelWrappers = <span class="keyword">new</span> CopyOnWriteArrayList&lt;&gt;();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ClientImpl</span><span class="params">(String serviceName)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.serviceName = serviceName;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">     </div><div class="line">        curatorFramework = CuratorFrameworkFactory.newClient(getZkConn(), <span class="keyword">new</span> ExponentialBackoffRetry(<span class="number">1000</span>, <span class="number">3</span>));</div><div class="line">        curatorFramework.start();</div><div class="line"></div><div class="line"></div><div class="line">        <span class="keyword">final</span> GetChildrenBuilder children = curatorFramework.getChildren();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">final</span> String serviceZKPath = ZK_DATA_PATH + serviceName;</div><div class="line">            <span class="comment">//通过curator API 的Path Cache用来监控一个ZNode的子节点.</span></div><div class="line">            <span class="comment">// 当一个子节点增加， 更新，删除时， Path Cache会改变它的状态，</span></div><div class="line">            <span class="comment">// 会包含最新的子节点， 子节点的数据和状态。</span></div><div class="line">            <span class="comment">// 这也正如它的名字表示的那样， 那监控path。</span></div><div class="line">            PathChildrenCache pathChildrenCache = <span class="keyword">new</span> PathChildrenCache(curatorFramework, serviceZKPath, <span class="keyword">true</span>);</div><div class="line">            pathChildrenCache.start();</div><div class="line"></div><div class="line">            pathChildrenCache.getListenable().addListener((client, event) -&gt; &#123;</div><div class="line">                LOGGER.info(<span class="string">"Listen Event &#123;&#125;"</span>, event);</div><div class="line">                <span class="comment">//通过路径拿到此节点下可以提供服务的实现类节点连接地址</span></div><div class="line">                List&lt;String&gt; newServiceData = children.forPath(serviceZKPath);</div><div class="line">                LOGGER.info(<span class="string">"Server &#123;&#125; list change &#123;&#125;"</span>, serviceName, newServiceData);</div><div class="line"></div><div class="line">                <span class="comment">// 关闭删除本地缓存中多出的channel</span></div><div class="line"></div><div class="line">                <span class="keyword">for</span> (ChannelConf cw : channelWrappers) &#123;</div><div class="line">                    String connStr = cw.getConnStr();</div><div class="line">                    <span class="keyword">if</span> (!newServiceData.contains(connStr)) &#123;</div><div class="line">                        cw.close();</div><div class="line">                        LOGGER.info(<span class="string">"Remove channel &#123;&#125;"</span>, connStr);</div><div class="line">                        channelWrappers.remove(cw);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line"></div><div class="line">                <span class="comment">// 增加本地缓存中不存在的连接地址</span></div><div class="line">                <span class="keyword">for</span> (String connStr : newServiceData) &#123;</div><div class="line">                    <span class="keyword">boolean</span> containThis = <span class="keyword">false</span>;</div><div class="line">                    <span class="keyword">for</span> (ChannelConf cw : channelWrappers) &#123;</div><div class="line">                        <span class="keyword">if</span> (connStr != <span class="keyword">null</span> &amp;&amp; connStr.equals(cw.getConnStr())) &#123;</div><div class="line">                            containThis = <span class="keyword">true</span>;</div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">if</span> (!containThis) &#123;</div><div class="line">                        addNewChannel(connStr);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line">            List&lt;String&gt; strings = children.forPath(serviceZKPath);</div><div class="line">            <span class="keyword">if</span> (CollectionUtils.isEmpty(strings)) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"No Service available for "</span> + serviceName);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            LOGGER.info(<span class="string">"Found Server &#123;&#125; List &#123;&#125;"</span>, serviceName, strings);</div><div class="line">            <span class="keyword">for</span> (String connStr : strings) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    addNewChannel(connStr);</div><div class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                    LOGGER.error(<span class="string">"Add New Channel Exception"</span>, e);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">addNewChannel</span><span class="params">(String connStr)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            List&lt;String&gt; strings = Splitter.on(<span class="string">":"</span>).splitToList(connStr);</div><div class="line">            <span class="keyword">if</span> (strings.size() != <span class="number">2</span>) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Error connection str "</span> + connStr);</div><div class="line">            &#125;</div><div class="line">            String host = strings.get(<span class="number">0</span>);</div><div class="line">            <span class="keyword">int</span> port = Integer.parseInt(strings.get(<span class="number">1</span>));</div><div class="line">            ChannelConf channelWrapper = <span class="keyword">new</span> ChannelConf(host, port);</div><div class="line">            channelWrappers.add(channelWrapper);</div><div class="line">            LOGGER.info(<span class="string">"Add New Channel &#123;&#125;, &#123;&#125;"</span>, connStr, channelWrapper);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> ChannelConf <span class="title">selectChannel</span><span class="params">()</span> </span>&#123;</div><div class="line">        Random random = <span class="keyword">new</span> Random();</div><div class="line">        <span class="comment">//同一个服务下有好几个链接地址的实现，那就选一个就是，其实为集群部署考虑，</span></div><div class="line">        <span class="comment">// 每一台服务器部署有相同的服务，选择其一来处理即可，假如是nginx代理那就无所谓了</span></div><div class="line">        <span class="keyword">int</span> size = channelWrappers.size();</div><div class="line">        <span class="keyword">if</span> (size &lt; <span class="number">1</span>) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">int</span> i = random.nextInt(size);</div><div class="line">        <span class="keyword">return</span> channelWrappers.get(i);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Response <span class="title">sendMessage</span><span class="params">(Class&lt;?&gt; clazz, Method method, Object[] args)</span> </span>&#123;</div><div class="line"></div><div class="line">        Request request = <span class="keyword">new</span> Request();</div><div class="line">        request.setRequestId(atomicLong.incrementAndGet());</div><div class="line">        request.setMethod(method.getName());</div><div class="line">        request.setParams(args);</div><div class="line">        request.setClazz(clazz);</div><div class="line">        request.setParameterTypes(method.getParameterTypes());</div><div class="line"></div><div class="line">        ChannelConf channelWrapper = selectChannel();</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (channelWrapper == <span class="keyword">null</span>) &#123;</div><div class="line">            Response response = <span class="keyword">new</span> Response();</div><div class="line">            RuntimeException runtimeException = <span class="keyword">new</span> RuntimeException(<span class="string">"Channel is not active now"</span>);</div><div class="line">            response.setThrowable(runtimeException);</div><div class="line">            <span class="keyword">return</span> response;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//当channel的配置链接不为空的时候，就可以取到channel了</span></div><div class="line">        Channel channel = <span class="keyword">null</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            channel = channelWrapper.getChannelObjectPool().borrowObject();</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (channel == <span class="keyword">null</span>) &#123;</div><div class="line">            Response response = <span class="keyword">new</span> Response();</div><div class="line">            RuntimeException runtimeException = <span class="keyword">new</span> RuntimeException(<span class="string">"Channel is not available now"</span>);</div><div class="line">            response.setThrowable(runtimeException);</div><div class="line">            <span class="keyword">return</span> response;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            channel.writeAndFlush(request);</div><div class="line">            <span class="comment">//建立一个ResponseMap，将RequestId作为键，服务端回应的内容作为值保存于BlockingQueue，</span></div><div class="line">            <span class="comment">// 最后一起保存在这个ResponseMap中</span></div><div class="line">            BlockingQueue&lt;Response&gt; blockingQueue = <span class="keyword">new</span> ArrayBlockingQueue&lt;&gt;(<span class="number">1</span>);</div><div class="line">            ResponseMapHelper.responseMap.put(request.getRequestId(), blockingQueue);</div><div class="line">            <span class="comment">//poll(time):取走BlockingQueue里排在首位的对象,若不能立即取出,则可以等time参数规定的时间,取不到时返回null</span></div><div class="line"></div><div class="line">            <span class="keyword">return</span> blockingQueue.poll(requestTimeoutMillis, TimeUnit.MILLISECONDS);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">          <span class="comment">//这个异常是自定义的，只是为了说明字面意思</span></div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RequestTimeoutException(<span class="string">"service"</span> + serviceName + <span class="string">" method "</span> + method + <span class="string">" timeout"</span>);</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="comment">//拿出去的channel记得还回去</span></div><div class="line">                channelWrapper.getChannelObjectPool().returnObject(channel);</div><div class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="comment">//删除此键值对，help GC</span></div><div class="line">            ResponseMapHelper.responseMap.remove(request.getRequestId());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">proxyInterface</span><span class="params">(Class&lt;T&gt; serviceInterface)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (clientProxyClass == <span class="keyword">null</span>) &#123;</div><div class="line">            clientProxyClass = CglibRpcProxy.class;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            rpcProxy = clientProxyClass.newInstance();</div><div class="line">        &#125; <span class="keyword">catch</span> (InstantiationException | IllegalAccessException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> rpcProxy.proxyInterface(<span class="keyword">this</span>, serviceInterface);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//注意要关三处地方，一个是先关闭zookeeper的连接，另一个是channel池对象，最后是netty的断开关闭</span></div><div class="line">        <span class="keyword">if</span> (curatorFramework != <span class="keyword">null</span>) &#123;</div><div class="line">            curatorFramework.close();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">for</span> (ChannelConf cw : channelWrappers) &#123;</div><div class="line">                cw.close();</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            eventLoopGroup.shutdownGracefully();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getZkConn</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> zkConn;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setZkConn</span><span class="params">(String zkConn)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.zkConn = zkConn;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRequestTimeoutMillis</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> requestTimeoutMillis;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRequestTimeoutMillis</span><span class="params">(<span class="keyword">int</span> requestTimeoutMillis)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.requestTimeoutMillis = requestTimeoutMillis;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="4，对外提供封装调用接口"><a href="#4，对外提供封装调用接口" class="headerlink" title="4，对外提供封装调用接口"></a>4，对外提供封装调用接口</h2><p>在这里顺带教大家一个链式编程风格的设计，具体参考:<a href="https://github.com/muyinchen/woker/blob/master/rpc%E6%A1%86%E6%9E%B6%E6%B6%89%E5%8F%8A%E7%9F%A5%E8%AF%86%E7%82%B9/Java%E9%87%8C%E5%AE%9E%E7%8E%B0%E9%93%BE%E5%BC%8F%E7%BC%96%E7%A8%8B%E9%A3%8E%E6%A0%BC.md" target="_blank" rel="external">Java里实现链式编程风格</a></p>
+<h4 id="服务端-ServerBuilder"><a href="#服务端-ServerBuilder" class="headerlink" title="服务端:ServerBuilder"></a>服务端:<code>ServerBuilder</code></h4><p>代码太简单，就不解释了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.bootstrap;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.google.common.base.Preconditions;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.server.Server;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.server.ServerImpl;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerBuilder</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port;</div><div class="line">    <span class="keyword">private</span> String serviceName;</div><div class="line">    <span class="keyword">private</span> Object serviceImpl;</div><div class="line">    <span class="keyword">private</span> String zkConn;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ServerBuilder</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">	</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ServerBuilder <span class="title">builder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServerBuilder();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ServerBuilder <span class="title">port</span><span class="params">(<span class="keyword">int</span> port)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.port = port;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ServerBuilder <span class="title">serviceName</span><span class="params">(String serviceName)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.serviceName = serviceName;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ServerBuilder <span class="title">serviceImpl</span><span class="params">(Object serviceImpl)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.serviceImpl = serviceImpl;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ServerBuilder <span class="title">zkConn</span><span class="params">(String zkConn)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.zkConn = zkConn;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> Server <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">        Preconditions.checkNotNull(serviceImpl);</div><div class="line">        Preconditions.checkNotNull(serviceName);</div><div class="line">        Preconditions.checkNotNull(zkConn);</div><div class="line">        Preconditions.checkArgument(port &gt; <span class="number">0</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ServerImpl(<span class="keyword">this</span>.port, <span class="keyword">this</span>.serviceImpl, <span class="keyword">this</span>.serviceName, <span class="keyword">this</span>.zkConn);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="客户端-ClientBuilder"><a href="#客户端-ClientBuilder" class="headerlink" title="客户端:ClientBuilder"></a>客户端:<code>ClientBuilder</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.core.bootstrap;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.google.common.base.Preconditions;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.client.ClientImpl;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.rpcproxy.CglibRpcProxy;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.rpcproxy.RpcProxy;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientBuilder</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> String serviceName;</div><div class="line">    <span class="keyword">private</span> String zkConn;</div><div class="line">    <span class="keyword">private</span> Class&lt;T&gt; serviceInterface;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> requestTimeoutMillis = <span class="number">10000</span>;</div><div class="line">    <span class="keyword">private</span> Class&lt;? extends RpcProxy&gt; clientProxyClass = CglibRpcProxy.class;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">ClientBuilder&lt;T&gt; <span class="title">builder</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ClientBuilder&lt;&gt;();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ClientBuilder&lt;T&gt; <span class="title">serviceName</span><span class="params">(String serviceName)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.serviceName = serviceName;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ClientBuilder&lt;T&gt; <span class="title">zkConn</span><span class="params">(String zkConn)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.zkConn = zkConn;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ClientBuilder&lt;T&gt; <span class="title">serviceInterface</span><span class="params">(Class&lt;T&gt; serviceInterface)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.serviceInterface = serviceInterface;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ClientBuilder&lt;T&gt; <span class="title">requestTimeout</span><span class="params">(<span class="keyword">int</span> requestTimeoutMillis)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.requestTimeoutMillis = requestTimeoutMillis;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> ClientBuilder&lt;T&gt; <span class="title">clientProxyClass</span><span class="params">(Class&lt;? extends RpcProxy&gt; clientProxyClass)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.clientProxyClass = clientProxyClass;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">build</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//因Curator底层依赖guava，刚好可以拿来验证</span></div><div class="line">        Preconditions.checkNotNull(serviceInterface);</div><div class="line">        Preconditions.checkNotNull(zkConn);</div><div class="line">        Preconditions.checkNotNull(serviceName);</div><div class="line">        ClientImpl client = <span class="keyword">new</span> ClientImpl(<span class="keyword">this</span>.serviceName);</div><div class="line">        client.setZkConn(<span class="keyword">this</span>.zkConn);</div><div class="line">        client.setRequestTimeoutMillis(<span class="keyword">this</span>.requestTimeoutMillis);</div><div class="line">        client.init();</div><div class="line">        <span class="keyword">return</span> client.proxyInterface(<span class="keyword">this</span>.serviceInterface);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="至此，migo-RPC的核心模块完成"><a href="#至此，migo-RPC的核心模块完成" class="headerlink" title="至此，migo-RPC的核心模块完成"></a>至此，migo-RPC的核心模块完成</h4><h2 id="对核心模块的二次封装，提供更人性化的调用接口migo-rpc-provider模块"><a href="#对核心模块的二次封装，提供更人性化的调用接口migo-rpc-provider模块" class="headerlink" title="对核心模块的二次封装，提供更人性化的调用接口migo-rpc-provider模块"></a>对核心模块的二次封装，提供更人性化的调用接口<code>migo-rpc-provider</code>模块</h2><p>新建子项目，并导入<code>pom</code>依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></div><div class="line">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></div><div class="line">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.nia.rpc<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>migo-rpc-provider<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">properties</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">spring.version</span>&gt;</span>4.3.6.RELEASE<span class="tag">&lt;/<span class="name">spring.version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line"></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.nia.rpc<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>migo-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;parent.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.projectlombok<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>lombok<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-context<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-beans<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">optional</span>&gt;</span>true<span class="tag">&lt;/<span class="name">optional</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="分别创建服务端和客户端的工厂bean"><a href="#分别创建服务端和客户端的工厂bean" class="headerlink" title="分别创建服务端和客户端的工厂bean:"></a>分别创建服务端和客户端的<code>工厂bean</code>:</h4><p>通过下面代码可以很容易看到所完成的链式风格:</p>
+<h5 id="ServerFactoryBean"><a href="#ServerFactoryBean" class="headerlink" title="ServerFactoryBean:"></a><code>ServerFactoryBean</code>:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.factory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.bootstrap.ServerBuilder;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.server.Server;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.server.ServerImpl;</div><div class="line"><span class="keyword">import</span> lombok.Data;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.FactoryBean;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="meta">@Data</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerFactoryBean</span> <span class="keyword">implements</span> <span class="title">FactoryBean</span>&lt;<span class="title">Object</span>&gt;</span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Class&lt;?&gt; serviceInterface;</div><div class="line">    <span class="keyword">private</span> Object serviceImpl;</div><div class="line">    <span class="keyword">private</span> String ip;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> port;</div><div class="line">    <span class="keyword">private</span> String serviceName;</div><div class="line">    <span class="keyword">private</span> String zkConn;</div><div class="line">    <span class="keyword">private</span> ServerImpl rpcServer;</div><div class="line"></div><div class="line">    <span class="comment">//服务注册并提供</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>&#123;</div><div class="line">        Server rpcServer = ServerBuilder</div><div class="line">                .builder()</div><div class="line">                .serviceImpl(serviceImpl)</div><div class="line">                .serviceName(serviceName)</div><div class="line">                .zkConn(zkConn)</div><div class="line">                .port(port)</div><div class="line">                .build();</div><div class="line">        rpcServer.start();</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//服务下线</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serviceOffline</span><span class="params">()</span></span>&#123;</div><div class="line">        rpcServer.shutdown();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.getClass();</div><div class="line">&#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="ClientFactoryBean"><a href="#ClientFactoryBean" class="headerlink" title="ClientFactoryBean:"></a><code>ClientFactoryBean</code>:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.factory;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.bootstrap.ClientBuilder;</div><div class="line"><span class="keyword">import</span> lombok.Data;</div><div class="line"><span class="keyword">import</span> org.slf4j.Logger;</div><div class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.FactoryBean;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="meta">@Data</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientFactoryBean</span>&lt;<span class="title">T</span>&gt; <span class="keyword">implements</span> <span class="title">FactoryBean</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(ClientFactoryBean.class);</div><div class="line"></div><div class="line">    <span class="keyword">private</span> Class&lt;T&gt; serviceInterface;</div><div class="line">    <span class="keyword">private</span> String serviceName;</div><div class="line">    <span class="keyword">private</span> String zkConn;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">getObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">return</span> ClientBuilder</div><div class="line">                .&lt;T&gt;builder()</div><div class="line">                .zkConn(zkConn)</div><div class="line">                .serviceName(serviceName)</div><div class="line">                .serviceInterface(serviceInterface)</div><div class="line">                .build();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="keyword">public</span> Class&lt;?&gt; getObjectType() &#123;</div><div class="line">        <span class="keyword">return</span> serviceInterface;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isSingleton</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="示例使用"><a href="#示例使用" class="headerlink" title="示例使用"></a>示例使用</h2><h4 id="这里我们通过一个SpringbootDemo来演示如何使用"><a href="#这里我们通过一个SpringbootDemo来演示如何使用" class="headerlink" title="这里我们通过一个SpringbootDemo来演示如何使用:"></a>这里我们通过一个<code>SpringbootDemo</code>来演示如何使用:</h4><p>具体代码结构请看源码</p>
+<h5 id="定义一个测试service接口"><a href="#定义一个测试service接口" class="headerlink" title="定义一个测试service接口:"></a>定义一个测试service接口:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.example.service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">HelloWorld</span> </span>&#123;</div><div class="line">    <span class="function">String <span class="title">say</span><span class="params">(String hello)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(Integer a, Integer b)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="编写其实现类"><a href="#编写其实现类" class="headerlink" title="编写其实现类:"></a>编写其实现类:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.example.service;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldImpl</span> <span class="keyword">implements</span> <span class="title">HelloWorld</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">say</span><span class="params">(String hello)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"server: "</span>+hello;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> a+b;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">max</span><span class="params">(Integer a, Integer b)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> a &lt;= b ? b : a;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="编写Springboot服务端启动类"><a href="#编写Springboot服务端启动类" class="headerlink" title="编写Springboot服务端启动类:"></a>编写<code>Springboot</code>服务端启动类:</h5><h6 id="SpringServerConfig"><a href="#SpringServerConfig" class="headerlink" title="SpringServerConfig"></a><code>SpringServerConfig</code></h6><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.example.server;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.core.utils.NetUtils;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.example.service.HelloWorld;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.example.service.HelloWorldImpl;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.factory.ServerFactoryBean;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringServerConfig</span> </span>&#123;</div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> HelloWorld <span class="title">hello</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> HelloWorldImpl();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ServerFactoryBean <span class="title">serverFactoryBean</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">final</span> ServerFactoryBean serverFactoryBean = <span class="keyword">new</span> ServerFactoryBean();</div><div class="line">        serverFactoryBean.setPort(<span class="number">9090</span>);</div><div class="line">        serverFactoryBean.setServiceInterface(HelloWorld.class);</div><div class="line">       <span class="comment">//此处自定义的注册名字就相当于注解了，未来迭代的时候会加入自定义注解方式</span></div><div class="line">        serverFactoryBean.setServiceName(<span class="string">"hello"</span>);</div><div class="line">        serverFactoryBean.setServiceImpl(hello());</div><div class="line">        serverFactoryBean.setZkConn(<span class="string">"127.0.0.1:2181"</span>);</div><div class="line"></div><div class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                serverFactoryBean.start();</div><div class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">        &#125;, <span class="string">"RpcServer"</span>).start();</div><div class="line">        <span class="keyword">return</span> serverFactoryBean;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">       </div><div class="line">        SpringApplication.run(SpringServerConfig.class, <span class="string">"--server.port=8082"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="编写服务调用端启动类"><a href="#编写服务调用端启动类" class="headerlink" title="编写服务调用端启动类:"></a>编写服务调用端启动类:</h5><h6 id="SpringClientConfig"><a href="#SpringClientConfig" class="headerlink" title="SpringClientConfig:"></a><code>SpringClientConfig</code>:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.nia.rpc.example.client;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.nia.rpc.example.service.HelloWorld;</div><div class="line"><span class="keyword">import</span> com.nia.rpc.factory.ClientFactoryBean;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Author  知秋</div><div class="line"> * Created by Auser on 2017/2/19.</div><div class="line"> */</div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/test"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringClientConfig</span> </span>&#123;</div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> HelloWorld <span class="title">clientFactoryBean</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        ClientFactoryBean&lt;HelloWorld&gt; clientFactoryBean = <span class="keyword">new</span> ClientFactoryBean&lt;&gt;();</div><div class="line">        clientFactoryBean.setZkConn(<span class="string">"127.0.0.1:2181"</span>);</div><div class="line">        clientFactoryBean.setServiceName(<span class="string">"hello"</span>);</div><div class="line">        clientFactoryBean.setServiceInterface(HelloWorld.class);</div><div class="line">      <span class="keyword">return</span> clientFactoryBean.getObject();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> HelloWorld helloWorld;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(<span class="string">"/hello"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">(String say)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> helloWorld.say(say);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(SpringClientConfig.class, <span class="string">"--server.port=8081"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试截图:</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170220_022654.png" alt=""></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RPC/" rel="tag">#RPC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/" rel="next" title="hsweb的系列学习——hsweb-easy-orm分析  中">
+                <i class="fa fa-chevron-left"></i> hsweb的系列学习——hsweb-easy-orm分析  中
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/03/27/一个轻量级分布式 RPC 框架 下/"
+           data-title="一个轻量级分布式 RPC 框架  下" data-url="https://muyinchen.github.io/2017/03/27/一个轻量级分布式 RPC 框架 下/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">58</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一个轻量级分布式-RPC-框架-下"><span class="nav-number">1.</span> <span class="nav-text">一个轻量级分布式 RPC 框架 下</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3，编写客户端模块"><span class="nav-number">1.1.</span> <span class="nav-text">3，编写客户端模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设定Client端的实现功能接口"><span class="nav-number">1.1.1.</span> <span class="nav-text">设定Client端的实现功能接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-RPC-代理"><span class="nav-number">1.1.2.</span> <span class="nav-text">实现 RPC 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端handler设计"><span class="nav-number">1.1.3.</span> <span class="nav-text">客户端handler设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端创建连接并保存"><span class="nav-number">1.1.4.</span> <span class="nav-text">客户端创建连接并保存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#commons-pool2-对象池的使用"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">commons.pool2 对象池的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对客户端接口逻辑进行实现"><span class="nav-number">1.1.5.</span> <span class="nav-text">对客户端接口逻辑进行实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在客户端启动时通过init-做如下逻辑"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">在客户端启动时通过init()做如下逻辑:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在客户端调用接口方法时实现的逻辑"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">在客户端调用接口方法时实现的逻辑:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端接口的动态代理逻辑"><span class="nav-number">1.1.6.</span> <span class="nav-text">客户端接口的动态代理逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后，客户端关闭逻辑"><span class="nav-number">1.1.7.</span> <span class="nav-text">最后，客户端关闭逻辑:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4，对外提供封装调用接口"><span class="nav-number">1.2.</span> <span class="nav-text">4，对外提供封装调用接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#服务端-ServerBuilder"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">服务端:ServerBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#客户端-ClientBuilder"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">客户端:ClientBuilder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#至此，migo-RPC的核心模块完成"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">至此，migo-RPC的核心模块完成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对核心模块的二次封装，提供更人性化的调用接口migo-rpc-provider模块"><span class="nav-number">1.3.</span> <span class="nav-text">对核心模块的二次封装，提供更人性化的调用接口migo-rpc-provider模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分别创建服务端和客户端的工厂bean"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">分别创建服务端和客户端的工厂bean:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ServerFactoryBean"><span class="nav-number">1.3.0.1.1.</span> <span class="nav-text">ServerFactoryBean:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ClientFactoryBean"><span class="nav-number">1.3.0.1.2.</span> <span class="nav-text">ClientFactoryBean:</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例使用"><span class="nav-number">1.4.</span> <span class="nav-text">示例使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#这里我们通过一个SpringbootDemo来演示如何使用"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">这里我们通过一个SpringbootDemo来演示如何使用:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#定义一个测试service接口"><span class="nav-number">1.4.0.1.1.</span> <span class="nav-text">定义一个测试service接口:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编写其实现类"><span class="nav-number">1.4.0.1.2.</span> <span class="nav-text">编写其实现类:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编写Springboot服务端启动类"><span class="nav-number">1.4.0.1.3.</span> <span class="nav-text">编写Springboot服务端启动类:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SpringServerConfig"><span class="nav-number">1.4.0.1.3.1.</span> <span class="nav-text">SpringServerConfig</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编写服务调用端启动类"><span class="nav-number">1.4.0.1.4.</span> <span class="nav-text">编写服务调用端启动类:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SpringClientConfig"><span class="nav-number">1.4.0.1.4.1.</span> <span class="nav-text">SpringClientConfig:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
