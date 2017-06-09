@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-06-09T14:11:44.363Z</updated>
+  <updated>2017-06-09T14:18:06.972Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2017/06/09/Spring%20Data%20Commons%20-%20%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3/"/>
     <id>https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/</id>
     <published>2017-06-09T14:11:55.169Z</published>
-    <updated>2017-06-09T14:11:44.363Z</updated>
+    <updated>2017-06-09T14:18:06.972Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring-Data-Commons-中文参考文档"><a href="#Spring-Data-Commons-中文参考文档" class="headerlink" title="Spring Data Commons - 中文参考文档"></a>Spring Data Commons - 中文参考文档</h1><p>Oliver GierkeThomas DarimontChristoph StroblMark PollackThomas Risberg版本1.13.4.RELEASE，2017-06-08</p>
 <p>©2008-2015原作者.<br><a id="more"></a><br>| **   | 只要您不对这些副本收取任何费用，并且进一步规定，每个副本都包含本版权声明，无论是以印刷版还是电子版分发，本文档的副本可供您自己使用并分发给他人. |<br>| —- | —————————————- |<br>|      |                                          |</p>
@@ -1054,7 +1054,7 @@
 </tr>
 <tr>
 <td><code>Optional&lt;T&gt;</code></td>
-<td>Java 8或番石榴<code>Optional</code>.期望查询方法最多返回一个结果.如果没有找到<code>Optional.empty()</code>/ <code>Optional.absent()</code>返回结果.多个结果将触发<code>IncorrectResultSizeDataAccessException</code>.</td>
+<td>Java 8或Guava <code>Optional</code>.期望查询方法最多返回一个结果.如果没有找到<code>Optional.empty()</code>/ <code>Optional.absent()</code>返回结果.多个结果将触发<code>IncorrectResultSizeDataAccessException</code>.</td>
 </tr>
 <tr>
 <td><code>Option&lt;T&gt;</code></td>
