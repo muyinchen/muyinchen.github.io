@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-06-09T14:18:06.972Z</updated>
+  <updated>2017-06-10T12:49:41.463Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,14 +16,14 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Spring Data Commons - 中文参考文档</title>
+    <title></title>
     <link href="https://muyinchen.github.io/2017/06/09/Spring%20Data%20Commons%20-%20%E5%8F%82%E8%80%83%E6%96%87%E6%A1%A3/"/>
     <id>https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/</id>
     <published>2017-06-09T14:11:55.169Z</published>
-    <updated>2017-06-09T14:18:06.972Z</updated>
+    <updated>2017-06-10T12:49:41.463Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring-Data-Commons-中文参考文档"><a href="#Spring-Data-Commons-中文参考文档" class="headerlink" title="Spring Data Commons - 中文参考文档"></a>Spring Data Commons - 中文参考文档</h1><p>Oliver GierkeThomas DarimontChristoph StroblMark PollackThomas Risberg版本1.13.4.RELEASE，2017-06-08</p>
-<p>©2008-2015原作者.<br><a id="more"></a><br>| **   | 只要您不对这些副本收取任何费用，并且进一步规定，每个副本都包含本版权声明，无论是以印刷版还是电子版分发，本文档的副本可供您自己使用并分发给他人. |<br>| —- | —————————————- |<br>|      |                                          |</p>
+<p>©2008-2015原作者.<br><a id="more"></a><br>| <strong>注</strong>注<strong>注</strong> | 只要您不对这些副本收取任何费用，并且进一步规定，每个副本都包含本版权声明，无论是以印刷版还是电子版分发，本文档的副本可供您自己使用并分发给他人. |<br>| ———– | —————————————- |<br>|             |                                          |</p>
 <p>目录</p>
 <ul>
 <li>前言<ul>
@@ -140,7 +140,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th><em>Spring数据存储库文档和您的模块</em>本章介绍了Spring Data存储库的核心概念和接口.本章中的信息是从Spring Data Commons模块中获取的.它使用Java Persistence API（JPA）模块的配置和代码示例.将XML命名空间声明和要扩展的类型调整为您正在使用的特定模块的等效项.<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#repositories.namespace-reference" target="_blank" rel="external">命名空间参考</a>涵盖支持存储库API的所有Spring数据模块支持的XML配置，<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#repository-query-keywords" target="_blank" rel="external">Repository查询关键字</a>涵盖了一般由存储库抽象支持的查询方法关键字.有关模块特定功能的详细信息，请参阅本文档该模块的一章.</th>
 </tr>
 </thead>
@@ -186,7 +186,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>我们还提供持久性技术特定的抽象，例如<code>JpaRepository</code>或<code>MongoRepository</code>.<code>CrudRepository</code>除了相当通用的持久化技术不可知的接口，例如CrudRepository，这些接口还扩展和暴露了底层持久性技术的功能.</th>
 </tr>
 </thead>
@@ -231,7 +231,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>这允许您在提供的Spring数据存储库功能之上定义自己的抽象.</th>
 </tr>
 </thead>
@@ -247,7 +247,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>请注意，中间版本库接口被注解为<code>@NoRepositoryBean</code>.确保将该注解添加到Spring Data不应在运行时创建实例的所有存储库接口.</th>
 </tr>
 </thead>
@@ -300,7 +300,7 @@
 <p>虽然这在大多数情况下应该起作用，但算法可能会选择错误的属性.假设<code>Person</code>该类也有一个<code>addressZip</code>属性.该算法将在第一个分割轮中匹配，并且基本上选择错误的属性，最后失败（因为该类型<code>addressZip</code>可能没有<code>code</code>属性）.</p>
 <p>要解决这个歧义，您可以<code>_</code>在方法名称中使用手动定义遍历点.所以我们的方法名称最终会如此：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">List&lt;Person&gt; <span class="title">findByAddress_ZipCode</span><span class="params">(ZipCode zipCode)</span></span>;</div></pre></td></tr></table></figure>
-<p>当我们将下划线视为保留字符时，我们强烈建议遵循标准Java命名约定（即<strong>不</strong>使用属性名称中的下划线，而是使用骆驼案例）.</p>
+<p>当我们将下划线视为保留字符时，我们强烈建议遵循标准Java命名约定（即<strong>注</strong>不**使用属性名称中的下划线，而是使用骆驼案例）.</p>
 <h4 id="3-4-4-特殊参数处理"><a href="#3-4-4-特殊参数处理" class="headerlink" title="3.4.4.特殊参数处理"></a>3.4.4.特殊参数处理</h4><p>要处理查询中的参数，您只需定义方法参数，如上述示例中所示.此外，基础设施将会识别某些特定类型，<code>Pageable</code>并动态<code>Sort</code>地将分页和排序应用于查询.</p>
 <p>示例14.在查询方法中使用Pageable，Slice和Sort</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function">Page&lt;User&gt; <span class="title">findByLastname</span><span class="params">(String lastname, Pageable pageable)</span></span>;</div><div class="line"></div><div class="line"><span class="function">Slice&lt;User&gt; <span class="title">findByLastname</span><span class="params">(String lastname, Pageable pageable)</span></span>;</div><div class="line"></div><div class="line"><span class="function">List&lt;User&gt; <span class="title">findByLastname</span><span class="params">(String lastname, Sort sort)</span></span>;</div><div class="line"></div><div class="line"><span class="function">List&lt;User&gt; <span class="title">findByLastname</span><span class="params">(String lastname, Pageable pageable)</span></span>;</div></pre></td></tr></table></figure>
@@ -309,7 +309,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>要查找完整查询的页面数量，您必须触发额外的计数查询.默认情况下，此查询将从您实际触发的查询派生.</th>
 </tr>
 </thead>
@@ -327,7 +327,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>请注意，通过参数将结果限制为动态排序，<code>Sort</code>可以表示最小的“K”以及“K”最大元素的查询方法.</th>
 </tr>
 </thead>
@@ -343,7 +343,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>在<code>Stream</code>潜在封装底层数据存储特定资源和使用后必须因此被关闭.您可以手动关闭<code>Stream</code>使用该<code>close()</code>方法或使用Java 7 try-with-resources块.</th>
 </tr>
 </thead>
@@ -358,7 +358,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>目前并不是所有的Spring数据模块都支持<code>Stream&lt;T&gt;</code>返回类型.</th>
 </tr>
 </thead>
@@ -405,7 +405,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>该示例使用JPA特定的注解，您可以根据实际使用的存储模块进行更改.这同样适用于<code>EntityManagerFactory</code>bean的定义.请参阅涵盖商店特定配置的部分.</th>
 </tr>
 </thead>
@@ -427,7 +427,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>找到的类的最重要的一点是<code>Impl</code>与核心存储库接口相比的名称的后缀（见下文）.</th>
 </tr>
 </thead>
@@ -457,7 +457,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>该类需要具有专门的存储库工厂实现使用的超级类的构造函数.如果存储库基类有多个构造函数，则覆盖一个<code>EntityInformation</code>加上特定于存储的基础架构对象（例如，一个<code>EntityManager</code>或一个模板类）.</th>
 </tr>
 </thead>
@@ -527,7 +527,7 @@
 <h4 id="3-8-2-网络支持"><a href="#3-8-2-网络支持" class="headerlink" title="3.8.2.网络支持"></a>3.8.2.网络支持</h4><table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>本部分包含Spring数据Web支持的文档，因为它在1.6范围内与Spring Data Commons相同.由于新引入的支持更改了很多事情，因此我们保留了<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#web.legacy" target="_blank" rel="external">旧版Web支持中</a>前一行为的文档.</th>
 </tr>
 </thead>
@@ -556,7 +556,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>目前，资源库<code>CrudRepository</code>必须实施才能被发现以进行转换.</th>
 </tr>
 </thead>
@@ -615,7 +615,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th><code>@EnableSpringDataWebSupport</code>当类路径上找到 Querydsl时，该功能将自动启用.</th>
 </tr>
 </thead>
@@ -629,7 +629,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>类型信息通常从方法返回类型中解析出来.由于这些信息不一定与域类型相匹配，所以使用<code>root</code>属性可能是一个好主意<code>QuerydslPredicate</code>.</th>
 </tr>
 </thead>
@@ -1006,7 +1006,7 @@
 <table>
 <thead>
 <tr>
-<th>**</th>
+<th><strong>注</strong></th>
 <th>地理空间类型，如（<code>GeoResult</code>，<code>GeoResults</code>，<code>GeoPage</code>）只适用于支持地理空间查询的数据存储.</th>
 </tr>
 </thead>
@@ -1100,7 +1100,7 @@
 </table>
 <hr>
 <p><a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#_footnoteref_1" target="_blank" rel="external">1</a>.<a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html#beans-java" target="_blank" rel="external">JavaConfig在Spring参考文档中</a></p>
-<p><a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#_footnoteref_2" target="_blank" rel="external">2</a>.春天HATEOAS - <a href="https://github.com/SpringSource/spring-hateoas" target="_blank" rel="external">https://github.com/SpringSource/spring-hateoas</a></p>
+<p><a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#_footnoteref_2" target="_blank" rel="external">2</a>.SPRINGHATEOAS - <a href="https://github.com/SpringSource/spring-hateoas" target="_blank" rel="external">https://github.com/SpringSource/spring-hateoas</a></p>
 <p><a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#_footnoteref_3" target="_blank" rel="external">3</a>.请参阅<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#repositories.create-instances.spring" target="_blank" rel="external">XML配置</a></p>
 <p><a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#_footnoteref_4" target="_blank" rel="external">4</a>.请参阅<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#repositories.create-instances.spring" target="_blank" rel="external">XML配置</a></p>
 <p>版本1.13.4.RELEASE<br>最后更新2017-06-08 10:35:34 MESZ</p>
