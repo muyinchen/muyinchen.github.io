@@ -91,14 +91,14 @@
 <meta name="description" content="Spring Data Commons - 中文参考文档Oliver GierkeThomas DarimontChristoph StroblMark PollackThomas Risberg版本1.13.4.RELEASE，2017-06-08
 ©2008-2015原作者.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一叶知秋">
+<meta property="og:title" content="Spring Data Commons - 中文参考文档">
 <meta property="og:url" content="https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="Spring Data Commons - 中文参考文档Oliver GierkeThomas DarimontChristoph StroblMark PollackThomas Risberg版本1.13.4.RELEASE，2017-06-08
 ©2008-2015原作者.">
-<meta property="og:updated_time" content="2017-06-10T12:49:41.463Z">
+<meta property="og:updated_time" content="2017-06-12T03:19:50.596Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一叶知秋">
+<meta name="twitter:title" content="Spring Data Commons - 中文参考文档">
 <meta name="twitter:description" content="Spring Data Commons - 中文参考文档Oliver GierkeThomas DarimontChristoph StroblMark PollackThomas Risberg版本1.13.4.RELEASE，2017-06-08
 ©2008-2015原作者.">
 
@@ -124,7 +124,7 @@
   <link rel="canonical" href="https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/"/>
 
 
-  <title>  | 一叶知秋 </title>
+  <title> Spring Data Commons - 中文参考文档 | 一叶知秋 </title>
 </head>
 
 <body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +255,7 @@
             
             
               
-                
+                Spring Data Commons - 中文参考文档
               
             
           </h1>
@@ -454,7 +454,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="3-1-核心概念"><a href="#3-1-核心概念" class="headerlink" title="3.1.核心概念"></a>3.1.核心概念</h3><p>Spring数据库抽象中的中央界面<code>Repository</code>（可能不是什么惊喜）.管理域类以及域类的id类型作为类型参数.此接口主要作为标记接口捕获要使用的类型，并帮助您发现扩展此接口的接口.该<code>CrudRepository</code>规定对于正在管理的实体类复杂的CRUD功能.</p>
+<h3 id="3-1-核心概念"><a href="#3-1-核心概念" class="headerlink" title="3.1.核心概念"></a>3.1.核心概念</h3><p>Spring数据库抽象中的中央接口<code>Repository</code>（可能不是什么惊喜）.管理域类以及域类的id类型作为类型参数.此接口主要作为标记接口捕获要使用的类型，并帮助您发现扩展此接口的接口.该<code>CrudRepository</code>规定对于正在管理的实体类复杂的CRUD功能.</p>
 <p>示例3. CrudRepository接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CrudRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt;</span></div><div class="line">    <span class="keyword">extends</span> <span class="title">Repository</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt; &#123;</div><div class="line"></div><div class="line">    &lt;S extends T&gt; <span class="function">S <span class="title">save</span><span class="params">(S entity)</span></span>; *<span class="number">1</span>*</div><div class="line"></div><div class="line">    <span class="function">T <span class="title">findOne</span><span class="params">(ID primaryKey)</span></span>;    *<span class="number">2</span>*   </div><div class="line"></div><div class="line">    <span class="function">Iterable&lt;T&gt; <span class="title">findAll</span><span class="params">()</span></span>;        *<span class="number">3</span>*  </div><div class="line"></div><div class="line">    <span class="function">Long <span class="title">count</span><span class="params">()</span></span>;               *<span class="number">4</span>*   </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(T entity)</span></span>;        *<span class="number">5</span>*  </div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">exists</span><span class="params">(ID primaryKey)</span></span>;  *<span class="number">6</span>*</div><div class="line"></div><div class="line">    <span class="comment">// … more functionality omitted.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <table>
@@ -515,7 +515,7 @@
 <li><p>声明扩展Repository或其一个子接口的接口，并将其键入将要处理的域类和ID类型.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">PersonRepository</span> <span class="keyword">extends</span> <span class="title">Repository</span>&lt;<span class="title">Person</span>, <span class="title">Long</span>&gt; </span>&#123; … &#125;</div></pre></td></tr></table></figure>
 </li>
-<li><p>在界面上声明查询方法.</p>
+<li><p>在接口上声明查询方法.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">PersonRepository</span> <span class="keyword">extends</span> <span class="title">Repository</span>&lt;<span class="title">Person</span>, <span class="title">Long</span>&gt; </span>&#123;</div><div class="line">  <span class="function">List&lt;Person&gt; <span class="title">findByLastname</span><span class="params">(String lastname)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 <li><p>设置Spring为这些接口创建代理实例.通过<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#repositories.create-instances.java-config" target="_blank" rel="external">JavaConfig</a>：</p>
@@ -531,7 +531,7 @@
 </ol>
 <p>下面的部分详细说明每一步.</p>
 <h3 id="3-3-定义存储库接口"><a href="#3-3-定义存储库接口" class="headerlink" title="3.3.定义存储库接口"></a>3.3.定义存储库接口</h3><p>作为第一步，您定义一个域类别的存储库接口.该接口必须扩展Repository并输入到域类和ID类型.如果要公开该域类型的CRUD方法，则扩展<code>CrudRepository</code>而不是<code>Repository</code>.</p>
-<h4 id="3-3-1-微调存储库定义"><a href="#3-3-1-微调存储库定义" class="headerlink" title="3.3.1.微调存储库定义"></a>3.3.1.微调存储库定义</h4><p>通常情况下，你的资料库界面将延长<code>Repository</code>，<code>CrudRepository</code>或<code>PagingAndSortingRepository</code>.或者，如果您不想扩展Spring数据接口，还可以使用它来注解存储库界面<code>@RepositoryDefinition</code>.扩展<code>CrudRepository</code>公开了一套完整的方法来操纵您的实体.如果您希望对所暴露的方法有选择性，只需将要暴露的方法复制<code>CrudRepository</code>到您的域库中即可.</p>
+<h4 id="3-3-1-微调存储库定义"><a href="#3-3-1-微调存储库定义" class="headerlink" title="3.3.1.微调存储库定义"></a>3.3.1.微调存储库定义</h4><p>通常情况下，你的资料库接口将延长<code>Repository</code>，<code>CrudRepository</code>或<code>PagingAndSortingRepository</code>.或者，如果您不想扩展Spring数据接口，还可以使用它来注解存储库接口<code>@RepositoryDefinition</code>.扩展<code>CrudRepository</code>公开了一套完整的方法来操纵您的实体.如果您希望对所暴露的方法有选择性，只需将要暴露的方法复制<code>CrudRepository</code>到您的域库中即可.</p>
 <table>
 <thead>
 <tr>
@@ -723,7 +723,7 @@
 <p>示例21.存储库工厂的独立使用</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RepositoryFactorySupport factory = … <span class="comment">// Instantiate factory here</span></div><div class="line">UserRepository repository = factory.getRepository(UserRepository.class);</div></pre></td></tr></table></figure>
 <h3 id="3-6-Spring数据存储库的自定义实现"><a href="#3-6-Spring数据存储库的自定义实现" class="headerlink" title="3.6.Spring数据存储库的自定义实现"></a>3.6.Spring数据存储库的自定义实现</h3><p>通常有必要为几个存储库方法提供自定义实现.Spring数据存储库可以轻松地允许您提供自定义存储库代码，并将其与通用CRUD抽象和查询方法功能集成.</p>
-<h4 id="3-6-1-将自定义行为添加到单个存储库"><a href="#3-6-1-将自定义行为添加到单个存储库" class="headerlink" title="3.6.1.将自定义行为添加到单个存储库"></a>3.6.1.将自定义行为添加到单个存储库</h4><p>要使用自定义功能丰富资源库，首先要定义一个界面和自定义功能的实现.使用您提供的存储库接口来扩展自定义界面.</p>
+<h4 id="3-6-1-将自定义行为添加到单个存储库"><a href="#3-6-1-将自定义行为添加到单个存储库" class="headerlink" title="3.6.1.将自定义行为添加到单个存储库"></a>3.6.1.将自定义行为添加到单个存储库</h4><p>要使用自定义功能丰富资源库，首先要定义一个接口和自定义功能的实现.使用您提供的存储库接口来扩展自定义接口.</p>
 <p>示例22.自定义存储库功能的接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserRepositoryCustom</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">someCustomMethod</span><span class="params">(User user)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>示例23.自定义存储库功能的实现</p>
@@ -742,9 +742,9 @@
 </tbody>
 </table>
 <p>实现本身并不依赖于Spring Data，而且可以是一个常规的Spring bean.因此，您可以使用标准依赖注入行为来注入其他bean的引用，如a <code>JdbcTemplate</code>，参与方面等等.</p>
-<p>示例24.更改您的基本存储库界面</p>
+<p>示例24.更改您的基本存储库接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">User</span>, <span class="title">Long</span>&gt;, <span class="title">UserRepositoryCustom</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">// Declare query methods here</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>让您的标准存储库界面扩展自定义库.这样做结合了CRUD和自定义功能，并将其提供给客户端.</p>
+<p>让您的标准存储库接口扩展自定义库.这样做结合了CRUD和自定义功能，并将其提供给客户端.</p>
 <h5 id="组态"><a href="#组态" class="headerlink" title="组态"></a>组态</h5><p>如果使用命名空间配置，存储库基础设施会尝试通过扫描我们找到存储库的包下的类来自动检测自定义实现.这些类需要遵循将命名空间元素的属性附加<code>repository-impl-postfix</code>到找到的存储库接口名称的命名约定.此后缀默认为<code>Impl</code>.</p>
 <p>示例25.配置示例</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">repositories</span> <span class="attr">base-package</span>=<span class="string">"com.acme.repository"</span> /&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">repositories</span> <span class="attr">base-package</span>=<span class="string">"com.acme.repository"</span> <span class="attr">repository-impl-postfix</span>=<span class="string">"FooBar"</span> /&gt;</span></div></pre></td></tr></table></figure>
@@ -752,8 +752,8 @@
 <h6 id="手动接线"><a href="#手动接线" class="headerlink" title="手动接线"></a>手动接线</h6><p>如果您的自定义实现仅使用基于注解的配置和自动布线，那么刚才显示的方法效果很好，因为它将被视为任何其他Spring bean.如果您的自定义实现bean需要特殊布线，那么您只需简单地声明该bean并将其命名为刚刚描述的约定.然后，基础设施将通过名称引用手动定义的bean定义，而不是创建一个本身.</p>
 <p>示例26.自定义实现的手动接线</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">repositories</span> <span class="attr">base-package</span>=<span class="string">"com.acme.repository"</span> /&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">beans:bean</span> <span class="attr">id</span>=<span class="string">"userRepositoryImpl"</span> <span class="attr">class</span>=<span class="string">"…"</span>&gt;</span></div><div class="line">  <span class="comment">&lt;!-- further configuration --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">beans:bean</span>&gt;</span></div></pre></td></tr></table></figure>
-<h4 id="3-6-2-将自定义行为添加到所有存储库"><a href="#3-6-2-将自定义行为添加到所有存储库" class="headerlink" title="3.6.2.将自定义行为添加到所有存储库"></a>3.6.2.将自定义行为添加到所有存储库</h4><p>当您想将一个方法添加到所有的存储库接口时，上述方法是不可行的.要将自定义行为添加到所有存储库，您首先添加一个中间界面来声明共享行为.</p>
-<p>示例27.声明定制共享行为的界面</p>
+<h4 id="3-6-2-将自定义行为添加到所有存储库"><a href="#3-6-2-将自定义行为添加到所有存储库" class="headerlink" title="3.6.2.将自定义行为添加到所有存储库"></a>3.6.2.将自定义行为添加到所有存储库</h4><p>当您想将一个方法添加到所有的存储库接口时，上述方法是不可行的.要将自定义行为添加到所有存储库，您首先添加一个中间接口来声明共享行为.</p>
+<p>示例27.声明定制共享行为的接口</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@NoRepositoryBean</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span> <span class="keyword">extends</span> <span class="title">Serializable</span>&gt;</span></div><div class="line">  <span class="keyword">extends</span> <span class="title">PagingAndSortingRepository</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt; &#123;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">sharedCustomMethod</span><span class="params">(ID id)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>现在，您的各个存储库接口将扩展此中间接口，而不是扩展<code>Repository</code>接口以包含声明的功能.接下来，创建扩展了持久性技术特定的存储库基类的中间接口的实现.然后，该类将用作存储库代理的自定义基类.</p>
 <p>自定义库基础类</p>
@@ -823,7 +823,7 @@
 </tr>
 </tbody>
 </table>
-<p>要使用Querydsl支持，只需<code>QueryDslPredicateExecutor</code>在您的存储库界面上扩展.</p>
+<p>要使用Querydsl支持，只需<code>QueryDslPredicateExecutor</code>在您的存储库接口上扩展.</p>
 <p>实例33.在存储库上进行Querydsl整合</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> <span class="keyword">extends</span> <span class="title">CrudRepository</span>&lt;<span class="title">User</span>, <span class="title">Long</span>&gt;, <span class="title">QueryDslPredicateExecutor</span>&lt;<span class="title">User</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>以上使用Querydsl可以编写类型安全的查询<code>Predicate</code>.</p>
@@ -975,7 +975,7 @@
 <tbody>
 <tr>
 <td><em>2</em></td>
-<td><code>QuerydslBinderCustomizer</code>在存储库界面上定义将自动拾取和快捷方式<code>@QuerydslPredicate(bindings=…)</code>.</td>
+<td><code>QuerydslBinderCustomizer</code>在存储库接口上定义将自动拾取和快捷方式<code>@QuerydslPredicate(bindings=…)</code>.</td>
 </tr>
 <tr>
 <td><em>3</em></td>
@@ -1011,7 +1011,7 @@
 <p>如果您已经配置了上述示例中的Spring MVC，则可以按如下方式配置控制器，从而减少了大量杂乱和样板.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/users"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@RequestMapping</span>(<span class="string">"/&#123;id&#125;"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">showUserForm</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> User user, Model model) </span>&#123;</div><div class="line"></div><div class="line">    model.addAttribute(<span class="string">"user"</span>, user);</div><div class="line">    <span class="keyword">return</span> <span class="string">"userForm"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="4-按示例查询"><a href="#4-按示例查询" class="headerlink" title="4.按示例查询"></a>4.按示例查询</h2><h3 id="4-1-介绍"><a href="#4-1-介绍" class="headerlink" title="4.1.介绍"></a>4.1.介绍</h3><p>本章将为您提供“按示例查询”的介绍，并说明如何使用示例.</p>
-<p>示例查询（QBE）是一种用户友好的查询技术，具有简单的界面.它允许动态查询创建，并且不需要编写包含字段名称的查询.实际上，按示例查询，根本不需要使用商店特定的查询语言编写查询.</p>
+<p>示例查询（QBE）是一种用户友好的查询技术，具有简单的接口.它允许动态查询创建，并且不需要编写包含字段名称的查询.实际上，按示例查询，根本不需要使用商店特定的查询语言编写查询.</p>
 <h3 id="4-2-用法"><a href="#4-2-用法" class="headerlink" title="4.2.用法"></a>4.2.用法</h3><p>由示例API查询由三部分组成：</p>
 <ul>
 <li>Probe：这是具有填充字段的域对象的实际示例.</li>
@@ -1030,7 +1030,7 @@
 <li>不支持嵌套/分组的属性约束，如 <code>firstname = ?0 or (firstname = ?1 and lastname = ?2)</code></li>
 <li>只支持对字符串进行启动/包含/结束/正则表达式匹配以及其他属性类型的精确匹配</li>
 </ul>
-<p>在开始使用按示例查询之前，您需要有一个域对象.要开始，只需为您的存储库创建一个界面：</p>
+<p>在开始使用按示例查询之前，您需要有一个域对象.要开始，只需为您的存储库创建一个接口：</p>
 <p>示例42. Sample Person对象</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@Id</span></div><div class="line">  <span class="keyword">private</span> String id;</div><div class="line">  <span class="keyword">private</span> String firstname;</div><div class="line">  <span class="keyword">private</span> String lastname;</div><div class="line">  <span class="keyword">private</span> Address address;</div><div class="line"></div><div class="line">  <span class="comment">// … getters and setters omitted</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这是一个简单的域对象.你可以用它创建一个<code>Example</code>.默认情况下，具有<code>null</code>值的字段将被忽略，字符串将使用存储特定的默认值进行匹配.示例可以通过使用<code>of</code>工厂方法或使用来构建<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#query-by-example.matcher" target="_blank" rel="external"><code>ExampleMatcher</code></a>.<code>Example</code>是不可变的</p>
@@ -1054,7 +1054,7 @@
 </tr>
 </tbody>
 </table>
-<p>理想情况下，使用存储库执行示例.为此，让您的存储库界面扩展<code>QueryByExampleExecutor&lt;T&gt;</code>.以下是该<code>QueryByExampleExecutor</code>界面的摘录：</p>
+<p>理想情况下，使用存储库执行示例.为此，让您的存储库接口扩展<code>QueryByExampleExecutor&lt;T&gt;</code>.以下是该<code>QueryByExampleExecutor</code>接口的摘录：</p>
 <p>例44 <code>QueryByExampleExecutor</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">QueryByExampleExecutor</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line"></div><div class="line">  &lt;S extends T&gt; <span class="function">S <span class="title">findOne</span><span class="params">(Example&lt;S&gt; example)</span></span>;</div><div class="line"></div><div class="line">  &lt;S extends T&gt; <span class="function">Iterable&lt;S&gt; <span class="title">findAll</span><span class="params">(Example&lt;S&gt; example)</span></span>;</div><div class="line"></div><div class="line">  <span class="comment">// … more functionality omitted.</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>您可以在下面阅读更多关于<a href="http://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#query-by-example.execution" target="_blank" rel="external">按示例执行</a>查询.</p>
@@ -1472,7 +1472,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2017/06/09/Spring Data Commons - 参考文档/"
-           data-title="" data-url="https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/">
+           data-title="Spring Data Commons - 中文参考文档" data-url="https://muyinchen.github.io/2017/06/09/Spring Data Commons - 参考文档/">
       </div>
     
   </div>
