@@ -1,0 +1,914 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="微服务" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="构建用户管理微服务">
+<meta property="og:url" content="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/User_registration_workflow_861x571_final%20%281%29.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/unnamed.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/login_process_962x741_final.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/auth_process_792x741_final.png">
+<meta property="og:updated_time" content="2017-07-15T04:15:28.595Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="构建用户管理微服务">
+<meta name="twitter:description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/User_registration_workflow_861x571_final%20%281%29.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/"/>
+
+
+  <title> 构建用户管理微服务 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                构建用户管理微服务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-15T12:15:38+08:00" content="2017-07-15">
+              2017-07-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index">
+                    <span itemprop="name">微服务</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/15/构建用户管理微服务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/15/构建用户管理微服务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="构建用户管理微服务"><a href="#构建用户管理微服务" class="headerlink" title="构建用户管理微服务"></a>构建用户管理微服务</h1><p>翻译自:<a href="https://springuni.com/user-management-microservice-part-1/" target="_blank" rel="external">https://springuni.com/user-management-microservice-part-1/</a></p>
+  <a id="more"></a>
+<h2 id="构建用户管理微服务（一）：定义领域模型和-REST-API"><a href="#构建用户管理微服务（一）：定义领域模型和-REST-API" class="headerlink" title="构建用户管理微服务（一）：定义领域模型和 REST API"></a>构建用户管理微服务（一）：定义领域模型和 REST API</h2><p>在《构建用户管理微服务》的第一部分中，我们会定义应用的需求，初始的领域模型和供前端使用的 REST API。 我们首先定义<strong>用户注册</strong>和<strong>管理用户</strong>的故事。</p>
+<h3 id="用户故事"><a href="#用户故事" class="headerlink" title="用户故事"></a>用户故事</h3><p>在设计新系统时，值得考虑的是用户希望实现的结果。 下面您可以找到用户注册系统应具有的基本功能的列表。</p>
+<ul>
+<li>作为<strong>用户</strong>，我想注册，以便我可以访问需要注册的内容</li>
+<li>作为<strong>用户</strong>，我想在注册后确认我的电子邮件地址</li>
+<li>作为<strong>用户</strong>，我想登录并注销</li>
+<li>作为<strong>用户</strong>，我想更改我的密码</li>
+<li>作为<strong>用户</strong>，我想更改我的电子邮件地址</li>
+<li>作为<strong>用户</strong>，我想要重置我的密码，以便我忘记密码后可以登录</li>
+<li>作为<strong>用户</strong>，我想更新我的个人资料，以便我可以提供我正确的联络资料</li>
+<li>作为<strong>用户</strong>，我想关闭我的帐户，以便我可以关闭我与我注册的服务的关系</li>
+<li>作为<strong>管理员</strong>，我想手动管理（创建/删除/更新）用户，以便工作人员不必重新进行注册过程</li>
+<li>作为<strong>管理员</strong>，我想手动创建用户，这样工作人员就不用再过注册过程了</li>
+<li>作为<strong>管理员</strong>，我想列出所有用户，即使是那些曾经关闭帐户的用户</li>
+<li>作为<strong>管理员</strong>，我希望能够看到用户的活动（登录，注销，密码重置，确认，个人资料更新），以便我可以遵守外部审计要求</li>
+</ul>
+<h3 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h3><p>我们来看看系统将要支持什么样的工作流程。首先，人们应该能够注册和登录，这些是相当明显的功能。</p>
+<p><a href="http://blog.daocloud.io/wp-content/uploads/2017/06/1.jpg" target="_blank" rel="external"><img src="http://og0sybnix.bkt.clouddn.com/User_registration_workflow_861x571_final%20%281%29.png" alt="1"></a></p>
+<p>但是，处理确认令牌时需要谨慎。 由于它们可用于执行特权操作，因此我们使用一次性随机令牌来处理密码重置和电子邮件确认。</p>
+<p>当一个新的令牌由用户生成，无论什么原因，所有以前的都是无效的。 当有人记住他们的密码时，以前发出的和有效的密码重置令牌必须过期。</p>
+<h3 id="非功能性需求"><a href="#非功能性需求" class="headerlink" title="非功能性需求"></a>非功能性需求</h3><p>用户故事通常不会定义非功能性要求，例如安全性，开发原理，技术栈等。所以我们在这里单独列出。</p>
+<ul>
+<li>领域模型是使用域驱动的设计原则在纯 Java 中实现的，并且独立于要使用的底层技术栈</li>
+<li>当用户登录时，将为他们生成一个 JWT 令牌，有效期是 24 小时。在后续请求中包含此令牌，用户可以执行需要身份验证的操作</li>
+<li>密码重置令牌有效期为 10 分钟，电子邮件地址确认令牌为一天</li>
+<li>密码用加密算法（Bcrypt）加密，并且每用户加盐</li>
+<li>提供了 RESTful API，用于与用户注册服务进行交互</li>
+<li>应用程序将具有模块化设计，以便能够为各种场景提供单独的部署工件（例如，针对 Google App Engine 的 2.5 servlet 兼容 WAR 和其他用例的基于 Spring Boot 的自包含可执行 JAR）</li>
+<li>实体标识符以数据库无关的方式生成，也就是说，不会使用数据库特定机制（AUTO_INCREMENT 或序列）来获取下一个 ID 值。解决方案将类似于 Instagram genetes ID。</li>
+</ul>
+<h3 id="领域模型"><a href="#领域模型" class="headerlink" title="领域模型"></a>领域模型</h3><p>对于第一轮实现中，我们只关注三个实体，即用户，确认令牌和用户事件。</p>
+<p><a href="http://blog.daocloud.io/wp-content/uploads/2017/06/0.png" target="_blank" rel="external"><img src="http://og0sybnix.bkt.clouddn.com/unnamed.png" alt="0"></a></p>
+<h3 id="rest-api"><a href="#rest-api" class="headerlink" title="rest api"></a>rest api</h3><p>访问下面的大多数 API 都需要认证，否则返回一个<strong> UNAUTHORIZED</strong> 状态码。 如果用户尝试查询属于某个其他用户的实体，则他们还会返回客户端错误（FORBIDDEN），除非他具有管理权限。 如果指定的实体不存在，则调用的端点返回 NOT_FOUND。</p>
+<p>创建会话（POST /sessions）和注册新用户（POST / users）是公开的，它们不需要身份验证。</p>
+<h4 id="Session-management"><a href="#Session-management" class="headerlink" title="Session management"></a>Session management</h4><p><code>1    GET /session/{session_id}</code>                                </p>
+<p>如果没有给定 ID 的会话或者会话已经过期，则返回给定会话的详细信息或 NOT_FOUND。</p>
+<p><code>1    POST /session</code>                   </p>
+<p>创建新会话，前提是指定的电子邮件和密码对属于一个有效的用户。</p>
+<p><code>1    DELETE /session/{session_id}</code>                                  </p>
+<p>删除给定的会话（注销）。</p>
+<h4 id="User-management"><a href="#User-management" class="headerlink" title="User management"></a>User management</h4><p><code>1    GET /users/{user_id}</code>                          </p>
+<p>根据一个指定的 ID 查找用户。</p>
+<p><code>1    GET /users</code>               </p>
+<p>列举系统中所有的用户。</p>
+<p><code>1    POST /users</code>               </p>
+<p>注册一个新的用户。</p>
+<p><code>1    DELETE /users/{user_id}</code>                         </p>
+<p>删除指定的用户。</p>
+<p><code>1    PUT /users/{user_id}</code>                      </p>
+<p>更新指定用户的个人信息。</p>
+<p><code>1    PUT /users/{user_id}/tokens/{token_id}</code></p>
+<p>使用给定用户的令牌执行与令牌类型相关的操作。</p>
+<h2 id="构建用户管理微服务（二）：实现领域模型"><a href="#构建用户管理微服务（二）：实现领域模型" class="headerlink" title="构建用户管理微服务（二）：实现领域模型"></a>构建用户管理微服务（二）：实现领域模型</h2><p>在第二部分，将详细介绍如何实现领域模型，在代码之外做了哪些决定。</p>
+<h3 id="使用领域驱动设计"><a href="#使用领域驱动设计" class="headerlink" title="使用领域驱动设计"></a>使用领域驱动设计</h3><p>在第一部分中，作者提到了将使用领域驱动设计原则，这意味着，该模型可以不依赖于任何框架或基础设施类。在多次应用实现过程中，作者把领域模型和框架的具体注释（如 JPA 或 Hibernate ）混在一起，就如同和 Java POJO 一起工作（贫血模型）。在设计领域模型中，唯一使用的库是Lombok，用于减少定义的 getter 和 setter 方法以避免冗余。</p>
+<p>当设计 DDD 的模型，第一步是对类进行分类。在埃里克·埃文斯书中的第二部分专注于模型驱动设计的构建模块。考虑到这一点，我们的模型分为以下几类。</p>
+<h3 id="实体类"><a href="#实体类" class="headerlink" title="实体类"></a>实体类</h3><p>实体有明确的标识和生命周期需要被管理。从这个角度来看，用户肯定是一个实体。</p>
+<p>ConfirmationToken 就是一个边缘的例子，因为在没有用户上下文的情况下，逻辑上它就不存在，而另一方面，它可以通过令牌的值来标识并且它有自己的生命周期。</p>
+<p>同样的方法也适用于 Session ，这也可能是一个值对象，由于其不可改变的性质，但它仍然有一个 ID 和一个生命周期（会话过期）。</p>
+<h3 id="值对象"><a href="#值对象" class="headerlink" title="值对象"></a>值对象</h3><p>相对于实体类，值对象没有一个明确的 ID ，那就是，他们只是将一系列属性组合，并且，如果这些属性和另外一个相同类型的值对象的属性相同，那么我们就可以认为这两个值对象是相同的。</p>
+<p>当设计领域模型，值对象提供了一种方便的方式来描述携带有一定的信息片段属性的集合。 AddressData，AuditData，ContactData 和 Password 因此可以认为是值对象。</p>
+<p>虽然将所有这些属性实现为不可改变的是不切实际的，他们的某些属性可以单独被修改， Password 是一个很好的例子。当我们创建 Password 的实例，它的盐和哈希创建只有一次。在改变密码时，一个全新的实例与新的盐和散列将会被创建。</p>
+<h3 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h3><p>聚合代表一组结合在一起，并通过访问所谓的聚合根的对象。</p>
+<p>这儿有两个聚合对象：用户和会话。前者包含了所有与用户相关的实体和值对象，而后者只包含一个单一的实体 Session 。</p>
+<p>显然，用户聚合根是用户实体。通过一个实例用户实体，我们可以管理确认令牌，用户事件和用户的密码。</p>
+<p>聚合 Session 成为一个独立的实体——尽管被捆绑到一个用户的上下文——部分原因是由于其一次性性质，部分是因为当我们查找一个会话时我们不知道用户是谁。 Session 被创建之后，要么过期，要么按需删除。</p>
+<h3 id="领域事件"><a href="#领域事件" class="headerlink" title="领域事件"></a>领域事件</h3><p>当需要由系统的另外组件处理的事件发生时，领域事件就会被触发。</p>
+<p>用户管理应用程序有一个领域事件，这是 UserEvent ，它有以下类型：</p>
+<ul>
+<li>DELETED</li>
+<li>EMAIL_CHANGED</li>
+<li>EMAIL_CHANGE_REQUESTED</li>
+<li>EMAIL_CONFIRMED</li>
+<li>PASSWORD_CHANGED</li>
+<li>PASSWORD_RESET_CONFIRMED</li>
+<li>PASSWORD_RESET_REQUESTED</li>
+<li>SCREEN_NAME_CHANGED</li>
+<li>SIGNIN_SUCCEEDED</li>
+<li>SIGNIN_FAILED</li>
+<li>SIGNUP_REQUESTED</li>
+</ul>
+<p>### </p>
+<h3 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h3><p>服务包含了能够操作一组领域模型的类的业务逻辑。在本应用中， UserService 管理用户的生命周期，并发出合适的 UserEvent 。SessionService 是用于创建和销毁用户会话。</p>
+<p>### </p>
+<h3 id="存储库"><a href="#存储库" class="headerlink" title="存储库"></a>存储库</h3><p>存储库旨在代表一个实体对象的概念集合，但是有时他们只是作为数据访问对象。有两种实现方法，一种方法是列出所有的抽象存储库类或超接口可能的数据访问方法，例如 Spring Data ，或者创建专门存储库接口。</p>
+<p>对于用户管理应用程序，作者选择了第二种方法。UserRepository  和 SessionRepository  只列出那些绝对必要的处理他们实体的方法。</p>
+<p>### </p>
+<h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><p>你可能已经注意到，这里有一个 GitHub 上的库： springuni ，它包含用户管理应用程序的一部分，但它不包含应用程序本身的可执行版本。</p>
+<p>究其原因，我为什么不提供单一只包含 Spring Boot 少量 @Enable* 注解的库，是为了可重用性。大多数我碰到的项目第一眼看起来是可以模块化的，但实际上他们只是没有良好分解职责的巨大单体应用。当你试图重用这样一个项目的模块，你很快意识到，它依赖于许多其他模块和/或过多的外部库。</p>
+<p>springuni-particles （它可能已被也称为 springuni 模块）提供了多个模块的可重复使用的只为某些明确定义的功能。用户和会话管理是很好的例子。</p>
+<p>### </p>
+<h3 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h3><p>springuni-auth-model 包含了所有的领域模型类和用于管理用户生命周期的业务逻辑，它是完全与框架无关的。它的存储库，并且可以使用任何数据存储机制，对于手头的实际任务最符合。还有，PasswordChecker 和 PasswordEncryptor 可基于任何强大的密码散列技术实现。</p>
+<p>springuni-commons 包含了通用的工具库。有很多著名的第三方库（如 Apache Commons Lang，Guava 等），这外延了 JDK 的标准库。在另一方面，我发现自己很多时候仅仅只用这些非常可扩展库的少量类。我特别喜欢的 Apache Commons Lang 中的 StringUtils 的和 Apache 共同集合的 CollectionUtils 类，但是，我宁愿为当前项目提供一个高度定制化的 StringUtils 和 CollectionUtils，这样就不需要添加外部依赖。</p>
+<p>sprinuni-crm-model 定义了通用的值对象，用于处理联系人数据，如地址，国家等。虽然微服务架构的倡导者将投票反对使用共享库，但我认为这个特定点可能需要不时修订手头的任务。我最近参与了一些 CRM 集成项目，不得不重新实现了几乎同样的领域模型在不同的限界上下文（即用户，客户，联系人），这样一遍又一遍的操作是乏味的。也就是说，我认为使用联系人数据领域模型的小型通用库是值得尝试的。</p>
+<h2 id="构建用户管理微服务（三）：实现和测试存储库"><a href="#构建用户管理微服务（三）：实现和测试存储库" class="headerlink" title="构建用户管理微服务（三）：实现和测试存储库"></a>构建用户管理微服务（三）：实现和测试存储库</h2><p>详细介绍一个完整的基于 JPA 的用户存储库实现，一个 JPA 的支撑模型和一些测试用例。</p>
+<h3 id="使用-XML-来映射简单的-JAVA-对象"><a href="#使用-XML-来映射简单的-JAVA-对象" class="headerlink" title="使用 XML 来映射简单的 JAVA 对象"></a>使用 XML 来映射简单的 JAVA 对象</h3><p>仅看到用户存储库，也许你就能想到在对它添加基于 JPA 的实现时会遇到什么困难。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">UserRepository</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">delete</span><span class="params">(Long userId)</span> <span class="keyword">throws</span> NoSuchUserException</span>;  </div><div class="line"><span class="function">Optional&lt;User&gt; <span class="title">findById</span><span class="params">(Long id)</span></span>;  </div><div class="line"><span class="function">Optional&lt;User&gt; <span class="title">findByEmail</span><span class="params">(String email)</span></span>;  </div><div class="line"><span class="function">Optional&lt;User&gt; <span class="title">findByScreenName</span><span class="params">(String screenName)</span></span>;  </div><div class="line"><span class="function">User <span class="title">save</span><span class="params">(User user)</span></span>; </div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是, 正如我在第一部分提到的, 我们将使用 DDD (域驱动设计), 因此, 在模型中就不能使用特定框架的依赖关系云 (包括 JPA 的注解) ，剩下的唯一可行性方法是用 XML 进行映射。如果我没有记错的话，自2010年以来，我再也没有接触过任何一个 orm.xml 的文件 , 这也就是我为什么开始怀念它的原因。</p>
+<p>接下来我们看看XML文件中User的映射情况，以下是 user-orm.xml 的部分摘录。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">entity</span> <span class="attr">class</span>=<span class="string">"com.springuni.auth.domain.model.user.User"</span> <span class="attr">cacheable</span>=<span class="string">"true"</span> <span class="attr">metadata-complete</span>=<span class="string">"true"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">name</span>=<span class="string">"user_"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">named-query</span> <span class="attr">name</span>=<span class="string">"findByIdQuery"</span>&gt;</span>  <span class="tag">&lt;<span class="name">query</span>&gt;</span>    </div><div class="line">&lt;![CDATA[</div><div class="line">     select u from User u      </div><div class="line">     where u.id = :userId      </div><div class="line">     and u.deleted = false    </div><div class="line">   ]]&gt;  <span class="tag">&lt;/<span class="name">query</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">named-query</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">named-query</span> <span class="attr">name</span>=<span class="string">"findByEmailQuery"</span>&gt;</span>  <span class="tag">&lt;<span class="name">query</span>&gt;</span>    </div><div class="line">&lt;![CDATA[      </div><div class="line">     select u from User u      </div><div class="line">     where u.contactData.email = :email      </div><div class="line">     and u.deleted = false    </div><div class="line">   ]]&gt;  <span class="tag">&lt;/<span class="name">query</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">named-query</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">named-query</span> <span class="attr">name</span>=<span class="string">"findByScreenNameQuery"</span>&gt;</span>  <span class="tag">&lt;<span class="name">query</span>&gt;</span>    </div><div class="line">&lt;![CDATA[      </div><div class="line">     select u from User u      </div><div class="line">     where u.screenName = :screenName      </div><div class="line">     and u.deleted = false    </div><div class="line">   ]]&gt;  <span class="tag">&lt;/<span class="name">query</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">named-query</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">entity-listeners</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">entity-listener</span> <span class="attr">class</span>=<span class="string">"com.springuni.commons.jpa.IdentityGeneratorListener"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">entity-listeners</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">attributes</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">id</span> <span class="attr">name</span>=<span class="string">"id"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">basic</span> <span class="attr">name</span>=<span class="string">"timezone"</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">enumerated</span>&gt;</span>STRING<span class="tag">&lt;/<span class="name">enumerated</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">basic</span>&gt;</span>  <span class="tag">&lt;<span class="name">basic</span> <span class="attr">name</span>=<span class="string">"locale"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">basic</span> <span class="attr">name</span>=<span class="string">"confirmed"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">basic</span> <span class="attr">name</span>=<span class="string">"locked"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">basic</span> <span class="attr">name</span>=<span class="string">"deleted"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">one-to-many</span> <span class="attr">name</span>=<span class="string">"confirmationTokens"</span> <span class="attr">fetch</span>=<span class="string">"LAZY"</span> <span class="attr">mapped-by</span>=<span class="string">"owner"</span> <span class="attr">orphan-removal</span>=<span class="string">"true"</span>&gt;</span>    </div><div class="line"><span class="tag">&lt;<span class="name">cascade</span>&gt;</span>      </div><div class="line"> <span class="tag">&lt;<span class="name">cascade-persist</span>/&gt;</span>      </div><div class="line">  <span class="tag">&lt;<span class="name">cascade-merge</span>/&gt;</span>    </div><div class="line"> <span class="tag">&lt;/<span class="name">cascade</span>&gt;</span> </div><div class="line"><span class="tag">&lt;/<span class="name">one-to-many</span>&gt;</span>  </div><div class="line">  <span class="tag">&lt;<span class="name">element-collection</span> <span class="attr">name</span>=<span class="string">"authorities"</span>&gt;</span>    </div><div class="line">   <span class="tag">&lt;<span class="name">collection-table</span> <span class="attr">name</span>=<span class="string">"authority"</span>&gt;</span>      </div><div class="line">   <span class="tag">&lt;<span class="name">join-column</span> <span class="attr">name</span>=<span class="string">"user_id"</span>/&gt;</span>    </div><div class="line"> <span class="tag">&lt;/<span class="name">collection-table</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;/<span class="name">element-collection</span>&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">embedded</span> <span class="attr">name</span>=<span class="string">"auditData"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">embedded</span> <span class="attr">name</span>=<span class="string">"contactData"</span>/&gt;</span>  </div><div class="line"><span class="tag">&lt;<span class="name">embedded</span> <span class="attr">name</span>=<span class="string">"password"</span>/&gt;</span>  </div><div class="line"><span class="comment">&lt;!-- Do not map email directly through its getter/setter --&gt;</span>  <span class="tag">&lt;<span class="name">transient</span> <span class="attr">name</span>=<span class="string">"email"</span>/&gt;</span></div><div class="line"> </div><div class="line"><span class="tag">&lt;/<span class="name">attributes</span>&gt;</span></div><div class="line"> </div><div class="line"><span class="tag">&lt;/<span class="name">entity</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>域驱动设计是一种持久化无关的方法，因此坚持设计一个没有具体目标数据结构的模型可能很有挑战性。当然, 它也存在优势, 即可对现实世界中的问题直接进行建模, 而不存在只能以某种方式使用某种技术栈之类的副作用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Entity</span>&lt;<span class="title">Long</span>, <span class="title">User</span>&gt; </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> Long id;  </div><div class="line"><span class="keyword">private</span> String screenName;  ...  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> Set&lt;String&gt; authorities = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一般来说，一组简单的字符串或枚举值就能对用户的权限（或特权）进行建模了。</p>
+<p>使用像 MongoDB 这样的文档数据库能够轻松自然地维护这个模型，如下所示。(顺便一提, 我还计划在本系列的后续内容中添加一个基于 Mongo 的存储库实现)</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;   "id":123456789,   </div><div class="line">"screenName":"test",   ...   </div><div class="line">"authorities":[      </div><div class="line">             "USER",      </div><div class="line">             "ADMIN"   </div><div class="line">] </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然而, 在关系模型中, 权限的概念必须作为用户的子关系进行处理。但是在现实世界中, 这仅仅只是一套权限规则。我们需要如何弥合这样的差距呢？</p>
+<p>在 JPA 2.0 中可以引入 ElementCollection 来进行操作，它的用法类似于 OneToMany。在这种情况下, 已经配置好的 JPA 提供的程序 (Hibernate) 将自动生成必要的子关系。</p>
+<p>alter table authority  add constraint FKoia3663r5o44m6knaplucgsxn  foreign key (user<em>id) references user</em></p>
+<p>## </p>
+<h3 id="项目中的新模块"><a href="#项目中的新模块" class="headerlink" title="项目中的新模块"></a>项目中的新模块</h3><p>我一直在讨论的 springuni-auth-user-jpa 包含了一个完整的基于 JPA 的 UserRepository 实现。其目标是, 每个模块都应该只拥有那些对它们的操作来说绝对必要的依赖关系，而这些关系只需要依赖 JPA API 便可以实现。</p>
+<p>springuni-commons-jpa 是一个支撑模块, 它能够使用预先配置好的 HikariCP 和 Hibernate 的组合作为实体管理器, 而不必关心其他细节。 它的特色是 AbstractJpaConfiguration, 类似于 Spring Boot 的 HibernateJpaAutoConfiguration。</p>
+<p>然而我没有使用后者的原因是 Spring Boot 的自动配置需要一定的初始化。因为谷歌应用引擎标准环境是我的目标平台之一，因此能否快速地启动是至关重要的。</p>
+<h3 id="单元测试存储库"><a href="#单元测试存储库" class="headerlink" title="单元测试存储库"></a>单元测试存储库</h3><p>虽然有人可能会说, 对于存储库没必要进行过多的测试, 尤其是在使用 Spring Data 的 存储库接口的时候。但是我认为测试代码可以避免运行时存在的一些问题，例如错误的实体映射或错误的 JPQL 查询。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner)</div><div class="line"><span class="meta">@ContextConfiguration</span>(classes = [UserJpaTestConfiguration])</div><div class="line"><span class="meta">@Transactional</span></div><div class="line"><span class="meta">@Rollbackclass</span> UserJpaRepositoryTest &#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  UserRepository userRepository</div><div class="line"> </div><div class="line">  User user</div><div class="line"> </div><div class="line">  <span class="meta">@Before</span>  <span class="function"><span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;</div><div class="line">    user = <span class="keyword">new</span> User(<span class="number">1</span>, <span class="string">"test"</span>, <span class="string">"test@springuni.com"</span>)</div><div class="line">    user.addConfirmationToken(ConfirmationTokenType.EMAIL, <span class="number">10</span>)</div><div class="line">    userRepository.save(user)</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  ...</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span>  <span class="function"><span class="keyword">void</span> <span class="title">testFindById</span><span class="params">()</span> </span>&#123;</div><div class="line">    Optional&lt;User&gt; userOptional = userRepository.findById(user.id)</div><div class="line">    assertTrue(userOptional.isPresent())</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  ...</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个测试用例启动了一个具有嵌入式 H2 数据库的实体管理器。H2 非常适合于测试, 因为它支持许多众所周知的数据库 (如 MySQL) 的兼容模式，可以模拟你的真实数据库。</p>
+<h2 id="构建用户管理微服务（四）：实现-REST-控制器"><a href="#构建用户管理微服务（四）：实现-REST-控制器" class="headerlink" title="构建用户管理微服务（四）：实现 REST 控制器"></a>构建用户管理微服务（四）：实现 REST 控制器</h2><p>将 REST 控制器添加到领域控制模型的顶端</p>
+<h3 id="有关-REST"><a href="#有关-REST" class="headerlink" title="有关 REST"></a>有关 REST</h3><p>REST, 全称是 Resource Representational State Transfer（Resource 被省略掉了）。通俗来讲就是：资源在网络中以某种表现形式进行状态转移。在 web 平台上，REST 就是选择通过使用 http 协议和 uri，利用 client/server model 对资源进行 CRUD (Create/Read/Update/Delete) 增删改查操作。</p>
+<p>使用 REST 结构风格是因为，随着时代的发展，传统前后端融为一体的网页模式无法满足需求，而 RESTful 可以通过一套统一的接口为 Web，iOS 和 Android 提供服务。另外对于广大平台来说，比如 Facebook platform，微博开放平台，微信公共平台等，他们需要一套提供服务的接口，于是 RESTful 更是它们最好的选择。</p>
+<h3 id="REST-端点的支撑模块"><a href="#REST-端点的支撑模块" class="headerlink" title="REST 端点的支撑模块"></a>REST 端点的支撑模块</h3><p>我经手的大多数项目，都需要对控制器层面正确地进行 Spring MVC 的配置。随着近几年单页应用程序的广泛应用，越来越不需要在 Spring mvc 应用程序中配置和开发视图层 (使用 jsp 或模板引擎)。</p>
+<p>现在，创建完整的 REST 后端的消耗并生成了 JSON 是相当典型的, 然后通过 SPA 或移动应用程序直接使用。基于以上所讲, 我收集了 Spring MVC 常见配置，这能实现对后端的开发。</p>
+<ul>
+<li>Jackson 用于生成和消解 JSON</li>
+<li>application/json 是默认的内容类型</li>
+<li>ObjectMapper 知道如何处理 Joda 和 JSR-310 日期/时间 api, 它在 iso 格式中对日期进行序列化, 并且不将缺省的值序列化 (NON_ABSENT)</li>
+<li>ModelMapper 用于转换为 DTO 和模型类</li>
+<li>存在一个自定义异常处理程序, 用于处理 EntityNotFoundException 和其他常见应用程序级别的异常</li>
+<li>捕获未映射的请求并使用以前定义的错误响应来处理它们</li>
+</ul>
+<p>#### </p>
+<h4 id="能被重新使用的常见-REST-配置项目"><a href="#能被重新使用的常见-REST-配置项目" class="headerlink" title="能被重新使用的常见 REST 配置项目"></a>能被重新使用的常见 REST 配置项目</h4><p>该代码在 github, 有一个新的模块 springuni-commons-rest , 它包含实现 REST 控制器所需的所有常用的实用程序。 专有的 RestConfiguration 可以通过模块进行扩展, 它们可以进一步细化默认配置。</p>
+<p>#### </p>
+<h4 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h4><p>正常的 web 应用程序向最终用户提供易于使用的错误页。但是，对于一个纯粹的 JSON-based REST 后端, 这不是一个需求, 因为它的客户是 SPA 或移动应用。</p>
+<p>因此, 最好的方法是用一个明确定义的 JSON 结构 (RestErrorResponse) 前端可以很容易地响应错误, 这是非常可取的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Data</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RestErrorResponse</span> </span>&#123;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> statusCode;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> String reasonPhrase;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> String detailMessage; </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="title">RestErrorResponse</span><span class="params">(HttpStatus status, String detailMessage)</span> </span>&#123;    </div><div class="line">statusCode = status.value();    </div><div class="line">reasonPhrase = status.getReasonPhrase();    </div><div class="line"><span class="keyword">this</span>.detailMessage = detailMessage;  &#125;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RestErrorResponse <span class="title">of</span><span class="params">(HttpStatus status)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> of(status, <span class="keyword">null</span>);  &#125;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> RestErrorResponse <span class="title">of</span><span class="params">(HttpStatus status, Exception ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> <span class="keyword">new</span> RestErrorResponse(status, ex.getMessage());  &#125; &#125;</div></pre></td></tr></table></figure>
+<p>以上代码将返回 HTTP 错误代码，包括 HTTP 错误的文本表示和对客户端的详细信息，RestErrorHandler 负责生成针对应用程序特定异常的正确响应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestControllerAdvice</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RestErrorHandler</span> <span class="keyword">extends</span> <span class="title">ResponseEntityExceptionHandler</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="meta">@ExceptionHandler</span>(ApplicationException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleApplicationException</span><span class="params">(<span class="keyword">final</span> ApplicationException ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, BAD_REQUEST);  &#125;  </div><div class="line"> </div><div class="line"><span class="meta">@ExceptionHandler</span>(EntityAlreadyExistsException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleEntityExistsException</span><span class="params">(<span class="keyword">final</span> EntityAlreadyExistsException ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, BAD_REQUEST);  &#125;  </div><div class="line"> </div><div class="line"><span class="meta">@ExceptionHandler</span>(EntityConflictsException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleEntityConflictsException</span><span class="params">(<span class="keyword">final</span> EntityConflictsException ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, CONFLICT);  &#125;  </div><div class="line"> </div><div class="line"><span class="meta">@ExceptionHandler</span>(EntityNotFoundException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleEntityNotFoundException</span><span class="params">(<span class="keyword">final</span> EntityNotFoundException ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, NOT_FOUND);  &#125;  </div><div class="line"> </div><div class="line"><span class="meta">@ExceptionHandler</span>(RuntimeException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleRuntimeException</span><span class="params">(<span class="keyword">final</span> RuntimeException ex)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, INTERNAL_SERVER_ERROR);  &#125; </div><div class="line"> </div><div class="line"> <span class="meta">@ExceptionHandler</span>(UnsupportedOperationException.class)  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;Object&gt; <span class="title">handleUnsupportedOperationException</span><span class="params">(      </span></span></div><div class="line"><span class="keyword">final</span> UnsupportedOperationException ex) &#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, NOT_IMPLEMENTED);  &#125;  </div><div class="line"> </div><div class="line"><span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">protected</span> ResponseEntity&lt;Object&gt; <span class="title">handleExceptionInternal</span><span class="params">(      </span></span></div><div class="line">Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) &#123;    </div><div class="line">RestErrorResponse restErrorResponse = RestErrorResponse.of(status, ex);    </div><div class="line"><span class="keyword">return</span> <span class="keyword">super</span>.handleExceptionInternal(ex, restErrorResponse, headers, status, request);  &#125;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">private</span> ResponseEntity&lt;Object&gt; <span class="title">handleExceptionInternal</span><span class="params">(Exception ex, HttpStatus status)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> handleExceptionInternal(ex, <span class="keyword">null</span>, <span class="keyword">null</span>, status, <span class="keyword">null</span>);  &#125; &#125;</div></pre></td></tr></table></figure>
+<h4 id="处理未响应请求"><a href="#处理未响应请求" class="headerlink" title="处理未响应请求"></a>处理未响应请求</h4><p>为了处理未映射的请求, 首先我们需要定义一个默认处理程序, 然后用 RequestMappingHandlerMapping 来设置它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultController</span> </span>&#123; </div><div class="line"> </div><div class="line"><span class="meta">@RequestMapping</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> ResponseEntity&lt;RestErrorResponse&gt; <span class="title">handleUnmappedRequest</span><span class="params">(<span class="keyword">final</span> HttpServletRequest request)</span> </span>&#123;</div><div class="line"><span class="keyword">return</span> ResponseEntity.status(NOT_FOUND).body(RestErrorResponse.of(NOT_FOUND));  </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>经过这样的设置，RestConfiguration 在一定程度上扩展了 WebMvcConfigurationSupport, 这提供了用于调用 MVC 基础结构的自定义钩子。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@EnableWebMvc</span> </div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RestConfiguration</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurationSupport</span> </span>&#123;  </div><div class="line">...  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">protected</span> Object <span class="title">createDefaultHandler</span><span class="params">()</span> </span>&#123;   </div><div class="line"> <span class="keyword">return</span> <span class="keyword">new</span> DefaultController();  &#125;    </div><div class="line">... </div><div class="line"><span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">protected</span> RequestMappingHandlerMapping <span class="title">createRequestMappingHandlerMapping</span><span class="params">()</span> </span>&#123;    </div><div class="line">RequestMappingHandlerMapping handlerMapping = <span class="keyword">super</span>.createRequestMappingHandlerMapping();    </div><div class="line">Object defaultHandler = createDefaultHandler();    </div><div class="line">handlerMapping.setDefaultHandler(defaultHandler);    </div><div class="line">   <span class="keyword">return</span> handlerMapping;  &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="用于管理用户的-REST-端点"><a href="#用于管理用户的-REST-端点" class="headerlink" title="用于管理用户的 REST 端点"></a>用于管理用户的 REST 端点</h4><p>在第一部分中，我定义了一堆用于和用户管理服务进行交互的 REST 风格的端点。而实际上, 他们与用 Spring MVC 创建 REST 风格的端点相比，并没有什么特别的。但是,我有一些最近意识到的小细节想要补充。</p>
+<ul>
+<li>正如 Spring 4.3 有一堆用于定义请求处理程序的速记注解，@GetMapping 是一个组合的注解, 它为 @RequestMapping (method = RequestMethod. GET) 作为其对应的 @PostMapping、@PutMapping 等的快捷方式。</li>
+<li>我找到了一个用于处理从/到模型类转换的 DTO 的模块映射库 。在此之前，我用的是 Apache Commons Beanutils。</li>
+<li>手动注册控制器来加快应用程序初始化的速度。正如我在第三部分中提到的, 这个应用程序将托管在谷歌应用引擎标准环境中，而开启一个新的实例是至关重要的。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestController</span> <span class="meta">@RequestMapping</span>(<span class="string">"/users"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;  </div><div class="line"> </div><div class="line"> <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;  </div><div class="line"> <span class="keyword">private</span> <span class="keyword">final</span> ModelMapper modelMapper;  </div><div class="line"> </div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="title">UserController</span><span class="params">(ModelMapper modelMapper, UserService userService)</span> </span>&#123;    </div><div class="line"> <span class="keyword">this</span>.modelMapper = modelMapper;    </div><div class="line"> <span class="keyword">this</span>.userService = userService; </div><div class="line"> &#125; </div><div class="line"> <span class="meta">@GetMapping</span>(<span class="string">"/&#123;userId&#125;"</span>)  </div><div class="line"> <span class="function"><span class="keyword">public</span> UserDto <span class="title">getUser</span><span class="params">(@PathVariable <span class="keyword">long</span> userId)</span> <span class="keyword">throws</span> ApplicationException </span>&#123; </div><div class="line">   	User user = userService.getUser(userId);    </div><div class="line"> 	<span class="keyword">return</span> modelMapper.map(user, UserDto.class); </div><div class="line"> &#125;  </div><div class="line"> </div><div class="line"> ... </div><div class="line"> </div><div class="line"><span class="meta">@PostMapping</span>  </div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createUser</span><span class="params">(@RequestBody @Validated UserDto userDto)</span> <span class="keyword">throws</span> ApplicationException </span>&#123;   </div><div class="line">	User user = modelMapper.map(userDto, User.class);   </div><div class="line">	userService.signup(user, userDto.getPassword()); </div><div class="line"> &#125;  </div><div class="line">... </div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="将-DTO-映射到模型类"><a href="#将-DTO-映射到模型类" class="headerlink" title="将 DTO 映射到模型类"></a>将 DTO 映射到模型类</h4><p>虽然 ModelMapper 在查找匹配属性时是相当自动的, 但在某些情况下需要进行手动调整。比如说，用户的密码。这是我们绝对不想暴露的内容。</p>
+<p>通过定义自定义属性的映射, 可以很容易地避免这一点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.modelmapper.PropertyMap;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMap</span> <span class="keyword">extends</span> <span class="title">PropertyMap</span>&lt;<span class="title">User</span>, <span class="title">UserDto</span>&gt; </span>&#123;</div><div class="line">  </div><div class="line"><span class="meta">@Override</span>  </div><div class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">()</span> </span>&#123;</div><div class="line">    </div><div class="line">skip().setPassword(<span class="keyword">null</span>);  </div><div class="line"> </div><div class="line">&#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当 ModelMapper 的实例被创建时, 我们可以自定义属性映射、转换器、目标值提供程序和一些其他的内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span> </div><div class="line"><span class="meta">@EnableWebMvc</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthRestConfiguration</span> <span class="keyword">extends</span> <span class="title">RestConfiguration</span> </span>&#123;    </div><div class="line">...  </div><div class="line"> <span class="meta">@Bean</span>  </div><div class="line"> <span class="function"><span class="keyword">public</span> ModelMapper <span class="title">modelMapper</span><span class="params">()</span> </span>&#123;    </div><div class="line"> ModelMapper modelMapper = <span class="keyword">new</span> ModelMapper();    </div><div class="line"> customizeModelMapper(modelMapper);    </div><div class="line"> modelMapper.validate();    </div><div class="line">   <span class="keyword">return</span> modelMapper;  &#125;  </div><div class="line"> <span class="meta">@Override</span>  </div><div class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">customizeModelMapper</span><span class="params">(ModelMapper modelMapper)</span> </span>&#123;    </div><div class="line"> modelMapper.addMappings(<span class="keyword">new</span> UserMap());    </div><div class="line"> modelMapper.addMappings(<span class="keyword">new</span> UserDtoMap());  &#125;  </div><div class="line"> ... </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="测试-REST-控制器"><a href="#测试-REST-控制器" class="headerlink" title="测试 REST 控制器"></a>测试 REST 控制器</h4><p>自 MockMvc 在 Spring 3.2 上推出以来, 使用 Spring mvc 测试 REST 控制器变得非常容易。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner) </div><div class="line"><span class="meta">@ContextConfiguration</span>(classes = [AuthRestTestConfiguration]) </div><div class="line"><span class="meta">@WebAppConfigurationclass</span> UserControllerTest &#123;  </div><div class="line"><span class="meta">@Autowired</span>  WebApplicationContext context    </div><div class="line"><span class="meta">@Autowired</span>  UserService userService  MockMvc mockMvc  </div><div class="line"><span class="meta">@Before</span>  </div><div class="line"> <span class="function"><span class="keyword">void</span> <span class="title">before</span><span class="params">()</span> </span>&#123;    </div><div class="line"> mockMvc = MockMvcBuilders.webAppContextSetup(context).build()    </div><div class="line"> reset(userService)    </div><div class="line"> when(userService.getUser(<span class="number">0L</span>)).thenThrow(NoSuchUserException)    </div><div class="line"> when(userService.getUser(<span class="number">1L</span>))        </div><div class="line"> .thenReturn(<span class="keyword">new</span> User(<span class="number">1L</span>, <span class="string">"test"</span>, <span class="string">"test@springuni.com"</span>))  &#125;  </div><div class="line"><span class="meta">@Test</span>  </div><div class="line"> <span class="function"><span class="keyword">void</span> <span class="title">testGetUser</span><span class="params">()</span> </span>&#123;    </div><div class="line"> mockMvc.perform(get(<span class="string">"/users/1"</span>).contentType(APPLICATION_JSON))        </div><div class="line"> .andExpect(status().isOk())        </div><div class="line"> .andExpect(jsonPath(<span class="string">"id"</span>, is(<span class="number">1</span>)))        </div><div class="line"> .andExpect(jsonPath(<span class="string">"screenName"</span>, is(<span class="string">"test"</span>)))        </div><div class="line"> .andExpect(jsonPath(<span class="string">"contactData.email"</span>, is(<span class="string">"test@springuni.com"</span>)))        </div><div class="line"> .andDo(print())    </div><div class="line"> verify(userService).getUser(<span class="number">1L</span>)    </div><div class="line"> verifyNoMoreInteractions(userService)  </div><div class="line">&#125;  </div><div class="line">... </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有两种方式能让 MockMvc 与 MockMvcBuilders 一起被搭建。 一个是通过 web 应用程序上下文 (如本例中) 来完成, 另一种方法是向 standaloneSetup () 提供具体的控制器实例。我使用的是前者,当 Spring Security得到配置的时候，测试控制器显得更为合适。</p>
+<h2 id="构建用户管理微服务（五）：使用-JWT-令牌和-Spring-Security-来实现身份验证"><a href="#构建用户管理微服务（五）：使用-JWT-令牌和-Spring-Security-来实现身份验证" class="headerlink" title="构建用户管理微服务（五）：使用 JWT 令牌和 Spring Security 来实现身份验证"></a>构建用户管理微服务（五）：使用 JWT 令牌和 Spring Security 来实现身份验证</h2><p>我们已经建立了业务逻辑、数据访问层和前端控制器, 但是忽略了对身份进行验证。随着 Spring Security 成为实际意义上的标准, 将会在在构建 Java web 应用程序的身份验证和授权时使用到它。在构建用户管理微服务系列的第五部分中, 将带您探索 Spring Security 是如何同 JWT 令牌一起使用的。</p>
+<h3 id="有关-Token"><a href="#有关-Token" class="headerlink" title="有关 Token"></a>有关 Token</h3><p>诸如 Facebook，Github，Twitter 等大型网站都在使用基于 Token 的身份验证。相比传统的身份验证方法，Token 的扩展性更强，也更安全，非常适合用在 Web 应用或者移动应用上。我们将 Token 翻译成令牌，也就意味着，你能依靠这个令牌去通过一些关卡，来实现验证。实施 Token 验证的方法很多，JWT 就是相关标准方法中的一种。</p>
+<h3 id="关于-JWT-令牌"><a href="#关于-JWT-令牌" class="headerlink" title="关于 JWT 令牌"></a>关于 JWT 令牌</h3><p>JSON Web TOKEN（JWT）是一个开放的标准 （RFC 7519）, 它定义了一种简洁且独立的方式, 让在各方之间的 JSON 对象安全地传输信息。而经过数字签名的信息也可以被验证和信任。</p>
+<p>JWT 的应用越来越广泛, 而因为它是轻量级的，你也不需要有一个用来验证令牌的认证服务器。与 OAuth 相比, 这有利有弊。如果 JWT 令牌被截获，它可以用来模拟用户, 也无法防范使用这个被截获的令牌继续进行身份验证。</p>
+<p>真正的 JWT 令牌看起来像下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.</div><div class="line">eyJzdWIiOiJsYXN6bG9fQVRfc3ByaW5ndW5pX0RPVF9jb20iLCJuYW1lIjoiTMOhc3psw7MgQ3NvbnRvcyIsImFkbWluIjp0cnVlfQ.</div><div class="line">XEfFHwFGK0daC80EFZBB5ki2CwrOb7clGRGlzchAD84</div></pre></td></tr></table></figure>
+<p>JWT 令牌的第一部分是令牌的 header , 用于标识令牌的类型和对令牌进行签名的算法。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123; </div><div class="line"> <span class="attr">"alg"</span>: <span class="string">"HS256"</span>, <span class="attr">"typ"</span>: <span class="string">"JWT"</span></div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第二部分是 JWT 令牌的 payload 或它的声明。这两者是有区别的。Payload 可以是任意一组数据, 它甚至可以是明文或其他 （嵌入 JWT）的数据。而声明则是一组标准的字段。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123; </div><div class="line"> <span class="attr">"sub"</span>: <span class="string">"laszlo_AT_springuni_DOT_com"</span>, <span class="attr">"name"</span>: <span class="string">"László Csontos"</span>, <span class="attr">"admin"</span>: <span class="literal">true</span></div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第三部分是由算法产生的、由 JWT 的 header 表示的签名。</p>
+<h4 id="创建和验证-JWT-令牌"><a href="#创建和验证-JWT-令牌" class="headerlink" title="创建和验证 JWT 令牌"></a>创建和验证 JWT 令牌</h4><p>有相当多的第三方库可用于操作 JWT 令牌。而在本文中, 我使用了 JJWT。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.jsonwebtoken<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jjwt<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>采用 JwtTokenService 使 JWT 令牌从身份验证实例中创建, 并将 JWTs 解析回身份验证实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtTokenServiceImpl</span> <span class="keyword">implements</span> <span class="title">JwtTokenService</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String AUTHORITIES = <span class="string">"authorities"</span>;  </div><div class="line"> </div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> String SECRET = <span class="string">"ThisIsASecret"</span>;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">createJwtToken</span><span class="params">(Authentication authentication, <span class="keyword">int</span> minutes)</span> </span>&#123;</div><div class="line">    Claims claims = Jwts.claims()</div><div class="line">        .setId(String.valueOf(IdentityGenerator.generate()))</div><div class="line">        .setSubject(authentication.getName())</div><div class="line">        .setExpiration(<span class="keyword">new</span> Date(currentTimeMillis() + minutes * <span class="number">60</span> * <span class="number">1000</span>))</div><div class="line">        .setIssuedAt(<span class="keyword">new</span> Date());</div><div class="line"> </div><div class="line">    String authorities = authentication.getAuthorities()</div><div class="line">        .stream()</div><div class="line">        .map(GrantedAuthority::getAuthority)</div><div class="line">        .map(String::toUpperCase)</div><div class="line">        .collect(Collectors.joining(<span class="string">","</span>));</div><div class="line"> </div><div class="line">    claims.put(AUTHORITIES, authorities);    </div><div class="line"> </div><div class="line"><span class="keyword">return</span> Jwts.builder()</div><div class="line">        .setClaims(claims)</div><div class="line">        .signWith(HS512, SECRET)</div><div class="line">        .compact();</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">parseJwtToken</span><span class="params">(String jwtToken)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;    </div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">      Claims claims = Jwts.parser()</div><div class="line">            .setSigningKey(SECRET)</div><div class="line">            .parseClaimsJws(jwtToken)</div><div class="line">            .getBody();      </div><div class="line"><span class="keyword">return</span> JwtAuthenticationToken.of(claims);</div><div class="line">    &#125; <span class="keyword">catch</span> (ExpiredJwtException | SignatureException e) &#123;      </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> BadCredentialsException(e.getMessage(), e);</div><div class="line">    &#125; <span class="keyword">catch</span> (UnsupportedJwtException | MalformedJwtException e) &#123;      </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> AuthenticationServiceException(e.getMessage(), e);</div><div class="line">    &#125; <span class="keyword">catch</span> (IllegalArgumentException e) &#123;      </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> InternalAuthenticationServiceException(e.getMessage(), e);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>根据实际的验证，parseClaimsJws () 会引发各种异常。在 parseJwtToken () 中, 引发的异常被转换回 AuthenticationExceptions。虽然 JwtAuthenticationEntryPoint 能将这些异常转换为各种 HTTP 的响应代码, 但它也只是重复 DefaultAuthenticationFailureHandler 来以 http 401 (未经授权) 响应。</p>
+<h3 id="登录和身份验证过程"><a href="#登录和身份验证过程" class="headerlink" title="登录和身份验证过程"></a>登录和身份验证过程</h3><p>基本上, 认证过程有两个短语, 让后端将服务用于单页面 web 应用程序。</p>
+<h4 id="登录时创建-JWT-令牌"><a href="#登录时创建-JWT-令牌" class="headerlink" title="登录时创建 JWT 令牌"></a>登录时创建 JWT 令牌</h4><p>第一次登录变完成启动, 且在这一过程中, 将创建一个 JWT 令牌并将其发送回客户端。这些是通过以下请求完成的：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">POST /session</div><div class="line">&#123;   </div><div class="line">  "username": "laszlo_AT_sprimguni_DOT_com",</div><div class="line">   "password": "secret"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>成功登录后, 客户端会像往常一样向其他端点发送后续请求, 并在授权的 header 中提供本地缓存的 JWT 令牌。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Authorization: Bearer &lt;JWT token&gt;</div></pre></td></tr></table></figure>
+<p><img src="http://og0sybnix.bkt.clouddn.com/login_process_962x741_final.png" alt="img"></p>
+<p>正如上面的步骤所讲, LoginFilter 开始进行登录过程。而Spring Security 的内置 UsernamePasswordAuthenticationFilter 被延长, 来让这种情况发生。这两者之间的唯一的区别是, UsernamePasswordAuthenticationFilter 使用表单参数来捕获用户名和密码, 相比之下, LoginFilter 将它们视做 JSON 对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.springframework.security.authentication.*;</div><div class="line"><span class="keyword">import</span> org.springframework.security.core.*;</div><div class="line"><span class="keyword">import</span> org.springframework.security.web.authentication.*;</div><div class="line"> </div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginFilter</span> <span class="keyword">extends</span> <span class="title">UsernamePasswordAuthenticationFilter</span> </span>&#123;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String LOGIN_REQUEST_ATTRIBUTE = <span class="string">"login_request"</span>;</div><div class="line"> </div><div class="line">  ...</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> Authentication <span class="title">attemptAuthentication</span><span class="params">(</span></span></div><div class="line">      HttpServletRequest request, HttpServletResponse response) <span class="keyword">throws</span> AuthenticationException &#123;    </div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">      LoginRequest loginRequest =</div><div class="line">          objectMapper.readValue(request.getInputStream(), LoginRequest.class);</div><div class="line"> </div><div class="line">      request.setAttribute(LOGIN_REQUEST_ATTRIBUTE, loginRequest);      </div><div class="line"><span class="keyword">return</span> <span class="keyword">super</span>.attemptAuthentication(request, response);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException ioe) &#123;      </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> InternalAuthenticationServiceException(ioe.getMessage(), ioe);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      request.removeAttribute(LOGIN_REQUEST_ATTRIBUTE);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">obtainUsername</span><span class="params">(HttpServletRequest request)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> toLoginRequest(request).getUsername();</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">protected</span> String <span class="title">obtainPassword</span><span class="params">(HttpServletRequest request)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> toLoginRequest(request).getPassword();</div><div class="line">  &#125;  </div><div class="line"><span class="function"><span class="keyword">private</span> LoginRequest <span class="title">toLoginRequest</span><span class="params">(HttpServletRequest request)</span> </span>&#123;    <span class="keyword">return</span> (LoginRequest)request.getAttribute(LOGIN_REQUEST_ATTRIBUTE);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>处理登陆过程的结果将在之后分派给一个 AuthenticationSuccessHandler 和 AuthenticationFailureHandler。</p>
+<p>两者都相当简单。DefaultAuthenticationSuccessHandler 调用 JwtTokenService 发出一个新的令牌, 然后将其发送回客户端。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultAuthenticationSuccessHandler</span> <span class="keyword">implements</span> <span class="title">AuthenticationSuccessHandler</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ONE_DAY_MINUTES = <span class="number">24</span> * <span class="number">60</span>;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> JwtTokenService jwtTokenService;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> ObjectMapper objectMapper;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultAuthenticationSuccessHandler</span><span class="params">(</span></span></div><div class="line">      JwtTokenService jwtTokenService, ObjectMapper objectMapper) &#123;    </div><div class="line"><span class="keyword">this</span>.jwtTokenService = jwtTokenService;    </div><div class="line"><span class="keyword">this</span>.objectMapper = objectMapper;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationSuccess</span><span class="params">(</span></span></div><div class="line">      HttpServletRequest request, HttpServletResponse response, Authentication authentication)      </div><div class="line"><span class="keyword">throws</span> IOException &#123;</div><div class="line"> </div><div class="line">    response.setContentType(APPLICATION_JSON_VALUE);</div><div class="line"> </div><div class="line">    String jwtToken = jwtTokenService.createJwtToken(authentication, ONE_DAY_MINUTES);</div><div class="line">    objectMapper.writeValue(response.getWriter(), jwtToken);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以下是它的对应, DefaultAuthenticationFailureHandler, 只是发送回一个 http 401 错误消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultAuthenticationFailureHandler</span> <span class="keyword">implements</span> <span class="title">AuthenticationFailureHandler</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER =</div><div class="line">      LoggerFactory.getLogger(DefaultAuthenticationFailureHandler.class);  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> ObjectMapper objectMapper;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">DefaultAuthenticationFailureHandler</span><span class="params">(ObjectMapper objectMapper)</span> </span>&#123;    </div><div class="line"><span class="keyword">this</span>.objectMapper = objectMapper;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAuthenticationFailure</span><span class="params">(</span></span></div><div class="line">      HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)      </div><div class="line"><span class="keyword">throws</span> IOException &#123;</div><div class="line"> </div><div class="line">    LOGGER.warn(exception.getMessage());</div><div class="line"> </div><div class="line">    HttpStatus httpStatus = translateAuthenticationException(exception);</div><div class="line"> </div><div class="line">    response.setStatus(httpStatus.value());</div><div class="line">    response.setContentType(APPLICATION_JSON_VALUE);</div><div class="line"> </div><div class="line">    writeResponse(response.getWriter(), httpStatus, exception);</div><div class="line">  &#125;  </div><div class="line"><span class="function"><span class="keyword">protected</span> HttpStatus <span class="title">translateAuthenticationException</span><span class="params">(AuthenticationException exception)</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> UNAUTHORIZED;</div><div class="line">  &#125;  </div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">writeResponse</span><span class="params">(</span></span></div><div class="line">      Writer writer, HttpStatus httpStatus, AuthenticationException exception) <span class="keyword">throws</span> IOException &#123;</div><div class="line"> </div><div class="line">    RestErrorResponse restErrorResponse = RestErrorResponse.of(httpStatus, exception);</div><div class="line">    objectMapper.writeValue(writer, restErrorResponse);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="处理后续请求"><a href="#处理后续请求" class="headerlink" title="处理后续请求"></a>处理后续请求</h4><p>在客户端登陆后, 它将在本地缓存 JWT 令牌, 并在前面讨论的后续请求中发送反回。</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/auth_process_792x741_final.png" alt="img"></p>
+<p>对于每个请求, JwtAuthenticationFilter 通过 JwtTokenService 验证接收到的 JWT令牌。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtAuthenticationFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER =</div><div class="line">      LoggerFactory.getLogger(JwtAuthenticationFilter.class);  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String AUTHORIZATION_HEADER = <span class="string">"Authorization"</span>;  </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TOKEN_PREFIX = <span class="string">"Bearer"</span>;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> JwtTokenService jwtTokenService;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">JwtAuthenticationFilter</span><span class="params">(JwtTokenService jwtTokenService)</span> </span>&#123;    </div><div class="line"><span class="keyword">this</span>.jwtTokenService = jwtTokenService;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response,</span></span></div><div class="line">      FilterChain filterChain) <span class="keyword">throws</span> ServletException, IOException &#123;</div><div class="line"> </div><div class="line">    Authentication authentication = getAuthentication(request);    </div><div class="line"><span class="keyword">if</span> (authentication == <span class="keyword">null</span>) &#123;</div><div class="line">      SecurityContextHolder.clearContext();</div><div class="line">      filterChain.doFilter(request, response);     </div><div class="line"> <span class="keyword">return</span>;</div><div class="line">    &#125;    </div><div class="line"> </div><div class="line"> <span class="keyword">try</span> &#123;</div><div class="line">      SecurityContextHolder.getContext().setAuthentication(authentication);</div><div class="line">      filterChain.doFilter(request, response);</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      SecurityContextHolder.clearContext();</div><div class="line">    &#125;</div><div class="line">  &#125;  <span class="function"><span class="keyword">private</span> Authentication <span class="title">getAuthentication</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</div><div class="line">    String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);    <span class="keyword">if</span> (StringUtils.isEmpty(authorizationHeader)) &#123;</div><div class="line">      LOGGER.debug(<span class="string">"Authorization header is empty."</span>);      </div><div class="line"><span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;    <span class="keyword">if</span> (StringUtils.substringMatch(authorizationHeader, <span class="number">0</span>, TOKEN_PREFIX)) &#123;</div><div class="line">      LOGGER.debug(<span class="string">"Token prefix &#123;&#125; in Authorization header was not found."</span>, TOKEN_PREFIX);      </div><div class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    String jwtToken = authorizationHeader.substring(TOKEN_PREFIX.length() + <span class="number">1</span>);    <span class="keyword">try</span> &#123;      </div><div class="line">      <span class="keyword">return</span> jwtTokenService.parseJwtToken(jwtToken);</div><div class="line">    &#125; <span class="keyword">catch</span> (AuthenticationException e) &#123;</div><div class="line">      LOGGER.warn(e.getMessage());      </div><div class="line">      <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果令牌是有效的, 则会实例化 JwtAuthenticationToken, 并执行线程的 SecurityContext。而由于恢复的 JWT 令牌包含唯一的 ID 和经过身份验证的用户的权限, 因此无需与数据库联系以再次获取此信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JwtAuthenticationToken</span> <span class="keyword">extends</span> <span class="title">AbstractAuthenticationToken</span> </span>&#123;  </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String AUTHORITIES = <span class="string">"authorities"</span>; </div><div class="line"> </div><div class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">long</span> userId;  </div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">private</span> <span class="title">JwtAuthenticationToken</span><span class="params">(<span class="keyword">long</span> userId, Collection&lt;? extends GrantedAuthority&gt; authorities)</span> </span>&#123;    </div><div class="line"><span class="keyword">super</span>(authorities);    </div><div class="line"><span class="keyword">this</span>.userId = userId;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getCredentials</span><span class="params">()</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span>  </div><div class="line"><span class="function"><span class="keyword">public</span> Long <span class="title">getPrincipal</span><span class="params">()</span> </span>&#123;    </div><div class="line"><span class="keyword">return</span> userId;</div><div class="line">  &#125;  <span class="comment">/**   * Factory method for creating a new &#123;<span class="doctag">@code</span> &#123;<span class="doctag">@link</span> JwtAuthenticationToken&#125;&#125;.   * <span class="doctag">@param</span> claims JWT claims   * <span class="doctag">@return</span> a JwtAuthenticationToken   */</span></div><div class="line">  </div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> JwtAuthenticationToken <span class="title">of</span><span class="params">(Claims claims)</span> </span>&#123;    </div><div class="line"><span class="keyword">long</span> userId = Long.valueOf(claims.getSubject());</div><div class="line"> </div><div class="line">    Collection&lt;GrantedAuthority&gt; authorities =</div><div class="line">        Arrays.stream(String.valueOf(claims.get(AUTHORITIES)).split(<span class="string">","</span>))</div><div class="line">            .map(String::trim)</div><div class="line">            .map(String::toUpperCase)</div><div class="line">            .map(SimpleGrantedAuthority::<span class="keyword">new</span>)</div><div class="line">            .collect(Collectors.toSet());</div><div class="line"> </div><div class="line">    JwtAuthenticationToken jwtAuthenticationToken = <span class="keyword">new</span> JwtAuthenticationToken(userId, authorities);</div><div class="line"> </div><div class="line">    Date now = <span class="keyword">new</span> Date();</div><div class="line">    Date expiration = claims.getExpiration();</div><div class="line">    Date notBefore = claims.getNotBefore();</div><div class="line">    jwtAuthenticationToken.setAuthenticated(now.after(notBefore) &amp;&amp; now.before(expiration));    <span class="keyword">return</span> jwtAuthenticationToken;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这之后, 它由安全框架决定是否允许或拒绝请求。</p>
+<h3 id="Spring-Security-在-Java-EE-世界中有竞争者吗？"><a href="#Spring-Security-在-Java-EE-世界中有竞争者吗？" class="headerlink" title="Spring Security 在 Java EE 世界中有竞争者吗？"></a>Spring Security 在 Java EE 世界中有竞争者吗？</h3><p>虽然这不是这篇文章的主题, 但我想花一分钟的时间来谈谈。如果我不得不在一个 JAVA EE 应用程序中完成所有这些？Spring Security 真的是在 JAVA 中实现身份验证和授权的黄金标准吗？</p>
+<h4 id="让我们做个小小的研究！"><a href="#让我们做个小小的研究！" class="headerlink" title="让我们做个小小的研究！"></a>让我们做个小小的研究！</h4><p>JAVA EE 8 指日可待，他将在 2017 年年底发布，我想看看它是否会是 Spring Security 一个强大的竞争者。我发现 JAVA EE 8 将提供 JSR-375 , 这应该会缓解 JAVA EE 应用程序的安全措施的发展。它的参考实施被称为 Soteira, 是一个相对新的 github 项目。那就是说, 现在的答案是真的没有这样的一个竞争者。</p>
+<p>但这项研究是不完整的，并没有提到 Apache Shiro。虽然我从未使用过，但我听说这算是更为简单的 Spring Security。让它更 JWT 令牌 一起使用也不是不可能。从这个角度来看，Apache Shiro 是算 Spring Security 的一个的有可比性的替代品</p>
+<h2 id="构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证"><a href="#构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证" class="headerlink" title="构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证"></a>构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证</h2><p>于用户名和密码的身份验证。如果你错过了这一点，我在这里注意到，JWT令牌是在成功登录后发出的，并验证后续请求。创造长寿的<a href="https://jwt.io/" target="_blank" rel="external">JWT</a>是不实际的，因为它们是独立的，没有办法撤销它们。如果令牌被盗，所有赌注都会关闭。因此，我想添加经典的<a href="http://docs.spring.io/spring-security/site/docs/current/reference/html/ns-config.html#ns-remember-me" target="_blank" rel="external">remember-me</a>风格认证与持久令牌。记住，我的令牌存储在Cookie中作为  <a href="https://jwt.io/" target="_blank" rel="external">JWT</a>作为第一道防线，但是它们也保留在数据库中，并且跟踪其生命周期。</p>
+<p>这次我想从演示运行中的用户管理应用程序的工作原理开始，然后再深入细节。</p>
+<h3 id="验证流程"><a href="#验证流程" class="headerlink" title="验证流程"></a><strong>验证流程</strong></h3><p>基本上，用户使用用户名/密码对进行身份验证会发生什么，他们可能会表示他们希望应用程序记住他们（持续会话）的意图。大多数时候，UI上还有一个复选框来实现。由于应用程序还没有开发UI，我们用<a href="https://curl.haxx.se/" target="_blank" rel="external">cURL</a>做一切  。</p>
+<h4 id="登录"><a href="#登录" class="headerlink" title="登录"></a><strong>登录</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">curl -D- -c cookies.txt -b cookies.txt \</div><div class="line">-XPOST http://localhost:5000/auth/login \</div><div class="line"><span class="_">-d</span> <span class="string">'&#123; "username":"test", "password": "test", "rememberMe": true &#125;'</span></div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">...</div><div class="line">Set-Cookie: remember-me=eyJhbGciOiJIUzUxMiJ9...;Max-Age=1209600;path=/;HttpOnly</div><div class="line">X-Set-Authorization-Bearer: eyJhbGciOiJIUzUxMiJ9...</div></pre></td></tr></table></figure>
+<p>成功认证后，  <a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-rest/src/main/java/com/springuni/auth/security/PersistentJwtTokenBasedRememberMeServices.java" target="_blank" rel="external">PersistentJwtTokenBasedRememberMeServices</a>创建一个永久<a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-model/src/main/java/com/springuni/auth/domain/model/session/Session.java" target="_blank" rel="external">会话</a>，将其保存到数据库并将其转换为JWT令牌。它负责将此持久<em>会话</em>存储在客户端的一个cookie（<em>Set-Cookie</em>）上，并且还发送新创建的瞬时令牌。后者旨在在单页前端的使用寿命内使用，并使用非标准HTTP头（<em>X-Set-Authorization-Bearer</em>）发送。</p>
+<p>当<em>rememberMe</em>标志为<em>false时</em>，只创建一个无状态的JWT令牌，并且完全绕过了remember-me基础架构。</p>
+<h4 id="在应用程序运行时仅使用瞬态令牌"><a href="#在应用程序运行时仅使用瞬态令牌" class="headerlink" title="在应用程序运行时仅使用瞬态令牌"></a><strong>在应用程序运行时仅使用瞬态令牌</strong></h4><p>当应用程序在浏览器中打开时，它会在每个XHR请求的<em>授权</em>头文件中发送暂时的JWT令牌。然而，当应用程序重新加载时，暂时令牌将丢失。</p>
+<p>为了简单起见，这里使用<em>GET / users / {id}</em>来演示正常的请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">curl -D- -H <span class="string">'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...'</span> \</div><div class="line">  -XGET http://localhost:5000/users/524201457797040</div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">...</div><div class="line">&#123;</div><div class="line">  <span class="string">"id"</span> : 524201457797040,</div><div class="line">  <span class="string">"screenName"</span> : <span class="string">"test"</span>,</div><div class="line">  <span class="string">"contactData"</span> : &#123;</div><div class="line">  <span class="string">"email"</span> : <span class="string">"test@springuni.com"</span>,</div><div class="line">  <span class="string">"addresses"</span> : [ ]</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"timezone"</span> : <span class="string">"AMERICA_LOS_ANGELES"</span>,</div><div class="line">  <span class="string">"locale"</span> : <span class="string">"en_US"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="使用瞬态令牌与持久性令牌结合使用"><a href="#使用瞬态令牌与持久性令牌结合使用" class="headerlink" title="使用瞬态令牌与持久性令牌结合使用"></a><strong>使用瞬态令牌与持久性令牌结合使用</strong></h4><p>当用户在第一种情况下选择了remember-me认证时，会发生这种情况。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">curl -D- -c cookies.txt -b cookies.txt \</div><div class="line">  -H <span class="string">'Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9...'</span> \</div><div class="line">  -XGET http://localhost:5000/users/524201457797040</div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">...</div><div class="line">&#123;</div><div class="line">  <span class="string">"id"</span> : 524201457797040,</div><div class="line">  <span class="string">"screenName"</span> : <span class="string">"test"</span>,</div><div class="line">  <span class="string">"contactData"</span> : &#123;</div><div class="line">    <span class="string">"email"</span> : <span class="string">"test@springuni.com"</span>,</div><div class="line">    <span class="string">"addresses"</span> : [ ]</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"timezone"</span> : <span class="string">"AMERICA_LOS_ANGELES"</span>,</div><div class="line">  <span class="string">"locale"</span> : <span class="string">"en_US"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这种情况下，暂时的JWT令牌和一个有效的remember-me cookie都是同时发送的。只要单页应用程序正在运行，就使用暂时令牌。</p>
+<h4 id="初始化时使用持久令牌"><a href="#初始化时使用持久令牌" class="headerlink" title="初始化时使用持久令牌"></a>初始化时使用持久令牌</h4><p>当前端在浏览器中加载时，它不知道是否存在任何暂时的JWT令牌。所有它可以做的是测试持久的remember-me cookie尝试执行一个正常的请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">curl -D- -c cookies.txt -b cookies.txt \</div><div class="line">  -XGET http://localhost:5000/users/524201457797040</div><div class="line"></div><div class="line">HTTP/1.1 200</div><div class="line">...</div><div class="line">Set-Cookie: remember-me=eyJhbGciOiJIUzUxMiJ9...;Max-Age=1209600;path=/;HttpOnly</div><div class="line">X-Set-Authorization-Bearer: eyJhbGciOiJIUzUxMiJ9...</div><div class="line"></div><div class="line">&#123;</div><div class="line">  <span class="string">"id"</span> : 524201457797040,</div><div class="line">  <span class="string">"screenName"</span> : <span class="string">"test"</span>,</div><div class="line">  <span class="string">"contactData"</span> : &#123;</div><div class="line">    <span class="string">"email"</span> : <span class="string">"test@springuni.com"</span>,</div><div class="line">    <span class="string">"addresses"</span> : [ ]</div><div class="line">  &#125;,</div><div class="line">  <span class="string">"timezone"</span> : <span class="string">"AMERICA_LOS_ANGELES"</span>,</div><div class="line">  <span class="string">"locale"</span> : <span class="string">"en_US"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果持久性令牌（cookie）仍然有效，则会在上次使用数据库时在数据库中进行更新，并在浏览器中更新。还执行另一个重要步骤，用户将自动重新进行身份验证，而无需提供用户名/密码对，并创建新的临时令牌。从现在开始，只要运行该应用程序，该应用程序将使用暂时令牌。</p>
+<h4 id="注销"><a href="#注销" class="headerlink" title="注销"></a>注销</h4><p>尽管注销看起来很简单，有一些细节我们需要注意。前端仍然发送无状态的JWT令牌，只要用户进行身份验证，否则UI上的注销按钮甚至不会被提供，后台也不会知道如何注销。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">curl -D- -c cookies.txt -b cookies.txt \</div><div class="line">  -H <span class="string">'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9...'</span> \</div><div class="line">  -XPOST http://localhost:5000/auth/<span class="built_in">logout</span></div><div class="line"></div><div class="line">HTTP/1.1 302 </div><div class="line">Set-Cookie: remember-me=;Max-Age=0;path=/</div><div class="line">Location: http://localhost:5000/login?<span class="built_in">logout</span></div></pre></td></tr></table></figure>
+<p>在此请求之后，记住我的cookie被重置，并且数据库中的持久会话被标记为已删除。</p>
+<h3 id="实现记住我的身份验证"><a href="#实现记住我的身份验证" class="headerlink" title="实现记住我的身份验证"></a>实现记住我的身份验证</h3><p>正如我在摘要中提到的，我们将使用持久性令牌来增加安全性，以便能够在任何时候撤销它们。有三个步骤，我们需要执行，以使适当的记住我处理与Spring Security。</p>
+<h4 id="实现-UserDetailsService"><a href="#实现-UserDetailsService" class="headerlink" title="实现  UserDetailsService"></a>实现  <a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/core/userdetails/UserDetailsService.html" target="_blank" rel="external">UserDetailsService</a></h4><p>在第一篇文章中，我决定使用DDD开发模型，因此它不能依赖于任何框架特定的类。实际上，它甚至不依赖于任何第三方框架或图书馆。大多数教程通常直接实现<em>UserDetailsService</em>，并且业务逻辑和用于构建应用程序的框架之间没有额外的层。</p>
+<p><a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-model/src/main/java/com/springuni/auth/domain/service/UserService.java" target="_blank" rel="external">UserServices</a>在第二部分很久以前被添加到该项目中，因此我们的任务非常简单，因为现在我们需要的是一个框架特定的组件，它将<em>UserDetailsService</em>的职责委托给现有的逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelegatingUserService</span> <span class="keyword">implements</span> <span class="title">UserDetailsService</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">DelegatingUserService</span><span class="params">(UserService userService)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.userService = userService;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> UserDetails <span class="title">loadUserByUsername</span><span class="params">(String username)</span> <span class="keyword">throws</span> UsernameNotFoundException </span>&#123;</div><div class="line">    Long userId = Long.valueOf(username);</div><div class="line">    UsernameNotFoundException usernameNotFoundException = <span class="keyword">new</span> UsernameNotFoundException(username);</div><div class="line">    <span class="keyword">return</span> userService.findUser(userId)</div><div class="line">        .map(DelegatingUser::<span class="keyword">new</span>)</div><div class="line">        .orElseThrow(() -&gt; usernameNotFoundException);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>只是围绕<em>UserService的</em>一个简单的包装器，最终将返回的<a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-model/src/main/java/com/springuni/auth/domain/model/user/User.java" target="_blank" rel="external">User</a>模型对象转换为框架特定的<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/core/userdetails/UserDetails.html" target="_blank" rel="external">UserDetails</a>实例。除此之外，在这个项目中，我们不直接使用用户的登录名（电子邮件地址或屏幕名称）。相反，他们的用户的身份证遍及各地。</p>
+<h4 id="实现-PersistentTokenRepository"><a href="#实现-PersistentTokenRepository" class="headerlink" title="实现  PersistentTokenRepository"></a>实现  <a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/PersistentTokenRepository.html" target="_blank" rel="external">PersistentTokenRepository</a></h4><p>幸运的是，我们在添加适当的<em>PersistentTokenRepository</em>实现方面同样容易，因为域模型已经包含<a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-model/src/main/java/com/springuni/auth/domain/service/SessionService.java" target="_blank" rel="external">SessionService</a>和<a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-model/src/main/java/com/springuni/auth/domain/model/session/Session.java" target="_blank" rel="external">Session</a>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DelegatingPersistentTokenRepository</span> <span class="keyword">implements</span> <span class="title">PersistentTokenRepository</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER =</div><div class="line">      LoggerFactory.getLogger(DelegatingPersistentTokenRepository.class);</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> SessionService sessionService;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">DelegatingPersistentTokenRepository</span><span class="params">(SessionService sessionService)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.sessionService = sessionService;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">createNewToken</span><span class="params">(PersistentRememberMeToken token)</span> </span>&#123;</div><div class="line">    Long sessionId = Long.valueOf(token.getSeries());</div><div class="line">    Long userId = Long.valueOf(token.getUsername());</div><div class="line">    sessionService.createSession(sessionId, userId, token.getTokenValue());</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">updateToken</span><span class="params">(String series, String tokenValue, Date lastUsed)</span> </span>&#123;</div><div class="line">    Long sessionId = Long.valueOf(series);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      sessionService.useSession(sessionId, tokenValue, toLocalDateTime(lastUsed));</div><div class="line">    &#125; <span class="keyword">catch</span> (NoSuchSessionException e) &#123;</div><div class="line">      LOGGER.warn(<span class="string">"Session &#123;&#125; doesn't exists."</span>, sessionId);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> PersistentRememberMeToken <span class="title">getTokenForSeries</span><span class="params">(String seriesId)</span> </span>&#123;</div><div class="line">    Long sessionId = Long.valueOf(seriesId);</div><div class="line">    <span class="keyword">return</span> sessionService</div><div class="line">        .findSession(sessionId)</div><div class="line">        .map(<span class="keyword">this</span>::toPersistentRememberMeToken)</div><div class="line">        .orElse(<span class="keyword">null</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeUserTokens</span><span class="params">(String username)</span> </span>&#123;</div><div class="line">    Long userId = Long.valueOf(username);</div><div class="line">    sessionService.logoutUser(userId);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> PersistentRememberMeToken <span class="title">toPersistentRememberMeToken</span><span class="params">(Session session)</span> </span>&#123;</div><div class="line">    String username = String.valueOf(session.getUserId());</div><div class="line">    String series = String.valueOf(session.getId());</div><div class="line">    LocalDateTime lastUsedAt =</div><div class="line">        Optional.ofNullable(session.getLastUsedAt()).orElseGet(session::getIssuedAt);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PersistentRememberMeToken(</div><div class="line">        username, series, session.getToken(), toDate(lastUsedAt));</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>情况与<em>UserDetailsService</em>大致相同，包装器会在<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/PersistentRememberMeToken.html" target="_blank" rel="external">PersistentRememberMeToken</a>和<em>Session</em>之间进行转换  。唯一需要特别注意的是<em>PersistentRememberMeToken中</em>的日期字段。在会话中，我分离了两个日期字段（<em>即已发布的</em>和<em>lastUsedAt</em>），后者在用户首次使用remember-me令牌的帮助下登录时获取第一个值。因此有可能它是空的，而且是什么时候使用<em>publishedAt</em>的值。</p>
+<h4 id="实现-RememberMeServices"><a href="#实现-RememberMeServices" class="headerlink" title="实现  RememberMeServices"></a>实现  <a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/RememberMeServices.html" target="_blank" rel="external">RememberMeServices</a></h4><p>在这一点上，我们重新使用<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/PersistentTokenBasedRememberMeServices.html" target="_blank" rel="external">PersistentTokenBasedRememberMeServices</a>并为手头的任务进行自定义，它取决于<em>UserDetailsService</em>和<em>PersistentTokenRepository，</em>而这些已经被考虑到了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PersistentJwtTokenBasedRememberMeServices</span> <span class="keyword">extends</span></span></div><div class="line">    <span class="title">PersistentTokenBasedRememberMeServices</span> &#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER =</div><div class="line">      LoggerFactory.getLogger(PersistentJwtTokenBasedRememberMeServices.class);</div><div class="line"></div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_TOKEN_LENGTH = <span class="number">16</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">PersistentJwtTokenBasedRememberMeServices</span><span class="params">(</span></span></div><div class="line">      String key, UserDetailsService userDetailsService,</div><div class="line">      PersistentTokenRepository tokenRepository) &#123;</div><div class="line"></div><div class="line">    <span class="keyword">super</span>(key, userDetailsService, tokenRepository);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="keyword">protected</span> String[] decodeCookie(String cookieValue) <span class="keyword">throws</span> InvalidCookieException &#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      Claims claims = Jwts.parser()</div><div class="line">          .setSigningKey(getKey())</div><div class="line">          .parseClaimsJws(cookieValue)</div><div class="line">          .getBody();</div><div class="line"></div><div class="line">      <span class="keyword">return</span> <span class="keyword">new</span> String[] &#123; claims.getId(), claims.getSubject() &#125;;</div><div class="line">    &#125; <span class="keyword">catch</span> (JwtException e) &#123;</div><div class="line">      LOGGER.warn(e.getMessage());</div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> InvalidCookieException(e.getMessage());</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> String <span class="title">encodeCookie</span><span class="params">(String[] cookieTokens)</span> </span>&#123;</div><div class="line">    Claims claims = Jwts.claims()</div><div class="line">        .setId(cookieTokens[<span class="number">0</span>])</div><div class="line">        .setSubject(cookieTokens[<span class="number">1</span>])</div><div class="line">        .setExpiration(<span class="keyword">new</span> Date(currentTimeMillis() + getTokenValiditySeconds() * <span class="number">1000L</span>))</div><div class="line">        .setIssuedAt(<span class="keyword">new</span> Date());</div><div class="line"></div><div class="line">    <span class="keyword">return</span> Jwts.builder()</div><div class="line">        .setClaims(claims)</div><div class="line">        .signWith(HS512, getKey())</div><div class="line">        .compact();</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> String <span class="title">generateSeriesData</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span> seriesId = IdentityGenerator.generate();</div><div class="line">    <span class="keyword">return</span> String.valueOf(seriesId);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> String <span class="title">generateTokenData</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> RandomUtil.ints(DEFAULT_TOKEN_LENGTH)</div><div class="line">        .mapToObj(i -&gt; String.format(<span class="string">"%04x"</span>, i))</div><div class="line">        .collect(Collectors.joining());</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">rememberMeRequested</span><span class="params">(HttpServletRequest request, String parameter)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> Optional.ofNullable((Boolean)request.getAttribute(REMEMBER_ME_ATTRIBUTE)).orElse(<span class="keyword">false</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个特定的实现使用JWT令牌作为在cookies中存储记住我的令牌的物化形式。Spring Security的默认格式也可以很好，但JWT增加了一个额外的安全层。默认实现没有签名，每个请求最终都是数据库中的一个查询，用于检查remember-me令牌。</p>
+<p>JWT防止这种情况，尽管解析它并验证其签名需要更多的CPU周期。</p>
+<h4 id="将所有这些组合在一起"><a href="#将所有这些组合在一起" class="headerlink" title="将所有这些组合在一起"></a>将所有这些组合在一起</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthSecurityConfiguration</span> <span class="keyword">extends</span> <span class="title">SecurityConfigurationSupport</span> </span>&#123;</div><div class="line"></div><div class="line">  ...</div><div class="line"></div><div class="line">  <span class="meta">@Bean</span></div><div class="line">  <span class="function"><span class="keyword">public</span> UserDetailsService <span class="title">userDetailsService</span><span class="params">(UserService userService)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatingUserService(userService);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Bean</span></div><div class="line">  <span class="function"><span class="keyword">public</span> PersistentTokenRepository <span class="title">persistentTokenRepository</span><span class="params">(SessionService sessionService)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DelegatingPersistentTokenRepository(sessionService);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Bean</span></div><div class="line">  <span class="function"><span class="keyword">public</span> RememberMeAuthenticationFilter <span class="title">rememberMeAuthenticationFilter</span><span class="params">(</span></span></div><div class="line">      AuthenticationManager authenticationManager, RememberMeServices rememberMeServices,</div><div class="line">      AuthenticationSuccessHandler authenticationSuccessHandler) &#123;</div><div class="line"></div><div class="line">    RememberMeAuthenticationFilter rememberMeAuthenticationFilter =</div><div class="line">        <span class="keyword">new</span> ProceedingRememberMeAuthenticationFilter(authenticationManager, rememberMeServices);</div><div class="line"></div><div class="line">    rememberMeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> rememberMeAuthenticationFilter;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Bean</span></div><div class="line">  <span class="function"><span class="keyword">public</span> RememberMeServices <span class="title">rememberMeServices</span><span class="params">(</span></span></div><div class="line">      UserDetailsService userDetailsService, PersistentTokenRepository persistentTokenRepository) &#123;</div><div class="line"></div><div class="line">    String secretKey = getRememberMeTokenSecretKey().orElseThrow(IllegalStateException::<span class="keyword">new</span>);</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PersistentJwtTokenBasedRememberMeServices(</div><div class="line">        secretKey, userDetailsService, persistentTokenRepository);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  ...</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">customizeRememberMe</span><span class="params">(HttpSecurity http)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    UserDetailsService userDetailsService = lookup(<span class="string">"userDetailsService"</span>);</div><div class="line">    PersistentTokenRepository persistentTokenRepository = lookup(<span class="string">"persistentTokenRepository"</span>);</div><div class="line">    AbstractRememberMeServices rememberMeServices = lookup(<span class="string">"rememberMeServices"</span>);</div><div class="line">    RememberMeAuthenticationFilter rememberMeAuthenticationFilter =</div><div class="line">        lookup(<span class="string">"rememberMeAuthenticationFilter"</span>);</div><div class="line"></div><div class="line">    http.rememberMe()</div><div class="line">        .userDetailsService(userDetailsService)</div><div class="line">        .tokenRepository(persistentTokenRepository)</div><div class="line">        .rememberMeServices(rememberMeServices)</div><div class="line">        .key(rememberMeServices.getKey())</div><div class="line">        .and()</div><div class="line">        .logout()</div><div class="line">        .logoutUrl(LOGOUT_ENDPOINT)</div><div class="line">        .and()</div><div class="line">        .addFilterAt(rememberMeAuthenticationFilter, RememberMeAuthenticationFilter.class);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  ...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>令人感到神奇的结果在最后部分是显而易见的。基本上，这是关于使用Spring Security注册组件，并启用记住我的服务。有趣的是，我们需要一个在<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/AbstractRememberMeServices.html" target="_blank" rel="external">AbstractRememberMeServices</a>  内部使用的键（一个字符串）。 <em>AbstractRememberMeServices</em>  也是此设置中的默认注销处理程序，并在注销时将数据库中的令牌标记为已删除。</p>
+<h3 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h3><h4 id="在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据"><a href="#在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据" class="headerlink" title="在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据"></a>在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据</h4><p>默认情况下，  <a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/UsernamePasswordAuthenticationFilter.html" target="_blank" rel="external">UsernamePasswordAuthenticationFilter</a>会将凭据作为POST请求的HTTP请求参数，但是我们希望发送JSON文档。进一步下去，  <a href="http://docs.spring.io/autorepo/docs/spring-security/current/apidocs/org/springframework/security/web/authentication/rememberme/AbstractRememberMeServices.html" target="_blank" rel="external">AbstractRememberMeServices</a>还会将remember-me标志的存在检查为请求参数。为了解决这个问题，  <a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-rest/src/main/java/com/springuni/auth/security/LoginFilter.java" target="_blank" rel="external">LoginFilter</a>  将remember-me标志设置为请求属性，并将决定委托给  <a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/PersistentTokenBasedRememberMeServices.html" target="_blank" rel="external">PersistentTokenBasedRememberMeServices，</a>  如果记住我的身份验证需要启动或不启动。</p>
+<h4 id="使用RememberMeServices处理登录成功"><a href="#使用RememberMeServices处理登录成功" class="headerlink" title="使用RememberMeServices处理登录成功"></a>使用<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/RememberMeServices.html" target="_blank" rel="external">RememberMeServices</a>处理登录成功</h4><p><a href="https://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/rememberme/RememberMeAuthenticationFilter.html" target="_blank" rel="external">RememberMeAuthenticationFilter</a>不会继续进入过滤器链中的下一个过滤器，但如果设置了<a href="http://docs.spring.io/spring-security/site/docs/current/apidocs/org/springframework/security/web/authentication/AuthenticationSuccessHandler.html" target="_blank" rel="external">AuthenticationSuccessHandler</a>，它将停止其执行  。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProceedingRememberMeAuthenticationFilter</span> <span class="keyword">extends</span> <span class="title">RememberMeAuthenticationFilter</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER =</div><div class="line">      LoggerFactory.getLogger(ProceedingRememberMeAuthenticationFilter.class);</div><div class="line"></div><div class="line">  <span class="keyword">private</span> AuthenticationSuccessHandler successHandler;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ProceedingRememberMeAuthenticationFilter</span><span class="params">(</span></span></div><div class="line">      AuthenticationManager authenticationManager, RememberMeServices rememberMeServices) &#123;</div><div class="line"></div><div class="line">    <span class="keyword">super</span>(authenticationManager, rememberMeServices);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAuthenticationSuccessHandler</span><span class="params">(AuthenticationSuccessHandler successHandler)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.successHandler = successHandler;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSuccessfulAuthentication</span><span class="params">(</span></span></div><div class="line">      HttpServletRequest request, HttpServletResponse response, Authentication authResult) &#123;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (successHandler == <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      successHandler.onAuthenticationSuccess(request, response, authResult);</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">      LOGGER.error(e.getMessage(), e);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/springuni/springuni-particles/blob/master/springuni-auth-rest/src/main/java/com/springuni/auth/security/ProceedingRememberMeAuthenticationFilter.java" target="_blank" rel="external">ProceedingRememberMeAuthenticationFilter</a>  是原始过滤器的自定义版本，当认证成功时，该过滤器不会停止。</p>
+<h2 id="构建用户管理微服务器（七）：将以上组合在一起"><a href="#构建用户管理微服务器（七）：将以上组合在一起" class="headerlink" title="构建用户管理微服务器（七）：将以上组合在一起"></a>构建用户管理微服务器（七）：将以上组合在一起</h2><p>从绝对零开始，用户管理应用程序的构建块已被开发出来。在最后一篇中，我想向您展示如何组装这些部分，以使应用程序正常工作。一些功能仍然缺少，我仍然在第一个版本上工作，使其功能完整，但现在基本上是可以使用的。</p>
+<h3 id="创建一个独立的可执行模块"><a href="#创建一个独立的可执行模块" class="headerlink" title="创建一个独立的可执行模块"></a>创建一个独立的可执行模块</h3><p>今天建立基于Spring的应用程序最简单的方法是去Spring Boot。毫无疑问。由于一个原因，它正在获得大量采用，这就是使您的生活比使用裸弹更容易。之前我曾在各种情况下与Spring合作过，并在Servlet容器和完全成熟的Java EE应用服务器之上构建了应用程序，但能够将可执行软件包中的所有内容都打包成开发成本。</p>
+<p>总而言之，第一步是为应用程序创建一个新的模块，它是<a href="https://github.com/springuni/springuni-particles/tree/master/springuni-auth-boot" target="_blank" rel="external">springuni-auth-boot</a>。</p>
+<h4 id="Maven配置"><a href="#Maven配置" class="headerlink" title="Maven配置"></a>Maven配置</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></div><div class="line">  <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></div><div class="line">  <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">parent</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springuni-particles<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springuni<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springuni-auth-boot<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>SpringUni Auth User Boot<span class="tag">&lt;/<span class="name">name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>Example module for assembling user authentication modules<span class="tag">&lt;/<span class="name">description</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springuni<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springuni-auth-rest<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.springuni<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springuni-auth-user-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></div><div class="line"></div><div class="line">  <span class="tag">&lt;<span class="name">build</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">        <span class="comment">&lt;!-- https://github.com/spring-projects/spring-boot/issues/6254#issuecomment-229600830 --&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">classifier</span>&gt;</span>exec<span class="tag">&lt;/<span class="name">classifier</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">build</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>模块<a href="https://github.com/springuni/springuni-particles/tree/master/springuni-auth-rest" target="_blank" rel="external">springuni-auth-rest</a>提供用于用户管理的REST端点，它还将<a href="https://github.com/springuni/springuni-particles/tree/master/springuni-auth-model" target="_blank" rel="external">springuni-auth模型</a>作为传递依赖。<a href="https://github.com/springuni/springuni-particles/tree/master/springuni-auth-user-jpa" target="_blank" rel="external">springuni-auth-user-jpa</a>负责持久化的用户数据，并且将来可以替换其他持久性机制。</p>
+<p>第三个依赖是MySQL连接器，也可以根据需要进行替换。</p>
+<p>从<a href="https://projects.spring.io/spring-boot/" target="_blank" rel="external">Spring Boot</a>的角度来说，以下两个依赖关系是重要的：<a href="https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web" target="_blank" rel="external">spring-boot-starter-web</a>和<a href="https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-tomcat" target="_blank" rel="external">spring-boot-starter-tomcat</a>。为了能够创建一个Web应用程序，我们需要它们。</p>
+<h3 id="应用程序的入口点"><a href="#应用程序的入口点" class="headerlink" title="应用程序的入口点"></a>应用程序的入口点</h3><p>在没有Spring Boot的情况下执行此步骤将会非常费力（必须在web.xml中注册上下文监听器并为应用程序设置容器）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> com.springuni.auth.domain.model.AuthJpaRepositoryConfiguration;</div><div class="line"><span class="keyword">import</span> com.springuni.auth.domain.service.AuthServiceConfiguration;</div><div class="line"><span class="keyword">import</span> com.springuni.auth.rest.AuthRestConfiguration;</div><div class="line"><span class="keyword">import</span> com.springuni.auth.security.AuthSecurityConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Import;</div><div class="line"></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@Import</span>(&#123;</div><div class="line">    AuthJpaRepositoryConfiguration.class,</div><div class="line">    AuthServiceConfiguration.class,</div><div class="line">    AuthRestConfiguration.class,</div><div class="line">    AuthSecurityConfiguration.class</div><div class="line">&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    SpringApplication.run(Application.class, args);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这几乎是一个虚拟模块，所有重要的举措都归结为不得不导入一些基于Java的Spring配置类。</p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>Spring Boot附带了一个非常有用的Maven插件，可以将整个项目重新打包成一个可执行的überJAR。它也能够在本地启动项目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn -pl springuni-auth-boot spring-boot:run</div></pre></td></tr></table></figure>
+<h3 id="测试驱动用户管理应用程序"><a href="#测试驱动用户管理应用程序" class="headerlink" title="测试驱动用户管理应用程序"></a>测试驱动用户管理应用程序</h3><p>第一部分定义了所有可用的REST端点，现在已经有一些现实世界的用例来测试它们。</p>
+<h4 id="注册新用户"><a href="#注册新用户" class="headerlink" title="注册新用户"></a>注册新用户</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">curl -H <span class="string">'Content-Type: application/json'</span> -XPOST http://localhost:5000/users <span class="_">-d</span> \</div><div class="line"><span class="string">'&#123;</span></div><div class="line"> "screenName":"test2",</div><div class="line"> "contactData": &#123;</div><div class="line">   "email": "test2@springuni.com"</div><div class="line"> &#125;,</div><div class="line"> "password": "test"</div><div class="line">&#125;'</div><div class="line">HTTP/1.1 200</div></pre></td></tr></table></figure>
+<h3 id="首次登录尝试"><a href="#首次登录尝试" class="headerlink" title="首次登录尝试"></a>首次登录尝试</h3><p>此时首次登录尝试不可避免地会失败，因为用户帐号尚未确认</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">curl -D- -XPOST http://localhost:5000/auth/login <span class="_">-d</span> <span class="string">'&#123; "username":"test5", "password": "test" &#125;'</span> </div><div class="line">HTTP/1.1 401 </div><div class="line">&#123;</div><div class="line"> <span class="string">"statusCode"</span> : 401,</div><div class="line"> <span class="string">"reasonPhrase"</span> : <span class="string">"Unauthorized"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="确认帐号"><a href="#确认帐号" class="headerlink" title="确认帐号"></a>确认帐号</h3><p>一般情况下，最终用户将收到一封电子邮件中的确认链接，点击该链接会启动以下请求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl -D- -XPUT http://localhost:5000/users/620366184447377/77<span class="built_in">fc</span>990b-210c-4132-ac93-ec50522ba06f</div><div class="line">HTTP/1.1 200</div></pre></td></tr></table></figure>
+<h3 id="第二次登录尝试"><a href="#第二次登录尝试" class="headerlink" title="第二次登录尝试"></a>第二次登录尝试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">curl -D- -XPOST http://localhost:5000/auth/login <span class="_">-d</span> <span class="string">'&#123; "username":"test5", "password": "test" &#125;'</span></div><div class="line">HTTP/1.1 200</div><div class="line">X-Set-Authorization-Bearer: eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI2MjA1OTkwNjIwMTQ4ODEiLCJzdWIiOiI2MjAzNjYxODQ0NDczNzciLCJleHAiOjE0OTcxMDQ3OTAsImlhdCI6MTQ5NzAxODM5MCwiYXV0aG9yaXRpZXMiOiI<span class="keyword">if</span>Q.U-GfabsdYidg-Y9eSp2lyyh7DxxaI-zaTOZISlCf3RjKQUTmu0-vm6DH80xYWE69SmoGgm07qiYM32JBd9d5oQ</div></pre></td></tr></table></figure>
+<p>用户的电子邮件地址确认后，即可登录。</p>
+<h2 id="下一步是什么？"><a href="#下一步是什么？" class="headerlink" title="下一步是什么？"></a>下一步是什么？</h2><p>正如我之前提到的，这个应用程序有很多工作要做。其中还有一些基本功能，也没有UI。您可以按照以下步骤进行：  <a href="https://github.com/springuni/springuni-particles/projects/1" target="_blank" rel="external">https://github.com/springuni/springuni-particles/projects/1</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微服务/" rel="tag">#微服务</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/14/谷歌开发工具文档/" rel="next" title="谷歌开发工具文档">
+                <i class="fa fa-chevron-left"></i> 谷歌开发工具文档
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/15/构建用户管理微服务/"
+           data-title="构建用户管理微服务" data-url="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">61</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#构建用户管理微服务"><span class="nav-number">1.</span> <span class="nav-text">构建用户管理微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（一）：定义领域模型和-REST-API"><span class="nav-number">1.1.</span> <span class="nav-text">构建用户管理微服务（一）：定义领域模型和 REST API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户故事"><span class="nav-number">1.1.1.</span> <span class="nav-text">用户故事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作流程"><span class="nav-number">1.1.2.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非功能性需求"><span class="nav-number">1.1.3.</span> <span class="nav-text">非功能性需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域模型"><span class="nav-number">1.1.4.</span> <span class="nav-text">领域模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rest-api"><span class="nav-number">1.1.5.</span> <span class="nav-text">rest api</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Session-management"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Session management</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-management"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">User management</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（二）：实现领域模型"><span class="nav-number">1.2.</span> <span class="nav-text">构建用户管理微服务（二）：实现领域模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用领域驱动设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用领域驱动设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实体类"><span class="nav-number">1.2.2.</span> <span class="nav-text">实体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值对象"><span class="nav-number">1.2.3.</span> <span class="nav-text">值对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合"><span class="nav-number">1.2.4.</span> <span class="nav-text">聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域事件"><span class="nav-number">1.2.5.</span> <span class="nav-text">领域事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务"><span class="nav-number">1.2.6.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储库"><span class="nav-number">1.2.7.</span> <span class="nav-text">存储库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目结构"><span class="nav-number">1.2.8.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块"><span class="nav-number">1.2.9.</span> <span class="nav-text">模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（三）：实现和测试存储库"><span class="nav-number">1.3.</span> <span class="nav-text">构建用户管理微服务（三）：实现和测试存储库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-XML-来映射简单的-JAVA-对象"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用 XML 来映射简单的 JAVA 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目中的新模块"><span class="nav-number">1.3.2.</span> <span class="nav-text">项目中的新模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试存储库"><span class="nav-number">1.3.3.</span> <span class="nav-text">单元测试存储库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（四）：实现-REST-控制器"><span class="nav-number">1.4.</span> <span class="nav-text">构建用户管理微服务（四）：实现 REST 控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有关-REST"><span class="nav-number">1.4.1.</span> <span class="nav-text">有关 REST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REST-端点的支撑模块"><span class="nav-number">1.4.2.</span> <span class="nav-text">REST 端点的支撑模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#能被重新使用的常见-REST-配置项目"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">能被重新使用的常见 REST 配置项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误处理"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理未响应请求"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">处理未响应请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用于管理用户的-REST-端点"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">用于管理用户的 REST 端点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-DTO-映射到模型类"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">将 DTO 映射到模型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-REST-控制器"><span class="nav-number">1.4.2.6.</span> <span class="nav-text">测试 REST 控制器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（五）：使用-JWT-令牌和-Spring-Security-来实现身份验证"><span class="nav-number">1.5.</span> <span class="nav-text">构建用户管理微服务（五）：使用 JWT 令牌和 Spring Security 来实现身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有关-Token"><span class="nav-number">1.5.1.</span> <span class="nav-text">有关 Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-JWT-令牌"><span class="nav-number">1.5.2.</span> <span class="nav-text">关于 JWT 令牌</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建和验证-JWT-令牌"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">创建和验证 JWT 令牌</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录和身份验证过程"><span class="nav-number">1.5.3.</span> <span class="nav-text">登录和身份验证过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录时创建-JWT-令牌"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">登录时创建 JWT 令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理后续请求"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">处理后续请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-在-Java-EE-世界中有竞争者吗？"><span class="nav-number">1.5.4.</span> <span class="nav-text">Spring Security 在 Java EE 世界中有竞争者吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#让我们做个小小的研究！"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">让我们做个小小的研究！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证"><span class="nav-number">1.6.</span> <span class="nav-text">构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#验证流程"><span class="nav-number">1.6.1.</span> <span class="nav-text">验证流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在应用程序运行时仅使用瞬态令牌"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">在应用程序运行时仅使用瞬态令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用瞬态令牌与持久性令牌结合使用"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">使用瞬态令牌与持久性令牌结合使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化时使用持久令牌"><span class="nav-number">1.6.1.4.</span> <span class="nav-text">初始化时使用持久令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注销"><span class="nav-number">1.6.1.5.</span> <span class="nav-text">注销</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现记住我的身份验证"><span class="nav-number">1.6.2.</span> <span class="nav-text">实现记住我的身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-UserDetailsService"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">实现  UserDetailsService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-PersistentTokenRepository"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">实现  PersistentTokenRepository</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-RememberMeServices"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">实现  RememberMeServices</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将所有这些组合在一起"><span class="nav-number">1.6.2.4.</span> <span class="nav-text">将所有这些组合在一起</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#陷阱"><span class="nav-number">1.6.3.</span> <span class="nav-text">陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用RememberMeServices处理登录成功"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">使用RememberMeServices处理登录成功</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务器（七）：将以上组合在一起"><span class="nav-number">1.7.</span> <span class="nav-text">构建用户管理微服务器（七）：将以上组合在一起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个独立的可执行模块"><span class="nav-number">1.7.1.</span> <span class="nav-text">创建一个独立的可执行模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven配置"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">Maven配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序的入口点"><span class="nav-number">1.7.2.</span> <span class="nav-text">应用程序的入口点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">1.7.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试驱动用户管理应用程序"><span class="nav-number">1.7.4.</span> <span class="nav-text">测试驱动用户管理应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注册新用户"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">注册新用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#首次登录尝试"><span class="nav-number">1.7.5.</span> <span class="nav-text">首次登录尝试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确认帐号"><span class="nav-number">1.7.6.</span> <span class="nav-text">确认帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次登录尝试"><span class="nav-number">1.7.7.</span> <span class="nav-text">第二次登录尝试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下一步是什么？"><span class="nav-number">1.8.</span> <span class="nav-text">下一步是什么？</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
