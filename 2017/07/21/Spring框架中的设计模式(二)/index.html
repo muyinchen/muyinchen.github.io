@@ -1,0 +1,688 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring  设计模式" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring框架中的设计模式(二)在上一篇中我们在Spring中所谈到的设计模式涉及到了创建模式三剑客和1个行为模式(解释器模式)。这次我们会将眼光更多地关注在具有结构性和行为性的设计模式上。
+在这篇文章中，我们将看到每个类型的两种模式。首先将关注类型是的结构设计模式。它将包含代理和复合。下一个将介绍行为模式：策略和模板方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring框架中的设计模式(二)">
+<meta property="og:url" content="https://muyinchen.github.io/2017/07/21/Spring框架中的设计模式(二)/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring框架中的设计模式(二)在上一篇中我们在Spring中所谈到的设计模式涉及到了创建模式三剑客和1个行为模式(解释器模式)。这次我们会将眼光更多地关注在具有结构性和行为性的设计模式上。
+在这篇文章中，我们将看到每个类型的两种模式。首先将关注类型是的结构设计模式。它将包含代理和复合。下一个将介绍行为模式：策略和模板方法。">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170721_175052.png">
+<meta property="og:updated_time" content="2017-07-21T11:19:17.116Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring框架中的设计模式(二)">
+<meta name="twitter:description" content="Spring框架中的设计模式(二)在上一篇中我们在Spring中所谈到的设计模式涉及到了创建模式三剑客和1个行为模式(解释器模式)。这次我们会将眼光更多地关注在具有结构性和行为性的设计模式上。
+在这篇文章中，我们将看到每个类型的两种模式。首先将关注类型是的结构设计模式。它将包含代理和复合。下一个将介绍行为模式：策略和模板方法。">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170721_175052.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/07/21/Spring框架中的设计模式(二)/"/>
+
+
+  <title> Spring框架中的设计模式(二) | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring框架中的设计模式(二)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-21T17:12:33+08:00" content="2017-07-21">
+              2017-07-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/07/21/Spring框架中的设计模式(二)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/21/Spring框架中的设计模式(二)/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring框架中的设计模式-二"><a href="#Spring框架中的设计模式-二" class="headerlink" title="Spring框架中的设计模式(二)"></a>Spring框架中的设计模式(二)</h1><p>在上一篇中我们在Spring中所谈到的设计模式涉及到了创建模式三剑客和1个行为模式(解释器模式)。这次我们会将眼光更多地关注在具有结构性和行为性的设计模式上。</p>
+<p>在这篇文章中，我们将看到每个类型的两种模式。首先将关注类型是的结构设计模式。它将包含代理和复合。下一个将介绍行为模式：策略和模板方法。<br> <a id="more"></a></p>
+<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>面向对象编程（OOP）可能是编程中最流行的概念。然而，Spring引入了另一种编码规范，<strong>面向对象编程</strong>（AOP）。为了简化定义，AOP是面向系统特定点的一种编程，如：异常抛出，特定类别方法的执行等.AOP允许在执行这些特定点之前或之后执行补充动作。如何实现这种操作？它可以通过监听器(listeners)进行。但在这种情况下，我们应该在只要可能存在调用的地方都需要定义监听器来进行监听（比如在一个方法的开始的地方）。这就是为什么Spring不采用这个idea。相反，Spring实现了一种能够通过额外的方法调用完成任务的设计模式 - <strong>代理设计模式</strong>。</p>
+<p>代理就像对象的镜像一样。也正因为如此，代理对象不仅可以覆盖真实对象，还可以扩展其功能。因此，对于只能在屏幕上打印一些文本的对象，我们可以添加另一个对象来过滤显示单词。可以通过代理来定义第二个对象的调用。代理是封装真实对象的对象。例如，如果您尝试调用Waiter bean，那么您将调用该Bean的代理，其行为方式完全相同。</p>
+<p>代理设计模式的一个很好的例子是<strong>org.springframework.aop.framework.ProxyFactoryBean</strong>。该工厂根据Spring bean构建AOP代理。该类实现了定义<strong>getObject()</strong>方法的<code>FactoryBean</code>接口。此方法用于将需求<code>Bean</code>的实例返回给<code>bean factory</code>。在这种情况下，它不是返回的实例，而是<code>AOP代理</code>。在执行代理对象的方法之前，可以通过调用补充方法来进一步“修饰”代理对象(其实所谓的静态代理不过是在装饰模式上加了个要不要你来干动作行为而已，而不是装饰模式什么也不做就加了件衣服，其他还得由你来全权完成)。</p>
+<p><code>ProxyFactory</code>的一个例子是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestProxyAop</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    ProxyFactory factory = <span class="keyword">new</span> ProxyFactory(<span class="keyword">new</span> House());</div><div class="line">    factory.addInterface(Construction.class);</div><div class="line">    factory.addAdvice(<span class="keyword">new</span> BeforeConstructAdvice());</div><div class="line">    factory.setExposeProxy(<span class="keyword">true</span>);</div><div class="line"> </div><div class="line">    Construction construction = (Construction) factory.getProxy();</div><div class="line">    construction.construct();</div><div class="line">    assertTrue(<span class="string">"Construction is illegal. "</span></div><div class="line">      + <span class="string">"Supervisor didn't give a permission to build "</span></div><div class="line">      + <span class="string">"the house"</span>, construction.isPermitted());</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Construction</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">construct</span><span class="params">()</span></span>;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">givePermission</span><span class="params">()</span></span>;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPermitted</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">House</span> <span class="keyword">implements</span> <span class="title">Construction</span></span>&#123;</div><div class="line">         </div><div class="line">  <span class="keyword">private</span> <span class="keyword">boolean</span> permitted = <span class="keyword">false</span>;</div><div class="line">   </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isPermitted</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.permitted;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">construct</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"I'm constructing a house"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">givePermission</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Permission is given to construct a simple house"</span>);</div><div class="line">    <span class="keyword">this</span>.permitted = <span class="keyword">true</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BeforeConstructAdvice</span> <span class="keyword">implements</span> <span class="title">MethodBeforeAdvice</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">before</span><span class="params">(Method method, Object[] arguments, Object target)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">    <span class="keyword">if</span> (method.getName().equals(<span class="string">"construct"</span>)) &#123;</div><div class="line">      ((Construction) target).givePermission();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这个测试应该通过，因为我们不直接在House实例上操作，而是代理它。代理调用第一个<code>BeforeConstructAdvice</code>的<code>before</code>方法（指向在执行目标方法之前执行，在我们的例子中为<code>construct()</code>）通过它，给出了一个“权限”来构造对象的字段（house）。代理层提供了一个额外新功能，因为它可以简单地分配给另一个对象。要做到这一点，我们只能在before方法之前修改过滤器。</p>
+<h2 id="复合模式"><a href="#复合模式" class="headerlink" title="复合模式"></a>复合模式</h2><p>另一种结构模式是<strong>复合模式</strong>。在关于<a href="https://muyinchen.github.io/2017/07/20/Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F(%E4%B8%80">Spring中设计模式</a>/)的第一篇文章中，我们使用构建器来构造复杂对象。另一种实现方法是使用复合模式。这种模式是基于具有共同行为的多个对象的存在，用于构建更大的对象。较大的对象仍然具有与最小对象相同的特征。那么用它来定义相同的行为。</p>
+<p>复合对象的非Spring示例可以是一个写入HTML的文本对象，由包含span或em标签的段落组成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompositeTest</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    TextTagComposite composite = <span class="keyword">new</span> PTag();</div><div class="line">    composite.addTag(<span class="keyword">new</span> SpanTag());</div><div class="line">    composite.addTag(<span class="keyword">new</span> EmTag());</div><div class="line">     </div><div class="line">    <span class="comment">// sample client code</span></div><div class="line">    composite.startWrite();</div><div class="line">    <span class="keyword">for</span> (TextTag leaf : composite.getTags()) &#123;</div><div class="line">      leaf.startWrite();</div><div class="line">      leaf.endWrite();</div><div class="line">    &#125;</div><div class="line">    composite.endWrite();</div><div class="line">    assertTrue(<span class="string">"Composite should contain 2 tags but it contains "</span>+composite.getTags().size(), composite.getTags().size() == <span class="number">2</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TextTag</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startWrite</span><span class="params">()</span></span>;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">endWrite</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TextTagComposite</span> <span class="keyword">extends</span> <span class="title">TextTag</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;TextTag&gt; <span class="title">getTags</span><span class="params">()</span></span>;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTag</span><span class="params">(TextTag tag)</span></span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PTag</span> <span class="keyword">implements</span> <span class="title">TextTagComposite</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> List&lt;TextTag&gt; tags = <span class="keyword">new</span> ArrayList&lt;TextTag&gt;();</div><div class="line">         </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;p&gt;"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">endWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;/p&gt;"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> List&lt;TextTag&gt; <span class="title">getTags</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> tags;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTag</span><span class="params">(TextTag tag)</span> </span>&#123;</div><div class="line">    tags.add(tag);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpanTag</span> <span class="keyword">implements</span> <span class="title">TextTag</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;span&gt;"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">endWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;/span&gt;"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EmTag</span> <span class="keyword">implements</span> <span class="title">TextTag</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;em&gt;"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">endWrite</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;/em&gt;"</span>);</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在这种情况下，可以看到一个复合对象。我们可以区分复合与非复合对象，因为第一个可以容纳一个或多个非复合对象（<code>PTag</code>类中的<code>private List tags</code>字段）。非复合对象称为叶子。<code>TextTag</code>接口被称为组件，因为它为两个对象类型提供了共同的行为规范(有点像<code>Linux</code>文件管理系统的有共同点的文件放在一个文件夹下进行管理，其实就是节点管理)。</p>
+<p>在<code>Spring</code>世界中，我们检索复合对象的概念是<strong>org.springframework.beans.BeanMetadataElement</strong>接口，用于配置<code>bean</code>对象。它是所有继承对象的基本界面。现在，在一方面，我们有一个叶子，由<strong>org.springframework.beans.factory.parsing.BeanComponentDefinition</strong>表示，另一边是复合<strong>org.springframework.beans.factory.parsing.CompositeComponentDefinition</strong>。<code>CompositeComponentDefinition</code>类似于组件，因为它包含<strong>addNestedComponent（ComponentDefinition component）</strong>方法，它允许将叶添加到私有final列表中<code>nestedComponents</code>。您可以看到，由于此列表，<code>BeanComponentDefinition</code>和<code>CompositeComponentDefinition</code>的组件是<strong>org.springframework.beans.factory.parsing.ComponentDefinition</strong>。</p>
+<p><img src="http://og0sybnix.bkt.clouddn.com/sp170721_175052.png" alt=""></p>
+<h2 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h2><p>本文描述的第三个概念是<strong>策略设计模式</strong>。策略定义了通过不同方式完成相同事情的几个对象。完成任务的方式取决于采用的策略。举个例子说明，我们可以去一个国家。我们可以乘公共汽车，飞机，船甚至汽车去那里。所有这些方法将把我们运送到目的地国家。但是，我们将通过检查我们的银行帐户来选择最适应的方式。如果我们有很多钱，我们将采取最快的方式（可能是私人飞行）。如果我们没有足够的话，我们会采取最慢的（公车，汽车）。该银行账户作为确定适应策略的因素。</p>
+<p>Spring在<strong>org.springframework.web.servlet.mvc.multiaction.MethodNameResolver</strong>类(过时，但不影响拿来研究)中使用策略设计模式。它是<code>MultiActionController</code>(同样过时)的参数化实现。在开始解释策略之前，我们需要了解MultiActionController的实用性。这个类允许同一个类处理几种类型的请求。作为Spring中的每个控制器，MultiActionController执行方法来响应提供的请求。策略用于检测应使用哪种方法。解析过程在MethodNameResolver实现中实现，例如在同一个包中的<strong>ParameterMethodNameResolver中</strong>。方法可以通过多个条件解决：属性映射，HTTP请求参数或URL路径。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getHandlerMethodName</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> NoSuchRequestHandlingMethodException </span>&#123;</div><div class="line">  String methodName = <span class="keyword">null</span>;</div><div class="line"> </div><div class="line">  <span class="comment">// Check parameter names where the very existence of each parameter</span></div><div class="line">  <span class="comment">// means that a method of the same name should be invoked, if any.</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.methodParamNames != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="keyword">for</span> (String candidate : <span class="keyword">this</span>.methodParamNames) &#123;</div><div class="line">      <span class="keyword">if</span> (WebUtils.hasSubmitParameter(request, candidate)) &#123;</div><div class="line">        methodName = candidate;</div><div class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">          logger.debug(<span class="string">"Determined handler method '"</span> + methodName +</div><div class="line">            <span class="string">"' based on existence of explicit request parameter of same name"</span>);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="comment">// Check parameter whose value identifies the method to invoke, if any.</span></div><div class="line">  <span class="keyword">if</span> (methodName == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.paramName != <span class="keyword">null</span>) &#123;</div><div class="line">    methodName = request.getParameter(<span class="keyword">this</span>.paramName);</div><div class="line">    <span class="keyword">if</span> (methodName != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">        logger.debug(<span class="string">"Determined handler method '"</span> + methodName +</div><div class="line">          <span class="string">"' based on value of request parameter '"</span> + <span class="keyword">this</span>.paramName + <span class="string">"'"</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (methodName != <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.logicalMappings != <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="comment">// Resolve logical name into real method name, if appropriate.</span></div><div class="line">    String originalName = methodName;</div><div class="line">    methodName = <span class="keyword">this</span>.logicalMappings.getProperty(methodName, methodName);</div><div class="line">    <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">      logger.debug(<span class="string">"Resolved method name '"</span> + originalName + <span class="string">"' to handler method '"</span> + methodName + <span class="string">"'"</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (methodName != <span class="keyword">null</span> &amp;&amp; !StringUtils.hasText(methodName)) &#123;</div><div class="line">    <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">      logger.debug(<span class="string">"Method name '"</span> + methodName + <span class="string">"' is empty: treating it as no method name found"</span>);</div><div class="line">    &#125;</div><div class="line">    methodName = <span class="keyword">null</span>;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">if</span> (methodName == <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.defaultMethodName != <span class="keyword">null</span>) &#123;</div><div class="line">      <span class="comment">// No specific method resolved: use default method.</span></div><div class="line">      methodName = <span class="keyword">this</span>.defaultMethodName;</div><div class="line">      <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">        logger.debug(<span class="string">"Falling back to default handler method '"</span> + <span class="keyword">this</span>.defaultMethodName + <span class="string">"'"</span>);</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// If resolution failed completely, throw an exception.</span></div><div class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchRequestHandlingMethodException(request);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="keyword">return</span> methodName;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正如我们在前面的代码中可以看到的，方法的名称通过提供的参数映射，URL中的预定义属性或参数存在来解决（默认情况下，该参数的名称是action）。</p>
+<h2 id="模板模式"><a href="#模板模式" class="headerlink" title="模板模式"></a>模板模式</h2><p>本文提出的最后一个设计模式是<strong>模板方法</strong>。此模式定义了类行为的骨架，并将子步骤的某些步骤的延迟执行(具体就是下面例子中一个方法放在另一个方法中，只有调用另一方方法的时候这个方法才会执行)。其中写了一种方法(下面例子中的construct())，注意定义为final，起着同步器的角色。它以给定的顺序执行由子类定义的方法。在现实世界中，我们可以将模板方法与房屋建设进行比较。独立于建造房屋的公司，我们需要从建立基础开始，只有在我们完成之后才能做其他的工作。这个执行逻辑将被保存在一个我们不能改变的方法中。例如基础建设或刷墙会被作为一个模板方法中的方法，具体到建筑房屋的公司。我们可以在给定的例子中看到它：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TemplateMethod</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    HouseAbstract house = <span class="keyword">new</span> SeaHouse();</div><div class="line">    house.construct();</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">HouseAbstract</span> </span>&#123;</div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">constructFoundations</span><span class="params">()</span></span>;</div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">constructWall</span><span class="params">()</span></span>;</div><div class="line">   </div><div class="line">  <span class="comment">// template method</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">construct</span><span class="params">()</span> </span>&#123;</div><div class="line">    constructFoundations();</div><div class="line">    constructWall();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EcologicalHouse</span> <span class="keyword">extends</span> <span class="title">HouseAbstract</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">constructFoundations</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Making foundations with wood"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">constructWall</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Making wall with wood"</span>);</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SeaHouse</span> <span class="keyword">extends</span> <span class="title">HouseAbstract</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">constructFoundations</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Constructing very strong foundations"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">constructWall</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Constructing very strong wall"</span>);</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>该代码应该输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Constructing very strong foundations</div><div class="line">Constructing very strong wall</div></pre></td></tr></table></figure>
+<p>Spring在<strong>org.springframework.context.support.AbstractApplicationContext</strong>类中使用模板方法。他们不是一个模板方法（在我们的例子中是construct ），而是多个。例如，<strong>getsFreshBeanFactory</strong>返回内部<code>bean工厂</code>的新版本，调用两个抽象方法：<code>refreshBeanFactory</code>（刷新工厂bean）和<code>getBeanFactory</code>（以获取更新的工厂bean）。这个方法和其他一些方法一样，用在<strong>public void refresh()</strong>中，抛出<strong>构造应用程序上下文的BeansException，IllegalStateException</strong>方法(这里会在后面Spring中与应用程序上下文分析中再次提到)。</p>
+<p>我们可以从同一个包中的GenericApplicationContext找到一些通过模板方法所实现的抽象方法的实现的例子(说的有点拗口，多读几遍就好):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">  * Do nothing: We hold a single internal BeanFactory and rely on callers</div><div class="line">  * to register beans through our public methods (or the BeanFactory's).</div><div class="line">  * <span class="doctag">@see</span> #registerBeanDefinition</div><div class="line">  */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">refreshBeanFactory</span><span class="params">()</span> <span class="keyword">throws</span> IllegalStateException </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.refreshed) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(</div><div class="line">      <span class="string">"GenericApplicationContext does not support multiple refresh attempts: just call 'refresh' once"</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">this</span>.beanFactory.setSerializationId(getId());</div><div class="line">  <span class="keyword">this</span>.refreshed = <span class="keyword">true</span>;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">cancelRefresh</span><span class="params">(BeansException ex)</span> </span>&#123;</div><div class="line">  <span class="keyword">this</span>.beanFactory.setSerializationId(<span class="keyword">null</span>);</div><div class="line">  <span class="keyword">super</span>.cancelRefresh(ex);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">  * Not much to do: We hold a single internal BeanFactory that will never</div><div class="line">  * get released.</div><div class="line">  */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">closeBeanFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">this</span>.beanFactory.setSerializationId(<span class="keyword">null</span>);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">  * Return the single internal BeanFactory held by this context</div><div class="line">  * (as ConfigurableListableBeanFactory).</div><div class="line">  */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> ConfigurableListableBeanFactory <span class="title">getBeanFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.beanFactory;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">/**</span></div><div class="line">  * Return the underlying bean factory of this context,</div><div class="line">  * available for registering bean definitions.</div><div class="line">  * &lt;p&gt;&lt;b&gt;<span class="doctag">NOTE:</span>&lt;/b&gt; You need to call &#123;<span class="doctag">@link</span> #refresh()&#125; to initialize the</div><div class="line">  * bean factory and its contained beans with application context semantics</div><div class="line">  * (autodetecting BeanFactoryPostProcessors, etc).</div><div class="line">  * <span class="doctag">@return</span> the internal bean factory (as DefaultListableBeanFactory)</div><div class="line">  */</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> DefaultListableBeanFactory <span class="title">getDefaultListableBeanFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.beanFactory;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>经过上面这些可以让我们发现Spring如何通过使用行为和结构设计模式来更好地组织上下文（<strong>模板方法</strong>），并通过相应<strong>策略</strong>来解决执行方法。它使用两种结构设计模式，通过<strong>代理模式</strong>来简化AOP部分并通过<strong>复合模式</strong>来构造复杂对象。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/20/Spring框架中的设计模式(一)/" rel="next" title="Spring框架中的设计模式(一)">
+                <i class="fa fa-chevron-left"></i> Spring框架中的设计模式(一)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/07/21/Spring框架中的设计模式(二)/"
+           data-title="Spring框架中的设计模式(二)" data-url="https://muyinchen.github.io/2017/07/21/Spring框架中的设计模式(二)/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">64</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring框架中的设计模式-二"><span class="nav-number">1.</span> <span class="nav-text">Spring框架中的设计模式(二)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代理模式"><span class="nav-number">1.1.</span> <span class="nav-text">代理模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复合模式"><span class="nav-number">1.2.</span> <span class="nav-text">复合模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#策略模式"><span class="nav-number">1.3.</span> <span class="nav-text">策略模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板模式"><span class="nav-number">1.4.</span> <span class="nav-text">模板模式</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
