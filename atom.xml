@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-07-21T11:29:22.280Z</updated>
+  <updated>2017-07-27T09:23:43.348Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,11 +20,11 @@
     <link href="https://muyinchen.github.io/2017/07/21/Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F(%E4%BA%8C)/"/>
     <id>https://muyinchen.github.io/2017/07/21/Spring框架中的设计模式(二)/</id>
     <published>2017-07-21T09:12:33.397Z</published>
-    <updated>2017-07-21T11:29:22.280Z</updated>
+    <updated>2017-07-27T09:23:43.348Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring框架中的设计模式-二"><a href="#Spring框架中的设计模式-二" class="headerlink" title="Spring框架中的设计模式(二)"></a>Spring框架中的设计模式(二)</h1><p>在上一篇中我们在Spring中所谈到的设计模式涉及到了创建模式三剑客和1个行为模式(解释器模式)。这次我们会将眼光更多地关注在具有结构性和行为性的设计模式上。</p>
 <p>在这篇文章中，我们将看到每个类型的两种模式。首先将关注类型是的结构设计模式。它将包含代理和复合。下一个将介绍行为模式：策略和模板方法。<br> <a id="more"></a></p>
-<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>面向对象编程（OOP）可能是编程中最流行的概念。然而，Spring引入了另一种编码规范，<strong>面向对象编程</strong>（AOP）。为了简化定义，AOP是面向系统特定点的一种编程，如：异常抛出，特定类别方法的执行等.AOP允许在执行这些特定点之前或之后执行补充动作。如何实现这种操作？它可以通过监听器(listeners)进行。但在这种情况下，我们应该在只要可能存在调用的地方都需要定义监听器来进行监听（比如在一个方法的开始的地方）。这就是为什么Spring不采用这个idea。相反，Spring实现了一种能够通过额外的方法调用完成任务的设计模式 - <strong>代理设计模式</strong>。</p>
+<h2 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h2><p>面向对象编程（OOP）可能是编程中最流行的概念。然而，Spring引入了另一种编码规范，<strong>面向切面编程</strong>（AOP）。为了简化定义，AOP是面向系统特定点的一种编程，如：异常抛出，特定类别方法的执行等.AOP允许在执行这些特定点之前或之后执行补充动作。如何实现这种操作？它可以通过监听器(listeners)进行。但在这种情况下，我们应该在只要可能存在调用的地方都需要定义监听器来进行监听（比如在一个方法的开始的地方）。这就是为什么Spring不采用这个idea。相反，Spring实现了一种能够通过额外的方法调用完成任务的设计模式 - <strong>代理设计模式</strong>。</p>
 <p>代理就像对象的镜像一样。也正因为如此，代理对象不仅可以覆盖真实对象，还可以扩展其功能。因此，对于只能在屏幕上打印一些文本的对象，我们可以添加另一个对象来过滤显示单词。可以通过代理来定义第二个对象的调用。代理是封装真实对象的对象。例如，如果您尝试调用Waiter bean，那么您将调用该Bean的代理，其行为方式完全相同。</p>
 <p>代理设计模式的一个很好的例子是<strong>org.springframework.aop.framework.ProxyFactoryBean</strong>。该工厂根据Spring bean构建AOP代理。该类实现了定义<strong>getObject()</strong>方法的<code>FactoryBean</code>接口。此方法用于将需求<code>Bean</code>的实例返回给<code>bean factory</code>。在这种情况下，它不是返回的实例，而是<code>AOP代理</code>。在执行代理对象的方法之前，可以通过调用补充方法来进一步“修饰”代理对象(其实所谓的静态代理不过是在装饰模式上加了个要不要你来干动作行为而已，而不是装饰模式什么也不做就加了件衣服，其他还得由你来全权完成)。</p>
 <p><code>ProxyFactory</code>的一个例子是：</p>
