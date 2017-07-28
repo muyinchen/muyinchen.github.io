@@ -73,6 +73,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
 
@@ -94,7 +96,7 @@
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="Spring框架中的设计模式 (四)本文是Spring框架中使用的设计模式第四篇。本文将在此呈现出新的3种模式。
 一开始，我们会讨论2种结构模式：适配器和装饰器。在第三部分和最后一部分，我们将讨论单例模式。">
-<meta property="og:updated_time" content="2017-07-28T18:27:44.289Z">
+<meta property="og:updated_time" content="2017-07-28T18:43:50.374Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring框架中的设计模式(四)">
 <meta name="twitter:description" content="Spring框架中的设计模式 (四)本文是Spring框架中使用的设计模式第四篇。本文将在此呈现出新的3种模式。
@@ -367,7 +369,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SingletonSpringTest</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">// retreive two different contexts</span></div><div class="line">    ApplicationContext firstContext = <span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"applicationContext-test.xml"</span>);</div><div class="line">    ApplicationContext secondContext = <span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"applicationContext-test.xml"</span>);</div><div class="line">     </div><div class="line">    <span class="comment">// prove that both contexts are loaded by the same class loader</span></div><div class="line">    assertTrue(<span class="string">"Class loaders for both contexts should be the same"</span>, </div><div class="line">      firstContext.getClassLoader() == secondContext.getClassLoader());</div><div class="line">    <span class="comment">// compare the objects from different contexts</span></div><div class="line">    ShoppingCart firstShoppingCart = (ShoppingCart) firstContext.getBean(<span class="string">"shoppingCart"</span>);</div><div class="line">    ShoppingCart secondShoppingCart = (ShoppingCart) secondContext.getBean(<span class="string">"shoppingCart"</span>);</div><div class="line">    assertFalse(<span class="string">"ShoppingCart instances got from different application context shouldn't be the same"</span>, </div><div class="line">      firstShoppingCart == secondShoppingCart);</div><div class="line">     </div><div class="line">    <span class="comment">// compare the objects from the same context</span></div><div class="line">    ShoppingCart firstShoppingCartBis = (ShoppingCart) firstContext.getBean(<span class="string">"shoppingCart"</span>);</div><div class="line">    assertTrue(<span class="string">"ShoppingCart instances got from the same application context should be the same"</span>, </div><div class="line">      firstShoppingCart == firstShoppingCartBis);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这个测试案例显示了Spring单例模式与纯粹的单例设计模式的主要区别。尽管使用相同的类加载器来加载两个应用程序上下文，但是ShoppingCart的实例是不一样的。但是，当我们比较两次创建并属于相同上下文的实例时，我们认为它们是相等的。</p>
 <p>也正因为有了单例，Spring可以控制在每个应用程序上下文中只有一个这样指定的bean的实例可用。因为适配器，Spring可以决定使用由谁来处理<code>JBoss servlet</code>容器中的加载时编织,也可以实现<code>ConfigurableListableBeanFactory</code>的相应实例。第三种设计模式，装饰器，用于向Cache对象添加同步功能，还有Springboot的容器初始化。</p>
-<p>其实对于适配器和装饰者确实有太多的相似的地方，一个是运行时选择，一个是加料组合产生新的化学效应，还有从看待事物的角度不同得到不同的行为，一家之言，有更好的理解可以联系我。</p>
+<p>其实对于适配器和装饰者确实有太多的相似的地方，一个是运行时选择，一个是加料组合产生新的化学效应，还有从看待事物的角度不同得到不同的行为，适配适配，更注重面向接口的实现，而内部又根据不同情况调用面向一套接口的多套实现的实例的相应方法来实现所要实现的具体功能，装饰者更注重添油加醋，通过组合一些其他对象实例来让自己的功能实现的更加华丽一些(达到1+1&gt;2的这种效果)。一家之言，有更好的理解可以联系我。</p>
 <p>有更多疑问请加qq群523409180 讨论的</p>
 
       
