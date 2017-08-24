@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-08-24T04:28:12.006Z</updated>
+  <updated>2017-08-24T04:31:38.052Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Spring5源码解析-@ModelAttribute</title>
+    <title>Spring5源码解析-@Autowired</title>
     <link href="https://muyinchen.github.io/2017/08/23/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-@Autowired/"/>
     <id>https://muyinchen.github.io/2017/08/23/Spring5源码解析-@Autowired/</id>
     <published>2017-08-23T04:17:11.417Z</published>
-    <updated>2017-08-24T04:28:12.006Z</updated>
+    <updated>2017-08-24T04:31:38.052Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring5源码解析-Autowired"><a href="#Spring5源码解析-Autowired" class="headerlink" title="Spring5源码解析-@Autowired"></a>Spring5源码解析-@Autowired</h1><blockquote>
 <p>你有没有思考过Spring中的@Autowired注解？通常用于方便依赖注入，而隐藏在这个过程之后的机制到底是怎样，将在本篇中进行讲述。</p>
