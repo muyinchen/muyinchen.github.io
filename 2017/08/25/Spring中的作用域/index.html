@@ -87,24 +87,18 @@
 
 
 <meta name="description" content="Spring中Bean的作用域
-Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。
-
-本文将分为两部分。每个部分描述一个bean作用域。所以，在第一个，我们将探讨下request请求作用域。第二个描述的是session和全局ses">
+Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring中Bean的作用域">
 <meta property="og:url" content="https://muyinchen.github.io/2017/08/25/Spring中的作用域/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="Spring中Bean的作用域
-Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。
-
-本文将分为两部分。每个部分描述一个bean作用域。所以，在第一个，我们将探讨下request请求作用域。第二个描述的是session和全局ses">
-<meta property="og:updated_time" content="2017-09-04T09:17:08.684Z">
+Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。">
+<meta property="og:updated_time" content="2017-09-04T09:19:16.862Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring中Bean的作用域">
 <meta name="twitter:description" content="Spring中Bean的作用域
-Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。
-
-本文将分为两部分。每个部分描述一个bean作用域。所以，在第一个，我们将探讨下request请求作用域。第二个描述的是session和全局ses">
+Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人Spring5文档翻译)。">
 
 
 
@@ -333,6 +327,7 @@ Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文
         <h1 id="Spring中Bean的作用域"><a href="#Spring中Bean的作用域" class="headerlink" title="Spring中Bean的作用域"></a>Spring中Bean的作用域</h1><blockquote>
 <p>Spring Bean，就像JavaBeans中一样，有其使用的作用域。前面的文章中我们已经看到其中的两个:singleton 和prototype。这次来讲讲另外2个作用域(总共六个，参考本人<a href="https://github.com/muyinchen/Spring-Framework-5.0.0.M3-CN/blob/master/3.5-bean.md" target="_blank" rel="external">Spring5文档翻译</a>)。</p>
 </blockquote>
+<a id="more"></a>
 <p>本文将分为两部分。每个部分描述一个bean作用域。所以，在第一个，我们将探讨下<code>request请求</code>作用域。第二个描述的是<code>session</code>和<code>全局session</code>(此在Spring5文档中已经消失)的作用域。每一部分将由理论和实践组成。需要注意的是:这些概念仅在Web Spring应用程序上下文中有效。</p>
 <h2 id="Spring中request请求作用域是什么？"><a href="#Spring中request请求作用域是什么？" class="headerlink" title="Spring中request请求作用域是什么？"></a>Spring中request请求作用域是什么？</h2><p>每个请求初始化具有此作用域的Bean注解。这听起来像是原型作用域的描述，但它们有一些差异。第一个区别是原型作用域在Spring的上下文中可用。而请求作用域仅适用于Web应用程序。第二个是原型bean根据需求进行初始化，而请求bean是在每个请求下构建的。需要说的是，request作用域bean在其作用域内有且仅有一个实例。而你可以拥有一个或多个原型作用域bean实例。</p>
 <p>在以下代码中，你可以看到请求作用域bean的示例：</p>
