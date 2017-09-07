@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-09-07T10:50:20.435Z</updated>
+  <updated>2017-09-07T10:52:36.528Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Spring5源码解析-@Autowired</title>
+    <title>Spring5源码解析-Spring Web中的处理程序执行链</title>
     <link href="https://muyinchen.github.io/2017/08/28/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%20Web%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F%E6%89%A7%E8%A1%8C%E9%93%BE/"/>
     <id>https://muyinchen.github.io/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/</id>
     <published>2017-08-28T03:22:26.863Z</published>
-    <updated>2017-09-07T10:50:20.435Z</updated>
+    <updated>2017-09-07T10:52:36.528Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring5源码解析-Spring-Web中的处理程序执行链"><a href="#Spring5源码解析-Spring-Web中的处理程序执行链" class="headerlink" title="Spring5源码解析-Spring Web中的处理程序执行链"></a>Spring5源码解析-Spring Web中的处理程序执行链</h1><blockquote>
 <p>Spring的DispatcherServlet假如缺少几个关键元素将无法分派请求。其中最重要的一个是处理程序执行链。</p>
