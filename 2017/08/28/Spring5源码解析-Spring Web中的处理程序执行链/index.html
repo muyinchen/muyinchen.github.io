@@ -1,0 +1,721 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring5源码解析-Spring Web中的处理程序执行链
+Spring的DispatcherServlet假如缺少几个关键元素将无法分派请求。其中最重要的一个是处理程序执行链。
+在这篇文章中，我们把注意力放在处理程序执行链之上。老规矩，第一部分将介绍这个概念。第二部分把目光引入到Spring执行链的世界中。在最后一部分，我们将分析如何在Spring中利用之前自定义DispatcherServ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring5源码解析-@Autowired">
+<meta property="og:url" content="https://muyinchen.github.io/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring5源码解析-Spring Web中的处理程序执行链
+Spring的DispatcherServlet假如缺少几个关键元素将无法分派请求。其中最重要的一个是处理程序执行链。
+在这篇文章中，我们把注意力放在处理程序执行链之上。老规矩，第一部分将介绍这个概念。第二部分把目光引入到Spring执行链的世界中。在最后一部分，我们将分析如何在Spring中利用之前自定义DispatcherServ">
+<meta property="og:updated_time" content="2017-09-07T10:50:20.435Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring5源码解析-@Autowired">
+<meta name="twitter:description" content="Spring5源码解析-Spring Web中的处理程序执行链
+Spring的DispatcherServlet假如缺少几个关键元素将无法分派请求。其中最重要的一个是处理程序执行链。
+在这篇文章中，我们把注意力放在处理程序执行链之上。老规矩，第一部分将介绍这个概念。第二部分把目光引入到Spring执行链的世界中。在最后一部分，我们将分析如何在Spring中利用之前自定义DispatcherServ">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/"/>
+
+
+  <title> Spring5源码解析-@Autowired | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring5源码解析-@Autowired
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-28T11:22:26+08:00" content="2017-08-28">
+              2017-08-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring5源码解析-Spring-Web中的处理程序执行链"><a href="#Spring5源码解析-Spring-Web中的处理程序执行链" class="headerlink" title="Spring5源码解析-Spring Web中的处理程序执行链"></a>Spring5源码解析-Spring Web中的处理程序执行链</h1><blockquote>
+<p>Spring的DispatcherServlet假如缺少几个关键元素将无法分派请求。其中最重要的一个是处理程序执行链。</p>
+<p>在这篇文章中，我们把注意力放在<strong>处理程序执行链</strong>之上。老规矩，第一部分将介绍这个概念。第二部分把目光引入到Spring执行链的世界中。在最后一部分，我们将分析如何在Spring中利用之前自定义DispatcherServlet中实现一个自定义的处理程序执行链。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="什么是Spring中的处理程序执行链？"><a href="#什么是Spring中的处理程序执行链？" class="headerlink" title="什么是Spring中的处理程序执行链？"></a>什么是Spring中的处理程序执行链？</h2><p>Spring中的处理程序执行链是一种由处理程序映射和处理程序拦截器(简单点说就是由谁来处理，处理之前和之后应该干点啥)组成的责任链设计模式。处理器映射器用于将当前请求与其专用的controller进行匹配。拦截器是用来在一些调度动作(如controller解析，视图渲染等)之前和之后所调用的对象。</p>
+<p>我们所说的一个处理程序执行链是<code>dispatcher servlet</code>用来处理接收到的请求的一组元素。需要说的是，所有执行链调用都由<code>dispatcher servlet</code>类来进行。其实执行链只是一种容器(见源码): </p>
+<ul>
+<li>定义处理程序映射和拦截器 </li>
+<li>定义在某些时刻应用所应该调度的方法(如处理程序适配器适配之后，<code>controller</code>的方法调用之后等等)</li>
+</ul>
+<h2 id="HandlerExecutionChain类"><a href="#HandlerExecutionChain类" class="headerlink" title="HandlerExecutionChain类"></a>HandlerExecutionChain类</h2><p>处理程序执行链由<strong>org.springframework.web.servlet.HandlerExecutionChain</strong>类表示。它的主要包含两个私有字段:<strong>Object handler</strong> 和 <strong>HandlerInterceptor[] interceptors</strong>,它们被用在请求的调度过程中。第一个包含用于查找处理程序适配器实例的处理程序对象。第二个是包含拦截器的数组，用来应用于处理过的请求(这里这么说是因为这是一条执行链，一个接一个来对这个请求进行处理)。</p>
+<p>在<code>DispatcherServlet</code>类中，<code>HandlerExecutionChain</code>的查找通过<strong>protected HandlerExecutionChain getHandler(HttpServletRequest request)</strong>完成。它遍历所有可用的处理程序映射，并返回能够处理请求的第一个处理程序。</p>
+<p>在<code>DispatcherServlet</code>与<code>HandlerExecutionChain</code>实例中要完成的第二件事是应用拦截器的前后调用。这是由DispatcherServlet的方法，如<code>applyPreHandle</code>，<code>applyPostHandle</code>，<code>applyAfterConcurrentHandlingStarted</code>和<code>triggerAfterCompletion</code>(关于后两者我会在后面专门写由Java并发编程到线程池到forkjoin到nio到netty这个系列来具体讲述的)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Handler execution chain, consisting of handler object and any handler interceptors.</div><div class="line"> * Returned by HandlerMapping's &#123;<span class="doctag">@link</span> HandlerMapping#getHandler&#125; method.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 20.06.2003</div><div class="line"> * <span class="doctag">@see</span> HandlerInterceptor</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HandlerExecutionChain</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Log logger = LogFactory.getLog(HandlerExecutionChain.class);</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Object handler;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> HandlerInterceptor[] interceptors;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> List&lt;HandlerInterceptor&gt; interceptorList;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">int</span> interceptorIndex = -<span class="number">1</span>;</div><div class="line">  </div><div class="line">  ...</div><div class="line">    <span class="comment">/**</span></div><div class="line">	 * Trigger afterCompletion callbacks on the mapped HandlerInterceptors.</div><div class="line">	 * Will just invoke afterCompletion for all interceptors whose preHandle invocation</div><div class="line">	 * has successfully completed and returned true.</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">triggerAfterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, @Nullable Exception ex)</span></span></div><div class="line">			<span class="keyword">throws</span> Exception &#123;</div><div class="line"></div><div class="line">		HandlerInterceptor[] interceptors = getInterceptors();</div><div class="line">		<span class="keyword">if</span> (!ObjectUtils.isEmpty(interceptors)) &#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="keyword">this</span>.interceptorIndex; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">				HandlerInterceptor interceptor = interceptors[i];</div><div class="line">				<span class="keyword">try</span> &#123;</div><div class="line">					interceptor.afterCompletion(request, response, <span class="keyword">this</span>.handler, ex);</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">catch</span> (Throwable ex2) &#123;</div><div class="line">					logger.error(<span class="string">"HandlerInterceptor.afterCompletion threw exception"</span>, ex2);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  </div><div class="line">    <span class="comment">/**</span></div><div class="line">	 * Apply afterConcurrentHandlerStarted callback on mapped AsyncHandlerInterceptors.</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">applyAfterConcurrentHandlingStarted</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</div><div class="line">		HandlerInterceptor[] interceptors = getInterceptors();</div><div class="line">		<span class="keyword">if</span> (!ObjectUtils.isEmpty(interceptors)) &#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = interceptors.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</div><div class="line">				<span class="keyword">if</span> (interceptors[i] <span class="keyword">instanceof</span> AsyncHandlerInterceptor) &#123;</div><div class="line">					<span class="keyword">try</span> &#123;</div><div class="line">						AsyncHandlerInterceptor asyncInterceptor = (AsyncHandlerInterceptor) interceptors[i];</div><div class="line">						asyncInterceptor.afterConcurrentHandlingStarted(request, response, <span class="keyword">this</span>.handler);</div><div class="line">					&#125;</div><div class="line">					<span class="keyword">catch</span> (Throwable ex) &#123;</div><div class="line">						logger.error(<span class="string">"Interceptor ["</span> + interceptors[i] + <span class="string">"] failed in afterConcurrentHandlingStarted"</span>, ex);</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p><strong>org.springframework.web.servlet.DispatcherServlet</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">	 * Return the HandlerExecutionChain for this request.</div><div class="line">	 * &lt;p&gt;Tries all handler mappings in order.</div><div class="line">	 * <span class="doctag">@param</span> request current HTTP request</div><div class="line">	 * <span class="doctag">@return</span> the HandlerExecutionChain, or &#123;<span class="doctag">@code</span> null&#125; if no handler could be found</div><div class="line">	 */</div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.handlerMappings != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="keyword">for</span> (HandlerMapping hm : <span class="keyword">this</span>.handlerMappings) &#123;</div><div class="line">				<span class="keyword">if</span> (logger.isTraceEnabled()) &#123;</div><div class="line">					logger.trace(</div><div class="line">							<span class="string">"Testing handler map ["</span> + hm + <span class="string">"] in DispatcherServlet with name '"</span> + getServletName() + <span class="string">"'"</span>);</div><div class="line">				&#125;</div><div class="line">				HandlerExecutionChain handler = hm.getHandler(request);</div><div class="line">				<span class="keyword">if</span> (handler != <span class="keyword">null</span>) &#123;</div><div class="line">					<span class="keyword">return</span> handler;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">...</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doDispatch</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		HttpServletRequest processedRequest = request;</div><div class="line">  		<span class="comment">//HandlerExecutionChain定义出来，做成函数内局部变量可以做到逃逸管理，和request请求做到用完即毁，提		//高性能，防止内存泄漏</span></div><div class="line">		HandlerExecutionChain mappedHandler = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">boolean</span> multipartRequestParsed = <span class="keyword">false</span>;</div><div class="line"></div><div class="line">		WebAsyncManager asyncManager = WebAsyncUtils.getAsyncManager(request);</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			ModelAndView mv = <span class="keyword">null</span>;</div><div class="line">			Exception dispatchException = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				processedRequest = checkMultipart(request);</div><div class="line">				multipartRequestParsed = (processedRequest != request);</div><div class="line"></div><div class="line">				<span class="comment">// Determine handler for the current request.</span></div><div class="line">              	<span class="comment">//拿到执行链</span></div><div class="line">				mappedHandler = getHandler(processedRequest);</div><div class="line">				<span class="keyword">if</span> (mappedHandler == <span class="keyword">null</span>) &#123;</div><div class="line">					noHandlerFound(processedRequest, response);</div><div class="line">					<span class="keyword">return</span>;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				<span class="comment">// Determine handler adapter for the current request.</span></div><div class="line">              	<span class="comment">//通过处理器找到相应的适配器，其实就是个拓展代理，参考之前我写的Spring设计模式</span></div><div class="line">				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());</div><div class="line"></div><div class="line">				<span class="comment">// Process last-modified header, if supported by the handler.</span></div><div class="line">				String method = request.getMethod();</div><div class="line">				<span class="keyword">boolean</span> isGet = <span class="string">"GET"</span>.equals(method);</div><div class="line">				<span class="keyword">if</span> (isGet || <span class="string">"HEAD"</span>.equals(method)) &#123;</div><div class="line">					<span class="keyword">long</span> lastModified = ha.getLastModified(request, mappedHandler.getHandler());</div><div class="line">					<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</div><div class="line">						logger.debug(<span class="string">"Last-Modified value for ["</span> + getRequestUri(request) + <span class="string">"] is: "</span> + lastModified);</div><div class="line">					&#125;</div><div class="line">					<span class="keyword">if</span> (<span class="keyword">new</span> ServletWebRequest(request, response).checkNotModified(lastModified) &amp;&amp; isGet) &#123;</div><div class="line">						<span class="keyword">return</span>;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="comment">//提前批预处理</span></div><div class="line">				<span class="keyword">if</span> (!mappedHandler.applyPreHandle(processedRequest, response)) &#123;</div><div class="line">					<span class="keyword">return</span>;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				<span class="comment">// Actually invoke the handler.</span></div><div class="line">              	<span class="comment">//执行核心处理</span></div><div class="line">				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());</div><div class="line"></div><div class="line">				<span class="keyword">if</span> (asyncManager.isConcurrentHandlingStarted()) &#123;</div><div class="line">					<span class="keyword">return</span>;</div><div class="line">				&#125;</div><div class="line">				<span class="comment">//默认视图渲染</span></div><div class="line">				applyDefaultViewName(processedRequest, mv);</div><div class="line">              	<span class="comment">//秋后算账</span></div><div class="line">				mappedHandler.applyPostHandle(processedRequest, response, mv);</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">				dispatchException = ex;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">catch</span> (Throwable err) &#123;</div><div class="line">				<span class="comment">// As of 4.3, we're processing Errors thrown from handler methods as well,</span></div><div class="line">				<span class="comment">// making them available for @ExceptionHandler methods and other scenarios.</span></div><div class="line">				dispatchException = <span class="keyword">new</span> NestedServletException(<span class="string">"Handler dispatch failed"</span>, err);</div><div class="line">			&#125;</div><div class="line">			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (Exception ex) &#123;</div><div class="line">			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (Throwable err) &#123;</div><div class="line">			triggerAfterCompletion(processedRequest, response, mappedHandler,</div><div class="line">					<span class="keyword">new</span> NestedServletException(<span class="string">"Handler processing failed"</span>, err));</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">finally</span> &#123;</div><div class="line">			<span class="keyword">if</span> (asyncManager.isConcurrentHandlingStarted()) &#123;</div><div class="line">				<span class="comment">// Instead of postHandle and afterCompletion</span></div><div class="line">              	<span class="comment">//如果是异步的话，不需要解释了吧，看上面英文</span></div><div class="line">				<span class="keyword">if</span> (mappedHandler != <span class="keyword">null</span>) &#123;</div><div class="line">					mappedHandler.applyAfterConcurrentHandlingStarted(processedRequest, response);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">// Clean up any resources used by a multipart request.</span></div><div class="line">				<span class="keyword">if</span> (multipartRequestParsed) &#123;</div><div class="line">					cleanupMultipart(processedRequest);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h2 id="自定义处理程序执行链"><a href="#自定义处理程序执行链" class="headerlink" title="自定义处理程序执行链"></a>自定义处理程序执行链</h2><p>为了说明处理程序执行链的使用，我们将从关于<a href="https://muyinchen.github.io/2017/08/02/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AE%BASpring%20DispatcherServlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Spring DispatcherServlet生命周期</a>的文章中拿到我们自定义的<code>dispatcher  servlet</code>类，并向其添加一个自定义的处理程序执行链。但是，无须深挖并使用<code>HandlerExecutionChain</code>中的所有<code>Spring</code>的类，我们来创建一个新的对象(<code>DumberHandlerExecutionChain</code>)，添加两个方法来调用拦截器，并在<code>DispatcherServlet</code>的类中使用它。请看下面编写的代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// we start directly by doService method which handles incoming request</span></div><div class="line"><span class="comment">// retrieve execution chain and handler adapters adapted to received request</span></div><div class="line">DumberHandlerExecutionChain executionChain = <span class="keyword">new</span> DumberHandlerExecutionChain(getHandlerExecutionChain(request));</div><div class="line">System.out.println(<span class="string">"Working with following handler execution chain: "</span>+executionChain);</div><div class="line">HandlerAdapter adapter = getHandlerAdapter(executionChain.getHandler());</div><div class="line"> </div><div class="line"><span class="keyword">if</span> (!executionChain.preHandle(request, response)) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Some of defined interceptors weren't ivoked correctly."</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// handle the request and try to generate a ModelAndView instance</span></div><div class="line">ModelAndView modelView = adapter.handle(request, response, executionChain.getHandler());</div><div class="line"><span class="keyword">if</span> (modelView == <span class="keyword">null</span>) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Handled ModelAndView can't be null (handled with adapter: "</span>+adapter+<span class="string">")"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> (!modelView.isReference()) &#123;</div><div class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"Only view models defined as references can be used in this servlet"</span>);</div><div class="line">&#125;</div><div class="line">executionChain.postHandle(request, response, modelView);</div></pre></td></tr></table></figure>
+<p>只需要改变3行代码。第一个是<code>DumberHandlerExecutionChain</code>实例的定义，替换掉<code>HandlerExecutionChain</code>。第二个更改是<code>applyPreHandler</code>和<code>applyPostHandler</code>方法。这段代码这样来看的话好理解吧。我们来看看DumberHandlerExecutionChain类的定义:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DumberHandlerExecutionChain</span> <span class="keyword">extends</span> <span class="title">HandlerExecutionChain</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DumberHandlerExecutionChain</span><span class="params">(HandlerExecutionChain chain)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(chain);</div><div class="line">        System.out.println(<span class="string">"Overriden constructor DumberHandlerExecutionChain invoked"</span>);</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">for</span> (HandlerInterceptor interceptor : getInterceptors()) &#123;</div><div class="line">            System.out.println(<span class="string">"Running pre handler for :"</span>+interceptor);</div><div class="line">            <span class="keyword">if</span> (!interceptor.preHandle(request, response, <span class="keyword">this</span>.getHandler())) &#123;</div><div class="line">                System.out.println(<span class="string">"An error occured on calling handler for "</span>+interceptor);</div><div class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, ModelAndView viewModel)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        <span class="keyword">for</span> (HandlerInterceptor interceptor : getInterceptors()) &#123;</div><div class="line">            interceptor.postHandle(request, response, <span class="keyword">this</span>.getHandler(), viewModel);</div><div class="line">            System.out.println(<span class="string">"Running post handler for :"</span>+interceptor);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"DumberHandlerExecutionChain &#123;interceptors :"</span>+Arrays.asList(<span class="keyword">this</span>.getInterceptors())+<span class="string">", handler: "</span>+<span class="keyword">this</span>.getHandler()+<span class="string">"&#125;"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>它们是前面提到的两种方法:<code>preHandle</code>和<code>postHandle</code>。两者很相似。他们首先迭代所有可用的拦截器。区别在于第一个调用拦截器的<code>preHandle</code>方法和第二个拦截器的<code>postHandle</code>方法。第二个区别是结果。如果所有拦截器正确完成了操作，<code>preHandle</code>将返回true。<code>postHandle</code>不返回任何东西(这里和<code>HandlerExecutionChain</code>源码内相应的方法实现大致一样，但是做了逻辑上的简单处理达到咱们想要的效果即可)。</p>
+<p>但这两种方法并不是这个类的核心。它最重要的地方是调用这个父类的构造函数:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 1. Invoked directly by super(chain) call</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">HandlerExecutionChain</span><span class="params">(Object handler)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>(handler, <span class="keyword">null</span>);</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// 2. Called directly by previous constructor</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">HandlerExecutionChain</span><span class="params">(Object handler, @Nullable HandlerInterceptor... interceptors)</span> </span>&#123;</div><div class="line">		<span class="keyword">if</span> (handler <span class="keyword">instanceof</span> HandlerExecutionChain) &#123;</div><div class="line">			HandlerExecutionChain originalChain = (HandlerExecutionChain) handler;</div><div class="line">			<span class="keyword">this</span>.handler = originalChain.getHandler();</div><div class="line">			<span class="keyword">this</span>.interceptorList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">			CollectionUtils.mergeArrayIntoCollection(originalChain.getInterceptors(), <span class="keyword">this</span>.interceptorList);</div><div class="line">			CollectionUtils.mergeArrayIntoCollection(interceptors, <span class="keyword">this</span>.interceptorList);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">this</span>.handler = handler;</div><div class="line">			<span class="keyword">this</span>.interceptors = interceptors;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>由上可以看到，通过<code>handler instanceof</code>检查，我们可以在<code>dispatcher servlet</code>中本地生成<code>HandlerExecutionChain</code>。我们不需要查找产生<code>HandlerExecutionChain</code>实例的处理程序映射(例如:<code>org.springframework.web.servlet.handler.AbstractHandlerMapping</code>或<code>org.springframework.web.servlet.handler.AbstractUrlHandlerMapping</code>的实现类)并覆盖重写现有代码。而不是使用这些复杂的步骤，我们只需简单地将<code>HandlerExecutionChain</code>的实例传递给我们自定义的执行链类的构造函数即可。</p>
+<p>完成上面的工作，接下来，你可以在日志中看到以下信息:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Overriden constructor DumberHandlerExecutionChain invoked</div><div class="line"><span class="comment">//tag1</span></div><div class="line">Working with following handler execution chain: DumberHandlerExecutionChain &#123;interceptors :[org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor@<span class="number">77f</span>6d2e3, com.waitingforcode.interceptors.LotteryInterceptor@<span class="number">6</span>d8f729c], handler: <span class="keyword">public</span> java.lang.String com.waitingforcode.controller.TestController.test(javax.servlet.http.HttpServletRequest)&#125;</div><div class="line"><span class="comment">//pre</span></div><div class="line">Running pre handler <span class="keyword">for</span> :org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor@<span class="number">77f</span>6d2e3</div><div class="line">Running pre handler <span class="keyword">for</span> :com.waitingforcode.interceptors.LotteryInterceptor@<span class="number">6</span>d8f729c</div><div class="line">[LotteryInterceptor] preHandle</div><div class="line"><span class="comment">//excute Controller</span></div><div class="line">Controller asks, are you a lottery winner ? <span class="keyword">true</span></div><div class="line">Current locale is :org.springframework.web.servlet.DispatcherServlet$<span class="number">1</span>@<span class="number">5</span>cf346dc</div><div class="line">Request attributes are :org.apache.catalina.connector.RequestFacade@<span class="number">7</span>d9ccb73</div><div class="line"><span class="comment">//post</span></div><div class="line">Running post handler <span class="keyword">for</span> :org.springframework.web.servlet.handler.ConversionServiceExposingInterceptor@<span class="number">77f</span>6d2e3</div><div class="line">[LotteryInterceptor] postHandle</div><div class="line">Running post handler <span class="keyword">for</span> :com.waitingforcode.interceptors.LotteryInterceptor@<span class="number">6</span>d8f729c</div></pre></td></tr></table></figure>
+<p>在本文中，我们分析了在Spring 中dispatcher servlet中处理程序执行链的概念。而且已经知道，它不仅包含处理程序映射(在查找处理程序适配器之后用，源码有标注注释)，而且在不同的时间点会调用拦截器。接着，我们详细分析了<code>HandlerExecutionChain</code>类。里面有两个主要的私有字段，一个是一个处理程序，另一个是拦截器数组。在最后一部分，我们通过写一个我们自定义的处理程序执行链，以能够在我们自定义处理程序适配器的操作之前和之后调用拦截器。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/25/Spring中的作用域/" rel="next" title="Spring中Bean的作用域">
+                <i class="fa fa-chevron-left"></i> Spring中Bean的作用域
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/"
+           data-title="Spring5源码解析-@Autowired" data-url="https://muyinchen.github.io/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">75</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring-Web中的处理程序执行链"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring Web中的处理程序执行链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring中的处理程序执行链？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring中的处理程序执行链？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HandlerExecutionChain类"><span class="nav-number">1.2.</span> <span class="nav-text">HandlerExecutionChain类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义处理程序执行链"><span class="nav-number">1.3.</span> <span class="nav-text">自定义处理程序执行链</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
