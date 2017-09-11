@@ -1,0 +1,739 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。
+关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring5源码解析-Spring中的应用上下文">
+<meta property="og:url" content="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。
+关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
+<meta property="og:updated_time" content="2017-09-11T11:45:28.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring5源码解析-Spring中的应用上下文">
+<meta name="twitter:description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。
+关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/"/>
+
+
+  <title> Spring5源码解析-Spring中的应用上下文 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring5源码解析-Spring中的应用上下文
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-08T16:49:39+08:00" content="2017-09-08">
+              2017-09-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/08/Spring5源码解析-Spring中的应用上下文/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring5源码解析-Spring中的应用上下文"><a href="#Spring5源码解析-Spring中的应用上下文" class="headerlink" title="Spring5源码解析-Spring中的应用上下文"></a>Spring5源码解析-Spring中的应用上下文</h1><p>之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是<a href="https://muyinchen.github.io/2016/11/08/%E7%94%B1%E5%9F%9F%E8%81%94%E7%B3%BB%E5%88%B0%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">由域联系到的逃逸分析</a>的关于Spring容器的续篇。</p>
+<p>关于<a href="https://muyinchen.github.io/2017/08/23/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-@Autowired/">Spring5源码解析-@Autowired</a>这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨<strong>应用程序上下文(application context)</strong>的概念。在第一部分中，我们来看看所有Spring管理的bean生活在什么样的环境中。在第二部分，来分析下到负责上下文管理的类。在最后一部分中，我们来进行一些实践操作。<br><a id="more"></a></p>
+<h2 id="什么是Spring的应用程序上下文？"><a href="#什么是Spring的应用程序上下文？" class="headerlink" title="什么是Spring的应用程序上下文？"></a>什么是Spring的应用程序上下文？</h2><p>众所周知，Spring管理的这些类被称为bean，并且生活在Spring容器中。bean处理程序的最基本实现是<strong>bean factory</strong>。作为<strong>org.springframework.beans.factory.BeanFactory</strong>接口的<strong>实现类</strong>，这是一个初始化，配置和管理bean的容器。但通常在Spring应用程序中仅使用<code>BeanFactory</code>是不够的。它出现在<strong>应用程序上下文中</strong>。</p>
+<p>应用程序上下文(Application context)是一种面向企业化(<code>其实Spring文档里也有面向企业这一说，不过这不就是企业里流水线的工厂里才能有的东西么</code>)的bean工厂。作为标准bean工厂，它是bean class生活的空间。但与标准bean工厂不同，应用程序上下文提供了一个补充企业层(也就是通用的东西了，比如企业里的胸牌，服装等)。又迷糊了吧，举个例子 :例如，通过提供国际化，转换服务或事件传播，使我们省去很多麻烦去亲自处理。通常，应用程序上下文优于bean工厂。但它的唯一缺点是内存消耗比bean工厂大，出现这种情况是由于补充的服务。如果内存的使用对于你的程序要求非常苛刻(例如在applet或移动环境中)，请考虑更多使用bean factory。否则，在更标准的应用程序中，应使用应用程序上下文(application context)。</p>
+<h2 id="Spring的应用程序上下文类"><a href="#Spring的应用程序上下文类" class="headerlink" title="Spring的应用程序上下文类"></a>Spring的应用程序上下文类</h2><p>想要了解Spring中应用程序上下文，关键部分就是<strong>org.springframework.context.ApplicationContext</strong>接口。它扩展了一些其他接口: </p>
+<ul>
+<li><strong>org.springframework.core.env.EnvironmentCapable</strong>:用于标记对象来对外暴露自己说我实现了<strong>Environment</strong>接口。根据这个接口的注释可以知道，它主要用于完成类型的检查。 </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Interface indicating a component that contains and exposes an &#123;<span class="doctag">@link</span> Environment&#125; reference.</div><div class="line"> *  注释说了很清晰明了了，就不多废话了</div><div class="line"> * &lt;p&gt;All Spring application contexts are EnvironmentCapable, and the interface is used primarily</div><div class="line"> * for performing &#123;<span class="doctag">@code</span> instanceof&#125; checks in framework methods that accept BeanFactory</div><div class="line"> * instances that may or may not actually be ApplicationContext instances in order to interact</div><div class="line"> * with the environment if indeed it is available.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;As mentioned, &#123;<span class="doctag">@link</span> org.springframework.context.ApplicationContext ApplicationContext&#125;</div><div class="line"> * extends EnvironmentCapable, and thus exposes a &#123;<span class="doctag">@link</span> #getEnvironment()&#125; method; however,</div><div class="line"> * &#123;<span class="doctag">@link</span> org.springframework.context.ConfigurableApplicationContext ConfigurableApplicationContext&#125;</div><div class="line"> * redefines &#123;<span class="doctag">@link</span> org.springframework.context.ConfigurableApplicationContext#getEnvironment</div><div class="line"> * getEnvironment()&#125; and narrows the signature to return a &#123;<span class="doctag">@link</span> ConfigurableEnvironment&#125;.</div><div class="line"> * The effect is that an Environment object is 'read-only' until it is being accessed from</div><div class="line"> * a ConfigurableApplicationContext, at which point it too may be configured.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Chris Beams</div><div class="line"> * <span class="doctag">@since</span> 3.1</div><div class="line"> * <span class="doctag">@see</span> Environment</div><div class="line"> * <span class="doctag">@see</span> ConfigurableEnvironment</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.ConfigurableApplicationContext#getEnvironment()</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EnvironmentCapable</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Return the &#123;<span class="doctag">@link</span> Environment&#125; associated with this component</div><div class="line">	 * (may be &#123;<span class="doctag">@code</span> null&#125; or a default environment).</div><div class="line">	 */</div><div class="line">	<span class="function">Environment <span class="title">getEnvironment</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><strong>org.springframework.beans.factory.ListableBeanFactory</strong>:通过继承该interface可以列出所有bean，也可以只列出与预期类型相对应的bean。 </li>
+<li><strong>org.springframework.beans.factory.HierarchicalBeanFactory</strong>:支持分层bean的管理。 </li>
+<li><strong>org.springframework.context.MessageSource</strong>:用来解决消息支持国际化。 </li>
+<li><strong>org.springframework.context.ApplicationEventPublisher</strong>:通过该接口，可以允许通知所有类来监听到某些应用程序上下文事件。 </li>
+<li><strong>org.springframework.core.io.support.ResourcePatternResolver</strong>:是一个有助于将资源地址(例如:classpath:/WEB-INF/web.xml)解析到<strong>org.springframework.core.io.Resource</strong>对象中的策略接口。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Central interface to provide configuration for an application.</div><div class="line"> * This is read-only while the application is running, but may be</div><div class="line"> * reloaded if the implementation supports this.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;An ApplicationContext provides:</div><div class="line"> * &lt;ul&gt;  请看所扩展相关各个接口功能的描述</div><div class="line"> * &lt;li&gt;Bean factory methods for accessing application components.</div><div class="line"> * Inherited from &#123;<span class="doctag">@link</span> org.springframework.beans.factory.ListableBeanFactory&#125;.</div><div class="line"> * &lt;li&gt;The ability to load file resources in a generic fashion.</div><div class="line"> * Inherited from the &#123;<span class="doctag">@link</span> org.springframework.core.io.ResourceLoader&#125; interface.</div><div class="line"> * &lt;li&gt;The ability to publish events to registered listeners.</div><div class="line"> * Inherited from the &#123;<span class="doctag">@link</span> ApplicationEventPublisher&#125; interface.</div><div class="line"> * &lt;li&gt;The ability to resolve messages, supporting internationalization.</div><div class="line"> * Inherited from the &#123;<span class="doctag">@link</span> MessageSource&#125; interface.</div><div class="line"> * &lt;li&gt;Inheritance from a parent context. Definitions in a descendant context</div><div class="line"> * will always take priority. This means, for example, that a single parent</div><div class="line"> * context can be used by an entire web application, while each servlet has</div><div class="line"> * its own child context that is independent of that of any other servlet.</div><div class="line"> * &lt;/ul&gt;</div><div class="line"> *</div><div class="line"> * &lt;p&gt;In addition to standard &#123;<span class="doctag">@link</span> org.springframework.beans.factory.BeanFactory&#125;</div><div class="line"> * lifecycle capabilities, ApplicationContext implementations detect and invoke</div><div class="line"> * &#123;<span class="doctag">@link</span> ApplicationContextAware&#125; beans as well as &#123;<span class="doctag">@link</span> ResourceLoaderAware&#125;,</div><div class="line"> * &#123;<span class="doctag">@link</span> ApplicationEventPublisherAware&#125; and &#123;<span class="doctag">@link</span> MessageSourceAware&#125; beans.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Rod Johnson</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@see</span> ConfigurableApplicationContext</div><div class="line"> * <span class="doctag">@see</span> org.springframework.beans.factory.BeanFactory</div><div class="line"> * <span class="doctag">@see</span> org.springframework.core.io.ResourceLoader</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContext</span> <span class="keyword">extends</span> <span class="title">EnvironmentCapable</span>, <span class="title">ListableBeanFactory</span>, <span class="title">HierarchicalBeanFactory</span>,</span></div><div class="line">		<span class="title">MessageSource</span>, <span class="title">ApplicationEventPublisher</span>, <span class="title">ResourcePatternResolver</span> &#123;</div></pre></td></tr></table></figure>
+<p>对于我们来说，实现这些接口使应用程序上下文比一个简单的bean工厂更有用。我们通过<strong>org.springframework.web.context.support.XmlWebApplicationContext</strong>这个实现类来看其在Web应用程序中使用。此类扩展了同一个包下<code>AbstractRefreshableWebApplicationContext</code>这个抽象类。</p>
+<p><code>XmlWebApplicationContext</code>实现了<code>AbstractRefreshableApplicationContext</code>中的抽象方法<code>loadBeanDefinitions</code>，用于读取所有bean。从这个方法实现，可以看出，所有的bean都是通过<strong>org.springframework.beans.factory.xml.XmlBeanDefinitionReader</strong>从XML文件读取的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Loads the bean definitions via an XmlBeanDefinitionReader.</div><div class="line"> * <span class="doctag">@see</span> org.springframework.beans.factory.xml.XmlBeanDefinitionReader</div><div class="line"> * <span class="doctag">@see</span> #initBeanDefinitionReader</div><div class="line"> * <span class="doctag">@see</span> #loadBeanDefinitions</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">loadBeanDefinitions</span><span class="params">(DefaultListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException, IOException </span>&#123;</div><div class="line">	<span class="comment">// Create a new XmlBeanDefinitionReader for the given BeanFactory.</span></div><div class="line">     	<span class="comment">//只能说Spring源码注释的太详细了，英文确实很重要</span></div><div class="line">	XmlBeanDefinitionReader beanDefinitionReader = <span class="keyword">new</span> XmlBeanDefinitionReader(beanFactory);</div><div class="line"></div><div class="line">	<span class="comment">// Configure the bean definition reader with this context's</span></div><div class="line">	<span class="comment">// resource loading environment.</span></div><div class="line">	beanDefinitionReader.setEnvironment(getEnvironment());</div><div class="line">	beanDefinitionReader.setResourceLoader(<span class="keyword">this</span>);</div><div class="line">	beanDefinitionReader.setEntityResolver(<span class="keyword">new</span> ResourceEntityResolver(<span class="keyword">this</span>));</div><div class="line"></div><div class="line">	<span class="comment">// Allow a subclass to provide custom initialization of the reader,</span></div><div class="line">	<span class="comment">// then proceed with actually loading the bean definitions.</span></div><div class="line">	initBeanDefinitionReader(beanDefinitionReader);</div><div class="line">	loadBeanDefinitions(beanDefinitionReader);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另一个有趣的方法，继承自<code>AbstractRefreshableWebApplicationContext</code>，是<code>postProcessBeanFactory</code>。它在加载所有bean定义之后并在其实例化之前被调用(<code>postProcess</code>就是bean构造函数之后调用即实例化之前)。<code>AbstractRefreshableWebApplicationContext</code>使用它来注册请求和会话作用域以及环境bean(具体看下面源码)。另外，这个抽象类实现了<code>ConfigurableWebApplicationContext</code>接口，这样一来就可以定义<code>servlet</code>的上下文和一些本地的配置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Register request/session scopes, a &#123;<span class="doctag">@link</span> ServletContextAwareProcessor&#125;, etc.</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> </span>&#123;</div><div class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> ServletContextAwareProcessor(<span class="keyword">this</span>.servletContext, <span class="keyword">this</span>.servletConfig));</div><div class="line">		beanFactory.ignoreDependencyInterface(ServletContextAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(ServletConfigAware.class);</div><div class="line"></div><div class="line">		WebApplicationContextUtils.registerWebApplicationScopes(beanFactory, <span class="keyword">this</span>.servletContext);</div><div class="line">		WebApplicationContextUtils.registerEnvironmentBeans(beanFactory, <span class="keyword">this</span>.servletContext, <span class="keyword">this</span>.servletConfig);</div><div class="line">	&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="function"><span class="keyword">public</span> ServletContext <span class="title">getServletContext</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.servletContext;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setServletConfig</span><span class="params">(@Nullable ServletConfig servletConfig)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.servletConfig = servletConfig;</div><div class="line">		<span class="keyword">if</span> (servletConfig != <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.servletContext == <span class="keyword">null</span>) &#123;</div><div class="line">			setServletContext(servletConfig.getServletContext());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.servletConfig;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * &#123;<span class="doctag">@inheritDoc</span>&#125;</div><div class="line">	 * &lt;p&gt;Replace &#123;<span class="doctag">@code</span> Servlet&#125;-related property sources.</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initPropertySources</span><span class="params">()</span> </span>&#123;</div><div class="line">		ConfigurableEnvironment env = getEnvironment();</div><div class="line">		<span class="keyword">if</span> (env <span class="keyword">instanceof</span> ConfigurableWebEnvironment) &#123;</div><div class="line">			((ConfigurableWebEnvironment) env).initPropertySources(<span class="keyword">this</span>.servletContext, <span class="keyword">this</span>.servletConfig);</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>由<code>XmlWebApplicationContext</code>间接继承的另一个抽象类是<code>AbstractRefreshableApplicationContext</code>。它有几种处理上下文刷新的方法。处理事件通知的类是<strong>org.springframework.context.support.AbstractApplicationContext</strong>，由<code>XmlWebApplicationContext</code>间接继承。它包含一个将事件(<code>ApplicationEvent</code>类的实例)发送到所有侦听对象的<code>publishEvent</code>方法。</p>
+<p>但是我们的重中之重是处理生命周期，是<code>AbstractApplicationContext</code>类的<code>public void refresh() throws BeansException, IllegalStateException</code>方法来做到的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refresh</span><span class="params">()</span> <span class="keyword">throws</span> BeansException, IllegalStateException </span>&#123;</div><div class="line">		<span class="keyword">synchronized</span> (<span class="keyword">this</span>.startupShutdownMonitor) &#123;</div><div class="line">			<span class="comment">// Prepare this context for refreshing.</span></div><div class="line">			prepareRefresh();</div><div class="line"></div><div class="line">			<span class="comment">// Tell the subclass to refresh the internal bean factory.</span></div><div class="line">			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();</div><div class="line"></div><div class="line">			<span class="comment">// Prepare the bean factory for use in this context.</span></div><div class="line">			prepareBeanFactory(beanFactory);</div><div class="line"></div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				<span class="comment">// Allows post-processing of the bean factory in context subclasses.</span></div><div class="line">				postProcessBeanFactory(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Invoke factory processors registered as beans in the context.</span></div><div class="line">				invokeBeanFactoryPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Register bean processors that intercept bean creation.</span></div><div class="line">				registerBeanPostProcessors(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Initialize message source for this context.</span></div><div class="line">				initMessageSource();</div><div class="line"></div><div class="line">				<span class="comment">// Initialize event multicaster for this context.</span></div><div class="line">				initApplicationEventMulticaster();</div><div class="line"></div><div class="line">				<span class="comment">// Initialize other special beans in specific context subclasses.</span></div><div class="line">				onRefresh();</div><div class="line"></div><div class="line">				<span class="comment">// Check for listener beans and register them.</span></div><div class="line">				registerListeners();</div><div class="line"></div><div class="line">				<span class="comment">// Instantiate all remaining (non-lazy-init) singletons.</span></div><div class="line">				finishBeanFactoryInitialization(beanFactory);</div><div class="line"></div><div class="line">				<span class="comment">// Last step: publish corresponding event.</span></div><div class="line">				finishRefresh();</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">catch</span> (BeansException ex) &#123;</div><div class="line">				<span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</div><div class="line">					logger.warn(<span class="string">"Exception encountered during context initialization - "</span> +</div><div class="line">							<span class="string">"cancelling refresh attempt: "</span> + ex);</div><div class="line">				&#125;</div><div class="line"></div><div class="line">				<span class="comment">// Destroy already created singletons to avoid dangling resources.</span></div><div class="line">				destroyBeans();</div><div class="line"></div><div class="line">				<span class="comment">// Reset 'active' flag.</span></div><div class="line">				cancelRefresh(ex);</div><div class="line"></div><div class="line">				<span class="comment">// Propagate exception to caller.</span></div><div class="line">				<span class="keyword">throw</span> ex;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="keyword">finally</span> &#123;</div><div class="line">				<span class="comment">// Reset common introspection caches in Spring's core, since we</span></div><div class="line">				<span class="comment">// might not ever need metadata for singleton beans anymore...</span></div><div class="line">				resetCommonCaches();</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>通过阅读源码，我们可以注意到以下操作:</p>
+<ol>
+<li>上下文准备刷新(属性源初始化)</li>
+<li>bean工厂准备好用来一系列操作(classloader定义，基本bean注册)</li>
+<li>bean后置处理(postProcessBeanFactory方法)被调用</li>
+<li>消息源(消息管理)被初始化</li>
+<li>event multicaster初始化(event multicaster是将事件分派到合适的侦听对象的对象)</li>
+<li>在特定的上下文子类中初始化其他特殊的bean。</li>
+<li>监听器的注册</li>
+<li>所有剩余的bean的实例化(例如:转换服务)</li>
+</ol>
+<p>在非Web环境中，我们可以使用标准应用程序上下文，如<code>FileSystemXmlApplicationContext</code>，<code>ClassPathXmlApplicationContext</code>或<code>GenericXmlApplicationContext</code>。</p>
+<h2 id="关于Spring的应用程序环境的一些实践"><a href="#关于Spring的应用程序环境的一些实践" class="headerlink" title="关于Spring的应用程序环境的一些实践"></a>关于Spring的应用程序环境的一些实践</h2><p>关于此 部分，我们将看到:如何在一个控制器中获得一个上下文，查找得到一些bean配置并来解析一个消息。在进入正式的代码之前，我们需要做一些上下文的配置:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- activate configuration by annotations, for example enable @Controller annotation --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:annotation-config</span>/&gt;</span></div><div class="line"> </div><div class="line"><span class="comment">&lt;!-- indicates where Spring should looking for application services as services, controllers or components, annotated respectively with @Service, @Controller and @Component --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.mysite.test"</span>/&gt;</span></div><div class="line"> </div><div class="line"><span class="comment">&lt;!-- registers RequestMappingHandlerMapping, RequestMappingHandlerAdapter and ExceptionHandlerExceptionResolver; thanks to it, Spring can resolve requests annotated with @RequestMapping and @ExceptionHandler --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mvc:annotation-driven</span>/&gt;</span></div><div class="line"> </div><div class="line"><span class="comment">&lt;!-- represents a bean which will resolve the messages --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.context.support.ReloadableResourceBundleMessageSource"</span> <span class="attr">id</span>=<span class="string">"messageSource"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"basenames"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">list</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:messages<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>classpath:errors<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">list</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"defaultEncoding"</span> <span class="attr">value</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">  	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"fallbackToSystemLocale"</span> <span class="attr">value</span>=<span class="string">"false"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>通过上面的配置，我们可以编写一个测试controller和一个类ApplicationContextProvider，它将保存一个应用程序上下文实例并按需返回:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// controller, TestController.java</span></div><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> ApplicationContext context;</div><div class="line"> </div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/test"</span>, method = RequestMethod.GET)</div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    LOGGER.debug(<span class="string">"[TestController] Received application context :"</span>+context);</div><div class="line">    ApplicationContext providerContext = ApplicationContextProvider.getApplicationContext();</div><div class="line">    LOGGER.debug(<span class="string">"[TestController] Provider context is :"</span>+providerContext);</div><div class="line"> </div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.context == providerContext) &#123;</div><div class="line">    LOGGER.debug(<span class="string">"[TestController] Both contextes are the same"</span>);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    LOGGER.debug(<span class="string">"[TestController] Message is :"</span>+<span class="keyword">this</span>.context.getMessage(<span class="string">"testMessage"</span>, <span class="keyword">new</span> Object[] &#123;&#125;, Locale.ENGLISH));</div><div class="line">    <span class="keyword">return</span> <span class="string">"test"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// context provider, ApplicationContextProvider.java</span></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationContextProvider</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> ApplicationContext context;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext c)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">    context = c;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ApplicationContext <span class="title">getApplicationContext</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> context;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>ApplicationContext</code>实例由<code>Spring</code>管理。这就是为什么我们可以使用<code>@Autowired</code>注解将其注入另一个Spring管理的bean(在我们的例子中是一个controller )。这是通过注入的从一个bean得到上下文第一种方法。</p>
+<p>第二种方法是使<code>ApplicationContextProvider</code>类实现<strong>org.springframework.context.ApplicationContextAware</strong>接口。这里需要说一下，该接口实现后可以获取当前正在运行的<code>ApplicationContext</code>的这个事件的通知。所以实现类必须实现这个方法:<strong>void setApplicationContext(ApplicationContext applicationContext)throws BeansException</strong>。该方法允许设置当前的<code>ApplicationContext</code>实例并用来使用。上下文通过<strong>org.springframework.context.support.ApplicationContextAwareProcessor</strong>传递给<code>ApplicationContextAware</code>实现，在<code>AbstractApplicationContext</code>类中注册(见下面源码)。需要注意的是，<code>ApplicationcontextAwareProcessor</code>也用于设置bean工厂或应用程序的上下文环境，见下面此类源码中的<code>private final StringValueResolver embeddedValueResolver;</code>的<code>StringValueResolver</code>接口的实现。可以知道，要实现这两种功能，这些类必须分别从<strong>org.springframework.context</strong>包中实现<code>EmbeddedValueResolverAware</code>和<code>EnvironmentAware</code>接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">	 * Configure the factory's standard context characteristics,</div><div class="line">	 * such as the context's ClassLoader and post-processors.</div><div class="line">	 * <span class="doctag">@param</span> beanFactory the BeanFactory to configure</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">prepareBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> </span>&#123;</div><div class="line">		<span class="comment">// Tell the internal bean factory to use the context's class loader etc.</span></div><div class="line">		beanFactory.setBeanClassLoader(getClassLoader());</div><div class="line">		beanFactory.setBeanExpressionResolver(<span class="keyword">new</span> StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));</div><div class="line">		beanFactory.addPropertyEditorRegistrar(<span class="keyword">new</span> ResourceEditorRegistrar(<span class="keyword">this</span>, getEnvironment()));</div><div class="line"></div><div class="line">		<span class="comment">// Configure the bean factory with context callbacks.</span></div><div class="line">      	<span class="comment">//将applicationContext实例扔进去，见下面对ApplicationContextAwareProcessor的源码注释</span></div><div class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> ApplicationContextAwareProcessor(<span class="keyword">this</span>));</div><div class="line">		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(MessageSourceAware.class);</div><div class="line">		beanFactory.ignoreDependencyInterface(ApplicationContextAware.class);</div><div class="line"></div><div class="line">		<span class="comment">// BeanFactory interface not registered as resolvable type in a plain factory.</span></div><div class="line">		<span class="comment">// MessageSource registered (and found for autowiring) as a bean.</span></div><div class="line">		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);</div><div class="line">		beanFactory.registerResolvableDependency(ResourceLoader.class, <span class="keyword">this</span>);</div><div class="line">		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, <span class="keyword">this</span>);</div><div class="line">		beanFactory.registerResolvableDependency(ApplicationContext.class, <span class="keyword">this</span>);</div><div class="line"></div><div class="line">		<span class="comment">// Register early post-processor for detecting inner beans as ApplicationListeners.</span></div><div class="line">		beanFactory.addBeanPostProcessor(<span class="keyword">new</span> ApplicationListenerDetector(<span class="keyword">this</span>));</div><div class="line"></div><div class="line">		<span class="comment">// Detect a LoadTimeWeaver and prepare for weaving, if found.</span></div><div class="line">		<span class="keyword">if</span> (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) &#123;</div><div class="line">			beanFactory.addBeanPostProcessor(<span class="keyword">new</span> LoadTimeWeaverAwareProcessor(beanFactory));</div><div class="line">			<span class="comment">// Set a temporary ClassLoader for type matching.</span></div><div class="line">			beanFactory.setTempClassLoader(<span class="keyword">new</span> ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="comment">// Register default environment beans.</span></div><div class="line">		<span class="keyword">if</span> (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) &#123;</div><div class="line">			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (!beanFactory.containsLocalBean(SYSTEM_PROPERTIES_BEAN_NAME)) &#123;</div><div class="line">			beanFactory.registerSingleton(SYSTEM_PROPERTIES_BEAN_NAME, getEnvironment().getSystemProperties());</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) &#123;</div><div class="line">			beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * &#123;<span class="doctag">@link</span> org.springframework.beans.factory.config.BeanPostProcessor&#125;</div><div class="line"> * 看下面这句注释:</div><div class="line"> * implementation that passes the ApplicationContext to beans that</div><div class="line"> * implement the &#123;<span class="doctag">@link</span> EnvironmentAware&#125;, &#123;<span class="doctag">@link</span> EmbeddedValueResolverAware&#125;,</div><div class="line"> * &#123;<span class="doctag">@link</span> ResourceLoaderAware&#125;, &#123;<span class="doctag">@link</span> ApplicationEventPublisherAware&#125;,</div><div class="line"> * &#123;<span class="doctag">@link</span> MessageSourceAware&#125; and/or &#123;<span class="doctag">@link</span> ApplicationContextAware&#125; interfaces.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Implemented interfaces are satisfied in order of their mention above.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Application contexts will automatically register this with their</div><div class="line"> * underlying bean factory. Applications do not use this directly.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@author</span> Costin Leau</div><div class="line"> * <span class="doctag">@author</span> Chris Beams</div><div class="line"> * <span class="doctag">@since</span> 10.10.2003</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.EnvironmentAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.EmbeddedValueResolverAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.ResourceLoaderAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.ApplicationEventPublisherAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.MessageSourceAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.ApplicationContextAware</div><div class="line"> * <span class="doctag">@see</span> org.springframework.context.support.AbstractApplicationContext#refresh()</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationContextAwareProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> ConfigurableApplicationContext applicationContext;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> StringValueResolver embeddedValueResolver;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Create a new ApplicationContextAwareProcessor for the given context.</div><div class="line">	 * 要创建此实例，必须要有ConfigurableApplicationContext的上下文实例才行</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ApplicationContextAwareProcessor</span><span class="params">(ConfigurableApplicationContext applicationContext)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.applicationContext = applicationContext;</div><div class="line">		<span class="keyword">this</span>.embeddedValueResolver = <span class="keyword">new</span> EmbeddedValueResolver(applicationContext.getBeanFactory());</div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(<span class="keyword">final</span> Object bean, String beanName)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">		AccessControlContext acc = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (System.getSecurityManager() != <span class="keyword">null</span> &amp;&amp;</div><div class="line">				(bean <span class="keyword">instanceof</span> EnvironmentAware || bean <span class="keyword">instanceof</span> EmbeddedValueResolverAware ||</div><div class="line">						bean <span class="keyword">instanceof</span> ResourceLoaderAware || bean <span class="keyword">instanceof</span> ApplicationEventPublisherAware ||</div><div class="line">						bean <span class="keyword">instanceof</span> MessageSourceAware || bean <span class="keyword">instanceof</span> ApplicationContextAware)) &#123;</div><div class="line">			acc = <span class="keyword">this</span>.applicationContext.getBeanFactory().getAccessControlContext();</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">if</span> (acc != <span class="keyword">null</span>) &#123;</div><div class="line">			AccessController.doPrivileged((PrivilegedAction&lt;Object&gt;) () -&gt; &#123;</div><div class="line">				invokeAwareInterfaces(bean);</div><div class="line">				<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">			&#125;, acc);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span> &#123;</div><div class="line">			invokeAwareInterfaces(bean);</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		<span class="keyword">return</span> bean;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>在我们的例子中，对于<code>ApplicationContextAware</code>的实现是只是一个简单的上下文提供者。但是在别的地方，我们定义的这个provider可能是用来得到上下文资源的对象。<strong>这就是关于获取应用程序上下文的两种方式</strong>。</p>
+<p>最后,我们通过一个方法来使用context(上下文)的getMessage方法来对消息解析。在我们的<code>message_en.properties</code>文件中，可以事先声明消息的模板:<strong>testMessage =It’s our test message with content。</strong>然后我们会在日志文件中看到相应的输出。</p>
+<p>顺便说一下，从<code>ApplicationContextProvider</code>获得的对象和<code>@Autowired</code>的对象之间的上下文是相同的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[TestController] Received application context :Root WebApplicationContext: startup date [Wed Apr <span class="number">02</span> <span class="number">20</span>:<span class="number">00</span>:<span class="number">23</span> CEST <span class="number">2014</span>]; root of context hierarchy</div><div class="line">[TestController] Provider context is :Root WebApplicationContext: startup date [Wed Apr <span class="number">02</span> <span class="number">20</span>:<span class="number">00</span>:<span class="number">23</span> CEST <span class="number">2014</span>]; root of context hierarchy</div><div class="line">[TestController] All contexts are the same</div><div class="line">[TestController] Message is :It<span class="string">'s our test message with content.</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/" rel="next" title="Spring5源码解析-Spring Web中的处理程序执行链">
+                <i class="fa fa-chevron-left"></i> Spring5源码解析-Spring Web中的处理程序执行链
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/08/Spring5源码解析-Spring中的应用上下文/"
+           data-title="Spring5源码解析-Spring中的应用上下文" data-url="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">76</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的应用上下文"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的应用上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring的应用程序上下文？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring的应用程序上下文？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的应用程序上下文类"><span class="nav-number">1.2.</span> <span class="nav-text">Spring的应用程序上下文类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Spring的应用程序环境的一些实践"><span class="nav-number">1.3.</span> <span class="nav-text">关于Spring的应用程序环境的一些实践</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
