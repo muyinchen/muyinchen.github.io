@@ -322,7 +322,7 @@
       
         
           <h1 id="Spring5源码解析-Spring中的应用上下文"><a href="#Spring5源码解析-Spring中的应用上下文" class="headerlink" title="Spring5源码解析-Spring中的应用上下文"></a>Spring5源码解析-Spring中的应用上下文</h1><p>之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是<a href="https://muyinchen.github.io/2016/11/08/%E7%94%B1%E5%9F%9F%E8%81%94%E7%B3%BB%E5%88%B0%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">由域联系到的逃逸分析</a>的关于Spring容器的续篇。</p>
-<p>关于<a href="https://muyinchen.github.io/2017/08/23/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-@Autowired/">Spring5源码解析-@Autowired</a>这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨<strong>应用程序上下文(application context)</strong>的概念。在第一部分中，我们来看看所有Spring管理的bean生活在什么样的环境中。在第二部分，来分析下到负责上下文管理的类。在最后一部分中，我们来进行一些实践操作。<br>
+<p>关于<a href="https://muyinchen.github.io/2017/08/23/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-@Autowired/">Spring5源码解析-@Autowired</a>这篇文章讲了通过<code>@Autowired</code>注解进行依赖注入。这一次我们来探讨<strong>应用程序上下文(application context)</strong>的概念。在第一部分中，我们来看看所有Spring管理的bean生活在什么样的环境中。在第二部分，来分析下到负责上下文管理的类。在最后一部分中，我们来进行一些实践操作。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/#more" rel="contents">
               阅读全文 &raquo;
