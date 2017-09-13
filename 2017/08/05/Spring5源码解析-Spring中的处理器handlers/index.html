@@ -98,7 +98,7 @@ Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源
 Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源码解析-论Spring DispatcherServlet的生命周期)。这是所有传入请求的中心入口。但如果没有但如果没有众多的handlers，我们依然不能做任何事情。
 
 首先，在本文中，我们先解读handler到底是个啥。之后，我们将">
-<meta property="og:updated_time" content="2017-08-10T04:45:53.154Z">
+<meta property="og:updated_time" content="2017-09-13T06:01:08.576Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring5源码解析-Spring中的处理器handlers">
 <meta name="twitter:description" content="Spring5源码解析-Spring中的处理器handlers
@@ -343,7 +343,7 @@ Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源
 </ul>
 <p>但这里要注意的是，在Spring版本中有一些重要变化。作为<code>DefaultAnnotationHandlerMapping</code>，<code>AnnotationMethodHandlerAdapter</code>或<code>AnnotationMethodHandlerExceptionResolver</code>的处理程序适配器自Spring 3.2版本以来已经废弃，在<code>Spring4.x</code>里还可以看到，在<code>Spring5</code>内已经删除掉了，替代品为<code>RequestMappingHandlerMapping</code>，<code>RequestMappingHandlerAdapter</code>和<code>ExceptionHandlerExceptionResolver</code>。通过这些新类以便于自定义映射。另外，通过在<code>since 3.1</code> 版本中<strong>org.springframework.web.method.HandlerMethod</strong>类中引入，来将所处理的对象转换为其方法表示。我们可以通过这个方法来判断对象返回的类型或者哪些参数是我们所期望的(看着拗口的话请打开源码查看此类注释)。</p>
 <h2 id="Spring框架中的handler"><a href="#Spring框架中的handler" class="headerlink" title="Spring框架中的handler"></a>Spring框架中的handler</h2><p>除了已经提供的处理程序适配器之外，Spring也有本地处理程序映射，最基本的处理程序映射器是<strong>org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping</strong>类。它将<code>URL</code>与相应的bean进行匹配。例如，请看下面的配置：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"/friends"</span> <span class="attr">class</span>=<span class="string">"com.waitingforcode.controller.FriendsController"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"/friends"</span> <span class="attr">class</span>=<span class="string">"com.migo.controller.FriendsController"</span> /&gt;</span></div></pre></td></tr></table></figure>
 <p>正如你所看到的，这种配置在很多URL的情况下是很不实用的。一些更灵活的处理映射器是<strong>org.springframework.web.servlet.handler.SimpleUrlHandlerMapping</strong>。而不是为每个请求创建<code>bean</code>，我们可以创建一个映射文件，其中包含URL作为键和<code>controller</code>作为值，看下面的配置:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"simpleUrlMapping"</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"</span>&gt;</span> </div><div class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"mappings"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">props</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">"/friends.html"</span>&gt;</span>FriendsController<span class="tag">&lt;/<span class="name">props</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>但是，在<code>SimpleUrlHandlerMapping</code>中，处理稍微复杂URL也是一个头疼的问题。这也是为什么我们要用<code>DefaultAnnotationHandlerMapping</code>或者在最新的<code>Spring</code>版本中使用</p>
@@ -506,7 +506,7 @@ Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">76</span>
+              <span class="site-state-item-count">77</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
