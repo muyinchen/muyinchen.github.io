@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://muyinchen.github.io/2017/09/15/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B%E5%92%8C%E5%8E%9F%E5%9E%8Bbean/</loc>
+    
+    <lastmod>2017-09-15T04:59:06.709Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://muyinchen.github.io/2017/09/12/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E4%B8%AD%E7%9A%84Context%20loader/</loc>
     
     <lastmod>2017-09-13T06:03:51.453Z</lastmod>
