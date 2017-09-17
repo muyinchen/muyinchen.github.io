@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring5源码解析-Spring中的bean工厂后置处理器Spring允许我们使用bean来进行大量的操作(这也是我们面向对象思想最常用的表达方式)。我们可以决定它们在容器中是否是(单例或者是原型)唯一实例。通过bean工厂后置处理器我们还可以在初始化时进行一些额外的操作。
+在这篇文章中，来介绍下bean factory post processor。在第一部分，我们来发现下这个概念背后玄机。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring5源码解析-Spring中的bean工厂后置处理器">
+<meta property="og:url" content="https://muyinchen.github.io/2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring5源码解析-Spring中的bean工厂后置处理器Spring允许我们使用bean来进行大量的操作(这也是我们面向对象思想最常用的表达方式)。我们可以决定它们在容器中是否是(单例或者是原型)唯一实例。通过bean工厂后置处理器我们还可以在初始化时进行一些额外的操作。
+在这篇文章中，来介绍下bean factory post processor。在第一部分，我们来发现下这个概念背后玄机。">
+<meta property="og:updated_time" content="2017-09-17T11:24:55.558Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring5源码解析-Spring中的bean工厂后置处理器">
+<meta name="twitter:description" content="Spring5源码解析-Spring中的bean工厂后置处理器Spring允许我们使用bean来进行大量的操作(这也是我们面向对象思想最常用的表达方式)。我们可以决定它们在容器中是否是(单例或者是原型)唯一实例。通过bean工厂后置处理器我们还可以在初始化时进行一些额外的操作。
+在这篇文章中，来介绍下bean factory post processor。在第一部分，我们来发现下这个概念背后玄机。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/"/>
+
+
+  <title> Spring5源码解析-Spring中的bean工厂后置处理器 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring5源码解析-Spring中的bean工厂后置处理器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-16T17:49:13+08:00" content="2017-09-16">
+              2017-09-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring5源码解析-Spring中的bean工厂后置处理器"><a href="#Spring5源码解析-Spring中的bean工厂后置处理器" class="headerlink" title="Spring5源码解析-Spring中的bean工厂后置处理器"></a>Spring5源码解析-Spring中的bean工厂后置处理器</h1><p>Spring允许我们使用bean来进行大量的操作(这也是我们面向对象思想最常用的表达方式)。我们可以决定它们在容器中是否是(单例或者是原型)唯一实例。通过bean工厂后置处理器我们还可以在<code>初始化</code>时进行一些额外的操作。</p>
+<p>在这篇文章中，来介绍下<strong>bean factory post processor</strong>。在第一部分，我们来发现下这个概念背后玄机。之后我们会写一些有趣代码来让大伙更好地理解这个概念。<br><a id="more"></a></p>
+<h2 id="什么是Spring工厂的后置处理器？"><a href="#什么是Spring工厂的后置处理器？" class="headerlink" title="什么是Spring工厂的后置处理器？"></a>什么是Spring工厂的后置处理器？</h2><p>有时我们可能需要在Spring应用程序中实现一些动态行为。举个简单的例子，假设在你的网站中，你要显示按时间来显示两个文本内容。上午的时候，你会显示“早安”。下午，显示的文字将是“下午好”。另外，你有两个日常部署，上午12点，另一个在晚上12点。需要强调的是，这个文本内容必须由一个bean来处理。我们现在有两个选择:每次部署时更改应用程序上下文文件(太麻烦了)，或者定义一个实现<strong>org.springframework.beans.factory.config.BeanFactoryPostProcessor</strong>接口的bean 。第二个解决方案更优雅，因为我们只需要编写一次代码，然后就可以忽视它的存在了(无须次次去修改了)。</p>
+<p>那么，这个优雅的<code>BeanFactoryPostProcessor</code>是何方神圣？它是由bean实现的接口，它们可以修改其他bean的定义。请注意，只能修改定义，即构造函数参数，属性值。<code>BeanFactoryPostProcessor</code>bean在初始化“正常”bean之前被调用，这就是为什么它能修改元数据的原因(meta data)。调用是通过<strong>org.springframework.context.support.AbstractApplicationContext的</strong> <strong>protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory)</strong>来<strong>实现的</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">invokeBeanFactoryPostProcessors</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> </span>&#123;</div><div class="line">  PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在<code>PostProcessorRegistrationDelegate</code>里面，负责bean factory后置处理器执行的方法是:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Invoke the given BeanFactoryPostProcessor beans.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">invokeBeanFactoryPostProcessors</span><span class="params">(</span></span></div><div class="line">		Collection&lt;? extends BeanFactoryPostProcessor&gt; postProcessors, ConfigurableListableBeanFactory beanFactory) &#123;</div><div class="line">	<span class="keyword">for</span> (BeanFactoryPostProcessor postProcessor : postProcessors) &#123;</div><div class="line">		postProcessor.postProcessBeanFactory(beanFactory);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如你所见，由<code>BeanFactoryPostProcessor</code>实现覆盖的主要方法是<code>postProcessBeanFactory</code>。这也是我们来自己定制bean定义的地方。我们通过在<strong>org.springframework.beans.factory.config.BeanDefinition</strong>对象上进行定制。关于这点我已经<a href="https://muyinchen.github.io/2017/09/15/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E5%8D%95%E4%BE%8B%E5%92%8C%E5%8E%9F%E5%9E%8Bbean/">在Spring5源码解析-Spring框架中的单例和原型bean</a>的文章中已经写过，它们(<code>BeanDefinition对象</code>)包含大量关于bean元数据的信息:构造函数参数，属性值或作用域。</p>
+<h2 id="一个简单的Spring-bean厂后置处理器Demo"><a href="#一个简单的Spring-bean厂后置处理器Demo" class="headerlink" title="一个简单的Spring bean厂后置处理器Demo"></a>一个简单的Spring bean厂后置处理器Demo</h2><p>关于理论的重要部分已经都在前面进行了描述。在这部分中，我们将重点放在一个简单实用的案例上。你还记得第一部分的“早安”和“下午好”的例子？如果忘了，请回去再瞅眼的。接着，让我们尝试在代码中实现这种案例。首先，我们将在配置文件中定义一些bean:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"com.migo.bean.BeanModifier"</span>&gt;</span> </div><div class="line">      </div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"welcomerBean"</span> <span class="attr">class</span>=<span class="string">"com.migo.bean.Welcomer"</span> <span class="attr">init-method</span>=<span class="string">"initWelcomer"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"welcomeText"</span> <span class="attr">value</span>=<span class="string">"Good morning"</span>&gt;</span><span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>第一个bean代表将实现<code>BeanFactoryPostProcessor</code>接口的bean。第二个bean是注入的类，它会在页面中显示欢迎的文本内容。他们是两个bean的代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Welcomer.java</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Welcomer</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> String welcomeText;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initWelcomer</span><span class="params">()</span> </span>&#123;</div><div class="line">    LOGGER.debug(<span class="string">"Welcomer is initialized"</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setWelcomeText</span><span class="params">(String welcomeText)</span> </span>&#123;</div><div class="line">    LOGGER.debug(<span class="string">"Setting welcomeText to: "</span>+welcomeText);</div><div class="line">    <span class="keyword">this</span>.welcomeText = welcomeText;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getWelcomeText</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.welcomeText;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Welcomer &#123;text: "</span>+<span class="keyword">this</span>.welcomeText+<span class="string">"&#125;"</span>;</div><div class="line">  &#125;</div><div class="line">     </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// BeanModifier.java</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanModifier</span> <span class="keyword">implements</span> <span class="title">BeanFactoryPostProcessor</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessBeanFactory</span><span class="params">(ConfigurableListableBeanFactory beanFactory)</span> <span class="keyword">throws</span> BeansException </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      Calendar calendar = Calendar.getInstance();</div><div class="line">      <span class="keyword">if</span> (calendar.get(Calendar.AM_PM) == Calendar.PM) &#123;</div><div class="line">        BeanDefinition welcomerDef = beanFactory.getBeanDefinition(<span class="string">"welcomerBean"</span>);</div><div class="line">        welcomerDef.getPropertyValues().add(<span class="string">"welcomeText"</span>, <span class="string">"Good afternoon"</span>);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">        LOGGER.error(<span class="string">"An error occurred on setting welcomeText"</span>, e);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// test method</span></div><div class="line">ApplicationContext context = <span class="keyword">new</span> FileSystemXmlApplicationContext(<span class="string">"/home/bartosz/webapp/src/main/resources/META-INF/applicationContext.xml"</span>);</div><div class="line"> </div><div class="line">Welcomer welcomer = (Welcomer) context.getBean(<span class="string">"welcomer"</span>);</div><div class="line">System.out.println(<span class="string">"Text: "</span>+welcomer.getWelcomeText());</div></pre></td></tr></table></figure>
+<p>如果现在是下午，输出应该是:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Setting welcomeText to: Good afternoon</div><div class="line">Welcomer is initialized</div><div class="line">Text: Good afternoon</div></pre></td></tr></table></figure>
+<p>我们可以看到，<code>BeanModifier</code>在<code>Welcomer</code>的真正初始化之前被调用。由于重写覆盖了<code>postProcessBeanFactory</code>方法，这样我们可以通过检查日期，并为属性<code>welcomeText</code>设置正确的值。</p>
+<p>这篇文章虽短，但它描述了一些在一些“动态”场景中我们如何以一个更效率的方式来实现的实用操作。比如，你会碰到这种，我们常常见到一个游戏会有例行维护，那么我们会发现排行榜会在例行维护后刷新，你每次登录游戏也会对你的一些属性或者积分进行刷新，其实你每次登录就是又初始化了一遍你这个bean，这样，我们就可以做很多事情了，比如为最佳用户添加一些奖励积分。通过<code>BeanFactoryPostProcessor</code>这个 bean，这种处理就可以在Java方法内自动完成，无须我们在每次部署时通过手动来完成。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/" rel="next" title="Spring5源码解析-Spring框架中的单例和原型bean">
+                <i class="fa fa-chevron-left"></i> Spring5源码解析-Spring框架中的单例和原型bean
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/"
+           data-title="Spring5源码解析-Spring中的bean工厂后置处理器" data-url="https://muyinchen.github.io/2017/09/16/Spring5源码解析-Spring中的bean工厂后置处理器/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">79</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的bean工厂后置处理器"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的bean工厂后置处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring工厂的后置处理器？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring工厂的后置处理器？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个简单的Spring-bean厂后置处理器Demo"><span class="nav-number">1.2.</span> <span class="nav-text">一个简单的Spring bean厂后置处理器Demo</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
