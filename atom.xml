@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-09-21T16:27:36.792Z</updated>
+  <updated>2017-09-21T16:34:17.458Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>Spring5源码解析-使用Spring AnnotationUtils处理注解</title>
-    <link href="https://muyinchen.github.io/2017/09/19/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E4%BD%BF%E7%94%A8Spring%20AnnotationUtils%E5%A4%84%E7%90%86%E6%B3%A8%E8%A7%A3/"/>
-    <id>https://muyinchen.github.io/2017/09/19/Spring5源码解析-使用Spring AnnotationUtils处理注解/</id>
-    <published>2017-09-19T04:04:52.134Z</published>
-    <updated>2017-09-21T16:27:36.792Z</updated>
+    <link href="https://muyinchen.github.io/2017/09/22/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E4%BD%BF%E7%94%A8Spring%20AnnotationUtils%E5%A4%84%E7%90%86%E6%B3%A8%E8%A7%A3/"/>
+    <id>https://muyinchen.github.io/2017/09/22/Spring5源码解析-使用Spring AnnotationUtils处理注解/</id>
+    <published>2017-09-21T16:30:25.000Z</published>
+    <updated>2017-09-21T16:34:17.458Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Spring5源码解析-使用Spring-AnnotationUtils处理注解"><a href="#Spring5源码解析-使用Spring-AnnotationUtils处理注解" class="headerlink" title="Spring5源码解析-使用Spring AnnotationUtils处理注解"></a>Spring5源码解析-使用Spring AnnotationUtils处理注解</h1><p>通过Java中的注解，程序员可以将配置文件中的一些配置通过使用Java类来实现。例如，在Spring中，通过<code>@RequestMapping</code>注解，我们可以直接在<code>controller</code>内配置<code>URL映射</code>。一般来说，成功者的背后离不开一帮默默支持他的小伙伴，这里同样是，一旦离开其中一个，就甭指望实现所期望的功能，这里要说的一个就是<code>AnnotationUtils</code>。</p>
 <p>在本文中，我们将会看到AnnotationUtils类是如何给我们提供极大的便利的。首先，我们将关注下其所有可用的方法。进而，我们来看看这些方法用在了什么地方。最后，老规矩，Demo。</p>
