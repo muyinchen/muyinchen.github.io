@@ -1,0 +1,719 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring5源码解析-Spring中的异步事件上一篇 Spring框架中的事件和监听器并未对Spring框架中的异步事件涉及太多，所以本篇是对其一个补充。
+同步事件有一个主要缺点：它们在所调用线程的本地执行(也就是将所调用线程看成主线程的话，就是在主线程里依次执行)。如果监听器处理同步事件需要5秒钟的响应，则最终结果是用户将在至少5秒内无法看到响应(可以通过Spring框架中的事件和监听器中的例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring5源码解析-Spring中的异步事件">
+<meta property="og:url" content="https://muyinchen.github.io/2017/09/28/Spring5源码解析-Spring中的异步事件/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring5源码解析-Spring中的异步事件上一篇 Spring框架中的事件和监听器并未对Spring框架中的异步事件涉及太多，所以本篇是对其一个补充。
+同步事件有一个主要缺点：它们在所调用线程的本地执行(也就是将所调用线程看成主线程的话，就是在主线程里依次执行)。如果监听器处理同步事件需要5秒钟的响应，则最终结果是用户将在至少5秒内无法看到响应(可以通过Spring框架中的事件和监听器中的例">
+<meta property="og:updated_time" content="2017-09-28T04:11:56.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring5源码解析-Spring中的异步事件">
+<meta name="twitter:description" content="Spring5源码解析-Spring中的异步事件上一篇 Spring框架中的事件和监听器并未对Spring框架中的异步事件涉及太多，所以本篇是对其一个补充。
+同步事件有一个主要缺点：它们在所调用线程的本地执行(也就是将所调用线程看成主线程的话，就是在主线程里依次执行)。如果监听器处理同步事件需要5秒钟的响应，则最终结果是用户将在至少5秒内无法看到响应(可以通过Spring框架中的事件和监听器中的例">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/09/28/Spring5源码解析-Spring中的异步事件/"/>
+
+
+  <title> Spring5源码解析-Spring中的异步事件 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring5源码解析-Spring中的异步事件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-28T12:00:25+08:00" content="2017-09-28">
+              2017-09-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/28/Spring5源码解析-Spring中的异步事件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/28/Spring5源码解析-Spring中的异步事件/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring5源码解析-Spring中的异步事件"><a href="#Spring5源码解析-Spring中的异步事件" class="headerlink" title="Spring5源码解析-Spring中的异步事件"></a>Spring5源码解析-Spring中的异步事件</h1><p>上一篇 <a href="https://muyinchen.github.io/2017/09/27/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E7%9B%91%E5%90%AC%E5%99%A8/">Spring框架中的事件和监听器</a>并未对Spring框架中的异步事件涉及太多，所以本篇是对其一个补充。</p>
+<p>同步事件有一个主要缺点：它们在所调用线程的本地执行(也就是将所调用线程看成主线程的话，就是在主线程里依次执行)。如果监听器处理同步事件需要5秒钟的响应，则最终结果是用户将在至少5秒内无法看到响应(可以通过<a href="https://muyinchen.github.io/2017/09/27/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E7%9B%91%E5%90%AC%E5%99%A8/">Spring框架中的事件和监听器</a>中的例子了解具体)。所以，我们可以通过一个替代方案来解决这个问题 - 异步事件。</p>
+<p>接下来也就是介绍Spring框架中的异步事件。老规矩，第一部分深入框架源码，将描述主要组成部分以及它们如何一起协作的。在第二部分，我们将编写一些测试用例来检查异步事件的执行情况。</p>
+<a id="more"></a>
+<h2 id="Spring中的异步事件"><a href="#Spring中的异步事件" class="headerlink" title="Spring中的异步事件"></a>Spring中的异步事件</h2><p>在Spring中处理异步事件是基于本地的Java并发解决方案—任务执行器(可以了解下Java Executor框架的内容)。事件由<strong>multicastEvent</strong> 方法调度。它通过使用<strong>java.util.concurrent.Executor</strong>接口的实现将事件发送到专用的监听器。Multicaster会调用同步执行器，因为它是默认实现，这点在<a href="https://muyinchen.github.io/2017/09/27/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E5%92%8C%E7%9B%91%E5%90%AC%E5%99%A8/">Spring框架中的事件和监听器</a>有明确的例子，从源码的角度也就是是否设置有<code>SyncTaskExecutor</code>实例。从<code>public void setTaskExecutor(@Nullable Executor taskExecutor)</code>其中，@Nullable 可看出Executor参数可为null，默认不设置的话，multicastEvent也就直接 跳过异步执行了</p>
+<p><strong>org.springframework.context.event.SimpleApplicationEventMulticaster</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">multicastEvent</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</div><div class="line">		multicastEvent(event, resolveDefaultEventType(event));</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">multicastEvent</span><span class="params">(<span class="keyword">final</span> ApplicationEvent event, @Nullable ResolvableType eventType)</span> </span>&#123;</div><div class="line">		ResolvableType type = (eventType != <span class="keyword">null</span> ? eventType : resolveDefaultEventType(event));</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">final</span> ApplicationListener&lt;?&gt; listener : getApplicationListeners(event, type)) &#123;</div><div class="line">			Executor executor = getTaskExecutor();</div><div class="line">			<span class="keyword">if</span> (executor != <span class="keyword">null</span>) &#123;</div><div class="line">				executor.execute(() -&gt; invokeListener(listener, event));</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				invokeListener(listener, event);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">private</span> ResolvableType <span class="title">resolveDefaultEventType</span><span class="params">(ApplicationEvent event)</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> ResolvableType.forInstance(event);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Set a custom executor (typically a &#123;<span class="doctag">@link</span> 	org.springframework.core.task.TaskExecutor&#125;)</div><div class="line">	 * to invoke each listener with.</div><div class="line">	 * &lt;p&gt;Default is equivalent to &#123;<span class="doctag">@link</span> org.springframework.core.task.SyncTaskExecutor&#125;,</div><div class="line">	 * executing all listeners synchronously in the calling thread.</div><div class="line">	 * &lt;p&gt;Consider specifying an asynchronous task executor here to not block the</div><div class="line">	 * caller until all listeners have been executed. However, note that asynchronous</div><div class="line">	 * execution will not participate in the caller's thread context (class loader,</div><div class="line">	 * transaction association) unless the TaskExecutor explicitly supports this.</div><div class="line">	 * <span class="doctag">@see</span> org.springframework.core.task.SyncTaskExecutor</div><div class="line">	 * <span class="doctag">@see</span> org.springframework.core.task.SimpleAsyncTaskExecutor</div><div class="line">	 * <span class="doctag">@Nullable</span> 可看出Executor参数可为null，默认不设置的话，上面multicastEvent也就直接	  * 跳过异步执行了</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTaskExecutor</span><span class="params">(@Nullable Executor taskExecutor)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.taskExecutor = taskExecutor;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Return the current task executor for this multicaster.</div><div class="line">	 */</div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="function"><span class="keyword">protected</span> Executor <span class="title">getTaskExecutor</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.taskExecutor;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>异步执行器的实现可以参考<strong>org.springframework.core.task.SimpleAsyncTaskExecutor</strong>。这个类为每个提交的任务创建新的线程。然而，它不会重用线程，所以如果我们有很多长执行时间的异步任务需要来处理的时候，线程创建的风险就会变得太大了，会占用大量的资源，不光是cpu还包括jvm。具体源码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Executes the given task, within a concurrency throttle</div><div class="line"> * if configured (through the superclass's settings).</div><div class="line"> * <span class="doctag">@see</span> #doExecute(Runnable)</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task)</span> </span>&#123;</div><div class="line">	execute(task, TIMEOUT_INDEFINITE);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Executes the given task, within a concurrency throttle</div><div class="line"> * if configured (through the superclass's settings).</div><div class="line"> * &lt;p&gt;Executes urgent tasks (with 'immediate' timeout) directly,</div><div class="line"> * bypassing the concurrency throttle (if active). All other</div><div class="line"> * tasks are subject to throttling.</div><div class="line"> * <span class="doctag">@see</span> #TIMEOUT_IMMEDIATE</div><div class="line"> * <span class="doctag">@see</span> #doExecute(Runnable)</div><div class="line"> */</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task, <span class="keyword">long</span> startTimeout)</span> </span>&#123;</div><div class="line">	Assert.notNull(task, <span class="string">"Runnable must not be null"</span>);</div><div class="line">	Runnable taskToUse = (<span class="keyword">this</span>.taskDecorator != <span class="keyword">null</span> ? <span class="keyword">this</span>.taskDecorator.decorate(task) : task);</div><div class="line">	<span class="keyword">if</span> (isThrottleActive() &amp;&amp; startTimeout &gt; TIMEOUT_IMMEDIATE) &#123;</div><div class="line">		<span class="keyword">this</span>.concurrencyThrottle.beforeAccess();</div><div class="line">		doExecute(<span class="keyword">new</span> ConcurrencyThrottlingRunnable(taskToUse));</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span> &#123;</div><div class="line">		doExecute(taskToUse);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</div><div class="line">     	<span class="comment">//创建</span></div><div class="line">	FutureTask&lt;Object&gt; future = <span class="keyword">new</span> FutureTask&lt;&gt;(task, <span class="keyword">null</span>);</div><div class="line">     	<span class="comment">//执行</span></div><div class="line">	execute(future, TIMEOUT_INDEFINITE);</div><div class="line">	<span class="keyword">return</span> future;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">Future&lt;T&gt; <span class="title">submit</span><span class="params">(Callable&lt;T&gt; task)</span> </span>&#123;</div><div class="line">	FutureTask&lt;T&gt; future = <span class="keyword">new</span> FutureTask&lt;&gt;(task);</div><div class="line">	execute(future, TIMEOUT_INDEFINITE);</div><div class="line">	<span class="keyword">return</span> future;</div><div class="line">&#125;</div><div class="line"><span class="comment">/**</span></div><div class="line"> * Template method for the actual execution of a task.</div><div class="line"> * &lt;p&gt;The default implementation creates a new Thread and starts it.</div><div class="line"> * <span class="doctag">@param</span> task the Runnable to execute</div><div class="line"> * <span class="doctag">@see</span> #setThreadFactory</div><div class="line"> * <span class="doctag">@see</span> #createThread</div><div class="line"> * <span class="doctag">@see</span> java.lang.Thread#start()</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doExecute</span><span class="params">(Runnable task)</span> </span>&#123;</div><div class="line">	Thread thread = (<span class="keyword">this</span>.threadFactory != <span class="keyword">null</span> ? <span class="keyword">this</span>.threadFactory.newThread(task) : createThread(task));</div><div class="line">     <span class="comment">//可以看出，执行也只是简单的将创建的线程start执行下，别提什么重用了</span></div><div class="line">	thread.start();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>为了从线程池功能中受益，我们可以使用另一个Spring的Executor实现，<strong>org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor</strong>。类如其名，这个<code>Executor</code>允许我们使用线程池。关于线程池的源码，请期待我的Java9的书籍，里面会涉及到这里面的细节分析，也可以参考其他博客的博文(哈哈，我就是打个小广告而已)。</p>
+<p><strong>org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Return the underlying ThreadPoolExecutor for native access.</div><div class="line">	 * <span class="doctag">@return</span> the underlying ThreadPoolExecutor (never &#123;<span class="doctag">@code</span> null&#125;)</div><div class="line">	 * <span class="doctag">@throws</span> IllegalStateException if the ThreadPoolTaskExecutor hasn't been initialized yet</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> ThreadPoolExecutor <span class="title">getThreadPoolExecutor</span><span class="params">()</span> <span class="keyword">throws</span> IllegalStateException </span>&#123;</div><div class="line">		Assert.state(<span class="keyword">this</span>.threadPoolExecutor != <span class="keyword">null</span>, <span class="string">"ThreadPoolTaskExecutor not initialized"</span>);</div><div class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.threadPoolExecutor;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task)</span> </span>&#123;</div><div class="line">		Executor executor = getThreadPoolExecutor();</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			executor.execute(task);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (RejectedExecutionException ex) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TaskRejectedException(<span class="string">"Executor ["</span> + executor + <span class="string">"] did not accept task: "</span> + task, ex);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task, <span class="keyword">long</span> startTimeout)</span> </span>&#123;</div><div class="line">		execute(task);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</div><div class="line">		ExecutorService executor = getThreadPoolExecutor();</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="keyword">return</span> executor.submit(task);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (RejectedExecutionException ex) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TaskRejectedException(<span class="string">"Executor ["</span> + executor + <span class="string">"] did not accept task: "</span> + task, ex);</div><div class="line">		&#125;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<h2 id="写一个Spring中异步事件的例子"><a href="#写一个Spring中异步事件的例子" class="headerlink" title="写一个Spring中异步事件的例子"></a>写一个Spring中异步事件的例子</h2><p>我们来编写一个能够同时处理同步和异步事件的multicaster。同步事件将使用本地同步调度程序进行调度(SyncTaskExecutor)，异步使用Spring的ThreadPoolTaskExecutor实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 下面的注释意思很明显了，不多说了</div><div class="line"> * &#123;<span class="doctag">@link</span> TaskExecutor&#125; implementation that executes each task &lt;i&gt;synchronously&lt;/i&gt;</div><div class="line"> * in the calling thread.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Mainly intended for testing scenarios.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Execution in the calling thread does have the advantage of participating</div><div class="line"> * in it's thread context, for example the thread context class loader or the</div><div class="line"> * thread's current transaction association. That said, in many cases,</div><div class="line"> * asynchronous execution will be preferable: choose an asynchronous</div><div class="line"> * &#123;<span class="doctag">@code</span> TaskExecutor&#125; instead for such scenarios.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 2.0</div><div class="line"> * <span class="doctag">@see</span> SimpleAsyncTaskExecutor</div><div class="line"> */</div><div class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"serial"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SyncTaskExecutor</span> <span class="keyword">implements</span> <span class="title">TaskExecutor</span>, <span class="title">Serializable</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Executes the given &#123;<span class="doctag">@code</span> task&#125; synchronously, through direct</div><div class="line">	 * invocation of it's &#123;<span class="doctag">@link</span> Runnable#run() run()&#125; method.</div><div class="line">	 * <span class="doctag">@throws</span> IllegalArgumentException if the given &#123;<span class="doctag">@code</span> task&#125; is &#123;<span class="doctag">@code</span> null&#125;</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task)</span> </span>&#123;</div><div class="line">		Assert.notNull(task, <span class="string">"Runnable must not be null"</span>);</div><div class="line">		task.run();</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先，我们需要为我们的测试用例添加一些bean：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;bean id="syncTaskExecutor" class="org.springframework.core.task.SyncTaskExecutor" /&gt;</div><div class="line">&lt;bean id="asyncTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"&gt;</div><div class="line">  &lt;!-- 10 task will be submitted immediately --&gt;</div><div class="line">  &lt;property name="corePoolSize" value="10" /&gt;</div><div class="line">  &lt;!-- If 10 task are already submitted and treated, we allow to enlarge pool capacity to 15 (10 from core pool size + 5 from max pool size) --&gt;</div><div class="line">  &lt;property name="maxPoolSize" value="15" /&gt;</div><div class="line">  &lt;!-- Number of tasks that can be placed into waiting queue --&gt;</div><div class="line">  &lt;property name="queueCapacity" value="10" /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"> </div><div class="line">&lt;bean id="applicationEventMulticaster" class="com.migo.event.SimpleEventMulticaster"&gt;</div><div class="line">  &lt;property name="taskExecutor" ref="syncTaskExecutor" /&gt;</div><div class="line">  &lt;property name="asyncTaskExecutor" ref="asyncTaskExecutor" /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line">&lt;bean id="taskStatsHolder" class="com.migo.event.TaskStatsHolder" /&gt;</div></pre></td></tr></table></figure>
+<p>用于测试任务执行结果的两个类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// TaskStatsHolder.java</span></div><div class="line"><span class="comment">/****</span></div><div class="line"> ** Holder bean for all executed tasks.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskStatsHolder</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> Map&lt;String, TaskStatData&gt; tasks = <span class="keyword">new</span> HashMap&lt;String, TaskStatData&gt;();</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addNewTaskStatHolder</span><span class="params">(String key, TaskStatData value)</span> </span>&#123;</div><div class="line">    tasks.put(key, value);</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> TaskStatData <span class="title">getTaskStatHolder</span><span class="params">(String key)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> tasks.get(key);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// TaskStatData.java</span></div><div class="line"><span class="comment">/****</span></div><div class="line"> ** Holder class for all statistic data about already executed tasks.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskStatData</span> </span>&#123;</div><div class="line"> </div><div class="line">    <span class="keyword">private</span> String threadName;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> executionTime;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">long</span> startTime;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">long</span> endTime;</div><div class="line">     </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TaskStatData</span><span class="params">(String threadName, <span class="keyword">long</span> startTime, <span class="keyword">long</span> endTime)</span> </span>&#123;</div><div class="line">      <span class="keyword">this</span>.threadName = threadName;</div><div class="line">      <span class="keyword">this</span>.startTime = startTime;</div><div class="line">      <span class="keyword">this</span>.endTime = endTime;</div><div class="line">      <span class="keyword">this</span>.executionTime = Math.round((endTime - startTime) / <span class="number">1000</span>);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getThreadName</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> threadName;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getExecutionTime</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.executionTime;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getStartTime</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.startTime;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">getEndTime</span><span class="params">()</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.endTime;</div><div class="line">    &#125;</div><div class="line">     </div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">      StringBuilder result = <span class="keyword">new</span> StringBuilder();</div><div class="line">      result.append(<span class="string">"TaskStatData &#123;thread name: "</span>).append(<span class="keyword">this</span>.threadName).append(<span class="string">", start time: "</span>).append(<span class="keyword">new</span> Date(<span class="keyword">this</span>.startTime));</div><div class="line">      result.append(<span class="string">", end time: "</span>).append(<span class="keyword">new</span> Date(<span class="keyword">this</span>.endTime)).append(<span class="string">", execution time: "</span>).append(<span class="keyword">this</span>.executionTime).append(<span class="string">" seconds&#125;"</span>);</div><div class="line">      <span class="keyword">return</span> result.toString();</div><div class="line">    &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如上代码所示，这些都是简单对象。我们会使用这些对象来检查我们的假设和执行结果是否相匹配。两个要分发的事件也很简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ProductChangeFailureEvent.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * This is synchronous event dispatched when one product is modified in the backoffice. </div><div class="line"> * When product's modification fails (database, validation problem), this event is dispatched to</div><div class="line"> * all listeners. It's synchronous because we want to inform the user that some actions were done </div><div class="line"> * after the failure. Otherwise (asynchronous character of event) we shouldn't be able to</div><div class="line"> * know if something was done or not after the dispatch.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductChangeFailureEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationContextEvent</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">1681426286796814792L</span>;</div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TASK_KEY = <span class="string">"ProductChangeFailureEvent"</span>;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ProductChangeFailureEvent</span><span class="params">(ApplicationContext source)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(source);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// NotifMailDispatchEvent.java</span></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Event dispatched asynchronously every time when we want to send a notification mail. </div><div class="line"> * Notification mails to send should be stored somewhere (filesystem, database...) but in</div><div class="line"> * our case, we'll handle only one notification mail: when one product out-of-stock becomes available again.</div><div class="line"> **/</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotifMailDispatchEvent</span> <span class="keyword">extends</span> <span class="title">ApplicationContextEvent</span> <span class="keyword">implements</span> <span class="title">AsyncApplicationEvent</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">9202282810553100778L</span>;</div><div class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String TASK_KEY = <span class="string">"NotifMailDispatchEvent"</span>;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">NotifMailDispatchEvent</span><span class="params">(ApplicationContext source)</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>(source);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>而用于处理相应调度事件的监听器也只需要将数据放入<code>TaskStatsHolder实例类</code>中即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ProductChangeFailureListener.java</span></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductChangeFailureListener</span> </span></div><div class="line">    <span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">ProductChangeFailureEvent</span>&gt;&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(ProductChangeFailureEvent event)</span> </span>&#123;</div><div class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</div><div class="line">    <span class="keyword">long</span> end = System.currentTimeMillis();</div><div class="line">    ((TaskStatsHolder) event.getApplicationContext().getBean(<span class="string">"taskStatsHolder"</span>)).addNewTaskStatHolder(ProductChangeFailureEvent.TASK_KEY, <span class="keyword">new</span> TaskStatData(Thread.currentThread().getName(), start, end));</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="comment">// NotifMailDispatchListener.java</span></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NotifMailDispatchListener</span> </span></div><div class="line">    <span class="keyword">implements</span> <span class="title">ApplicationListener</span>&lt;<span class="title">NotifMailDispatchEvent</span>&gt;&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onApplicationEvent</span><span class="params">(NotifMailDispatchEvent event)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</div><div class="line">    <span class="comment">// sleep 5 seconds to avoid that two listeners execute at the same moment</span></div><div class="line">    Thread.sleep(<span class="number">5000</span>);</div><div class="line">    <span class="keyword">long</span> end = System.currentTimeMillis();</div><div class="line">    ((TaskStatsHolder) event.getApplicationContext().getBean(<span class="string">"taskStatsHolder"</span>)).addNewTaskStatHolder(NotifMailDispatchEvent.TASK_KEY, <span class="keyword">new</span> TaskStatData(Thread.currentThread().getName(), start, end));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用于测试的controller如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Controller</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProductController</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> ApplicationContext context;</div><div class="line">   </div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/products/change-failure"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">changeFailure</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      System.out.println(<span class="string">"I'm modifying the product but a NullPointerException will be thrown"</span>);</div><div class="line">      String name = <span class="keyword">null</span>;</div><div class="line">      <span class="keyword">if</span> (name.isEmpty()) &#123;</div><div class="line">        <span class="comment">// show error message here</span></div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"NullPointerException"</span>);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            context.publishEvent(<span class="keyword">new</span> ProductChangeFailureEvent(context));</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">   </div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/products/change-success"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">changeSuccess</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Product was correctly changed"</span>);</div><div class="line">    context.publishEvent(<span class="keyword">new</span> NotifMailDispatchEvent(context));</div><div class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后，测试用例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(locations=&#123;<span class="string">"classpath:applicationContext-test.xml"</span>&#125;)</div><div class="line"><span class="meta">@WebAppConfiguration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpringSyncAsyncEventsTest</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> WebApplicationContext wac;</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(<span class="keyword">this</span>.wac).build();</div><div class="line">    <span class="comment">// execute both urls simultaneously</span></div><div class="line">    mockMvc.perform(get(<span class="string">"/products/change-success"</span>));</div><div class="line">    mockMvc.perform(get(<span class="string">"/products/change-failure"</span>));</div><div class="line"> </div><div class="line">    <span class="comment">// get stats holder and check if both stats are available:</span></div><div class="line">    <span class="comment">// - mail dispatching shouldn't be available because it's executed after a sleep of 5 seconds</span></div><div class="line">    <span class="comment">// - product failure should be available because it's executed synchronously, almost immediately (no operations in listeners)</span></div><div class="line">    TaskStatsHolder statsHolder = (TaskStatsHolder) <span class="keyword">this</span>.wac.getBean(<span class="string">"taskStatsHolder"</span>);</div><div class="line">    TaskStatData mailStatData = statsHolder.getTaskStatHolder(NotifMailDispatchEvent.TASK_KEY);</div><div class="line">    TaskStatData productFailureData = statsHolder.getTaskStatHolder(ProductChangeFailureEvent.TASK_KEY);</div><div class="line">    assertTrue(<span class="string">"Task for mail dispatching is executed after 5 seconds, so at this moment, it taskStatsHolder shouldn't contain it"</span>, </div><div class="line">        mailStatData == <span class="keyword">null</span>);</div><div class="line">    assertTrue(<span class="string">"productFailureHolder shouldn't be null but it is"</span>, </div><div class="line">        productFailureData != <span class="keyword">null</span>);</div><div class="line">    assertTrue(<span class="string">"Product failure listener should be executed within 0 seconds but took "</span>+productFailureData.getExecutionTime()+<span class="string">" seconds"</span>, </div><div class="line">        productFailureData.getExecutionTime() == <span class="number">0</span>);</div><div class="line">    <span class="keyword">while</span> (mailStatData == <span class="keyword">null</span>) &#123;</div><div class="line">        mailStatData = statsHolder.getTaskStatHolder(NotifMailDispatchEvent.TASK_KEY);</div><div class="line">    &#125;</div><div class="line"> </div><div class="line">    <span class="comment">// check mail dispatching stats again, when available</span></div><div class="line">    assertTrue(<span class="string">"Now task for mail dispatching should be at completed state"</span>, </div><div class="line">        mailStatData != <span class="keyword">null</span>);</div><div class="line">    assertTrue(<span class="string">"Task for mail dispatching should take 5 seconds but it took "</span>+mailStatData.getExecutionTime()+<span class="string">" seconds"</span>, </div><div class="line">        mailStatData.getExecutionTime() == <span class="number">5</span>);</div><div class="line">    assertTrue(<span class="string">"productFailureHolder shouldn't be null but it is"</span>, </div><div class="line">        productFailureData != <span class="keyword">null</span>);</div><div class="line">    assertTrue(<span class="string">"Product failure listener should be executed within 0 seconds but took "</span>+productFailureData.getExecutionTime()+<span class="string">" seconds"</span>, </div><div class="line">        productFailureData.getExecutionTime() == <span class="number">0</span>);</div><div class="line">    assertTrue(<span class="string">"Thread executing mail dispatch and product failure listeners shouldn't be the same"</span>, </div><div class="line">        !productFailureData.getThreadName().equals(mailStatData.getThreadName()));</div><div class="line">    assertTrue(<span class="string">"Thread executing product failure listener ("</span>+productFailureData.getThreadName()+<span class="string">") should be the same as current thread ("</span>+Thread.currentThread().getName()+<span class="string">") but it wasn't"</span>, </div><div class="line">        Thread.currentThread().getName().equals(productFailureData.getThreadName()));</div><div class="line">    assertTrue(<span class="string">"Thread executing mail dispatch listener ("</span>+mailStatData.getThreadName()+<span class="string">") shouldn't be the same as current thread ("</span>+Thread.currentThread().getName()+<span class="string">") but it was"</span>, </div><div class="line">        !Thread.currentThread().getName().equals(mailStatData.getThreadName()));</div><div class="line">    <span class="comment">// make some output to see the informations about tasks</span></div><div class="line">    System.out.println(<span class="string">"Data about mail notif dispatching event: "</span>+mailStatData);</div><div class="line">    System.out.println(<span class="string">"Data about product failure dispatching event: "</span>+productFailureData);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>因之前整理的笔记此处SimpleEventMulticaster忘了放进去，也懒得去找了，可以通过xml定义去查看下，这个测试用例可以看出两个listener不是由同一个executor启动的，Product failure 监听器由同步执行器执行。因为他们没有做任何操作，几乎立即返回结果。关于邮件调度事件，通过休眠5秒可以得到其执行时间超过Product failure 监听器的执行时间。通过分析输出可以知道，两者在不同的线程中执行，所以由不同的执行器执行(关于这俩执行器的例子可以再搜下相关博文，其实主要还是想表达<code>SyncTaskExecutor</code>是在主线程里执行，而<code>asyncTaskExecutor</code>由线程池里管理的线程执行)。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Product was correctly changed</div><div class="line">I'm modifying the product but a NullPointerException will be thrown</div><div class="line">Data about mail notif dispatching event: TaskStatData &#123;thread name: asyncTaskExecutor-1(异步线程), start time: Thu Jun 19 21:14:18 CEST 2016, end time: Thu Jun 19 21:14:23 CEST 2016, execution time: 5 seconds&#125;</div><div class="line">Data about product failure dispatching event: TaskStatData &#123;thread name: main(主线程), start time: Thu Jun 19 21:14:21 CEST 2016, end time: Thu Jun 19 21:14:21 CEST 2016, execution time: 0 seconds&#125;</div></pre></td></tr></table></figure>
+<p>本文简单介绍了如何在Spring中处理异步事件。当监听器需要执行很长时间，而我们又不想阻塞应用程序执行，就可以使用异步执行。异步执行可以通过异步执行器(如ThreadPoolTaskExecutor或SimpleAsyncTaskExecutor)实现。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/27/Spring5源码解析-Spring框架中的事件和监听器/" rel="next" title="Spring5源码解析-Spring框架中的事件和监听器">
+                <i class="fa fa-chevron-left"></i> Spring5源码解析-Spring框架中的事件和监听器
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/09/28/Spring5源码解析-Spring中的异步事件/"
+           data-title="Spring5源码解析-Spring中的异步事件" data-url="https://muyinchen.github.io/2017/09/28/Spring5源码解析-Spring中的异步事件/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">83</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的异步事件"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的异步事件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring中的异步事件"><span class="nav-number">1.1.</span> <span class="nav-text">Spring中的异步事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个Spring中异步事件的例子"><span class="nav-number">1.2.</span> <span class="nav-text">写一个Spring中异步事件的例子</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
