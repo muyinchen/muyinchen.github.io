@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-10-10T10:31:20.334Z</updated>
+  <updated>2017-10-10T10:44:38.828Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://muyinchen.github.io/2017/10/10/Refresh%20your%20Java%20skills--Java%E4%B8%AD%E7%9A%84%E5%8D%B3%E6%97%B6%E7%BC%96%E8%AF%91/"/>
     <id>https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/</id>
     <published>2017-10-10T10:00:25.000Z</published>
-    <updated>2017-10-10T10:31:20.334Z</updated>
+    <updated>2017-10-10T10:44:38.828Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Refresh-your-Java-skills–Java中的即时编译-Just-in-time-compilation"><a href="#Refresh-your-Java-skills–Java中的即时编译-Just-in-time-compilation" class="headerlink" title="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)"></a>Refresh your Java skills–Java中的即时编译(Just-in-time compilation)</h1><p>因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。</p>
 <p>像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。</p>
@@ -28,7 +28,7 @@
 <h2 id="编译类型"><a href="#编译类型" class="headerlink" title="编译类型"></a>编译类型</h2><p>在讨论编译类型之前，我们需要了解什么是编译。这是一个将编程语言翻译成机器可理解的语言(也称为<strong>机器代码</strong>)的过程。机器语言由CPU执行的指令组成。这个语言是由0-1构成的，如在<a href="http://en.wikibooks.org/wiki/A-level_Computing/AQA/Computer_Components,_The_Stored_Program_Concept_and_the_Internet/Machine_Level_Architecture/Machine_code_and_processor_instruction_set" target="_blank" rel="external">wikibooks页面</a>上的这个片段所示：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">0001</span> <span class="number">00000111</span></div><div class="line"><span class="number">0100</span> <span class="number">00001001</span></div><div class="line"><span class="number">0000</span> <span class="number">00011110</span></div></pre></td></tr></table></figure>
 <h2 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h2><p>同样，我们知道，Java的<strong>javac</strong>指令不会生成机器代码，而是一些名为<strong>字节码的</strong>东西。而这不仅仅是一种语言会这么做(而这也是很多现代语言所发展的一个方向)。比如ActionScript(由ActionScript Virtual Machine执行)或CIL(由C#使用并在Common Language Runtime上执行)。</p>
-<p>在这里，在我们的括号中的“执行”部分，即时汇编到达。这种特殊类型的编译发生在解释给定字节码的机器上，如ActionScript虚拟机或Java虚拟机(JVM)。字节码由他们在运行时( on runtime)编译成机器码。</p>
+<p>在这里，在我们的括号中所说的“执行”，也就是即时编译完成(即字节码编译成目标机器可执行的机器码)。这种特殊类型的编译发生在解释给定字节码的机器上，如ActionScript虚拟机或Java虚拟机(JVM)。字节码由他们在运行时( on runtime)编译成机器码。</p>
 <p>这种编译带来了一些好处。第一个显着的优点是可以做到根据所运行机器参数来优化编译的代码。静态编译器为目标机器进行优化并一次生成机器代码。另一方面，JIT编译器提供了一种中间代码，它被转换和优化为特定于执行机器的机器代码。关于这里有一篇解释的比较通俗的文章<a href="http://www.cnblogs.com/csxf/p/3387365.html" target="_blank" rel="external">动态编译和静态编译及Java执行</a>，有兴趣可以看看</p>
 <p>第二个优点是便携性。转换为字节码的代码可以在安装了虚拟机的任何计算机上运行。</p>
 <h2 id="Java中的即时编译"><a href="#Java中的即时编译" class="headerlink" title="Java中的即时编译"></a>Java中的即时编译</h2><p>So，Java是即时编译为机器代码的。想要检查编译机器代码，我们可以启用多个JVM参数：</p>
