@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Spring5源码解析-Spring中的异步和计划任务Java提供了许多创建线程池的方式，并得到一个Future实例来作为任务结果。对于Spring同样小菜一碟，通过其scheduling包就可以做到将任务线程中后台执行。
+在本文的第一部分中，我们将讨论下Spring中执行计划任务的一些基础知识。之后，我们将解释这些类是如何一起协作来启动并执行计划任务的。下一部分将介绍计划和异步任务的配置。最后，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring5源码解析-Spring中的异步和计划任务">
+<meta property="og:url" content="https://muyinchen.github.io/2017/10/17/Spring5源码解析-Spring中的异步和计划任务/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="Spring5源码解析-Spring中的异步和计划任务Java提供了许多创建线程池的方式，并得到一个Future实例来作为任务结果。对于Spring同样小菜一碟，通过其scheduling包就可以做到将任务线程中后台执行。
+在本文的第一部分中，我们将讨论下Spring中执行计划任务的一些基础知识。之后，我们将解释这些类是如何一起协作来启动并执行计划任务的。下一部分将介绍计划和异步任务的配置。最后，">
+<meta property="og:updated_time" content="2017-10-16T17:16:47.876Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring5源码解析-Spring中的异步和计划任务">
+<meta name="twitter:description" content="Spring5源码解析-Spring中的异步和计划任务Java提供了许多创建线程池的方式，并得到一个Future实例来作为任务结果。对于Spring同样小菜一碟，通过其scheduling包就可以做到将任务线程中后台执行。
+在本文的第一部分中，我们将讨论下Spring中执行计划任务的一些基础知识。之后，我们将解释这些类是如何一起协作来启动并执行计划任务的。下一部分将介绍计划和异步任务的配置。最后，">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/10/17/Spring5源码解析-Spring中的异步和计划任务/"/>
+
+
+  <title> Spring5源码解析-Spring中的异步和计划任务 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring5源码解析-Spring中的异步和计划任务
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-17T01:10:25+08:00" content="2017-10-17">
+              2017-10-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/10/17/Spring5源码解析-Spring中的异步和计划任务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/10/17/Spring5源码解析-Spring中的异步和计划任务/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Spring5源码解析-Spring中的异步和计划任务"><a href="#Spring5源码解析-Spring中的异步和计划任务" class="headerlink" title="Spring5源码解析-Spring中的异步和计划任务"></a>Spring5源码解析-Spring中的异步和计划任务</h1><p>Java提供了许多创建线程池的方式，并得到一个Future实例来作为任务结果。对于Spring同样小菜一碟，通过其<code>scheduling</code>包就可以做到将任务线程中后台执行。</p>
+<p>在本文的第一部分中，我们将讨论下Spring中执行计划任务的一些基础知识。之后，我们将解释这些类是如何一起协作来启动并执行计划任务的。下一部分将介绍计划和异步任务的配置。最后，我们来写个Demo，看看如何通过单元测试来编排计划任务。<br><a id="more"></a></p>
+<h2 id="什么是Spring中的异步任务？"><a href="#什么是Spring中的异步任务？" class="headerlink" title="什么是Spring中的异步任务？"></a>什么是Spring中的异步任务？</h2><p>在我们正式的进入话题之前，对于Spring，我们需要理解下它实现的两个不同的概念：异步任务和调度任务。显然，两者有一个很大的共同点：都在后台工作。但是，它们之间存在了很大差异。调度任务与异步不同，其作用与Linux中的<code>CRON job</code>完全相同(windows里面也有计划任务)。举个栗子，有一个任务必须每40分钟执行一次，那么，可以通过XML文件或者注解来进行此配置。简单的异步任务在后台执行就好，无需配置执行频率。</p>
+<p>因为它们是两种不同的任务类型，它们两个的执行者自然也就不同。第一个看起来有点像Java的并发执行器(<code>concurrency executor</code>)，这里会有专门去写一篇关于Java中的执行器来具体了解。根据<a href="http://docs.spring.io/spring/docs/5.0.0.M5/spring-framework-reference/htmlsingle/#scheduling" target="_blank" rel="external">Spring文档</a><strong>TaskExecutor</strong>所述，它提供了基于Spring的抽象来处理线程池，这点，也可以通过其类的注释去了解。另一个抽象接口是<strong>TaskScheduler</strong>，它用于在将来给定的时间点来安排任务，并执行一次或定期执行。</p>
+<p>在分析源码的过程中，发现另一个比较有趣的点是触发器。它存在两种类型：<strong>CronTrigger</strong>或<strong>PeriodTrigger</strong>。第一个模拟CRON任务的行为。所以我们可以在将来确切时间点提交一个任务的执行。另一个触发器可用于定期执行任务。</p>
+<h2 id="Spring的异步任务类"><a href="#Spring的异步任务类" class="headerlink" title="Spring的异步任务类"></a>Spring的异步任务类</h2><p>让我们从<strong>org.springframework.core.task.TaskExecutor</strong>类的分析开始。你会发现，其简单的不行，它是一个扩展Java的Executor接口的接口。它的唯一方法也就是是<strong>执行</strong>，在参数中使用Runnable类型的任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.springframework.core.task;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.concurrent.Executor;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Simple task executor interface that abstracts the execution</div><div class="line"> * of a &#123;<span class="doctag">@link</span> Runnable&#125;.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Implementations can use all sorts of different execution strategies,</div><div class="line"> * such as: synchronous, asynchronous, using a thread pool, and more.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Equivalent to JDK 1.5's &#123;<span class="doctag">@link</span> java.util.concurrent.Executor&#125;</div><div class="line"> * interface; extending it now in Spring 3.0, so that clients may declare</div><div class="line"> * a dependency on an Executor and receive any TaskExecutor implementation.</div><div class="line"> * This interface remains separate from the standard Executor interface</div><div class="line"> * mainly for backwards compatibility with JDK 1.4 in Spring 2.x.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 2.0</div><div class="line"> * <span class="doctag">@see</span> java.util.concurrent.Executor</div><div class="line"> */</div><div class="line"><span class="meta">@FunctionalInterface</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TaskExecutor</span> <span class="keyword">extends</span> <span class="title">Executor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Execute the given &#123;<span class="doctag">@code</span> task&#125;.</div><div class="line">	 * &lt;p&gt;The call might return immediately if the implementation uses</div><div class="line">	 * an asynchronous execution strategy, or might block in the case</div><div class="line">	 * of synchronous execution.</div><div class="line">	 * <span class="doctag">@param</span> task the &#123;<span class="doctag">@code</span> Runnable&#125; to execute (never &#123;<span class="doctag">@code</span> null&#125;)</div><div class="line">	 * <span class="doctag">@throws</span> TaskRejectedException if the given task was not accepted</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task)</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>相对来说，<strong>org.springframework.scheduling.TaskScheduler</strong>接口就有点复杂了。它定义了一组以schedule开头的名称的方法允许我们定义将来要执行的任务。所有 <strong>schedule* </strong>方法返回<strong>java.util.concurrent.ScheduledFuture</strong>实例。Spring5中对<code>scheduleAtFixedRate</code>方法做了进一步的充实，其实最终调用的还是<strong>ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable task, long period);</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TaskScheduler</span> </span>&#123;</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Schedule the given &#123;<span class="doctag">@link</span> Runnable&#125;, invoking it whenever the trigger</div><div class="line">	 * indicates a next execution time.</div><div class="line">	 * &lt;p&gt;Execution will end once the scheduler shuts down or the returned</div><div class="line">	 * &#123;<span class="doctag">@link</span> ScheduledFuture&#125; gets cancelled.</div><div class="line">	 * <span class="doctag">@param</span> task the Runnable to execute whenever the trigger fires</div><div class="line">	 * <span class="doctag">@param</span> trigger an implementation of the &#123;<span class="doctag">@link</span> Trigger&#125; interface,</div><div class="line">	 * e.g. a &#123;<span class="doctag">@link</span> org.springframework.scheduling.support.CronTrigger&#125; object</div><div class="line">	 * wrapping a cron expression</div><div class="line">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> ScheduledFuture&#125; representing pending completion of the task,</div><div class="line">	 * or &#123;<span class="doctag">@code</span> null&#125; if the given Trigger object never fires (i.e. returns</div><div class="line">	 * &#123;<span class="doctag">@code</span> null&#125; from &#123;<span class="doctag">@link</span> Trigger#nextExecutionTime&#125;)</div><div class="line">	 * <span class="doctag">@throws</span> org.springframework.core.task.TaskRejectedException if the given task was not accepted</div><div class="line">	 * for internal reasons (e.g. a pool overload handling policy or a pool shutdown in progress)</div><div class="line">	 * <span class="doctag">@see</span> org.springframework.scheduling.support.CronTrigger</div><div class="line">	 */</div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	ScheduledFuture&lt;?&gt; schedule(Runnable task, Trigger trigger);</div><div class="line">	</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Schedule the given &#123;<span class="doctag">@link</span> Runnable&#125;, invoking it at the specified execution time.</div><div class="line">	 * &lt;p&gt;Execution will end once the scheduler shuts down or the returned</div><div class="line">	 * &#123;<span class="doctag">@link</span> ScheduledFuture&#125; gets cancelled.</div><div class="line">	 * <span class="doctag">@param</span> task the Runnable to execute whenever the trigger fires</div><div class="line">	 * <span class="doctag">@param</span> startTime the desired execution time for the task</div><div class="line">	 * (if this is in the past, the task will be executed immediately, i.e. as soon as possible)</div><div class="line">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> ScheduledFuture&#125; representing pending completion of the task</div><div class="line">	 * <span class="doctag">@throws</span> org.springframework.core.task.TaskRejectedException if the given task was not accepted</div><div class="line">	 * for internal reasons (e.g. a pool overload handling policy or a pool shutdown in progress)</div><div class="line">	 * 使用了默认实现，值得我们学习使用的，Java9中同样可以有私有实现的，从这里我们可以做到我只通过		 * 一个接口你来实现，我把其他相应的功能默认实现下，最后调用你自定义实现的接口即可，使接口功能更	  * 加一目了然</div><div class="line">	 * <span class="doctag">@since</span> 5.0</div><div class="line">	 * <span class="doctag">@see</span> #schedule(Runnable, Date)</div><div class="line">	 */</div><div class="line">	<span class="keyword">default</span> ScheduledFuture&lt;?&gt; schedule(Runnable task, Instant startTime) &#123;</div><div class="line">		<span class="keyword">return</span> schedule(task, Date.from(startTime));</div><div class="line">	&#125;</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Schedule the given &#123;<span class="doctag">@link</span> Runnable&#125;, invoking it at the specified execution time.</div><div class="line">	 * &lt;p&gt;Execution will end once the scheduler shuts down or the returned</div><div class="line">	 * &#123;<span class="doctag">@link</span> ScheduledFuture&#125; gets cancelled.</div><div class="line">	 * <span class="doctag">@param</span> task the Runnable to execute whenever the trigger fires</div><div class="line">	 * <span class="doctag">@param</span> startTime the desired execution time for the task</div><div class="line">	 * (if this is in the past, the task will be executed immediately, i.e. as soon as possible)</div><div class="line">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> ScheduledFuture&#125; representing pending completion of the task</div><div class="line">	 * <span class="doctag">@throws</span> org.springframework.core.task.TaskRejectedException if the given task was not accepted</div><div class="line">	 * for internal reasons (e.g. a pool overload handling policy or a pool shutdown in progress)</div><div class="line">	 */</div><div class="line">	ScheduledFuture&lt;?&gt; schedule(Runnable task, Date startTime);</div><div class="line"></div><div class="line">...</div><div class="line"><span class="comment">/**</span></div><div class="line">	 * Schedule the given &#123;<span class="doctag">@link</span> Runnable&#125;, invoking it at the specified execution time</div><div class="line">	 * and subsequently with the given period.</div><div class="line">	 * &lt;p&gt;Execution will end once the scheduler shuts down or the returned</div><div class="line">	 * &#123;<span class="doctag">@link</span> ScheduledFuture&#125; gets cancelled.</div><div class="line">	 * <span class="doctag">@param</span> task the Runnable to execute whenever the trigger fires</div><div class="line">	 * <span class="doctag">@param</span> startTime the desired first execution time for the task</div><div class="line">	 * (if this is in the past, the task will be executed immediately, i.e. as soon as possible)</div><div class="line">	 * <span class="doctag">@param</span> period the interval between successive executions of the task</div><div class="line">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> ScheduledFuture&#125; representing pending completion of the task</div><div class="line">	 * <span class="doctag">@throws</span> org.springframework.core.task.TaskRejectedException if  the given task was not accepted</div><div class="line">	 * for internal reasons (e.g. a pool overload handling policy or a pool shutdown in progress)</div><div class="line">	 * <span class="doctag">@since</span> 5.0</div><div class="line">	 * <span class="doctag">@see</span> #scheduleAtFixedRate(Runnable, Date, long)</div><div class="line">	 */</div><div class="line">	<span class="keyword">default</span> ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable task, Instant startTime, Duration period) &#123;</div><div class="line">		<span class="keyword">return</span> scheduleAtFixedRate(task, Date.from(startTime), period.toMillis());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * Schedule the given &#123;<span class="doctag">@link</span> Runnable&#125;, invoking it at the specified execution time</div><div class="line">	 * and subsequently with the given period.</div><div class="line">	 * &lt;p&gt;Execution will end once the scheduler shuts down or the returned</div><div class="line">	 * &#123;<span class="doctag">@link</span> ScheduledFuture&#125; gets cancelled.</div><div class="line">	 * <span class="doctag">@param</span> task the Runnable to execute whenever the trigger fires</div><div class="line">	 * <span class="doctag">@param</span> startTime the desired first execution time for the task</div><div class="line">	 * (if this is in the past, the task will be executed immediately, i.e. as soon as possible)</div><div class="line">	 * <span class="doctag">@param</span> period the interval between successive executions of the task (in milliseconds)</div><div class="line">	 * <span class="doctag">@return</span> a &#123;<span class="doctag">@link</span> ScheduledFuture&#125; representing pending completion of the task</div><div class="line">	 * <span class="doctag">@throws</span> org.springframework.core.task.TaskRejectedException if  the given task was not accepted</div><div class="line">	 * for internal reasons (e.g. a pool overload handling policy or a pool shutdown in progress)</div><div class="line">	 */</div><div class="line">	ScheduledFuture&lt;?&gt; scheduleAtFixedRate(Runnable task, Date startTime, <span class="keyword">long</span> period);</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>之前提到两个触发器组件，都实现了<strong>org.springframework.scheduling.Trigger</strong>接口。这里，我们只需关注一个的方法<strong>nextExecutionTime</strong> ，其定义下一个触发任务的执行时间。它的两个实现，CronTrigger和PeriodicTrigger，由<strong>org.springframework.scheduling.TriggerContext</strong>来实现信息的存储，由此，我们可以很轻松获得一个任务的最后一个执行时间(<strong>lastScheduledExecutionTime</strong>)，给定任务的最后完成时间(<strong>lastCompletionTime</strong>)或最后一个实际执行时间(<strong>lastActualExecutionTime</strong>)。接下来，我们通过阅读源代码来简单的了解下这些东西。<strong>org.springframework.scheduling.concurrent.ConcurrentTaskScheduler</strong>包含一个私有类<code>EnterpriseConcurrentTriggerScheduler</code>。在这个<code>class</code>里面，我们可以找到schedule方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> ScheduledFuture&lt;?&gt; schedule(Runnable task, <span class="keyword">final</span> Trigger trigger) &#123;</div><div class="line">  ManagedScheduledExecutorService executor = (ManagedScheduledExecutorService) scheduledExecutor;</div><div class="line">  <span class="keyword">return</span> executor.schedule(task, <span class="keyword">new</span> javax.enterprise.concurrent.Trigger() &#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Date <span class="title">getNextRunTime</span><span class="params">(LastExecution le, Date taskScheduledTime)</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> trigger.nextExecutionTime(le != <span class="keyword">null</span> ?</div><div class="line">        <span class="keyword">new</span> SimpleTriggerContext(le.getScheduledStart(), le.getRunStart(), le.getRunEnd()) :</div><div class="line">        <span class="keyword">new</span> SimpleTriggerContext());</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">skipRun</span><span class="params">(LastExecution lastExecution, Date scheduledRunTime)</span> </span>&#123;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>SimpleTriggerContext</code>从其名字就可以看到很多东西了，因为它实现了<code>TriggerContext</code>接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Simple data holder implementation of the &#123;<span class="doctag">@link</span> TriggerContext&#125; interface.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 3.0</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleTriggerContext</span> <span class="keyword">implements</span> <span class="title">TriggerContext</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> Date lastScheduledExecutionTime;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> Date lastActualExecutionTime;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> Date lastCompletionTime;</div><div class="line">...</div><div class="line">  <span class="comment">/**</span></div><div class="line">	 * Create a SimpleTriggerContext with the given time values.</div><div class="line">	 * <span class="doctag">@param</span> lastScheduledExecutionTime last &lt;i&gt;scheduled&lt;/i&gt; execution time</div><div class="line">	 * <span class="doctag">@param</span> lastActualExecutionTime last &lt;i&gt;actual&lt;/i&gt; execution time</div><div class="line">	 * <span class="doctag">@param</span> lastCompletionTime last completion time</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">SimpleTriggerContext</span><span class="params">(Date lastScheduledExecutionTime, Date lastActualExecutionTime, Date lastCompletionTime)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.lastScheduledExecutionTime = lastScheduledExecutionTime;</div><div class="line">		<span class="keyword">this</span>.lastActualExecutionTime = lastActualExecutionTime;</div><div class="line">		<span class="keyword">this</span>.lastCompletionTime = lastCompletionTime;</div><div class="line">	&#125;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>也正如你看到的，在构造函数中设置的时间值来自<strong>javax.enterprise.concurrent.LastExecution的</strong>实现，其中： </p>
+<ul>
+<li>getScheduledStart：返回上次开始执行任务的时间。它对应于TriggerContext的lastScheduledExecutionTime属性。 </li>
+<li>getRunStart：返回给定任务开始运行的时间。在TriggerContext中，它对应于lastActualExecutionTime。 </li>
+<li>getRunEnd：任务终止时返回。它用于在TriggerContext中设置lastCompletionTime。</li>
+</ul>
+<p>Spring调度和异步执行中的另一个重要类是<strong>org.springframework.core.task.support.TaskExecutorAdapter</strong>。它是一个将<strong>java.util.concurrent.Executor</strong>作为Spring基本的执行器的适配器(描述的有点拗口,看下面代码就明了了)，之前已经描述了<code>TaskExecutor</code>。实际上，它引用了Java的ExecutorService，它也是继承了<code>Executor</code>接口。此引用用于完成所有提交的任务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Adapter that takes a JDK &#123;<span class="doctag">@code</span> java.util.concurrent.Executor&#125; and</div><div class="line"> * exposes a Spring &#123;<span class="doctag">@link</span> org.springframework.core.task.TaskExecutor&#125; for it.</div><div class="line"> * Also detects an extended &#123;<span class="doctag">@code</span> java.util.concurrent.ExecutorService 从此解释上面的说明&#125;, adapting</div><div class="line"> * the &#123;<span class="doctag">@link</span> org.springframework.core.task.AsyncTaskExecutor&#125; interface accordingly.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 3.0</div><div class="line"> * <span class="doctag">@see</span> java.util.concurrent.Executor</div><div class="line"> * <span class="doctag">@see</span> java.util.concurrent.ExecutorService </div><div class="line"> * <span class="doctag">@see</span> java.util.concurrent.Executors</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskExecutorAdapter</span> <span class="keyword">implements</span> <span class="title">AsyncListenableTaskExecutor</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> Executor concurrentExecutor;</div><div class="line"></div><div class="line">	<span class="meta">@Nullable</span></div><div class="line">	<span class="keyword">private</span> TaskDecorator taskDecorator;</div><div class="line">  ...</div><div class="line">    <span class="comment">/**</span></div><div class="line">	 * Create a new TaskExecutorAdapter,</div><div class="line">	 * using the given JDK concurrent executor.</div><div class="line">	 * <span class="doctag">@param</span> concurrentExecutor the JDK concurrent executor to delegate to</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TaskExecutorAdapter</span><span class="params">(Executor concurrentExecutor)</span> </span>&#123;</div><div class="line">		Assert.notNull(concurrentExecutor, <span class="string">"Executor must not be null"</span>);</div><div class="line">		<span class="keyword">this</span>.concurrentExecutor = concurrentExecutor;</div><div class="line">	&#125;</div><div class="line"> 	 <span class="comment">/**</span></div><div class="line">	 * Delegates to the specified JDK concurrent executor.</div><div class="line">	 * <span class="doctag">@see</span> java.util.concurrent.Executor#execute(Runnable)</div><div class="line">	 */</div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task)</span> </span>&#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			doExecute(<span class="keyword">this</span>.concurrentExecutor, <span class="keyword">this</span>.taskDecorator, task);</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (RejectedExecutionException ex) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TaskRejectedException(</div><div class="line">					<span class="string">"Executor ["</span> + <span class="keyword">this</span>.concurrentExecutor + <span class="string">"] did not accept task: "</span> + task, ex);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(Runnable task, <span class="keyword">long</span> startTimeout)</span> </span>&#123;</div><div class="line">		execute(task);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="keyword">public</span> Future&lt;?&gt; submit(Runnable task) &#123;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.taskDecorator == <span class="keyword">null</span> &amp;&amp; <span class="keyword">this</span>.concurrentExecutor <span class="keyword">instanceof</span> ExecutorService) &#123;</div><div class="line">				<span class="keyword">return</span> ((ExecutorService) <span class="keyword">this</span>.concurrentExecutor).submit(task);</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				FutureTask&lt;Object&gt; future = <span class="keyword">new</span> FutureTask&lt;&gt;(task, <span class="keyword">null</span>);</div><div class="line">				doExecute(<span class="keyword">this</span>.concurrentExecutor, <span class="keyword">this</span>.taskDecorator, future);</div><div class="line">				<span class="keyword">return</span> future;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">catch</span> (RejectedExecutionException ex) &#123;</div><div class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> TaskRejectedException(</div><div class="line">					<span class="string">"Executor ["</span> + <span class="keyword">this</span>.concurrentExecutor + <span class="string">"] did not accept task: "</span> + task, ex);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="在Spring中配置异步和计划任务"><a href="#在Spring中配置异步和计划任务" class="headerlink" title="在Spring中配置异步和计划任务"></a>在Spring中配置异步和计划任务</h2><p>下面我们通过代码的方式来实现异步任务。首先，我们需要通过注解来启用配置。它的XML配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">task:scheduler</span> <span class="attr">id</span>=<span class="string">"taskScheduler"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"taskExecutor"</span> <span class="attr">pool-size</span>=<span class="string">"2"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"taskExecutor"</span> <span class="attr">scheduler</span>=<span class="string">"taskScheduler"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.migo.async"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<p>可以通过将<code>@EnableScheduling</code>和<code>@EnableAsync</code>注解添加到配置类(用@Configuration注解)来激活两者。完事，我们就可以开始着手实现调度和异步任务。为了实现调度任务，我们可以使用<code>@Scheduled</code>注解。我们可以从<strong>org.springframework.scheduling.annotation</strong>包中找到这个注解。它包含了以下几个属性： </p>
+<ul>
+<li><p><code>cron</code>：使用<code>CRON</code>风格(Linux配置定时任务的风格)的配置来配置需要启动的带注解的任务。 </p>
+</li>
+<li><p><code>zone</code>：要解析<code>CRON</code>表达式的时区。 </p>
+</li>
+<li><p><code>fixedDelay</code>或<code>fixedDelayString</code>：在固定延迟时间后执行任务。即任务将在最后一次调用结束和下一次调用的开始之间的这个固定时间段后执行。 </p>
+</li>
+<li><p><code>fixedRate</code>或<code>fixedRateString</code>：使用<code>fixedRate</code>注解的方法的调用将以固定的时间段(例如：每10秒钟)进行，与执行生命周期(开始，结束)无关。 </p>
+</li>
+<li><p><code>initialDelay</code>或<code>initialDelayString</code>：延迟首次执行调度方法的时间。请注意，所有值(<strong>fixedDelay </strong>，<strong>fixedRate </strong>，<strong>initialDelay</strong> <strong>)必须以毫秒表示。 </strong> <strong>需要特别记住的是</strong> ，用@Scheduled注解的方法不能接受任何参数，并且不返回任何内容(void)，如果有返回值，返回值也会被忽略掉的，没什么卵用。定时任务方法由容器管理，而不是由调用者在运行时调用。它们由 <strong>org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor</strong>来解析，其中包含以下方法来拒绝执行所有不正确定义的函数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">processScheduled</span><span class="params">(Scheduled scheduled, Method method, Object bean)</span> </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    Assert.isTrue(method.getParameterCount() == <span class="number">0</span>,</div><div class="line">					<span class="string">"Only no-arg methods may be annotated with @Scheduled"</span>);</div><div class="line">	<span class="comment">/**</span></div><div class="line">	 *   之前的版本中直接把返回值非空的给拒掉了，在Spring 4.3 Spring5 的版本中就没那么严格了</div><div class="line">   	 *	 Assert.isTrue(void.class.equals(method.getReturnType()),</div><div class="line">     *               "Only void-returning methods may be annotated with <span class="doctag">@Scheduled</span>");</div><div class="line">     **/               </div><div class="line"><span class="comment">// ...</span></div></pre></td></tr></table></figure>
+<p>​</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 注释很重要</div><div class="line"> * An annotation that marks a method to be scheduled. Exactly one of</div><div class="line"> * the &#123;<span class="doctag">@link</span> #cron()&#125;, &#123;<span class="doctag">@link</span> #fixedDelay()&#125;, or &#123;<span class="doctag">@link</span> #fixedRate()&#125;</div><div class="line"> * attributes must be specified.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;The annotated method must expect no arguments. It will typically have</div><div class="line"> * a &#123;<span class="doctag">@code</span> void&#125; return type; if not, the returned value will be ignored</div><div class="line"> * when called through the scheduler.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;Processing of &#123;<span class="doctag">@code</span> <span class="doctag">@Scheduled</span>&#125; annotations is performed by</div><div class="line"> * registering a &#123;<span class="doctag">@link</span> ScheduledAnnotationBeanPostProcessor&#125;. This can be</div><div class="line"> * done manually or, more conveniently, through the &#123;<span class="doctag">@code</span> &lt;task:annotation-driven/&gt;&#125;</div><div class="line"> * element or @&#123;<span class="doctag">@link</span> EnableScheduling&#125; annotation.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;This annotation may be used as a &lt;em&gt;meta-annotation&lt;/em&gt; to create custom</div><div class="line"> * &lt;em&gt;composed annotations&lt;/em&gt; with attribute overrides.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Mark Fisher</div><div class="line"> * <span class="doctag">@author</span> Dave Syer</div><div class="line"> * <span class="doctag">@author</span> Chris Beams</div><div class="line"> * <span class="doctag">@since</span> 3.0</div><div class="line"> * <span class="doctag">@see</span> EnableScheduling</div><div class="line"> * <span class="doctag">@see</span> ScheduledAnnotationBeanPostProcessor</div><div class="line"> * <span class="doctag">@see</span> Schedules</div><div class="line"> */</div><div class="line"><span class="meta">@Target</span>(&#123;ElementType.METHOD, ElementType.ANNOTATION_TYPE&#125;)</div><div class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</div><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Repeatable</span>(Schedules.class)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Scheduled &#123;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+<p>使用<code>@Async</code>注解标记一个方法或一个类(通过标记一个类，我们自动将其所有方法标记为异步)。与<code>@Scheduled</code>不同，异步任务可以接受参数，并可能返回某些东西。</p>
+<h2 id="写一个在Spring中执行异步任务的Demo"><a href="#写一个在Spring中执行异步任务的Demo" class="headerlink" title="写一个在Spring中执行异步任务的Demo"></a>写一个在Spring中执行异步任务的Demo</h2><p>有了上面这些知识，我们可以来编写异步和计划任务。我们将通过测试用例来展示。我们从不同的任务执行器(task executors)的测试开始：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(locations=&#123;<span class="string">"classpath:applicationContext-test.xml"</span>&#125;)</div><div class="line"><span class="meta">@WebAppConfiguration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TaskExecutorsTest</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">simpeAsync</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">      * SimpleAsyncTaskExecutor creates new Thread for every task and executes it asynchronously. The threads aren't reused as in </div><div class="line">      * native Java's thread pools.</div><div class="line">      * </div><div class="line">      * The number of concurrently executed threads can be specified through concurrencyLimit bean property </div><div class="line">      * (concurrencyLimit XML attribute). Here it's more simple to invoke setConcurrencyLimit method. </div><div class="line">      * Here the tasks will be executed by 2 simultaneous threads. Without specifying this value,</div><div class="line">      * the number of executed threads will be indefinite.</div><div class="line">      * </div><div class="line">      * You can observe that only 2 tasks are executed at a given time - even if 3 are submitted to execution (lines 40-42).</div><div class="line">      **/</div><div class="line">    SimpleAsyncTaskExecutor executor = <span class="keyword">new</span> SimpleAsyncTaskExecutor(<span class="string">"thread_name_prefix_____"</span>);</div><div class="line">    executor.setConcurrencyLimit(<span class="number">2</span>);</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-1"</span>, Counters.simpleAsyncTask, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-2"</span>, Counters.simpleAsyncTask, <span class="number">1000</span>));</div><div class="line"> </div><div class="line">    Thread.sleep(<span class="number">1050</span>);</div><div class="line">    assertTrue(<span class="string">"2 threads should be terminated, but "</span>+Counters.simpleAsyncTask.getNb()+<span class="string">" were instead"</span>, Counters.simpleAsyncTask.getNb() == <span class="number">2</span>);</div><div class="line"> </div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-3"</span>, Counters.simpleAsyncTask, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-4"</span>, Counters.simpleAsyncTask, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-5"</span>, Counters.simpleAsyncTask, <span class="number">2000</span>));</div><div class="line">     </div><div class="line">    Thread.sleep(<span class="number">1050</span>);</div><div class="line">    assertTrue(<span class="string">"4 threads should be terminated, but "</span>+Counters.simpleAsyncTask.getNb()+<span class="string">" were instead"</span>, Counters.simpleAsyncTask.getNb() == <span class="number">4</span>);</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SimpleAsyncTask-6"</span>, Counters.simpleAsyncTask, <span class="number">1000</span>));</div><div class="line"> </div><div class="line">    Thread.sleep(<span class="number">1050</span>);</div><div class="line">    assertTrue(<span class="string">"6 threads should be terminated, but "</span>+Counters.simpleAsyncTask.getNb()+<span class="string">" were instead"</span>, </div><div class="line">      Counters.simpleAsyncTask.getNb() == <span class="number">6</span>);</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">syncTaskTest</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">      * SyncTask works almost as Java's CountDownLatch. In fact, this executor is synchronous with the calling thread. In our case,</div><div class="line">      * SyncTaskExecutor tasks will be synchronous with JUnit thread. It means that the testing thread will sleep 5 </div><div class="line">      * seconds after executing the third task ('SyncTask-3'). To prove that, we check if the total execution time is ~5 seconds.</div><div class="line">      **/</div><div class="line">    <span class="keyword">long</span> start = System.currentTimeMillis();</div><div class="line">    SyncTaskExecutor executor = <span class="keyword">new</span> SyncTaskExecutor();</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SyncTask-1"</span>, Counters.syncTask, <span class="number">0</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SyncTask-2"</span>, Counters.syncTask, <span class="number">0</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SyncTask-3"</span>, Counters.syncTask, <span class="number">0</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SyncTask-4"</span>, Counters.syncTask, <span class="number">5000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"SyncTask-5"</span>, Counters.syncTask, <span class="number">0</span>));</div><div class="line">    <span class="keyword">long</span> end = System.currentTimeMillis();</div><div class="line">    <span class="keyword">int</span> execTime = Math.round((end-start)/<span class="number">1000</span>);</div><div class="line">    assertTrue(<span class="string">"Execution time should be 5 seconds but was "</span>+execTime+<span class="string">" seconds"</span>, execTime == <span class="number">5</span>); </div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">threadPoolTest</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">      * This executor can be used to expose Java's native ThreadPoolExecutor as Spring bean, with the </div><div class="line">      * possibility to set core pool size, max pool size and queue capacity through bean properties.</div><div class="line">      * </div><div class="line">      * It works exactly as ThreadPoolExecutor from java.util.concurrent package. It means that our pool starts </div><div class="line">      * with 2 threads (core pool size) and can be growth until 3 (max pool size).</div><div class="line">      * In additionally, 1 task can be stored in the queue. This task will be treated </div><div class="line">      * as soon as one from 3 threads ends to execute provided task. In our case, we try to execute 5 tasks</div><div class="line">      * in 3 places pool and 1 place queue. So the 5th task should be rejected and TaskRejectedException should be thrown.</div><div class="line">      **/</div><div class="line">    ThreadPoolTaskExecutor executor = <span class="keyword">new</span> ThreadPoolTaskExecutor();</div><div class="line">    executor.setCorePoolSize(<span class="number">2</span>);</div><div class="line">    executor.setMaxPoolSize(<span class="number">3</span>);</div><div class="line">    executor.setQueueCapacity(<span class="number">1</span>);</div><div class="line">    executor.initialize();</div><div class="line"> </div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"ThreadPoolTask-1"</span>, Counters.threadPool, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"ThreadPoolTask-2"</span>, Counters.threadPool, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"ThreadPoolTask-3"</span>, Counters.threadPool, <span class="number">1000</span>));</div><div class="line">    executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"ThreadPoolTask-4"</span>, Counters.threadPool, <span class="number">1000</span>));</div><div class="line">    <span class="keyword">boolean</span> wasTre = <span class="keyword">false</span>;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      executor.execute(<span class="keyword">new</span> SimpleTask(<span class="string">"ThreadPoolTask-5"</span>, Counters.threadPool, <span class="number">1000</span>));</div><div class="line">    &#125; <span class="keyword">catch</span> (TaskRejectedException tre) &#123;</div><div class="line">      wasTre = <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    assertTrue(<span class="string">"The last task should throw a TaskRejectedException but it wasn't"</span>, wasTre);</div><div class="line"> </div><div class="line">    Thread.sleep(<span class="number">3000</span>);</div><div class="line"> </div><div class="line">    assertTrue(<span class="string">"4 tasks should be terminated, but "</span>+Counters.threadPool.getNb()+<span class="string">" were instead"</span>, </div><div class="line">      Counters.threadPool.getNb()==<span class="number">4</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleTask</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> String name;</div><div class="line">  <span class="keyword">private</span> Counters counter;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> sleepTime;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="title">SimpleTask</span><span class="params">(String name, Counters counter, <span class="keyword">int</span> sleepTime)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.counter = counter;</div><div class="line">    <span class="keyword">this</span>.sleepTime = sleepTime;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      Thread.sleep(<span class="keyword">this</span>.sleepTime);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">      e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">this</span>.counter.increment();</div><div class="line">    System.out.println(<span class="string">"Running task '"</span>+<span class="keyword">this</span>.name+<span class="string">"' in Thread "</span>+Thread.currentThread().getName());</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">          <span class="keyword">return</span> <span class="string">"Task &#123;"</span>+<span class="keyword">this</span>.name+<span class="string">"&#125;"</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="keyword">enum</span> Counters &#123;</div><div class="line">         </div><div class="line">  simpleAsyncTask(<span class="number">0</span>),</div><div class="line">  syncTask(<span class="number">0</span>),</div><div class="line">  threadPool(<span class="number">0</span>);</div><div class="line">   </div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> nb;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNb</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.nb;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">increment</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.nb++;</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="title">Counters</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>.nb = n;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在过去，我们可以有更多的执行器可以使用(SimpleThreadPoolTaskExecutor，TimerTaskExecutor 这些都2.x 3.x的老古董了)。但都被弃用并由本地Java的执行器取代成为Spring的首选。看看输出的结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Running task <span class="string">'SimpleAsyncTask-1'</span> in Thread thread_name_prefix_____1</div><div class="line">Running task <span class="string">'SimpleAsyncTask-2'</span> in Thread thread_name_prefix_____2</div><div class="line">Running task <span class="string">'SimpleAsyncTask-3'</span> in Thread thread_name_prefix_____3</div><div class="line">Running task <span class="string">'SimpleAsyncTask-4'</span> in Thread thread_name_prefix_____4</div><div class="line">Running task <span class="string">'SimpleAsyncTask-5'</span> in Thread thread_name_prefix_____5</div><div class="line">Running task <span class="string">'SimpleAsyncTask-6'</span> in Thread thread_name_prefix_____6</div><div class="line">Running task <span class="string">'SyncTask-1'</span> in Thread main</div><div class="line">Running task <span class="string">'SyncTask-2'</span> in Thread main</div><div class="line">Running task <span class="string">'SyncTask-3'</span> in Thread main</div><div class="line">Running task <span class="string">'SyncTask-4'</span> in Thread main</div><div class="line">Running task <span class="string">'SyncTask-5'</span> in Thread main</div><div class="line">Running task <span class="string">'ThreadPoolTask-2'</span> in Thread ThreadPoolTaskExecutor-<span class="number">2</span></div><div class="line">Running task <span class="string">'ThreadPoolTask-1'</span> in Thread ThreadPoolTaskExecutor-<span class="number">1</span></div><div class="line">Running task <span class="string">'ThreadPoolTask-4'</span> in Thread ThreadPoolTaskExecutor-<span class="number">3</span></div><div class="line">Running task <span class="string">'ThreadPoolTask-3'</span> in Thread ThreadPoolTaskExecutor-<span class="number">2</span></div></pre></td></tr></table></figure>
+<p>以此我们可以推断出，第一个测试为每个任务创建新的线程。通过使用不同的线程名称，我们可以看到相应区别。第二个，同步执行器，应该执行所调用线程中的任务。这里可以看到’main’是主线程的名称，它的主线程调用执行同步所有任务。最后一种例子涉及最大可创建3个线程的线程池。从结果可以看到，他们也确实只有3个创建线程。</p>
+<p>现在，我们将编写一些单元测试来看看@Async和@Scheduled实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(locations=&#123;<span class="string">"classpath:applicationContext-test.xml"</span>&#125;)</div><div class="line"><span class="meta">@WebAppConfiguration</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AnnotationTest</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> GenericApplicationContext context;</div><div class="line">         </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testScheduled</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line"> </div><div class="line">      System.out.println(<span class="string">"Start sleeping"</span>);</div><div class="line">      Thread.sleep(<span class="number">6000</span>);</div><div class="line">      System.out.println(<span class="string">"Wake up !"</span>);</div><div class="line"> </div><div class="line">      TestScheduledTask scheduledTask = (TestScheduledTask) context.getBean(<span class="string">"testScheduledTask"</span>);</div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Test fixed delay. It's executed every 6 seconds. The first execution is registered after application's context start. </div><div class="line">        **/</div><div class="line">      assertTrue(<span class="string">"Scheduled task should be executed 2 times (1 before sleep in this method, 1 after the sleep), but was "</span>+scheduledTask.getFixedDelayCounter(), </div><div class="line">        scheduledTask.getFixedDelayCounter() == <span class="number">2</span>);</div><div class="line">       </div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Test fixed rate. It's executed every 6 seconds. The first execution is registered after application's context start. </div><div class="line">        * Unlike fixed delay, a fixed rate configuration executes one task with specified time. For example, it will execute on </div><div class="line">        * 6 seconds delayed task at 10:30:30, 10:30:36, 10:30:42 and so on - even if the task 10:30:30 taken 30 seconds to </div><div class="line">        * be terminated. In teh case of fixed delay, if the first task takes 30 seconds, the next will be executed 6 seconds </div><div class="line">        * after the first one, so the execution flow will be: 10:30:30, 10:31:06, 10:31:12.</div><div class="line">        **/</div><div class="line">      assertTrue(<span class="string">"Scheduled task should be executed 2 times (1 before sleep in this method, 1 after the sleep), but was "</span>+scheduledTask.getFixedRateCounter(), </div><div class="line">        scheduledTask.getFixedRateCounter() == <span class="number">2</span>);</div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Test fixed rate with initial delay attribute. The initialDelay attribute is set to 6 seconds. It causes that </div><div class="line">        * scheduled method is executed 6 seconds after application's context start. In our case, it should be executed </div><div class="line">        * only once because of previous Thread.sleep(6000) invocation.</div><div class="line">        **/</div><div class="line">      assertTrue(<span class="string">"Scheduled task should be executed 1 time (0 before sleep in this method, 1 after the sleep), but was "</span>+scheduledTask.getInitialDelayCounter(), scheduledTask.getInitialDelayCounter() == <span class="number">1</span>);</div><div class="line">       <span class="comment">/**</span></div><div class="line">        * Test cron scheduled task. Cron is scheduled to be executed every 6 seconds. It's executed only once, </div><div class="line">        * so we can deduce that it's not invoked directly before applications </div><div class="line">        * context start, but only after configured time (6 seconds in our case).</div><div class="line">        **/</div><div class="line">      assertTrue(<span class="string">"Scheduled task should be executed 1 time (0 before sleep in this method, 1 after the sleep), but was "</span>+scheduledTask.getCronCounter(), scheduledTask.getCronCounter() == <span class="number">1</span>);</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAsyc</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">       <span class="comment">/**</span></div><div class="line">        * To test <span class="doctag">@Async</span> annotation, we can create a bean in-the-fly. AsyncCounter bean is a</div><div class="line">        * simple counter which value should be equals to 2 at the end of the test. A supplementary test</div><div class="line">        * concerns threads which execute both of AsyncCounter methods: one which </div><div class="line">        * isn't annotated with <span class="doctag">@Async</span> and another one which is annotated with it. For the first one, invoking</div><div class="line">        * thread should have the same name as the main thread. For annotated method, it can't be executed in </div><div class="line">        * the main thread. It must be executed asynchrounously in a new thread.</div><div class="line">        **/</div><div class="line">      context.registerBeanDefinition(<span class="string">"asyncCounter"</span>, <span class="keyword">new</span> RootBeanDefinition(AsyncCounter.class));</div><div class="line">       </div><div class="line">      String currentName = Thread.currentThread().getName();</div><div class="line">      AsyncCounter asyncCounter = context.getBean(<span class="string">"asyncCounter"</span>, AsyncCounter.class);</div><div class="line">      asyncCounter.incrementNormal();</div><div class="line">      assertTrue(<span class="string">"Thread executing normal increment should be the same as JUnit thread but it wasn't (expected '"</span>+currentName+<span class="string">"', got '"</span>+asyncCounter.getNormalThreadName()+<span class="string">"')"</span>,</div><div class="line">                      asyncCounter.getNormalThreadName().equals(currentName));</div><div class="line">      asyncCounter.incrementAsync();</div><div class="line">      <span class="comment">// sleep 50ms and give some time to AsyncCounter to update asyncThreadName value</span></div><div class="line">      Thread.sleep(<span class="number">50</span>);</div><div class="line"> </div><div class="line">      assertFalse(<span class="string">"Thread executing @Async increment shouldn't be the same as JUnit thread but it wasn (JUnit thread '"</span>+currentName+<span class="string">"', @Async thread '"</span>+asyncCounter.getAsyncThreadName()+<span class="string">"')"</span>,</div><div class="line">                      asyncCounter.getAsyncThreadName().equals(currentName));</div><div class="line">      System.out.println(<span class="string">"Main thread execution's name: "</span>+currentName);</div><div class="line">      System.out.println(<span class="string">"AsyncCounter normal increment thread execution's name: "</span>+asyncCounter.getNormalThreadName());</div><div class="line">      System.out.println(<span class="string">"AsyncCounter @Async increment thread execution's name: "</span>+asyncCounter.getAsyncThreadName());</div><div class="line">      assertTrue(<span class="string">"Counter should be 2, but was "</span>+asyncCounter.getCounter(), asyncCounter.getCounter()==<span class="number">2</span>);</div><div class="line">  &#125;</div><div class="line"> </div><div class="line">&#125;</div><div class="line"> </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncCounter</span> </span>&#123;</div><div class="line">         </div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> counter = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> String normalThreadName;</div><div class="line">  <span class="keyword">private</span> String asyncThreadName;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">incrementNormal</span><span class="params">()</span> </span>&#123;</div><div class="line">    normalThreadName = Thread.currentThread().getName();</div><div class="line">    <span class="keyword">this</span>.counter++;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Async</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">incrementAsync</span><span class="params">()</span> </span>&#123;</div><div class="line">    asyncThreadName = Thread.currentThread().getName();</div><div class="line">    <span class="keyword">this</span>.counter++;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getAsyncThreadName</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> asyncThreadName;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">getNormalThreadName</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> normalThreadName;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCounter</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.counter;</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>另外，我们需要创建新的配置文件和一个包含定时任务方法的类：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- imported configuration file first --&gt;</span></div><div class="line"><span class="comment">&lt;!-- Activates various annotations to be detected in bean classes --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:annotation-config</span> /&gt;</span></div><div class="line"> </div><div class="line"><span class="comment">&lt;!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.</span></div><div class="line"> For example @Controller and @Service. Make sure to set the correct base-package--&gt;</div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.migo.test.schedulers"</span> /&gt;</span></div><div class="line">  </div><div class="line"><span class="tag">&lt;<span class="name">task:scheduler</span> <span class="attr">id</span>=<span class="string">"taskScheduler"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">task:executor</span> <span class="attr">id</span>=<span class="string">"taskExecutor"</span> <span class="attr">pool-size</span>=<span class="string">"40"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">task:annotation-driven</span> <span class="attr">executor</span>=<span class="string">"taskExecutor"</span> <span class="attr">scheduler</span>=<span class="string">"taskScheduler"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// scheduled methods after, all are executed every 6 seconds (scheduledAtFixedRate and scheduledAtFixedDelay start to execute at</span></div><div class="line"><span class="comment">// application context start, two other methods begin 6 seconds after application's context start)</span></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestScheduledTask</span> </span>&#123;</div><div class="line"> </div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> fixedRateCounter = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> fixedDelayCounter = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> initialDelayCounter = <span class="number">0</span>;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">int</span> cronCounter = <span class="number">0</span>;</div><div class="line"> </div><div class="line">  <span class="meta">@Scheduled</span>(fixedRate = <span class="number">6000</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduledAtFixedRate</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;R&gt; Increment at fixed rate"</span>);</div><div class="line">    fixedRateCounter++;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Scheduled</span>(fixedDelay = <span class="number">6000</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduledAtFixedDelay</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;D&gt; Incrementing at fixed delay"</span>);</div><div class="line">    fixedDelayCounter++;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Scheduled</span>(fixedDelay = <span class="number">6000</span>, initialDelay = <span class="number">6000</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduledWithInitialDelay</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;DI&gt; Incrementing with initial delay"</span>);</div><div class="line">    initialDelayCounter++;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="meta">@Scheduled</span>(cron = <span class="string">"**/6 ** ** ** ** **"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scheduledWithCron</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"&lt;C&gt; Incrementing with cron"</span>);</div><div class="line">    cronCounter++;</div><div class="line">           </div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFixedRateCounter</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.fixedRateCounter;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFixedDelayCounter</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.fixedDelayCounter;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getInitialDelayCounter</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.initialDelayCounter;</div><div class="line">  &#125;</div><div class="line">   </div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCronCounter</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.cronCounter;</div><div class="line">  &#125;</div><div class="line">         </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>该测试的输出：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;R&gt; Increment at fixed rate</div><div class="line">&lt;D&gt; Incrementing at fixed delay</div><div class="line">Start sleeping</div><div class="line">&lt;C&gt; Incrementing with cron</div><div class="line">&lt;DI&gt; Incrementing with initial delay</div><div class="line">&lt;R&gt; Increment at fixed rate</div><div class="line">&lt;D&gt; Incrementing at fixed delay</div><div class="line">Wake up !</div><div class="line">Main thread execution's name: main</div><div class="line">AsyncCounter normal increment thread execution's name: main</div><div class="line">AsyncCounter @Async increment thread execution's name: taskExecutor-1</div></pre></td></tr></table></figure>
+<p>本文向我们介绍了关于Spring框架另一个大家比较感兴趣的功能–定时任务。我们可以看到，与Linux CRON风格配置类似，这些任务同样可以按照固定的频率进行定时任务的设置。我们还通过例子证明了使用@Async注解的方法会在不同线程中执行。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag">#Spring</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/Refresh your Java skills--Java中的即时编译/" rel="next" title="Refresh your Java skills--Java中的即时编译(Just-in-time compilation)">
+                <i class="fa fa-chevron-left"></i> Refresh your Java skills--Java中的即时编译(Just-in-time compilation)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/10/17/Spring5源码解析-Spring中的异步和计划任务/"
+           data-title="Spring5源码解析-Spring中的异步和计划任务" data-url="https://muyinchen.github.io/2017/10/17/Spring5源码解析-Spring中的异步和计划任务/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">85</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的异步和计划任务"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的异步和计划任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring中的异步任务？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring中的异步任务？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的异步任务类"><span class="nav-number">1.2.</span> <span class="nav-text">Spring的异步任务类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Spring中配置异步和计划任务"><span class="nav-number">1.3.</span> <span class="nav-text">在Spring中配置异步和计划任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#写一个在Spring中执行异步任务的Demo"><span class="nav-number">1.4.</span> <span class="nav-text">写一个在Spring中执行异步任务的Demo</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
