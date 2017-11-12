@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://muyinchen.github.io/"/>
-  <updated>2017-11-12T08:47:43.852Z</updated>
+  <updated>2017-11-12T08:55:33.939Z</updated>
   <id>https://muyinchen.github.io/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="https://muyinchen.github.io/2017/11/12/Refresh%20your%20Java%20skills--%E8%81%8A%E8%81%8AJava9%20%E4%B8%AD%E6%A8%A1%E5%9D%97%E5%8C%96%E6%89%80%E5%9F%BA%E4%BA%8E%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%20JRTFS/"/>
     <id>https://muyinchen.github.io/2017/11/12/Refresh your Java skills--聊聊Java9 中模块化所基于的文件系统 JRTFS/</id>
     <published>2017-11-12T08:46:25.000Z</published>
-    <updated>2017-11-12T08:47:43.852Z</updated>
+    <updated>2017-11-12T08:55:33.939Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS"><a href="#Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS" class="headerlink" title="Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS"></a>Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS</h1><p>说到文件系统我们很容易就想到Linux，windows操作系统的文件系统，对应到我们的生活中，我们想去一所学校找到某个学生，假如你不了解学号所代表的意义，那就只能是一点一点的找了，不过绝对知道这个学生是几年级，然后一个班一个班的找，也就是说利用了学校原有的文件系统，假如了解学号的意义的话我们就可以直接定位到哪一栋楼，哪一间教室。</p>
+    <content type="html"><![CDATA[<h1 id="Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS"><a href="#Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS" class="headerlink" title="Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS"></a>Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS</h1><p>说到文件系统我们很容易就想到Linux，windows操作系统的文件系统，对应到我们的生活中，我们想去一所学校找到某个学生，假如你不了解学号所代表的意义，那就只能是一点一点的找了，不过绝对知道这个学生是几年级，然后一个班一个班的找，假如了解学号的意义的话我们就可以直接定位到哪一栋楼，哪一间教室。</p>
 <p>说的再直白点，不就是是个找啊找啊找朋友的游戏么。这也就是我们排序查找的算法了，而面向大量有用数据最好的实践就是用树形结构来统筹，于是我们的数据库的索引，我们的zookeeper的节点管理，小到我们Java里使用的红黑树，以及对hashmap的优化等等，就是因为其复杂度可以降到最低，只需要凭借树的高度就可以快速找到我们所要找的数据了。</p>
 <p>说了这么多，就是想要表达的是，我们的Java9中所设计的全新的JRTFS也是基于树来表达的。<br><a id="more"></a></p>
 <h2 id="文件系统的设计"><a href="#文件系统的设计" class="headerlink" title="文件系统的设计"></a>文件系统的设计</h2><p>我们往往会将一堆数据分析其成分，然后抽取出结构来对其组织，往往我们碰到的最多的是表结构和其数据，结构定义和数据要分开存放，这里我们首先对其进行结构的定义，接着我们要将每一份数据进行穿针引线，做成一个体系，其实就是一个索引体系，我们要做的就是对其每一个节点的管理。而最后所建立起的索引系统可以作为一个专门的文件来存放(windows系统下面的话请参照<code>C:\Program Files\Java\jdk-9.0.1\lib\modules</code>这个文件)，我们的结构定义作为一个专门的jar文件来存放(windows系统下面的话请参照<code>C:\Program Files\Java\jdk-9.0.1\lib\jrt-fs.jar</code>)</p>
@@ -58,7 +58,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS&quot;&gt;&lt;a href=&quot;#Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS&quot; class=&quot;headerlink&quot; title=&quot;Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS&quot;&gt;&lt;/a&gt;Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS&lt;/h1&gt;&lt;p&gt;说到文件系统我们很容易就想到Linux，windows操作系统的文件系统，对应到我们的生活中，我们想去一所学校找到某个学生，假如你不了解学号所代表的意义，那就只能是一点一点的找了，不过绝对知道这个学生是几年级，然后一个班一个班的找，也就是说利用了学校原有的文件系统，假如了解学号的意义的话我们就可以直接定位到哪一栋楼，哪一间教室。&lt;/p&gt;
+      &lt;h1 id=&quot;Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS&quot;&gt;&lt;a href=&quot;#Refresh-your-Java-skills–聊聊Java9-中模块化所基于的文件系统-JRTFS&quot; class=&quot;headerlink&quot; title=&quot;Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS&quot;&gt;&lt;/a&gt;Refresh your Java skills–聊聊Java9 中模块化所基于的文件系统 JRTFS&lt;/h1&gt;&lt;p&gt;说到文件系统我们很容易就想到Linux，windows操作系统的文件系统，对应到我们的生活中，我们想去一所学校找到某个学生，假如你不了解学号所代表的意义，那就只能是一点一点的找了，不过绝对知道这个学生是几年级，然后一个班一个班的找，假如了解学号的意义的话我们就可以直接定位到哪一栋楼，哪一间教室。&lt;/p&gt;
 &lt;p&gt;说的再直白点，不就是是个找啊找啊找朋友的游戏么。这也就是我们排序查找的算法了，而面向大量有用数据最好的实践就是用树形结构来统筹，于是我们的数据库的索引，我们的zookeeper的节点管理，小到我们Java里使用的红黑树，以及对hashmap的优化等等，就是因为其复杂度可以降到最低，只需要凭借树的高度就可以快速找到我们所要找的数据了。&lt;/p&gt;
 &lt;p&gt;说了这么多，就是想要表达的是，我们的Java9中所设计的全新的JRTFS也是基于树来表达的。&lt;br&gt;
     
