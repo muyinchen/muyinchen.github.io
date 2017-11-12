@@ -252,6 +252,129 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/12/Spring5源码解析-Spring中的Context loader/" itemprop="url">
+                  Spring5源码解析-Spring中的Context loader
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-12T11:19:05+08:00" content="2017-09-12">
+              2017-09-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/12/Spring5源码解析-Spring中的Context loader/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/12/Spring5源码解析-Spring中的Context loader/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Spring5源码解析-Spring中的Context-loader"><a href="#Spring5源码解析-Spring中的Context-loader" class="headerlink" title="Spring5源码解析-Spring中的Context loader"></a>Spring5源码解析-Spring中的Context loader</h1><p>我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。</p>
+<p>在第一部分中，会说下在<a href="https://muyinchen.github.io/2017/09/08/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87/">Spring的应用程序上下文中</a>所谓的<strong>上下文加载器(context loader)</strong>是什么。在第二部分，我们会讨论这个加载器的代码细节。最后一部分，老规矩，写我们自己的一个自定义的loader。在继续之前，需要说一下，loader(加载器) 将根据web application和dispatcher servlet来结合进行分析。其实这也是很多人一碰到源码就像无头苍蝇，不知道从何而起了，刚开始放下所有，从大体去思考该如何入手,这里对设计模式了解就很重要了，还有，源码的类注释很重要，不多说，接着走。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/12/Spring5源码解析-Spring中的Context loader/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/" itemprop="url">
                   Spring5源码解析-Spring中的应用上下文
                 </a>
@@ -1347,129 +1470,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/01/Spring框架中的设计模式(五)/" itemprop="url">
-                  Spring框架中的设计模式(五)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-01T00:07:31+08:00" content="2017-08-01">
-              2017-08-01
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/基础/" itemprop="url" rel="index">
-                    <span itemprop="name">基础</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/08/01/Spring框架中的设计模式(五)/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/01/Spring框架中的设计模式(五)/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Spring框架中的设计模式-五"><a href="#Spring框架中的设计模式-五" class="headerlink" title="Spring框架中的设计模式 (五)"></a>Spring框架中的设计模式 (五)</h2><p>通过以前的4篇文章，我们看到Spring采用了大量的关于创建和结构方面的设计模式。</p>
-<p>本文将描述属于行为方面的两种设计模式：命令和访问者。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/01/Spring框架中的设计模式(五)/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1515,7 +1515,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">86</span>
+              <span class="site-state-item-count">87</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
