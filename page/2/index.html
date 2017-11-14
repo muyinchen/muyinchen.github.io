@@ -252,6 +252,130 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/" itemprop="url">
+                  Spring5源码解析-Spring框架中的单例和原型bean
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-15T12:59:37+08:00" content="2017-09-15">
+              2017-09-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/基础/" itemprop="url" rel="index">
+                    <span itemprop="name">基础</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Spring5源码解析-Spring框架中的单例和原型bean"><a href="#Spring5源码解析-Spring框架中的单例和原型bean" class="headerlink" title="Spring5源码解析-Spring框架中的单例和原型bean"></a>Spring5源码解析-Spring框架中的单例和原型bean</h1><p>最近一直有问我单例和原型bean的一些原理性问题，这里就开一篇来说说的</p>
+<p>通过Spring中的依赖注入极大方便了我们的开发。在<code>xml</code>通过<code>&lt;bean&gt;</code>定义(或者通过<code>@Bean</code>在配置类里定义)对象之后，然后只需简单地使用@Autowired注解，就可以使用由Spring上下文管理的每个对象。需要注意的是，所有这些对象在Spring中默认都是单例。</p>
+<p>这一次我们会去讨论Spring如何来管理这些定义的bean。在第一部分中，我们将讲解单例和原型作用域的概念。第二部分中，我们将分析单例和原型作用域之间的依赖关系。其后说一下方法注入。最后专门对相关Spring的代码来做下分析，具体看看bean是如何构建出来的。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/12/Spring5源码解析-Spring中的Context loader/" itemprop="url">
                   Spring5源码解析-Spring中的Context loader
                 </a>
@@ -1348,128 +1472,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/" itemprop="url">
-                  Spring5源码解析-论Spring DispatcherServlet的生命周期
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-02T23:25:58+08:00" content="2017-08-02">
-              2017-08-02
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/基础/" itemprop="url" rel="index">
-                    <span itemprop="name">基础</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Spring5源码解析-论Spring-DispatcherServlet的生命周期"><a href="#Spring5源码解析-论Spring-DispatcherServlet的生命周期" class="headerlink" title="Spring5源码解析-论Spring DispatcherServlet的生命周期"></a>Spring5源码解析-论Spring DispatcherServlet的生命周期</h1><p>Spring Web框架架构的主要部分是<code>DispatcherServlet</code>。也就是本文中重点介绍的对象。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1515,7 +1517,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">87</span>
+              <span class="site-state-item-count">88</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
