@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="Spring框架中的设计模式(一)设计模式有助于遵循良好的编程实践。作为最流行的Web框架之一的Spring框架也使用其中的一些。
 本文将介绍Spring Framework中使用的设计模式。这是5篇专题文章的第一部分。这次我们将发现Spring框架中使用的4种设计模式：解释器，构建器，工厂方法和抽象工厂。每部分将首先解释给定模式的原理。紧接着，将会使用Spring的一个例子来加深理解。">
-<meta property="og:updated_time" content="2017-09-20T10:26:36.706Z">
+<meta property="og:updated_time" content="2018-04-13T07:44:05.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring框架中的设计模式(一)">
 <meta name="twitter:description" content="Spring框架中的设计模式(一)设计模式有助于遵循良好的编程实践。作为最流行的Web框架之一的Spring框架也使用其中的一些。
@@ -353,6 +353,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(locations=&#123;<span class="string">"file:test-context.xml"</span>&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestProduct</span> </span>&#123;</div><div class="line">         </div><div class="line">  <span class="meta">@Autowired</span></div><div class="line">  <span class="keyword">private</span> BeanFactory factory;</div><div class="line">   </div><div class="line">  <span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.out.println(<span class="string">"Concrete factory is: "</span>+factory.getClass());</div><div class="line">    assertTrue(<span class="string">"Factory can't be null"</span>, factory != <span class="keyword">null</span>);</div><div class="line">    ShoppingCart cart = (ShoppingCart) factory.getBean(<span class="string">"shoppingCart"</span>);</div><div class="line">    assertTrue(<span class="string">"Shopping cart object can't be null"</span>, cart != <span class="keyword">null</span>);</div><div class="line">    System.out.println(<span class="string">"Found shopping cart bean:"</span>+cart.getClass());</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在这种情况下，抽象工厂由BeanFactory接口表示。具体工厂是在第一个System.out中打印的，是<strong>org.springframework.beans.factory.support.DefaultListableBeanFactory</strong>的实例。它的抽象产物是一个对象。在我们的例子中，具体的产品就是被强转为ShoppingCart实例的抽象产品（Object）。</p>
 <p>第一篇文章介绍了通过设计模式来正确组织的我们实现良好的编程风格。在这里，我们可以看到在Spring框架中使用解释器，构建器，工厂方法和工厂。第一个是帮助解释以SpEL表达的文本。三个最后的模式属于创建设计模式的三剑客，它们在Spring中的主要目的是简化对象的创建。他们通过分解复杂对象（构建器）的初始化或通过集中在公共点的初始化来做到对象的创建(要不然怎么叫工厂呢，必须有通用点的)。</p>
+<p>有问题可以加qq群523409180 讨论的</p>
 
       
     </div>
