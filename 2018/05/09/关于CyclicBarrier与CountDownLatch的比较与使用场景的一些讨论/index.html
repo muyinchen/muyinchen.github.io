@@ -92,7 +92,7 @@
 <meta property="og:url" content="https://muyinchen.github.io/2018/05/09/关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="前言本人的观点也不一定正确，仅供读者参考。">
-<meta property="og:updated_time" content="2018-05-10T14:41:40.051Z">
+<meta property="og:updated_time" content="2018-05-10T14:45:57.054Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于CyclicBarrier与CountDownLatch的源码比较-上">
 <meta name="twitter:description" content="前言本人的观点也不一定正确，仅供读者参考。">
@@ -340,16 +340,8 @@
 <p>对于<strong>shouldParkAfterFailedAcquire</strong>里面的代码，这里需要我给大家解惑的是，在我已确定我要挂起的情况下，因为当我是头节点的情况下，<code>tryAcquireShared</code>返回的是-1，何况后面非头结点直接进入这个if语句中。但是，这个await方法的调用可能前后很快，第一次设定状态的时候依然会返回一次false，并不会进行线程挂起，所以就需要那个do while语句来判断waitStatus标志位，这样，我们就可以找到最靠近头结点的那个未将标志位设定singal的那个节点所在。<br>对于<strong>parkAndCheckInterrupt</strong>，我们关心的是<strong>LockSupport.park(this);</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//java.util.concurrent.locks.LockSupport#park(java.lang.Object)</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">park</span><span class="params">(Object blocker)</span> </span>&#123;</div><div class="line">        Thread t = Thread.currentThread();</div><div class="line">        setBlocker(t, blocker);</div><div class="line">        U.park(<span class="keyword">false</span>, <span class="number">0L</span>);</div><div class="line">        setBlocker(t, <span class="keyword">null</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
 <p>这里首先将线程和所传对象进行<strong>setBlocker</strong>绑定，告诉我们这里是因为谁而线程挂起的，方便一但出现异常，我们好通过日志确认，然后进行挂起，在挂起结束后就解除标记对象。</p>
 <p>至此关于<strong>CountDownLatch</strong>涉及完毕。</p>
-<p>本文配套分享视频:</p>
-<embed src="http://player.youku.com/player.php/sid/XMzU5Nzc5NjI0NA==/v.swf" allowfullscreen="true" quality="high" width="480" height="400" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash">
-
-
-
-
-
-
-
-
+<p>本文配套分享视频地址:</p>
+<p><a href="http://v.youku.com/v_show/id_XMzU5Nzc5NjI0NA==.html?spm=a2h3j.8428770.3416059.1" target="_blank" rel="external">http://v.youku.com/v_show/id_XMzU5Nzc5NjI0NA==.html?spm=a2h3j.8428770.3416059.1</a></p>
 
       
     </div>
