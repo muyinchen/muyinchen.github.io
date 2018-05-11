@@ -1,0 +1,695 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="CountDownLatch  CyclicBarrier" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论前言  首先我们先针对于上一节讲的给出一个很重要的区别:  CountDownLatch 很明显是可以不限制等待线程的数量，而会限制 countDown的操作数。  CyclicBarrier 会限制等待线程的数量。
+实战我们来看JDK给我们带来的两种用法:1234567891011121314151617181">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景">
+<meta property="og:url" content="https://muyinchen.github.io/2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论前言  首先我们先针对于上一节讲的给出一个很重要的区别:  CountDownLatch 很明显是可以不限制等待线程的数量，而会限制 countDown的操作数。  CyclicBarrier 会限制等待线程的数量。
+实战我们来看JDK给我们带来的两种用法:1234567891011121314151617181">
+<meta property="og:updated_time" content="2018-05-11T15:00:07.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景">
+<meta name="twitter:description" content="关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论前言  首先我们先针对于上一节讲的给出一个很重要的区别:  CountDownLatch 很明显是可以不限制等待线程的数量，而会限制 countDown的操作数。  CyclicBarrier 会限制等待线程的数量。
+实战我们来看JDK给我们带来的两种用法:1234567891011121314151617181">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/"/>
+
+
+  <title> 关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景 | 一叶知秋 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-05-11T23:00:25+08:00" content="2018-05-11">
+              2018-05-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Java9/" itemprop="url" rel="index">
+                    <span itemprop="name">Java9</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论"><a href="#关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论" class="headerlink" title="关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论"></a>关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>  首先我们先针对于上一节讲的给出一个很重要的区别:<br>  <strong>CountDownLatch</strong> 很明显是可以不限制等待线程的数量，而会限制 <strong>countDown</strong>的操作数。<br>  <strong>CyclicBarrier</strong> 会限制等待线程的数量。</p>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>我们来看JDK给我们带来的两种用法:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Driver</span> </span>&#123; <span class="comment">// ...</span></div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">    CountDownLatch startSignal = <span class="keyword">new</span> CountDownLatch(<span class="number">1</span>);</div><div class="line">    CountDownLatch doneSignal = <span class="keyword">new</span> CountDownLatch(N);</div><div class="line">  </div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i) <span class="comment">// create and start threads</span></div><div class="line">      <span class="keyword">new</span> Thread(<span class="keyword">new</span> Worker(startSignal, doneSignal)).start();</div><div class="line">  </div><div class="line">    doSomethingElse();            <span class="comment">// don't let run yet &lt;1&gt;</span></div><div class="line">    startSignal.countDown();      <span class="comment">// let all threads proceed &lt;2&gt;</span></div><div class="line">    doSomethingElse();            <span class="comment">// &lt;3&gt;</span></div><div class="line">    doneSignal.await();           <span class="comment">// wait for all to finish &lt;4&gt;</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">  </div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Worker</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> CountDownLatch startSignal;</div><div class="line">  <span class="keyword">private</span> <span class="keyword">final</span> CountDownLatch doneSignal;</div><div class="line">  Worker(CountDownLatch startSignal, CountDownLatch doneSignal) &#123;</div><div class="line">    <span class="keyword">this</span>.startSignal = startSignal;</div><div class="line">    <span class="keyword">this</span>.doneSignal = doneSignal;</div><div class="line">  &#125;</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      startSignal.await(); <span class="comment">// &lt;5&gt;</span></div><div class="line">      doWork();</div><div class="line">      doneSignal.countDown();</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;&#125; <span class="comment">// return;</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="function"><span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123; ... &#125;</div><div class="line">&#125;&#125;</div></pre></td></tr></table></figure></p>
+<p>这里其实就是在传达信息，首先，这里定义了一个所传状态值为1的 <strong>startSignal</strong>和状态值为N的 <strong>doneSignal</strong>，然后通过for循环起了N个线程执行任务，但是在这些线程执行具体任务之前我主线程里有一波逻辑必须先行(因为有些变量的设定是子线程里共享的东西)，那么，我就可以在其内进行 <strong>startSignal.await()</strong>的设定，可以看到，我这里N可以是很大的一个数字，这也就是我们上面讲的 <strong>CountDownLatch</strong>的一个很强的特性的应用，接着，在我主线程的一波先行逻辑执行完后(请看<code>&lt;1&gt;</code>)，我就可以放行，于是就可以调用<code>&lt;2&gt;</code>处的 <strong>startSignal.countDown()</strong>，对各个线程进行解除挂起，这里<code>&lt;3&gt;</code>处的代码就和各个子线程里的任务没有什么冲突，也就没什么<code>happen-before</code>这种要求限定了，但我们其他线程就有担心你主线程执行完我任务没完成怎么办，使用sleep？我执行完主线程可能还在等待，这个时间真的不确定，那就在主线程里使用<code>&lt;4&gt;</code>处的代码 <strong>doneSignal.await()</strong>，这样，当我各个子线程都结束的时候，我就可以做到主线程在第一时间也可以结束掉省的浪费资源了，这里，有童鞋可能会说主线程里也可以调用<code>XxxThread.join()</code>，但要注意的是，当一个线程调用之后，主线程就休眠了，剩下的<code>join()</code>操作也就无从谈起了，也就是说其他线程结束的时候会调用一下 <strong>this.notifyAll</strong>但仅针对于这个要结束的线程，所以主线程可能会经历休眠启动，再休眠，再启动，这就浪费性能了。</p>
+<p>我们接着看<code>JDK</code>给我们提供的第二个常用使用场景例子:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Driver2</span> </span>&#123; <span class="comment">// ...</span></div><div class="line">   <span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">    CountDownLatch doneSignal = <span class="keyword">new</span> CountDownLatch(N);</div><div class="line">     Executor e = ...</div><div class="line"></div><div class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; ++i) <span class="comment">// create and start threads</span></div><div class="line">       e.execute(<span class="keyword">new</span> WorkerRunnable(doneSignal, i));</div><div class="line"></div><div class="line">     doneSignal.await();           <span class="comment">// wait for all to finish</span></div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="class"><span class="keyword">class</span> <span class="title">WorkerRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> CountDownLatch doneSignal;</div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> i;</div><div class="line">   WorkerRunnable(CountDownLatch doneSignal, <span class="keyword">int</span> i) &#123;</div><div class="line">     <span class="keyword">this</span>.doneSignal = doneSignal;</div><div class="line">     <span class="keyword">this</span>.i = i;</div><div class="line">   &#125;</div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">     <span class="keyword">try</span> &#123;</div><div class="line">       doWork(i);</div><div class="line">       doneSignal.countDown();</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException ex) &#123;&#125; <span class="comment">// return;</span></div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">void</span> <span class="title">doWork</span><span class="params">()</span> </span>&#123; ... &#125;</div><div class="line"> &#125;&#125;</div></pre></td></tr></table></figure></p>
+<p> 这里就实现了一个<code>分治算法</code>应用，首先，我们可以将要做的工作进行策略分割，也就是 <strong>doWork()</strong>方法实现，里面可以根据所传参数进行策略执行，因为任务要放到线程中执行，而且这里还涉及到了一个策略分配，往往，我们的任务在大局上可以很快的进行策略分块操作，然后，每一个块内我们可以根据情况假如复杂再进行一个forkJoin的一个应用，这里我们无须去考虑那么多，我们通过实现一个 <strong>Runnable</strong>来适配<code>Thread</code>需求，这里，为了适应子线程和主线程的等待执行关系，使用了<code>CountDownLatch</code>来实现，通过上一个例子，大家应该很清楚了，主线程传入一个定义的 <strong>CountDownLatch</strong>对象，子线程调用，在其 <strong>Runnable.run</strong>方法的最后调用 <strong>doneSignal.countDown()</strong>。主线程在其最后调用 <strong>doneSignal.await()</strong>，这都是固定套路，记住就好。<br> 最后，在 <strong>doWork()</strong>中根据策略得到的任务很复杂的话，就可以使用 <strong>forkJoin</strong>策略进行二次分治了，这样就可以做到，分模块，有计算型的模块，也有IO型的模块，而且这些模块彼此不影响，每个模块内部的话可能会有共享数据的情况，就需要根据并发的其他知识进行解决了，这里就不多讲了，具体情况具体分析。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag">#Java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/09/关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论-CountDownLatch 源码解读/" rel="next" title="关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 源码解读">
+                <i class="fa fa-chevron-left"></i> 关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 源码解读
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/"
+           data-title="关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景" data-url="https://muyinchen.github.io/2018/05/11/关于CyclicBarrier与CountDownLatch的源码比较-CountDownLatch 使用场景/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
+               alt="知秋" />
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">91</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论"><span class="nav-number">1.</span> <span class="nav-text">关于CyclicBarrier与CountDownLatch的比较与使用场景的一些讨论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战"><span class="nav-number">1.2.</span> <span class="nav-text">实战</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
