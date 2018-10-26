@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,37 +63,37 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="消息系统" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+  <meta name="keywords" content="消息系统">
 
 
 
 
 
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
 
-<meta name="description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
-小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp 小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta name="keywords" content="消息系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="谈小米的高可用推送系统设计">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
-小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta property="og:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp 小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img0.tuicool.com/77bYN3f.jpg!web">
 <meta property="og:image" content="http://img1.tuicool.com/nuueEf6.jpg!web">
 <meta property="og:image" content="http://img0.tuicool.com/quA3eiB.jpg!web">
@@ -101,8 +101,7 @@
 <meta property="og:updated_time" content="2016-12-14T15:25:09.227Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谈小米的高可用推送系统设计">
-<meta name="twitter:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp
-小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
+<meta name="twitter:description" content="谈小米的高可用推送系统设计原文：http://www.uml.org.cn/zjjs/201612141.asp 小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。">
 <meta name="twitter:image" content="http://img0.tuicool.com/77bYN3f.jpg!web">
 
 
@@ -124,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/">
 
 
   <title> 谈小米的高可用推送系统设计 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -160,12 +159,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -247,7 +246,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -276,14 +275,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/MQ/" itemprop="url" rel="index">
                     <span itemprop="name">MQ</span>
                   </a>
@@ -315,7 +314,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -329,7 +328,7 @@
       
 
       
-        <h1 id="谈小米的高可用推送系统设计"><a href="#谈小米的高可用推送系统设计" class="headerlink" title="谈小米的高可用推送系统设计"></a>谈小米的高可用推送系统设计</h1><p>原文：<a href="http://www.uml.org.cn/zjjs/201612141.asp?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">http://www.uml.org.cn/zjjs/201612141.asp</a></p>
+        <h1 id="谈小米的高可用推送系统设计"><a href="#谈小米的高可用推送系统设计" class="headerlink" title="谈小米的高可用推送系统设计"></a>谈小米的高可用推送系统设计</h1><p>原文：<a href="http://www.uml.org.cn/zjjs/201612141.asp?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">http://www.uml.org.cn/zjjs/201612141.asp</a></p>
 <p>小米推送是目前国内领先的推送服务提供商，主要为开发者提供快捷、准确、稳定的推送服务。目前日活跃设备突破3亿，日消息量突破50亿。本文将会介绍小米推送在提高系统可用性方面的一些经验和教训。<br> <a id="more"></a></p>
 <ol>
 <li><p>推送系统的高可用性以及 如何提高可用性</p>
@@ -470,7 +469,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -531,8 +530,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/14/谈小米的高可用推送系统设计/"
-           data-title="谈小米的高可用推送系统设计" data-url="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/">
+      <div class="ds-thread" data-thread-key="2016/12/14/谈小米的高可用推送系统设计/" data-title="谈小米的高可用推送系统设计" data-url="https://muyinchen.github.io/2016/12/14/谈小米的高可用推送系统设计/">
       </div>
     
   </div>
@@ -557,7 +555,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -567,17 +565,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -594,7 +590,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -644,7 +640,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#谈小米的高可用推送系统设计"><span class="nav-number">1.</span> <span class="nav-text">谈小米的高可用推送系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是高可用性"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是高可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何提高系统可用性"><span class="nav-number">1.0.2.</span> <span class="nav-text">如何提高系统可用性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓冲机制"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">缓冲机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务解耦"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">服务解耦</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#首先是代码解耦。"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">首先是代码解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其次是功能解耦。"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">其次是功能解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#再次是服务间的通信解耦"><span class="nav-number">1.0.2.2.3.</span> <span class="nav-text">再次是服务间的通信解耦</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无状态服务与多机房部署"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">无状态服务与多机房部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过载保护与分级机制"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">过载保护与分级机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程与规范"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">流程与规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发阶段"><span class="nav-number">1.0.2.5.1.</span> <span class="nav-text">开发阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#上线阶段"><span class="nav-number">1.0.2.5.2.</span> <span class="nav-text">上线阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#故障阶段"><span class="nav-number">1.0.2.5.3.</span> <span class="nav-text">故障阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.0.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#谈小米的高可用推送系统设计"><span class="nav-number">1.</span> <span class="nav-text">谈小米的高可用推送系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是高可用性"><span class="nav-number">1.0.1.</span> <span class="nav-text">什么是高可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何提高系统可用性"><span class="nav-number">1.0.2.</span> <span class="nav-text">如何提高系统可用性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#缓冲机制"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">缓冲机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#服务解耦"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">服务解耦</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#首先是代码解耦。"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">首先是代码解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其次是功能解耦。"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">其次是功能解耦。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#再次是服务间的通信解耦"><span class="nav-number">1.0.2.2.3.</span> <span class="nav-text">再次是服务间的通信解耦</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#无状态服务与多机房部署"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">无状态服务与多机房部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过载保护与分级机制"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">过载保护与分级机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程与规范"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">流程与规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#开发阶段"><span class="nav-number">1.0.2.5.1.</span> <span class="nav-text">开发阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#上线阶段"><span class="nav-number">1.0.2.5.2.</span> <span class="nav-text">上线阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#故障阶段"><span class="nav-number">1.0.2.5.3.</span> <span class="nav-text">故障阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.0.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -660,7 +656,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

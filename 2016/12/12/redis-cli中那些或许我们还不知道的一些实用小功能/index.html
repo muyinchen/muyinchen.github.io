@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,23 +63,23 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="redis  缓存" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+  <meta name="keywords" content="redis  缓存">
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
 
 
 
@@ -87,11 +87,13 @@
 
 
 <meta name="description" content="redis-cli中那些或许我们还不知道的一些实用小功能玩过redis的朋友都知道，redis中有一个叫做redis-cli的小工具，我们可以利用它在test和develop环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入redis-cli启动命令的交互式，而这个对redis-cli来说绝对是九牛一毛，下面我逐一给大家演示下。">
+<meta name="keywords" content="redis  缓存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="redis-cli中那些或许我们还不知道的一些实用小功能">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="redis-cli中那些或许我们还不知道的一些实用小功能玩过redis的朋友都知道，redis中有一个叫做redis-cli的小工具，我们可以利用它在test和develop环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入redis-cli启动命令的交互式，而这个对redis-cli来说绝对是九牛一毛，下面我逐一给大家演示下。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img1.tuicool.com/qUBbQre.png!web">
 <meta property="og:updated_time" content="2016-12-12T12:01:14.436Z">
 <meta name="twitter:card" content="summary">
@@ -118,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/">
 
 
   <title> redis-cli中那些或许我们还不知道的一些实用小功能 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -154,12 +156,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -241,7 +243,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -270,14 +272,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/redis/" itemprop="url" rel="index">
                     <span itemprop="name">redis</span>
                   </a>
@@ -309,7 +311,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -325,9 +327,9 @@
       
         <h1 id="redis-cli中那些或许我们还不知道的一些实用小功能"><a href="#redis-cli中那些或许我们还不知道的一些实用小功能" class="headerlink" title="redis-cli中那些或许我们还不知道的一些实用小功能"></a>redis-cli中那些或许我们还不知道的一些实用小功能</h1><p>玩过<code>redis</code>的朋友都知道，<code>redis</code>中有一个叫做<code>redis-cli</code>的小工具，我们可以利用它在<code>test</code>和<code>develop</code>环境下进行高效的模拟测试，然而在现实环境中，我们只知道直接键入<code>redis-cli</code>启动命令的交互式，而这个对<code>redis-cli</code>来说绝对是九牛一毛，下面我逐一给大家演示下。<br> <a id="more"></a></p>
 <h3 id="一：非REPL-Read-Eval-Print-Loop-模式"><a href="#一：非REPL-Read-Eval-Print-Loop-模式" class="headerlink" title="一：非REPL (Read Eval Print Loop) 模式"></a>一：非REPL (Read Eval Print Loop) 模式</h3><p>通常我们都是使用REPL模式，就是连接上端口之后，发一条<code>request</code>再等待<code>response</code>这样一个<code>loop</code>的形式，如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216</span></div><div class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> username jack</div><div class="line">OK</div><div class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> password 12345</div><div class="line">OK</div><div class="line">192.168.1.216:6379&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216</span></span><br><span class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> username jack</span><br><span class="line">OK</span><br><span class="line">192.168.1.216:6379&gt;  <span class="built_in">set</span> password 12345</span><br><span class="line">OK</span><br><span class="line">192.168.1.216:6379&gt;</span><br></pre></td></tr></table></figure>
 <p>其实我还可以直接在命令行中使用<code>redis-cli</code>再配合各种附加参数，效果和上面图示是一模一样的，比如下面这样：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set username jack</span></div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set password 12345</span></div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set username jack</span></span><br><span class="line">OK</span><br><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 set password 12345</span></span><br><span class="line">OK</span><br><span class="line">[root@localhost Desktop]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 <p>看到没有，这样也是可以的，是不是有点意思哈~~~</p>
 <h3 id="二：从本地文件中执行命令导入"><a href="#二：从本地文件中执行命令导入" class="headerlink" title="二：从本地文件中执行命令导入"></a>二：从本地文件中执行命令导入</h3><p>乍一看还是挺酷的，就是可以把本地文件中的一组<code>redis</code>命令直接导入到<code>redis-cli</code>中执行，这样也就免去了一行一行的去键入了，对不对，工作量可以大大的减轻，比如下面这样：</p>
 <ol>
@@ -336,18 +338,18 @@
 </li>
 </ol>
 <p>然后我们用 <code>&lt; 命令</code>导入就可以了，这里<code>126</code>的ip是本地局域网内的一台虚拟机，是不是有点像<code>pipeline</code>管道操作，牛逼吧~~~ 如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 &lt; /usr/1.txt</span></div><div class="line">OK</div><div class="line">OK</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 &lt; /usr/1.txt</span></span><br><span class="line">OK</span><br><span class="line">OK</span><br><span class="line">[root@localhost Desktop]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 <h3 id="三：对指定redis命令重复调用"><a href="#三：对指定redis命令重复调用" class="headerlink" title="三：对指定redis命令重复调用"></a>三：对指定<code>redis</code>命令重复调用</h3><p>对指定的<code>redis</code>命令进行重复调用，乍一看也没什么用处，但是如果你调用<code>info</code>命令会是咋样的呢？？？ 你肯定会想到，我操，监控对不对？？？好吧，猜对了，命令格式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">redis-cli -r &lt;count&gt; and -i &lt;delay&gt; <span class="built_in">command</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -r &lt;count&gt; and -i &lt;delay&gt; <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
 <p>其中<code>-r</code> 是<code>repeat</code>的次数，<code>-i</code>是<code>delay</code>的<code>sencond</code>的秒数，那接下来我演示一下啊，调用<code>info</code>命令10次，每次延迟<code>1s</code>，如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO</span></div><div class="line"><span class="comment"># Server</span></div><div class="line">redis_version:3.2.4</div><div class="line">redis_git_sha1:00000000</div><div class="line">redis_git_dirty:0</div><div class="line">redis_build_id:<span class="built_in">fc</span>9ad9a14d3a0fb5</div><div class="line">redis_mode:standalone</div><div class="line">os:Linux 3.10.0-327.el7.x86_64 x86_64</div><div class="line">arch_bits:64</div><div class="line">multiplexing_api:epoll</div><div class="line">gcc_version:4.8.5</div><div class="line">process_id:6171</div><div class="line">run_id:8d1d5cffbf81e31c6c6e0bd144186e9df9fea482</div><div class="line">tcp_port:6379</div><div class="line">uptime_in_seconds:3536932</div><div class="line">uptime_in_days:40</div><div class="line">hz:10</div><div class="line">lru_clock:5049094</div><div class="line">executable:/etc/redis/redis-server</div><div class="line">config_file:/etc/redis/6379.conf</div><div class="line"></div><div class="line"><span class="comment"># Clients</span></div><div class="line">connected_clients:7</div><div class="line">client_longest_output_list:0</div><div class="line">client_biggest_input_buf:0</div><div class="line">blocked_clients:0</div><div class="line"></div><div class="line"><span class="comment"># Memory</span></div><div class="line">used_memory:1295512</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_rss:10395648</div><div class="line">used_memory_rss_human:9.91M</div><div class="line">used_memory_peak:35199336</div><div class="line">used_memory_peak_human:33.57M</div><div class="line">total_system_memory:2099109888</div><div class="line">total_system_memory_human:1.95G</div><div class="line">used_memory_lua:37888</div><div class="line">used_memory_lua_human:37.00K</div><div class="line">maxmemory:0</div><div class="line">maxmemory_human:0B</div><div class="line">maxmemory_policy:noeviction</div><div class="line">mem_fragmentation_ratio:8.02</div><div class="line">mem_allocator:jemalloc-4.0.3</div><div class="line"></div><div class="line"><span class="comment"># Persistence</span></div><div class="line">loading:0</div><div class="line">rdb_changes_since_last_save:0</div><div class="line">rdb_bgsave_in_progress:0</div><div class="line">rdb_last_save_time:1481443658</div><div class="line">rdb_last_bgsave_status:ok</div><div class="line">rdb_last_bgsave_time_sec:0</div><div class="line">rdb_current_bgsave_time_sec:-1</div><div class="line">aof_enabled:0</div><div class="line">aof_rewrite_in_progress:0</div><div class="line">aof_rewrite_scheduled:0</div><div class="line">aof_last_rewrite_time_sec:-1</div><div class="line">aof_current_rewrite_time_sec:-1</div><div class="line">aof_last_bgrewrite_status:ok</div><div class="line">aof_last_write_status:ok</div><div class="line">...</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO</span></span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:3.2.4</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:<span class="built_in">fc</span>9ad9a14d3a0fb5</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-327.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:6171</span><br><span class="line">run_id:8d1d5cffbf81e31c6c6e0bd144186e9df9fea482</span><br><span class="line">tcp_port:6379</span><br><span class="line">uptime_in_seconds:3536932</span><br><span class="line">uptime_in_days:40</span><br><span class="line">hz:10</span><br><span class="line">lru_clock:5049094</span><br><span class="line">executable:/etc/redis/redis-server</span><br><span class="line">config_file:/etc/redis/6379.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># Clients</span></span><br><span class="line">connected_clients:7</span><br><span class="line">client_longest_output_list:0</span><br><span class="line">client_biggest_input_buf:0</span><br><span class="line">blocked_clients:0</span><br><span class="line"></span><br><span class="line"><span class="comment"># Memory</span></span><br><span class="line">used_memory:1295512</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_rss:10395648</span><br><span class="line">used_memory_rss_human:9.91M</span><br><span class="line">used_memory_peak:35199336</span><br><span class="line">used_memory_peak_human:33.57M</span><br><span class="line">total_system_memory:2099109888</span><br><span class="line">total_system_memory_human:1.95G</span><br><span class="line">used_memory_lua:37888</span><br><span class="line">used_memory_lua_human:37.00K</span><br><span class="line">maxmemory:0</span><br><span class="line">maxmemory_human:0B</span><br><span class="line">maxmemory_policy:noeviction</span><br><span class="line">mem_fragmentation_ratio:8.02</span><br><span class="line">mem_allocator:jemalloc-4.0.3</span><br><span class="line"></span><br><span class="line"><span class="comment"># Persistence</span></span><br><span class="line">loading:0</span><br><span class="line">rdb_changes_since_last_save:0</span><br><span class="line">rdb_bgsave_in_progress:0</span><br><span class="line">rdb_last_save_time:1481443658</span><br><span class="line">rdb_last_bgsave_status:ok</span><br><span class="line">rdb_last_bgsave_time_sec:0</span><br><span class="line">rdb_current_bgsave_time_sec:-1</span><br><span class="line">aof_enabled:0</span><br><span class="line">aof_rewrite_in_progress:0</span><br><span class="line">aof_rewrite_scheduled:0</span><br><span class="line">aof_last_rewrite_time_sec:-1</span><br><span class="line">aof_current_rewrite_time_sec:-1</span><br><span class="line">aof_last_bgrewrite_status:ok</span><br><span class="line">aof_last_write_status:ok</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>可以看到，命令一下子就刷出来了很多，有点眼花缭乱，一般来说我只关注的是<code>used_memory_human</code>字段，也就仅仅需要知道当然redis占用了多少内存就完事了，所以这里我需要<code>grep</code>一下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO | grep used_memory_human</span></div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">used_memory_human:1.24M</div><div class="line">[root@localhost Desktop]<span class="comment">#</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 -r 10 -i 1 INFO | grep used_memory_human</span></span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">used_memory_human:1.24M</span><br><span class="line">[root@localhost Desktop]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 <p>可以清楚的看到，当前<code>memory_human</code>占用<code>1.24M</code>对吧。。。是不是有一种监控的效果呢？</p>
 <h3 id="四：-stat完整版监控"><a href="#四：-stat完整版监控" class="headerlink" title="四：--stat完整版监控"></a>四：<code>--stat</code>完整版监控</h3><p>其实上面的这个监控还仅仅算是一个极简的版本，可能不能满足有些朋友的需求，比如你就看不到当前的<code>redis</code>中有多少的<code>keys</code>,有多少的<code>clients</code>，有多少被<code>blocked</code>，有多少<code>requests</code>等等信息，如果这些都有了，是不是有点像<code>mongodb</code>中的<code>mongostats</code>呢？哈哈，下面我就迫不及待的给大家来演示一下吧，非常的简单。。。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 --stat</span></div><div class="line">------- data ------ --------------------- load -------------------- - child -</div><div class="line">keys       mem      clients blocked requests            connections          </div><div class="line">27         1.24M    7       0       1198768 (+0)        2206        </div><div class="line">27         1.24M    7       0       1198769 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198770 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198771 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198772 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198773 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198774 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198775 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198776 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198777 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198778 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198779 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198780 (+1)        2206        </div><div class="line">27         1.27M    7       0       1198782 (+2)        2206        </div><div class="line">27         1.24M    7       0       1198783 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198784 (+1)        2206        </div><div class="line">27         1.24M    7       0       1198785 (+1)        2206</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># redis-cli -h 192.168.1.216 --stat</span></span><br><span class="line">------- data ------ --------------------- load -------------------- - child -</span><br><span class="line">keys       mem      clients blocked requests            connections          </span><br><span class="line">27         1.24M    7       0       1198768 (+0)        2206        </span><br><span class="line">27         1.24M    7       0       1198769 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198770 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198771 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198772 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198773 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198774 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198775 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198776 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198777 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198778 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198779 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198780 (+1)        2206        </span><br><span class="line">27         1.27M    7       0       1198782 (+2)        2206        </span><br><span class="line">27         1.24M    7       0       1198783 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198784 (+1)        2206        </span><br><span class="line">27         1.24M    7       0       1198785 (+1)        2206</span><br></pre></td></tr></table></figure>
 <p>看到没有，是不是非常的牛逼，一目了然。</p>
-<p>转<a href="http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral</a></p>
+<p>转<a href="http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">http://www.cnblogs.com/huangxincheng/p/6159890.html?utm_source=tuicool&amp;utm_medium=referral</a></p>
 
       
     </div>
@@ -370,7 +372,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -431,8 +433,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/"
-           data-title="redis-cli中那些或许我们还不知道的一些实用小功能" data-url="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/">
+      <div class="ds-thread" data-thread-key="2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/" data-title="redis-cli中那些或许我们还不知道的一些实用小功能" data-url="https://muyinchen.github.io/2016/12/12/redis-cli中那些或许我们还不知道的一些实用小功能/">
       </div>
     
   </div>
@@ -457,7 +458,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -467,17 +468,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -494,7 +493,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -544,7 +543,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#redis-cli中那些或许我们还不知道的一些实用小功能"><span class="nav-number">1.</span> <span class="nav-text">redis-cli中那些或许我们还不知道的一些实用小功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一：非REPL-Read-Eval-Print-Loop-模式"><span class="nav-number">1.0.1.</span> <span class="nav-text">一：非REPL (Read Eval Print Loop) 模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二：从本地文件中执行命令导入"><span class="nav-number">1.0.2.</span> <span class="nav-text">二：从本地文件中执行命令导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三：对指定redis命令重复调用"><span class="nav-number">1.0.3.</span> <span class="nav-text">三：对指定redis命令重复调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四：-stat完整版监控"><span class="nav-number">1.0.4.</span> <span class="nav-text">四：--stat完整版监控</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#redis-cli中那些或许我们还不知道的一些实用小功能"><span class="nav-number">1.</span> <span class="nav-text">redis-cli中那些或许我们还不知道的一些实用小功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一：非REPL-Read-Eval-Print-Loop-模式"><span class="nav-number">1.0.1.</span> <span class="nav-text">一：非REPL (Read Eval Print Loop) 模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二：从本地文件中执行命令导入"><span class="nav-number">1.0.2.</span> <span class="nav-text">二：从本地文件中执行命令导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三：对指定redis命令重复调用"><span class="nav-number">1.0.3.</span> <span class="nav-text">三：对指定redis命令重复调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四：-stat完整版监控"><span class="nav-number">1.0.4.</span> <span class="nav-text">四：--stat完整版监控</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -560,7 +559,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

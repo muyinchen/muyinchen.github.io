@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,60 +63,41 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="域，上下文" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+  <meta name="keywords" content="域，上下文">
 
 
 
 
 
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
 
-<meta name="description" content="这是之前在博客园的笔记 以后可能会补充
-　
 
-　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。
 
-这里拿js的闭包来说，不解释那么多，贴几段代码的
-变量的作用域无非就是两种：全局变量和局部变量。
-Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="这是之前在博客园的笔记 以后可能会补充 　  　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。  这里拿js的闭包来说，不解释那么多，贴几段代码的 变量的作用域无非就是两种：全局变量和局部变量。 Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
+<meta name="keywords" content="域，上下文">
 <meta property="og:type" content="article">
 <meta property="og:title" content="由域联系到的逃逸分析">
 <meta property="og:url" content="https://muyinchen.github.io/2016/11/08/由域联系到的逃逸分析/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="这是之前在博客园的笔记 以后可能会补充
-　
-
-　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。
-
-这里拿js的闭包来说，不解释那么多，贴几段代码的
-变量的作用域无非就是两种：全局变量和局部变量。
-Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
+<meta property="og:description" content="这是之前在博客园的笔记 以后可能会补充 　  　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。  这里拿js的闭包来说，不解释那么多，贴几段代码的 变量的作用域无非就是两种：全局变量和局部变量。 Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-11-13T03:51:20.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="由域联系到的逃逸分析">
-<meta name="twitter:description" content="这是之前在博客园的笔记 以后可能会补充
-　
-
-　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。
-
-这里拿js的闭包来说，不解释那么多，贴几段代码的
-变量的作用域无非就是两种：全局变量和局部变量。
-Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
+<meta name="twitter:description" content="这是之前在博客园的笔记 以后可能会补充 　  　说到域，假如给小学生中学生或者没有学过编程语言的人理解，更好说明其本质，就是作用范围，而这也就是上下文的意思，无须去理解的那么抽象。接下来就从函数讲起吧。  这里拿js的闭包来说，不解释那么多，贴几段代码的 变量的作用域无非就是两种：全局变量和局部变量。 Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。">
 
 
 
@@ -137,13 +118,13 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/11/08/由域联系到的逃逸分析/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/11/08/由域联系到的逃逸分析/">
 
 
   <title> 由域联系到的逃逸分析 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -173,12 +154,12 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -260,7 +241,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -289,14 +270,14 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/java/" itemprop="url" rel="index">
                     <span itemprop="name">java</span>
                   </a>
@@ -328,7 +309,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -349,16 +330,16 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 </blockquote>
 <pre><code>这里拿js的闭包来说，不解释那么多，贴几段代码的
 变量的作用域无非就是两种：全局变量和局部变量。
-</code></pre><p>Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。<br><a id="more"></a><br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">　<span class="keyword">var</span> n=<span class="number">999</span>;</div><div class="line">　　<span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　alert(n);</div><div class="line">　　&#125;</div><div class="line">　　f1(); <span class="comment">// 999</span></div></pre></td></tr></table></figure></p>
+</code></pre><p>Javascript语言的特殊之处，就在于函数内部可以直接读取全局变量。<br><a id="more"></a><br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">　<span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　<span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　alert(n);</span><br><span class="line">　　&#125;</span><br><span class="line">　　f1(); <span class="comment">// 999</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>另一方面，在函数外部自然无法读取函数内的局部变量。</p>
 </blockquote>
-<p>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</div><div class="line">　　&#125;</div><div class="line">　　alert(n); <span class="comment">// error</span></div></pre></td></tr></table></figure></p>
-<p>这里有一个地方需要注意，函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　n=<span class="number">999</span>;</div><div class="line">　　&#125;</div><div class="line">　　f1();</div><div class="line">　　alert(n); <span class="comment">// 999</span></div></pre></td></tr></table></figure></p>
+<p>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　&#125;</span><br><span class="line">　　alert(n); <span class="comment">// error</span></span><br></pre></td></tr></table></figure></p>
+<p>这里有一个地方需要注意，函数内部声明变量的时候，一定要使用var命令。如果不用的话，你实际上声明了一个全局变量！<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　n=<span class="number">999</span>;</span><br><span class="line">　　&#125;</span><br><span class="line">　　f1();</span><br><span class="line">　　alert(n); <span class="comment">// 999</span></span><br></pre></td></tr></table></figure></p>
 <hr>
-<p>  如何从外部读取局部变量？<br>出于种种原因，我们有时候需要得到函数内的局部变量。但是，前面已经说过了，正常情况下，这是办不到的，只有通过变通方法才能实现。<br>那就是在函数的内部，再定义一个函数。<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　n=<span class="number">999</span>;</div><div class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　　　alert(n); <span class="comment">// 999</span></div><div class="line">　　　　&#125;</div><div class="line">　　&#125;</div></pre></td></tr></table></figure></p>
+<p>  如何从外部读取局部变量？<br>出于种种原因，我们有时候需要得到函数内的局部变量。但是，前面已经说过了，正常情况下，这是办不到的，只有通过变通方法才能实现。<br>那就是在函数的内部，再定义一个函数。<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　n=<span class="number">999</span>;</span><br><span class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　　　alert(n); <span class="comment">// 999</span></span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br></pre></td></tr></table></figure></p>
 <p>在上面的代码中，函数f2就被包括在函数f1内部，这时f1内部的所有局部变量，对f2都是可见的。但是反过来就不行，f2内部的局部变量，对f1 就是不可见的。这就是Javascript语言特有的“链式作用域”结构<code>（chain scope）</code>，<br>子对象会一级一级地向上寻找所有父对象的变量。所以，父对象的所有变量，对子对象都是可见的，反之则不成立。<br>既然f2可以读取f1中的局部变量，那么只要把f2作为返回值，我们不就可以在f1外部读取它的内部变量了吗！</p>
-<p>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　n=<span class="number">999</span>;</div><div class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　　　alert(n);</div><div class="line">　　　　&#125;</div><div class="line">　　　　<span class="keyword">return</span> f2;</div><div class="line">　　&#125;</div><div class="line"></div><div class="line">　　<span class="keyword">var</span> result=f1();</div><div class="line">　　result(); <span class="comment">// 999</span></div></pre></td></tr></table></figure></p>
+<p>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　n=<span class="number">999</span>;</span><br><span class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　　　alert(n);</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　　　<span class="keyword">return</span> f2;</span><br><span class="line">　　&#125;</span><br><span class="line"></span><br><span class="line">　　<span class="keyword">var</span> result=f1();</span><br><span class="line">　　result(); <span class="comment">// 999</span></span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>上面例子中的f2函数，就是闭包，其实就是两个容器，大的套个小的，有点类似套娃，再往大自然延伸一点：<br>f1函数就是河，而f2函数就是河里的鱼，鱼的新陈代谢的产物就是其返回的结果，同样是不是类似于我们和空气的关系，吸进去的是氧气，返回的结果的是二氧化碳</p>
 </blockquote>
@@ -367,12 +348,12 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 <blockquote>
 <p> 先拿Java来说，逃逸常见分三种情况：<br>  给全局变量赋值，发生逃逸；<br>  方法的返回值，会发生逃逸<br>   实例的引用传递，也会发生逃逸</p>
 </blockquote>
-<p>   这里又引出了一个优化的问题，Java对象总是在堆中分配的，因此，Java对象的创建和回收对系统的开销也是很大的，而<code>Java</code>被诟病的一个地方认为其性能慢的一个原因就是Java不支持运行时栈分配对象，没有想<code>c++</code>里面的<code>struct</code>结构或者是c#里的值对象。<code>jdk6</code>中的<code>swing</code>呢刚才和性能消耗的瓶颈就是由于发生逃逸造成的，栈内置保存了对象的指针，当对象不再被引用后，需要依靠<code>GC</code>来遍历引用书并回收内存，如果对象的数量比较多，就会给<code>GC</code>带来比较大的压力，也就间接影响了应用的性能，所以，减少临时对象在堆内分配的数量，无疑是最有效的优化方法。<br>   再次回到域这个话题，在<code>Java</code>应用里我们很容易想到，一般在方法体内，我们声明了一个局部变量，且该变量的方法执行生命周期内未发生逃逸，因为在方法体内未将引用暴露给外面，按照JVM内存分配机制，首先会在堆里<code>new</code>出变量类的实例，然后将返回的对象指针压入调用栈，再继续执行，这是<code>jvm</code>未优化之前的走方式。<br>   通过逃逸分析，我们可以对<code>jvm</code>的这个过程进行优化，即对栈的重新分配，首先需要分析并找到这期间为发生逃逸的变量，将变量类的实例化直接在栈里发生，即不需要经过堆，分配完成后，继续在栈内执行，最后线程结束，栈空间被回收，同样，局部变量也会跟着栈消失，优化后和优化前的区别就是减少了临时对象在堆内的分配数量(即未逃逸的对象无须堆内创建)。<br>   逃逸分析不能在静态编译时进行，必须在JIT里完成，因为我们在正常的代码过程中运行时会通过动态代理改变一个类的行为，这时就无法得志类已经变化。<br>   举个例子，比如一个方法的返回值是void，方法内部有对象的创建，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">use_a</span><span class="params">()</span></span></div><div class="line">  &#123; A a=<span class="keyword">new</span> A();</div><div class="line">   <span class="comment">//a.xx();</span></div><div class="line">   ...</div><div class="line">   a=<span class="keyword">null</span></div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
-<p>从上面代码可以看出，a这个局部对象，没有返回，没有赋值全局变量等操作，所以，其是没有发生逃逸的，由于整个生命周期都在一个方法体内，这样的对象就可以在运行时栈进行分配和销毁。<br> <code>JIT</code>在编译时，假如能分析出这种代码，那么非逃逸的对象的创建和回收就可以在栈上进行，从而大大提高<code>Java</code>的运行性能。<br>  往往我们会碰到这个情况，就是方法内调用另一个方法，有点类似js的闭包了吧，这时就要进行内联分析，因为往往一些对象在被调用过程中创建并返回给调用，比如上面的<code>a.xx()</code>，假如有返回值赋值给另外的局部变量的过程(这下应该好理解这个概念了吧),在调用过程中使用完就被销毁回收了，其实都清楚程序的执行过程是自上而下的，其实函数的调用也无非是把一段代码嵌入到另一段代码里顺序执行处理而已，说白了两个方法内联成一个方法体，而这个也是我们平常方法重构的一个过程，这种原来通过返回传递的对象就变成了方法内的局部对象，也就变成了非逃逸对象了，这样，这些对象就可以在同一个栈上进行分配了。<br>  <code>Java7</code>已经开始支持对象的栈分配和逃逸分析，这样除了上述的优化外还会带来 同步消除和矢量替代，关于这两个可以查阅相应资料<br>  这里对方法逃逸再贴两段代码，方便大家加深认识：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> StringBuffer <span class="title">craeteStringBuffer</span><span class="params">(String s1, String s2)</span> </span>&#123;</div><div class="line">       StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div><div class="line">       sb.append(s1);</div><div class="line">       sb.append(s2);</div><div class="line">       <span class="keyword">return</span> sb;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>   这里又引出了一个优化的问题，Java对象总是在堆中分配的，因此，Java对象的创建和回收对系统的开销也是很大的，而<code>Java</code>被诟病的一个地方认为其性能慢的一个原因就是Java不支持运行时栈分配对象，没有想<code>c++</code>里面的<code>struct</code>结构或者是c#里的值对象。<code>jdk6</code>中的<code>swing</code>呢刚才和性能消耗的瓶颈就是由于发生逃逸造成的，栈内置保存了对象的指针，当对象不再被引用后，需要依靠<code>GC</code>来遍历引用书并回收内存，如果对象的数量比较多，就会给<code>GC</code>带来比较大的压力，也就间接影响了应用的性能，所以，减少临时对象在堆内分配的数量，无疑是最有效的优化方法。<br>   再次回到域这个话题，在<code>Java</code>应用里我们很容易想到，一般在方法体内，我们声明了一个局部变量，且该变量的方法执行生命周期内未发生逃逸，因为在方法体内未将引用暴露给外面，按照JVM内存分配机制，首先会在堆里<code>new</code>出变量类的实例，然后将返回的对象指针压入调用栈，再继续执行，这是<code>jvm</code>未优化之前的走方式。<br>   通过逃逸分析，我们可以对<code>jvm</code>的这个过程进行优化，即对栈的重新分配，首先需要分析并找到这期间为发生逃逸的变量，将变量类的实例化直接在栈里发生，即不需要经过堆，分配完成后，继续在栈内执行，最后线程结束，栈空间被回收，同样，局部变量也会跟着栈消失，优化后和优化前的区别就是减少了临时对象在堆内的分配数量(即未逃逸的对象无须堆内创建)。<br>   逃逸分析不能在静态编译时进行，必须在JIT里完成，因为我们在正常的代码过程中运行时会通过动态代理改变一个类的行为，这时就无法得志类已经变化。<br>   举个例子，比如一个方法的返回值是void，方法内部有对象的创建，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">use_a</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123; A a=<span class="keyword">new</span> A();</span><br><span class="line">   <span class="comment">//a.xx();</span></span><br><span class="line">   ...</span><br><span class="line">   a=<span class="keyword">null</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>从上面代码可以看出，a这个局部对象，没有返回，没有赋值全局变量等操作，所以，其是没有发生逃逸的，由于整个生命周期都在一个方法体内，这样的对象就可以在运行时栈进行分配和销毁。<br> <code>JIT</code>在编译时，假如能分析出这种代码，那么非逃逸的对象的创建和回收就可以在栈上进行，从而大大提高<code>Java</code>的运行性能。<br>  往往我们会碰到这个情况，就是方法内调用另一个方法，有点类似js的闭包了吧，这时就要进行内联分析，因为往往一些对象在被调用过程中创建并返回给调用，比如上面的<code>a.xx()</code>，假如有返回值赋值给另外的局部变量的过程(这下应该好理解这个概念了吧),在调用过程中使用完就被销毁回收了，其实都清楚程序的执行过程是自上而下的，其实函数的调用也无非是把一段代码嵌入到另一段代码里顺序执行处理而已，说白了两个方法内联成一个方法体，而这个也是我们平常方法重构的一个过程，这种原来通过返回传递的对象就变成了方法内的局部对象，也就变成了非逃逸对象了，这样，这些对象就可以在同一个栈上进行分配了。<br>  <code>Java7</code>已经开始支持对象的栈分配和逃逸分析，这样除了上述的优化外还会带来 同步消除和矢量替代，关于这两个可以查阅相应资料<br>  这里对方法逃逸再贴两段代码，方便大家加深认识：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> StringBuffer <span class="title">craeteStringBuffer</span><span class="params">(String s1, String s2)</span> </span>&#123;</span><br><span class="line">       StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">       sb.append(s1);</span><br><span class="line">       sb.append(s2);</span><br><span class="line">       <span class="keyword">return</span> sb;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>StringBuffer sb</code>是一个方法内部变量，上述代码中直接将sb返回，这样这个<code>StringBuffer</code>有可能被其他方法所改变，这样它的作用域就不只是在方法内部，虽然它是一个局部变量，称其逃逸到了方法外部。<br>甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。</p>
-<p>上述代码如果想要<code>StringBuffer sb</code>不逃出方法，可以这样写：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">createStringBuffer</span><span class="params">(String s1, String s2)</span> </span>&#123;</div><div class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</div><div class="line">        sb.append(s1);</div><div class="line">        sb.append(s2);</div><div class="line">        <span class="keyword">return</span> sb.toString();</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>上述代码如果想要<code>StringBuffer sb</code>不逃出方法，可以这样写：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">createStringBuffer</span><span class="params">(String s1, String s2)</span> </span>&#123;</span><br><span class="line">        StringBuffer sb = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">        sb.append(s1);</span><br><span class="line">        sb.append(s2);</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <p>不直接返回 <code>StringBuffer</code>，那么<code>StringBuffer</code>将不会逃逸出方法。</p>
-<p>   同样，我们分析下js中闭包在此的行为：<br>==   最大用处有两个，一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中==。<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">　<span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</div><div class="line">　　　　nAdd=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;n+=<span class="number">1</span>&#125;</div><div class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">　　　　　　alert(n);</div><div class="line">　　　　&#125;</div><div class="line">　　　　<span class="keyword">return</span> f2;</div><div class="line">　　&#125;</div><div class="line">　　<span class="keyword">var</span> result=f1();</div><div class="line">　　result(); <span class="comment">// 999</span></div><div class="line">　　nAdd();</div><div class="line">　　result(); <span class="comment">// 1000</span></div></pre></td></tr></table></figure></p>
+<p>   同样，我们分析下js中闭包在此的行为：<br>==   最大用处有两个，一个是前面提到的可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中==。<br>Js代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">　<span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　<span class="keyword">var</span> n=<span class="number">999</span>;</span><br><span class="line">　　　　nAdd=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;n+=<span class="number">1</span>&#125;</span><br><span class="line">　　　　<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">　　　　　　alert(n);</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　　　<span class="keyword">return</span> f2;</span><br><span class="line">　　&#125;</span><br><span class="line">　　<span class="keyword">var</span> result=f1();</span><br><span class="line">　　result(); <span class="comment">// 999</span></span><br><span class="line">　　nAdd();</span><br><span class="line">　　result(); <span class="comment">// 1000</span></span><br></pre></td></tr></table></figure></p>
 <p>在这段代码中，<code>result</code>实际上就是闭包<code>f2</code>函数。它一共运行了两次，第一次的值是<code>999</code>，第二次的值是<code>1000</code>。这证明了，函数<code>f1</code>中的局部变量n一直保存在内存中，并没有在<code>f1</code>调用后被自动清除。<br>为什么会这样呢？原因就在于<code>f1</code>是<code>f2</code>的父函数，<code>==</code>而<code>f2</code>被赋给了一个全局变量，这导致f2始终在内存中，而<code>f2</code>的存在依赖于<code>f1</code>，因此<code>f1</code>也始终在内存中，不会在调用结束后，被垃圾回收机制<code>（garbage collection）</code>回收。</p>
 <blockquote>
 <p>这段代码中另一个值得注意的地方，就是<code>“nAdd=function(){n+=1}”</code>这一行，首先在<code>nAdd</code>前面没有使用<code>var</code>关键字，因此<br><code>nAdd</code>是一个全局变量，而不是局部变量。其次，<code>nAdd</code>的值是一个匿名函数（anonymous function），而这个<br>匿名函数本身也是一个闭包，所以<code>nAdd</code>相当于是一个<code>setter</code>，可以在函数外部对函数内部的局部变量进行操作。</p>
@@ -403,7 +384,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -464,8 +445,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/11/08/由域联系到的逃逸分析/"
-           data-title="由域联系到的逃逸分析" data-url="https://muyinchen.github.io/2016/11/08/由域联系到的逃逸分析/">
+      <div class="ds-thread" data-thread-key="2016/11/08/由域联系到的逃逸分析/" data-title="由域联系到的逃逸分析" data-url="https://muyinchen.github.io/2016/11/08/由域联系到的逃逸分析/">
       </div>
     
   </div>
@@ -490,7 +470,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -500,17 +480,15 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -527,7 +505,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -593,7 +571,7 @@ Javascript语言的特殊之处，就在于函数内部可以直接读取全局�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

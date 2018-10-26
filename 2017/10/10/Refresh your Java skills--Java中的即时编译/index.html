@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,45 +63,41 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Java" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+  <meta name="keywords" content="Java">
 
 
 
 
 
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
 
-<meta name="description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。
-像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。
-本">
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。 像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。 本">
+<meta name="keywords" content="Java">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Refresh your Java skills--Java中的即时编译(Just-in-time compilation)">
 <meta property="og:url" content="https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。
-像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。
-本">
+<meta property="og:description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。 像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。 本">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-10-10T10:44:38.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Refresh your Java skills--Java中的即时编译(Just-in-time compilation)">
-<meta name="twitter:description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。
-像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。
-本">
+<meta name="twitter:description" content="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。 像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。 本">
 
 
 
@@ -122,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/">
 
 
   <title> Refresh your Java skills--Java中的即时编译(Just-in-time compilation) | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -158,12 +154,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -245,7 +241,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -274,14 +270,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/Java9/" itemprop="url" rel="index">
                     <span itemprop="name">Java9</span>
                   </a>
@@ -313,7 +309,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -330,11 +326,11 @@
         <h1 id="Refresh-your-Java-skills–Java中的即时编译-Just-in-time-compilation"><a href="#Refresh-your-Java-skills–Java中的即时编译-Just-in-time-compilation" class="headerlink" title="Refresh your Java skills–Java中的即时编译(Just-in-time compilation)"></a>Refresh your Java skills–Java中的即时编译(Just-in-time compilation)</h1><p>因自己在写的关于Java9的新书因为篇幅和读者层次的原因并不能将能想到的东西都写进去，故接下来整理出一系列的博文来补充拓展。</p>
 <p>像其他一些编程语言一样，Java通常也被称为“编译语言”。但有时你可能会感到困惑，尤其是当有人告诉你Java是JIT编译，并问你其中的一些小细节时。</p>
 <p>本文就来说一说JIT编译的概念。在第一部分，我们将对不同类型的编译描述一番。第二部分来说说JIT编译。接下来，我们将深入一下JIT编译在Java中比较特别的地方。<br><a id="more"></a></p>
-<h2 id="编译类型"><a href="#编译类型" class="headerlink" title="编译类型"></a>编译类型</h2><p>在讨论编译类型之前，我们需要了解什么是编译。这是一个将编程语言翻译成机器可理解的语言(也称为<strong>机器代码</strong>)的过程。机器语言由CPU执行的指令组成。这个语言是由0-1构成的，如在<a href="http://en.wikibooks.org/wiki/A-level_Computing/AQA/Computer_Components,_The_Stored_Program_Concept_and_the_Internet/Machine_Level_Architecture/Machine_code_and_processor_instruction_set" target="_blank" rel="external">wikibooks页面</a>上的这个片段所示：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">0001</span> <span class="number">00000111</span></div><div class="line"><span class="number">0100</span> <span class="number">00001001</span></div><div class="line"><span class="number">0000</span> <span class="number">00011110</span></div></pre></td></tr></table></figure>
+<h2 id="编译类型"><a href="#编译类型" class="headerlink" title="编译类型"></a>编译类型</h2><p>在讨论编译类型之前，我们需要了解什么是编译。这是一个将编程语言翻译成机器可理解的语言(也称为<strong>机器代码</strong>)的过程。机器语言由CPU执行的指令组成。这个语言是由0-1构成的，如在<a href="http://en.wikibooks.org/wiki/A-level_Computing/AQA/Computer_Components,_The_Stored_Program_Concept_and_the_Internet/Machine_Level_Architecture/Machine_code_and_processor_instruction_set" target="_blank" rel="noopener">wikibooks页面</a>上的这个片段所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0001</span> <span class="number">00000111</span></span><br><span class="line"><span class="number">0100</span> <span class="number">00001001</span></span><br><span class="line"><span class="number">0000</span> <span class="number">00011110</span></span><br></pre></td></tr></table></figure>
 <h2 id="即时编译"><a href="#即时编译" class="headerlink" title="即时编译"></a>即时编译</h2><p>同样，我们知道，Java的<strong>javac</strong>指令不会生成机器代码，而是一些名为<strong>字节码的</strong>东西。而这不仅仅是一种语言会这么做(而这也是很多现代语言所发展的一个方向)。比如ActionScript(由ActionScript Virtual Machine执行)或CIL(由C#使用并在Common Language Runtime上执行)。</p>
 <p>在这里，在我们的括号中所说的“执行”，也就是即时编译完成(即字节码编译成目标机器可执行的机器码)。这种特殊类型的编译发生在解释给定字节码的机器上，如ActionScript虚拟机或Java虚拟机(JVM)。字节码由他们在运行时( on runtime)编译成机器码。</p>
-<p>这种编译带来了一些好处。第一个显着的优点是可以做到根据所运行机器参数来优化编译的代码。静态编译器为目标机器进行优化并一次生成机器代码。另一方面，JIT编译器提供了一种中间代码，它被转换和优化为特定于执行机器的机器代码。关于这里有一篇解释的比较通俗的文章<a href="http://www.cnblogs.com/csxf/p/3387365.html" target="_blank" rel="external">动态编译和静态编译及Java执行</a>，有兴趣可以看看</p>
+<p>这种编译带来了一些好处。第一个显着的优点是可以做到根据所运行机器参数来优化编译的代码。静态编译器为目标机器进行优化并一次生成机器代码。另一方面，JIT编译器提供了一种中间代码，它被转换和优化为特定于执行机器的机器代码。关于这里有一篇解释的比较通俗的文章<a href="http://www.cnblogs.com/csxf/p/3387365.html" target="_blank" rel="noopener">动态编译和静态编译及Java执行</a>，有兴趣可以看看</p>
 <p>第二个优点是便携性。转换为字节码的代码可以在安装了虚拟机的任何计算机上运行。</p>
 <h2 id="Java中的即时编译"><a href="#Java中的即时编译" class="headerlink" title="Java中的即时编译"></a>Java中的即时编译</h2><p>So，Java是即时编译为机器代码的。想要检查编译机器代码，我们可以启用多个JVM参数：</p>
 <ul>
@@ -342,7 +338,7 @@
 <p>通过这个参数，我们可以得到方法编译结果的输出。其输出的样例：</p>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">71</span> <span class="number">1</span> java.lang.String :: indexOf(<span class="number">70</span> bytes)</div><div class="line"><span class="number">73</span> <span class="number">2</span> sun.nio.cs.UTF_8 $ Encoder :: encode(<span class="number">361</span> bytes)</div><div class="line"><span class="number">87</span> <span class="number">3</span> java.lang.String :: hashCode(<span class="number">55</span> bytes)</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">71</span> <span class="number">1</span> java.lang.String :: indexOf(<span class="number">70</span> bytes)</span><br><span class="line"><span class="number">73</span> <span class="number">2</span> sun.nio.cs.UTF_8 $ Encoder :: encode(<span class="number">361</span> bytes)</span><br><span class="line"><span class="number">87</span> <span class="number">3</span> java.lang.String :: hashCode(<span class="number">55</span> bytes)</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>输出被格式化为列，第一列(例如71)是时间戳。第二列返回唯一的编译器任务ID(1，2，3 …)。之后我们可以看到编译的方法。在括号中指定了编译字节码的字节。我们可以看到indexOf方法的大小是70字节，encode 方法是361字节等等。</p>
 </li>
@@ -353,10 +349,10 @@
 <p>通过这个配置，我们可以看到编译方法的细节。内联是编译器优化编译代码重要的工作方式。请看以下方法：</p>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">  callAnotherMethod();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  callAnotherMethod();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>通过内联，函数<code>callAnotherMethod()</code>将被<code>callAnotherMethod</code>的内容替换。正因为如此，在运行时，机器不会从一个方法跳转到另一个方法，并能够以<code>内联方式</code>执行代码。JIT通过此操作用来避免在堆栈上放置参数的复杂情况。当我们启用此参数(+PrintInlining)并运行代码时，我们可以看到类似下面的结果：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">75</span> <span class="number">1</span> java.lang.String :: indexOf(<span class="number">70</span> bytes)</div><div class="line"><span class="number">77</span> <span class="number">2</span> sun.nio.cs.UTF_8 $ Encoder :: encode(<span class="number">361</span> bytes)</div><div class="line">                    @ <span class="number">66</span> java.lang.String :: indexOfSupplementary(<span class="number">71</span> bytes) too big</div><div class="line">                    @ <span class="number">14</span> java.lang.Math :: min(<span class="number">11</span> bytes)(intrinsic)</div><div class="line">                    @ <span class="number">139</span> java.lang.Character :: isSurrogate(<span class="number">18</span> bytes) never executed</div><div class="line"><span class="number">89</span> <span class="number">3</span> java.lang.String :: hashCode(<span class="number">55</span> bytes)</div></pre></td></tr></table></figure>
-<p>让我们回到理论层面面，Java中的JIT编译(这里说是动态编译)可以是(这里可以参考一篇文章<br> <a href="http://blog.csdn.net/sunxianghuang/article/details/52094859" target="_blank" rel="external">JVM即时编译（JIT）</a>，我这里用更加暴力通俗的方式说了下，能知道是个什么作用就可以)： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">75</span> <span class="number">1</span> java.lang.String :: indexOf(<span class="number">70</span> bytes)</span><br><span class="line"><span class="number">77</span> <span class="number">2</span> sun.nio.cs.UTF_8 $ Encoder :: encode(<span class="number">361</span> bytes)</span><br><span class="line">                    @ <span class="number">66</span> java.lang.String :: indexOfSupplementary(<span class="number">71</span> bytes) too big</span><br><span class="line">                    @ <span class="number">14</span> java.lang.Math :: min(<span class="number">11</span> bytes)(intrinsic)</span><br><span class="line">                    @ <span class="number">139</span> java.lang.Character :: isSurrogate(<span class="number">18</span> bytes) never executed</span><br><span class="line"><span class="number">89</span> <span class="number">3</span> java.lang.String :: hashCode(<span class="number">55</span> bytes)</span><br></pre></td></tr></table></figure>
+<p>让我们回到理论层面面，Java中的JIT编译(这里说是动态编译)可以是(这里可以参考一篇文章<br> <a href="http://blog.csdn.net/sunxianghuang/article/details/52094859" target="_blank" rel="noopener">JVM即时编译（JIT）</a>，我这里用更加暴力通俗的方式说了下，能知道是个什么作用就可以)： </p>
 <ul>
 <li>lazy：只有真正使用的方法(在运行时调用)才会被编译成机器代码。 </li>
 <li>adaptive(自适应)：整个程序被编译成一些脏机器代码。此代码仅针对非常常用的方法进行了优化。</li>
@@ -368,7 +364,7 @@
 <li>循环优化：编译器可以组织并优化循环执行顺序或对尾递归优化成for循环等，以此来优化CPU所执行的代码。 </li>
 <li>用实现方法替换接口方法：当给定接口的一个方法有且仅由一个对象实现时，编译器可以决定直接使用实现的方法，以避免在运行时绑定真正实现的方法所引起的开销。</li>
 </ul>
-<p>在本文中，我们解释了即时编译，即特定用于语言的编译代码(如Java的字节码)转换为CPU可以理解的语言(机器代码)。编译器不会进行简单的编译，因为它也对编译代码进行了一些优化。由于这些优化，机器代码尽可能地适应目标机器，另外，可以根据<a href="http://blog.csdn.net/opensure/article/details/46715675这篇文章中的两张图来更好的理解下上面所说的一些细节。" target="_blank" rel="external">http://blog.csdn.net/opensure/article/details/46715675这篇文章中的两张图来更好的理解下上面所说的一些细节。</a></p>
+<p>在本文中，我们解释了即时编译，即特定用于语言的编译代码(如Java的字节码)转换为CPU可以理解的语言(机器代码)。编译器不会进行简单的编译，因为它也对编译代码进行了一些优化。由于这些优化，机器代码尽可能地适应目标机器，另外，可以根据<a href="http://blog.csdn.net/opensure/article/details/46715675这篇文章中的两张图来更好的理解下上面所说的一些细节。" target="_blank" rel="noopener">http://blog.csdn.net/opensure/article/details/46715675这篇文章中的两张图来更好的理解下上面所说的一些细节。</a></p>
 
       
     </div>
@@ -391,7 +387,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -452,8 +448,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/10/10/Refresh your Java skills--Java中的即时编译/"
-           data-title="Refresh your Java skills--Java中的即时编译(Just-in-time compilation)" data-url="https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/">
+      <div class="ds-thread" data-thread-key="2017/10/10/Refresh your Java skills--Java中的即时编译/" data-title="Refresh your Java skills--Java中的即时编译(Just-in-time compilation)" data-url="https://muyinchen.github.io/2017/10/10/Refresh your Java skills--Java中的即时编译/">
       </div>
     
   </div>
@@ -478,7 +473,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -488,17 +483,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -515,7 +508,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -581,7 +574,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

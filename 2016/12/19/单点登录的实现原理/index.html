@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,23 +63,23 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="单点登录 Migo商城2.0" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+  <meta name="keywords" content="单点登录 Migo商城2.0">
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
 
 
 
@@ -87,11 +87,13 @@
 
 
 <meta name="description" content="单点登录的实现原理单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。">
+<meta name="keywords" content="单点登录 Migo商城2.0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="单点登录的实现原理">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="单点登录的实现原理单点登录在现在的系统架构中广泛存在，他将多个子系统的认证体系打通，实现了一个入口多处使用，而在架构单点登录时，也会遇到一些小问题，在不同的应用环境中可以采用不同的单点登录实现方案来满足需求。我将以我所遇到的应用环境以及在其中所经历的各个阶段与大家分享，若有不足，希望各位不吝赐教。">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222043593482457.png">
 <meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222046506453455.png">
 <meta property="og:image" content="http://images.cnitblog.com/i/548874/201406/222048373015306.png">
@@ -121,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/">
 
 
   <title> 单点登录的实现原理 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -157,12 +159,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -244,7 +246,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -273,14 +275,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
                     <span itemprop="name">Migo商城2.0</span>
                   </a>
@@ -312,7 +314,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -390,7 +392,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -451,8 +453,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/19/单点登录的实现原理/"
-           data-title="单点登录的实现原理" data-url="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/">
+      <div class="ds-thread" data-thread-key="2016/12/19/单点登录的实现原理/" data-title="单点登录的实现原理" data-url="https://muyinchen.github.io/2016/12/19/单点登录的实现原理/">
       </div>
     
   </div>
@@ -477,7 +478,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -487,17 +488,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -514,7 +513,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -580,7 +579,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

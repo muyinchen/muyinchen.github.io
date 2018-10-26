@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,23 +63,23 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="redis" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+  <meta name="keywords" content="redis">
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
 
 
 
@@ -87,11 +87,13 @@
 
 
 <meta name="description" content="使用redis3.0实现tomcat集群session共享">
+<meta name="keywords" content="redis">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用redis3.0实现tomcat集群session共享">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="使用redis3.0实现tomcat集群session共享">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2016-12-16T14:55:27.104Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用redis3.0实现tomcat集群session共享">
@@ -116,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/">
 
 
   <title> 使用redis3.0实现tomcat集群session共享 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -152,12 +154,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -239,7 +241,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -268,14 +270,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/redis/" itemprop="url" rel="index">
                     <span itemprop="name">redis</span>
                   </a>
@@ -307,7 +309,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -334,15 +336,15 @@
 </li>
 </ol>
 <p>​       </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</div><div class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</div><div class="line"></div><div class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">jedis-2.8.0.jar</div><div class="line"></div><div class="line">commons-pool2-2.4.1.jar</div><div class="line"></div><div class="line">commons-logging-1.2.jar</div><div class="line"></div><div class="line">RedisDataCache.properties</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">下载方式一：https://github.com/jcoleman/tomcat-redis-session-manager/downloads  (这个是早期的，不支持redis3.0集群)</span><br><span class="line">下载方式二（推荐）：https://github.com/ran-jit/TomcatClusterRedisSessionManager （支持redis3集群和tomat8）</span><br><span class="line"></span><br><span class="line">https://github.com/ran-jit/TomcatClusterRedisSessionManager/wiki/Tomcat-Cluster-Redis-Session-Manager</span><br><span class="line"></span><br><span class="line">commons-logging-1.2.jar</span><br><span class="line"></span><br><span class="line">commons-pool2-2.4.1.jar</span><br><span class="line"></span><br><span class="line">jedis-2.8.0.jar</span><br><span class="line"></span><br><span class="line">commons-pool2-2.4.1.jar</span><br><span class="line"></span><br><span class="line">commons-logging-1.2.jar</span><br><span class="line"></span><br><span class="line">RedisDataCache.properties</span><br></pre></td></tr></table></figure>
 <p>5、将上面<code>jar</code>包拷贝到各个<code>tomcat</code>的<code>lib</code>目录下， 将<code>RedisDataCache.properties</code>拷到<code>tomcat</code>的<code>conf目录</code>下。</p>
 <p>6、配置文件修改</p>
 <p>（1）修改<code>RedisDataCache.properties</code>配置文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</div><div class="line"></div><div class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</div><div class="line"></div><div class="line"># Redis Password</div><div class="line"></div><div class="line">redis.password= redis （REDIS配置文件中设置的密码）</div><div class="line"></div><div class="line"># set true to enable redis cluster mode</div><div class="line"></div><div class="line">redis.cluster.enabled=false</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># redis hosts ex: 127.0.0.1:6379, 127.0.0.2:6379, 127.0.0.2:6380, ....</span><br><span class="line"></span><br><span class="line">redis.hosts=192.168.187.131:6379 (redis服务器IP及端口号)</span><br><span class="line"></span><br><span class="line"># Redis Password</span><br><span class="line"></span><br><span class="line">redis.password= redis （REDIS配置文件中设置的密码）</span><br><span class="line"></span><br><span class="line"># set true to enable redis cluster mode</span><br><span class="line"></span><br><span class="line">redis.cluster.enabled=false</span><br></pre></td></tr></table></figure>
 <p>（2）在<code>tomcat/conf/context.xml</code>文件中增加以下两行：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></div><div class="line"></div><div class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionHandlerValve"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="tag">&lt;<span class="name">Manager</span> <span class="attr">className</span>=<span class="string">"com.r.tomcat.session.management.RequestSessionManager"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 <p>（3)设置<code>tomcat/conf/web.xml</code> 中<code>session</code>有效期</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div><div class="line"></div><div class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>60<span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p> 如果项目里也配置了<code>session</code>有效期，则以项目中有准。</p>
 <p>7、先启动<code>redis</code>,再启动<code>tomcat</code>，访问测试项目进行测试。</p>
 
@@ -367,7 +369,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -428,8 +430,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/"
-           data-title="使用redis3.0实现tomcat集群session共享" data-url="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/">
+      <div class="ds-thread" data-thread-key="2016/12/16/使用redis3.0实现tomcat集群session共享/" data-title="使用redis3.0实现tomcat集群session共享" data-url="https://muyinchen.github.io/2016/12/16/使用redis3.0实现tomcat集群session共享/">
       </div>
     
   </div>
@@ -454,7 +455,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -464,17 +465,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -491,7 +490,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -557,7 +556,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

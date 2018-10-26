@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,48 +63,41 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="JPA   Hibernate" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+  <meta name="keywords" content="JPA   Hibernate">
 
 
 
 
 
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
 
-<meta name="description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别
-在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。
-因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。
-有两种方法来处理Hibernate中的持久性:会话(session">
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别 在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。 因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。 有两种方法来处理Hibernate中的持久性:会话(session">
+<meta name="keywords" content="JPA   Hibernate">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别">
+<meta property="og:title" content="JPA&amp;Hibernate---SessionFactory和EntityManagerFactory之间的区别">
 <meta property="og:url" content="https://muyinchen.github.io/2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/index.html">
 <meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别
-在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。
-因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。
-有两种方法来处理Hibernate中的持久性:会话(session">
+<meta property="og:description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别 在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。 因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。 有两种方法来处理Hibernate中的持久性:会话(session">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-11-16T16:06:26.190Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别">
-<meta name="twitter:description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别
-在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。
-因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。
-有两种方法来处理Hibernate中的持久性:会话(session">
+<meta name="twitter:title" content="JPA&amp;Hibernate---SessionFactory和EntityManagerFactory之间的区别">
+<meta name="twitter:description" content="JPA&amp;amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别 在谈Spring Data之前，要先讲讲JPA，讲JPA，又不免会说到Hibernate，那就从Hibernate开始说起吧。 因为很多人都喜欢把JPA和Hibernate混为一谈，这个系列文章会把这个问题讲明白。 有两种方法来处理Hibernate中的持久性:会话(session">
 
 
 
@@ -125,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/">
 
 
   <title> JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别 | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -161,12 +154,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -248,7 +241,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -277,14 +270,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/基础/" itemprop="url" rel="index">
                     <span itemprop="name">基础</span>
                   </a>
@@ -316,7 +309,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -338,16 +331,16 @@
 <h2 id="JPA是一个标准"><a href="#JPA是一个标准" class="headerlink" title="JPA是一个标准"></a>JPA是一个标准</h2><p>实体管理器是JPA规范的一部分，而Hibernate是基于Session对象来实现自己的解决方案，也就是处理持久性。我们已经看到他们中的一个(JPA)是一个标准。我们需要记住的是，JPA是“独立出来的”API，它是一个标准，它描述了如何以标准化的方式处理对象持久化。它可以有多个实现。因此，如果你的应用程序基于JPA的实现，则可以随时在不同的实现之间切换。但对于Hibernate来说却不是这样，它可以但不一定与其他持久性解决方案兼容。</p>
 <h2 id="Hibernate可以在JPA中使用"><a href="#Hibernate可以在JPA中使用" class="headerlink" title="Hibernate可以在JPA中使用"></a>Hibernate可以在JPA中使用</h2><p>下一个区别是用于管理持久性的类。在JPA中，我们查找EntityManagerFactory，EntityManager，可以发现它们都位于<strong>javax.persistence</strong>包中。Hibernate使用它自己的类来表示持久性上下文:<code>SessionFactory</code>，<code>Session</code>。由于JPA所在包(<code>hibernate-jpa-2.1-api</code>中的<code>javax.persistence包</code>)定义的基本都是接口，所以他们的实现可以是不同的(也就说所也可以是基于Hibernate来进行实现的)。</p>
 <p>在使用Hibernate作为JPA实现的情况下，我们可以使用一些Hibernate所特有的功能。实际上，Hibernate的EntityManager实现调用了Session对象。我们可以从一些异常日志中观测到它，例如在关于<code>Hibernate/JPA中的锁</code>(下一篇文章，到时再补链接)的这篇文章中，我们可以看到:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line">javax.persistence.RollbackException: Error <span class="keyword">while</span> committing the transaction</div><div class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">92</span>)</div><div class="line">  at com.sandboxWebapp.hibernate.locking.LockingSample.pessimisticReadWithWrite(LockingSample.java:<span class="number">117</span>)</div><div class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div><div class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">57</span>)</div><div class="line">  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</div><div class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">606</span>)</div><div class="line">  at org.junit.runners.model.FrameworkMethod$<span class="number">1</span>.runReflectiveCall(FrameworkMethod.java:<span class="number">44</span>)</div><div class="line">  at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:<span class="number">15</span>)</div><div class="line">  at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:<span class="number">41</span>)</div><div class="line">  at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:<span class="number">20</span>)</div><div class="line">  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:<span class="number">76</span>)</div><div class="line">  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:<span class="number">50</span>)</div><div class="line">  at org.junit.runners.ParentRunner$<span class="number">3</span>.run(ParentRunner.java:<span class="number">193</span>)</div><div class="line">  at org.junit.runners.ParentRunner$<span class="number">1</span>.schedule(ParentRunner.java:<span class="number">52</span>)</div><div class="line">  at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:<span class="number">191</span>)</div><div class="line">  at org.junit.runners.ParentRunner.access$<span class="number">000</span>(ParentRunner.java:<span class="number">42</span>)</div><div class="line">  at org.junit.runners.ParentRunner$<span class="number">2</span>.evaluate(ParentRunner.java:<span class="number">184</span>)</div><div class="line">  at org.junit.runners.ParentRunner.run(ParentRunner.java:<span class="number">236</span>)</div><div class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:<span class="number">264</span>)</div><div class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:<span class="number">153</span>)</div><div class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:<span class="number">124</span>)</div><div class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</div><div class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">57</span>)</div><div class="line">  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</div><div class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">606</span>)</div><div class="line">  at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:<span class="number">208</span>)</div><div class="line">  at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:<span class="number">159</span>)</div><div class="line">  at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:<span class="number">87</span>)</div><div class="line">  at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:<span class="number">153</span>)</div><div class="line">  at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:<span class="number">95</span>)</div><div class="line">Caused by: javax.persistence.LockTimeoutException: could not execute statement</div><div class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.wrapLockException(AbstractEntityManagerImpl.java:<span class="number">1440</span>)</div><div class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:<span class="number">1339</span>)</div><div class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:<span class="number">1310</span>)</div><div class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">80</span>)</div><div class="line">  ... <span class="number">29</span> more</div><div class="line">Caused by: org.hibernate.exception.LockTimeoutException: could not execute statement</div><div class="line">  at org.hibernate.dialect.MySQLDialect$<span class="number">1</span>.convert(MySQLDialect.java:<span class="number">408</span>)</div><div class="line">  at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:<span class="number">49</span>)</div><div class="line">  at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:<span class="number">125</span>)</div><div class="line">  at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:<span class="number">110</span>)</div><div class="line">  at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:<span class="number">136</span>)</div><div class="line">  at org.hibernate.engine.jdbc.batch.internal.NonBatchingBatch.addToBatch(NonBatchingBatch.java:<span class="number">58</span>)</div><div class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:<span class="number">3238</span>)</div><div class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:<span class="number">3140</span>)</div><div class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:<span class="number">3470</span>)</div><div class="line">  at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:<span class="number">140</span>)</div><div class="line">  at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:<span class="number">393</span>)</div><div class="line">  at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">385</span>)</div><div class="line">  at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">302</span>)</div><div class="line">  at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:<span class="number">339</span>)</div><div class="line">  at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:<span class="number">52</span>)</div><div class="line">  <span class="comment">//请看此处</span></div><div class="line">  at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:<span class="number">1240</span>)</div><div class="line">  at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:<span class="number">404</span>)</div><div class="line">  at org.hibernate.engine.transaction.internal.jdbc.JdbcTransaction.beforeTransactionCommit(JdbcTransaction.java:<span class="number">101</span>)</div><div class="line">  at org.hibernate.engine.transaction.spi.AbstractTransactionImpl.commit(AbstractTransactionImpl.java:<span class="number">175</span>)</div><div class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">75</span>)</div><div class="line">  ... <span class="number">29</span> more</div><div class="line">Caused by: java.sql.SQLException: Lock wait timeout exceeded; <span class="keyword">try</span> restarting transaction</div><div class="line">  at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:<span class="number">1055</span>)</div><div class="line">  at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:<span class="number">956</span>)</div><div class="line">  at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3491</span>)</div><div class="line">  at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3423</span>)</div><div class="line">  at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:<span class="number">1936</span>)</div><div class="line">  at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:<span class="number">2060</span>)</div><div class="line">  at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:<span class="number">2542</span>)</div><div class="line">  at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:<span class="number">1734</span>)</div><div class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">2019</span>)</div><div class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">1937</span>)</div><div class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">1922</span>)</div><div class="line">  at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:<span class="number">133</span>)</div><div class="line">  ... <span class="number">44</span> more</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">javax.persistence.RollbackException: Error <span class="keyword">while</span> committing the transaction</span><br><span class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">92</span>)</span><br><span class="line">  at com.sandboxWebapp.hibernate.locking.LockingSample.pessimisticReadWithWrite(LockingSample.java:<span class="number">117</span>)</span><br><span class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">57</span>)</span><br><span class="line">  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">606</span>)</span><br><span class="line">  at org.junit.runners.model.FrameworkMethod$<span class="number">1</span>.runReflectiveCall(FrameworkMethod.java:<span class="number">44</span>)</span><br><span class="line">  at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:<span class="number">15</span>)</span><br><span class="line">  at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:<span class="number">41</span>)</span><br><span class="line">  at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:<span class="number">20</span>)</span><br><span class="line">  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:<span class="number">76</span>)</span><br><span class="line">  at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:<span class="number">50</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner$<span class="number">3</span>.run(ParentRunner.java:<span class="number">193</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner$<span class="number">1</span>.schedule(ParentRunner.java:<span class="number">52</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:<span class="number">191</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner.access$<span class="number">000</span>(ParentRunner.java:<span class="number">42</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner$<span class="number">2</span>.evaluate(ParentRunner.java:<span class="number">184</span>)</span><br><span class="line">  at org.junit.runners.ParentRunner.run(ParentRunner.java:<span class="number">236</span>)</span><br><span class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:<span class="number">264</span>)</span><br><span class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:<span class="number">153</span>)</span><br><span class="line">  at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:<span class="number">124</span>)</span><br><span class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">  at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">57</span>)</span><br><span class="line">  at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">43</span>)</span><br><span class="line">  at java.lang.reflect.Method.invoke(Method.java:<span class="number">606</span>)</span><br><span class="line">  at org.apache.maven.surefire.util.ReflectionUtils.invokeMethodWithArray2(ReflectionUtils.java:<span class="number">208</span>)</span><br><span class="line">  at org.apache.maven.surefire.booter.ProviderFactory$ProviderProxy.invoke(ProviderFactory.java:<span class="number">159</span>)</span><br><span class="line">  at org.apache.maven.surefire.booter.ProviderFactory.invokeProvider(ProviderFactory.java:<span class="number">87</span>)</span><br><span class="line">  at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:<span class="number">153</span>)</span><br><span class="line">  at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:<span class="number">95</span>)</span><br><span class="line">Caused by: javax.persistence.LockTimeoutException: could not execute statement</span><br><span class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.wrapLockException(AbstractEntityManagerImpl.java:<span class="number">1440</span>)</span><br><span class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:<span class="number">1339</span>)</span><br><span class="line">  at org.hibernate.ejb.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:<span class="number">1310</span>)</span><br><span class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">80</span>)</span><br><span class="line">  ... <span class="number">29</span> more</span><br><span class="line">Caused by: org.hibernate.exception.LockTimeoutException: could not execute statement</span><br><span class="line">  at org.hibernate.dialect.MySQLDialect$<span class="number">1</span>.convert(MySQLDialect.java:<span class="number">408</span>)</span><br><span class="line">  at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:<span class="number">49</span>)</span><br><span class="line">  at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:<span class="number">125</span>)</span><br><span class="line">  at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:<span class="number">110</span>)</span><br><span class="line">  at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:<span class="number">136</span>)</span><br><span class="line">  at org.hibernate.engine.jdbc.batch.internal.NonBatchingBatch.addToBatch(NonBatchingBatch.java:<span class="number">58</span>)</span><br><span class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:<span class="number">3238</span>)</span><br><span class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.updateOrInsert(AbstractEntityPersister.java:<span class="number">3140</span>)</span><br><span class="line">  at org.hibernate.persister.entity.AbstractEntityPersister.update(AbstractEntityPersister.java:<span class="number">3470</span>)</span><br><span class="line">  at org.hibernate.action.internal.EntityUpdateAction.execute(EntityUpdateAction.java:<span class="number">140</span>)</span><br><span class="line">  at org.hibernate.engine.spi.ActionQueue.execute(ActionQueue.java:<span class="number">393</span>)</span><br><span class="line">  at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">385</span>)</span><br><span class="line">  at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:<span class="number">302</span>)</span><br><span class="line">  at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:<span class="number">339</span>)</span><br><span class="line">  at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:<span class="number">52</span>)</span><br><span class="line">  <span class="comment">//请看此处</span></span><br><span class="line">  at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:<span class="number">1240</span>)</span><br><span class="line">  at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:<span class="number">404</span>)</span><br><span class="line">  at org.hibernate.engine.transaction.internal.jdbc.JdbcTransaction.beforeTransactionCommit(JdbcTransaction.java:<span class="number">101</span>)</span><br><span class="line">  at org.hibernate.engine.transaction.spi.AbstractTransactionImpl.commit(AbstractTransactionImpl.java:<span class="number">175</span>)</span><br><span class="line">  at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:<span class="number">75</span>)</span><br><span class="line">  ... <span class="number">29</span> more</span><br><span class="line">Caused by: java.sql.SQLException: Lock wait timeout exceeded; <span class="keyword">try</span> restarting transaction</span><br><span class="line">  at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:<span class="number">1055</span>)</span><br><span class="line">  at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:<span class="number">956</span>)</span><br><span class="line">  at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3491</span>)</span><br><span class="line">  at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:<span class="number">3423</span>)</span><br><span class="line">  at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:<span class="number">1936</span>)</span><br><span class="line">  at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:<span class="number">2060</span>)</span><br><span class="line">  at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:<span class="number">2542</span>)</span><br><span class="line">  at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:<span class="number">1734</span>)</span><br><span class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">2019</span>)</span><br><span class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">1937</span>)</span><br><span class="line">  at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:<span class="number">1922</span>)</span><br><span class="line">  at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:<span class="number">133</span>)</span><br><span class="line">  ... <span class="number">44</span> more</span><br></pre></td></tr></table></figure>
 <p>这个异常代表一个锁超时，并使用Hibernate的会话(<code>Session</code>)来管理持久性。我们可以在下面的输出片段中观察它:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:<span class="number">1240</span>)</div><div class="line">at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:<span class="number">404</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:<span class="number">1240</span>)</span><br><span class="line">at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:<span class="number">404</span>)</span><br></pre></td></tr></table></figure>
 <p>想要从Hibernate的EntityManager实现中获取Session，通过下面简单的调用就能拿到了:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Session session = entityManager.unwrap(Session.class);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Session session = entityManager.unwrap(Session.class);</span><br></pre></td></tr></table></figure>
 <p>通过log日志记录这个<code>session</code>对象应该返回以下输出:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hibernate<span class="string">'s session is :SessionImpl(PersistenceContext[entityKeys=[],collectionKeys=[]];ActionQueue[insertions=[] updates=[] deletions=[] orphanRemovals=[] collectionCreations=[] collectionRemovals=[] collectionUpdates=[] collectionQueuedOps=[] unresolvedInsertDependencies=UnresolvedEntityInsertActions[]])</span></div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hibernate<span class="string">'s session is :SessionImpl(PersistenceContext[entityKeys=[],collectionKeys=[]];ActionQueue[insertions=[] updates=[] deletions=[] orphanRemovals=[] collectionCreations=[] collectionRemovals=[] collectionUpdates=[] collectionQueuedOps=[] unresolvedInsertDependencies=UnresolvedEntityInsertActions[]])</span></span><br></pre></td></tr></table></figure>
 <h2 id="Hibernate和JPA方法比较"><a href="#Hibernate和JPA方法比较" class="headerlink" title="Hibernate和JPA方法比较"></a>Hibernate和JPA方法比较</h2><p>这两者不仅只有以上的差异。有一些方法双方都有，但是名称不同。我们首先<strong>通过标识符</strong>来<strong>获取一个实体</strong>。Hibernate的<code>Session</code>使用一个称为<strong>get</strong>的方法，而JPA所使用的方法称为<strong>find。</strong>(源码 就不截取了，请自行建立环境去验证的)，本文所使用Hibernate版本为:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.10.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>为了<strong>从持久化上下文中分离出一个实体</strong>(也就是我们通常说的游离态)，Hibernate使用<strong>evict</strong>方法。JPA与更通用的函数命名:<strong>detach</strong> (分离)。两个方案都有通过<strong>persist</strong>方法<strong>将对象附加到持久化上下文</strong>。两者都可以用<strong>refresh</strong>方法刷新 实体(entity)的状态。Hibernate和JPA有另一个相似之处。他们可以通过调用 <strong>clear()方法</strong> 来清除持久化上下文。<strong>调用这个clear()方法会导致其中所有的实体分离(也就是游离化)。关于Session和EntityManager方法的区别，我们应该注意到Session有更多的方法来分析它的内部状态。</strong>关于内部状态，它们有一个通用方法称为<code>isOpen</code>，并允许检查<code>Session</code>或<code>EntityManager</code>是否处于打开状态。此外，Hibernate通过Session，我们可以检查它是否连接(isConnected)，是否包含脏(损坏的)数据(isDirty)，或者判断所处理对象(实体或代理)是否处于只读模式(isReadOnly)。关于对象状态的例子就不再次累述了，请参考<a href="http://blog.csdn.net/u014087286/article/details/47039349博文所述。" target="_blank" rel="external">http://blog.csdn.net/u014087286/article/details/47039349博文所述。</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.hibernate<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hibernate-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.2.10.Final<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>为了<strong>从持久化上下文中分离出一个实体</strong>(也就是我们通常说的游离态)，Hibernate使用<strong>evict</strong>方法。JPA与更通用的函数命名:<strong>detach</strong> (分离)。两个方案都有通过<strong>persist</strong>方法<strong>将对象附加到持久化上下文</strong>。两者都可以用<strong>refresh</strong>方法刷新 实体(entity)的状态。Hibernate和JPA有另一个相似之处。他们可以通过调用 <strong>clear()方法</strong> 来清除持久化上下文。<strong>调用这个clear()方法会导致其中所有的实体分离(也就是游离化)。关于Session和EntityManager方法的区别，我们应该注意到Session有更多的方法来分析它的内部状态。</strong>关于内部状态，它们有一个通用方法称为<code>isOpen</code>，并允许检查<code>Session</code>或<code>EntityManager</code>是否处于打开状态。此外，Hibernate通过Session，我们可以检查它是否连接(isConnected)，是否包含脏(损坏的)数据(isDirty)，或者判断所处理对象(实体或代理)是否处于只读模式(isReadOnly)。关于对象状态的例子就不再次累述了，请参考<a href="http://blog.csdn.net/u014087286/article/details/47039349博文所述。" target="_blank" rel="noopener">http://blog.csdn.net/u014087286/article/details/47039349博文所述。</a></p>
 <blockquote>
 <p><strong>NOTE:Hibernate save()与persist()区别</strong></p>
 <p>Hibernate 之所以提供与save()功能几乎完全类似的persist()方法，一方面是为了照顾JPA的用法习惯。另一方面，save()和 persist()方法还有一个区别:使用 save() 方法保存持久化对象时，该方法返回该持久化对象的标识属性值(即对应记录的主键值)；但使用 persist() 方法来保存持久化对象时，该方法没有任何返回值。因为 save() 方法需要立即返回持久化对象的标识属性，所以程序执行 save() 会立即将持久化对象对应的数据插入数据库；而 persist() 则保证当它在一个事物外部被调用时，并不立即转换成 insert 语句， 这个功能是很有用的，尤其当我们封装一个长会话流程的时候，persist() 方法就显得尤为重要了。</p>
@@ -379,7 +372,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -440,8 +433,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/"
-           data-title="JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别" data-url="https://muyinchen.github.io/2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/">
+      <div class="ds-thread" data-thread-key="2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/" data-title="JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别" data-url="https://muyinchen.github.io/2017/11/16/JPA&Hibernate---SessionFactory和EntityManagerFactory之间的区别/">
       </div>
     
   </div>
@@ -466,7 +458,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -476,17 +468,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -503,7 +493,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -553,7 +543,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JPA-amp-Hibernate—SessionFactory和EntityManagerFactory之间的区别"><span class="nav-number">1.</span> <span class="nav-text">JPA&Hibernate—SessionFactory和EntityManagerFactory之间的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JPA是一个标准"><span class="nav-number">1.1.</span> <span class="nav-text">JPA是一个标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate可以在JPA中使用"><span class="nav-number">1.2.</span> <span class="nav-text">Hibernate可以在JPA中使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate和JPA方法比较"><span class="nav-number">1.3.</span> <span class="nav-text">Hibernate和JPA方法比较</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JPA-amp-Hibernate—SessionFactory和EntityManagerFactory之间的区别"><span class="nav-number">1.</span> <span class="nav-text">JPA&amp;Hibernate—SessionFactory和EntityManagerFactory之间的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JPA是一个标准"><span class="nav-number">1.1.</span> <span class="nav-text">JPA是一个标准</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate可以在JPA中使用"><span class="nav-number">1.2.</span> <span class="nav-text">Hibernate可以在JPA中使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate和JPA方法比较"><span class="nav-number">1.3.</span> <span class="nav-text">Hibernate和JPA方法比较</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
@@ -569,7 +559,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>

@@ -6,15 +6,15 @@
 
 
 <html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -29,7 +29,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -63,23 +63,23 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="并发源码解读" />
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
 
 
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml" />
+  <meta name="keywords" content="并发源码解读">
 
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
 
 
 
@@ -87,11 +87,13 @@
 
 
 <meta name="description" content="深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta name="keywords" content="并发源码解读">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下）">
 <meta property="og:url" content="https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/index.html">
 <meta property="og:site_name" content="一叶知秋">
 <meta property="og:description" content="深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）更多多线程API解析请参考jdk8 版本并发源码解读">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://cdn.infoqstatic.com/statics_s2_20161214-0550/resource/articles/java8-abstractqueuedsynchronizer/zh/resources/0815010.png">
 <meta property="og:image" content="http://cdn.infoqstatic.com/statics_s2_20161214-0550/resource/articles/java8-abstractqueuedsynchronizer/zh/resources/0815011.png">
 <meta property="og:image" content="http://cdn.infoqstatic.com/statics_s2_20161214-0550/resource/articles/java8-abstractqueuedsynchronizer/zh/resources/0815012.png">
@@ -133,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/"/>
+  <link rel="canonical" href="https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/">
 
 
   <title> 深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下） | 一叶知秋 </title>
 </head>
 
-<body itemscope itemtype="//schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
 
   
 
@@ -169,12 +171,12 @@
   <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
       <div class="header-inner"><div class="site-meta ">
   
 
   <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
+    <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <span class="site-title">一叶知秋</span>
       <span class="logo-line-after"><i></i></span>
@@ -256,7 +258,7 @@
   
   
 
-  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
 
     
       <header class="post-header">
@@ -285,14 +287,14 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
               &nbsp; | &nbsp;
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
               
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
                   <a href="/categories/并发源码解读/" itemprop="url" rel="index">
                     <span itemprop="name">并发源码解读</span>
                   </a>
@@ -324,7 +326,7 @@
           
               &nbsp; | &nbsp;
               <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>人次
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
               </span>
           
         </div>
@@ -338,11 +340,11 @@
       
 
       
-        <h1 id="深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）"><a href="#深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）" class="headerlink" title="深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）"></a>深度解析<code>Java 8：AbstractQueuedSynchronizer</code>的实现分析（下）</h1><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="external"><code>jdk8</code> 版本并发源码解读</a></p>
+        <h1 id="深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）"><a href="#深度解析Java-8：AbstractQueuedSynchronizer的实现分析（下）" class="headerlink" title="深度解析Java 8：AbstractQueuedSynchronizer的实现分析（下）"></a>深度解析<code>Java 8：AbstractQueuedSynchronizer</code>的实现分析（下）</h1><p>更多多线程<code>API</code>解析请参考<a href="https://github.com/muyinchen/woker/tree/master/%E5%B9%B6%E5%8F%91/jdk8%20%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB" target="_blank" rel="noopener"><code>jdk8</code> 版本并发源码解读</a></p>
 <a id="more"></a>
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>经过本系列的上半部分<a href="">JDK1.8 AbstractQueuedSynchronizer的实现分析（上）</a>的解读，相信很多读者已经对<code>AbstractQueuedSynchronizer</code>(下文简称AQS)的独占功能了然于胸,那么这次我们通过对另一个工具类:<code>CountDownLatch</code>的分析来解读<code>AQS</code>的另外一个功能：共享功能。</p>
 <h2 id="AQS共享功能的实现"><a href="#AQS共享功能的实现" class="headerlink" title="AQS共享功能的实现"></a><code>AQS</code>共享功能的实现</h2><p>在开始解读<code>AQS</code>的共享功能前，我们再重温一下<code>CountDownLatch</code>，<code>CountDownLatch</code>为<code>java.util.concurrent</code>包下的计数器工具类，常被用在多线程环境下，它在初始时需要指定一个计数器的大小，然后可被多个线程并发的实现减1操作，并在计数器为0后调用<code>await</code>方法的线程被唤醒，从而实现多线程间的协作。它在多线程环境下的基本使用方式为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main thread</span></div><div class="line">      <span class="comment">// 新建一个CountDownLatch，并指制定一个初始大小</span></div><div class="line">      CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">3</span>);</div><div class="line">      <span class="comment">// 调用await方法后，main线程将阻塞在这里，直到countDownLatch 中的计数为0 </span></div><div class="line">      countDownLatch.await();</div><div class="line">      System.out.println(<span class="string">"over"</span>);</div><div class="line"></div><div class="line">     <span class="comment">//thread1</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div><div class="line"></div><div class="line">     <span class="comment">//thread2</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div><div class="line"></div><div class="line">       <span class="comment">//thread3</span></div><div class="line">     <span class="comment">// do something </span></div><div class="line">     <span class="comment">//...........</span></div><div class="line">     <span class="comment">//调用countDown方法，将计数减1</span></div><div class="line">      countDownLatch.countDown();</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//main thread</span></span><br><span class="line">      <span class="comment">// 新建一个CountDownLatch，并指制定一个初始大小</span></span><br><span class="line">      CountDownLatch countDownLatch = <span class="keyword">new</span> CountDownLatch(<span class="number">3</span>);</span><br><span class="line">      <span class="comment">// 调用await方法后，main线程将阻塞在这里，直到countDownLatch 中的计数为0 </span></span><br><span class="line">      countDownLatch.await();</span><br><span class="line">      System.out.println(<span class="string">"over"</span>);</span><br><span class="line"></span><br><span class="line">     <span class="comment">//thread1</span></span><br><span class="line">     <span class="comment">// do something </span></span><br><span class="line">     <span class="comment">//...........</span></span><br><span class="line">     <span class="comment">//调用countDown方法，将计数减1</span></span><br><span class="line">      countDownLatch.countDown();</span><br><span class="line"></span><br><span class="line">     <span class="comment">//thread2</span></span><br><span class="line">     <span class="comment">// do something </span></span><br><span class="line">     <span class="comment">//...........</span></span><br><span class="line">     <span class="comment">//调用countDown方法，将计数减1</span></span><br><span class="line">      countDownLatch.countDown();</span><br><span class="line"></span><br><span class="line">       <span class="comment">//thread3</span></span><br><span class="line">     <span class="comment">// do something </span></span><br><span class="line">     <span class="comment">//...........</span></span><br><span class="line">     <span class="comment">//调用countDown方法，将计数减1</span></span><br><span class="line">      countDownLatch.countDown();</span><br></pre></td></tr></table></figure>
 <p>注意，线程<code>thread 1,2,3</code>各自调用 <code>countDown后</code>，<code>countDownLatch</code> 的计数为0，<code>await</code>方法返回，控制台输入<code>“over”</code>,在此之前<code>main thread</code> 会一直沉睡。</p>
 <p>可以看到<code>CountDownLatch</code>的作用类似于一个“栏栅”，在<code>CountDownLatch</code>的计数为0前，调用<code>await</code>方法的线程将一直阻塞，直到<code>CountDownLatch</code>计数为0，<code>await方法</code>才会返回，</p>
 <p>而<code>CountDownLatch</code>的<code>countDown()方法</code>则一般由各个线程调用，实现<code>CountDownLatch</code>计数的减1。</p>
@@ -372,13 +374,13 @@
 <p><img src="http://cdn.infoqstatic.com/statics_s2_20161214-0550/resource/articles/java8-abstractqueuedsynchronizer/zh/resources/0815018.png" alt=""></p>
 <p>黄色节点为头节点，表示正在获取锁的节点，剩下的蓝色节点（Node1、Node2、Node3）为正在等待锁的节点，他们通过各自的<code>next</code>、<code>pre</code>变量分别指向前后节点，形成了<code>AQS</code>中的双向链表。每个线程被加上类型（共享还是独占）后便是一个<code>Node</code>， 也就是本文中说的节点。</p>
 <p>再看看<code>doAcquireSharedInterruptibly</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doAcquireSharedInterruptibly</span><span class="params">(<span class="keyword">int</span> arg)</span></span></div><div class="line">        <span class="keyword">throws</span> InterruptedException &#123;</div><div class="line">        <span class="keyword">final</span> Node node = addWaiter(Node.SHARED); </div><div class="line"><span class="comment">//将当前线程包装为类型为Node.SHARED的节点，标示这是一个共享节点。</span></div><div class="line">        <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">for</span> (;;) &#123;</div><div class="line">                <span class="keyword">final</span> Node p = node.predecessor();</div><div class="line">                <span class="keyword">if</span> (p == head) &#123;</div><div class="line"><span class="comment">//如果新建节点的前一个节点，就是Head，说明当前节点是AQS队列中等待获取锁的第一个节点，</span></div><div class="line"><span class="comment">//按照FIFO的原则，可以直接尝试获取锁。</span></div><div class="line">                    <span class="keyword">int</span> r = tryAcquireShared(arg);</div><div class="line">                    <span class="keyword">if</span> (r &gt;= <span class="number">0</span>) &#123;</div><div class="line">                        setHeadAndPropagate(node, r); </div><div class="line"><span class="comment">//获取成功，需要将当前节点设置为AQS队列中的第一个节点，这是AQS的规则//队列的头节点表示正在获取锁的节点</span></div><div class="line">                        p.next = <span class="keyword">null</span>; <span class="comment">// help GC</span></div><div class="line">                        failed = <span class="keyword">false</span>;</div><div class="line">                        <span class="keyword">return</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp; <span class="comment">//检查下是否需要将当前节点挂起</span></div><div class="line">                    parkAndCheckInterrupt()) </div><div class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> InterruptedException();</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="keyword">if</span> (failed)</div><div class="line">                cancelAcquire(node);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doAcquireSharedInterruptibly</span><span class="params">(<span class="keyword">int</span> arg)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Node node = addWaiter(Node.SHARED); </span><br><span class="line"><span class="comment">//将当前线程包装为类型为Node.SHARED的节点，标示这是一个共享节点。</span></span><br><span class="line">        <span class="keyword">boolean</span> failed = <span class="keyword">true</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">                <span class="keyword">final</span> Node p = node.predecessor();</span><br><span class="line">                <span class="keyword">if</span> (p == head) &#123;</span><br><span class="line"><span class="comment">//如果新建节点的前一个节点，就是Head，说明当前节点是AQS队列中等待获取锁的第一个节点，</span></span><br><span class="line"><span class="comment">//按照FIFO的原则，可以直接尝试获取锁。</span></span><br><span class="line">                    <span class="keyword">int</span> r = tryAcquireShared(arg);</span><br><span class="line">                    <span class="keyword">if</span> (r &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                        setHeadAndPropagate(node, r); </span><br><span class="line"><span class="comment">//获取成功，需要将当前节点设置为AQS队列中的第一个节点，这是AQS的规则//队列的头节点表示正在获取锁的节点</span></span><br><span class="line">                        p.next = <span class="keyword">null</span>; <span class="comment">// help GC</span></span><br><span class="line">                        failed = <span class="keyword">false</span>;</span><br><span class="line">                        <span class="keyword">return</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (shouldParkAfterFailedAcquire(p, node) &amp;&amp; <span class="comment">//检查下是否需要将当前节点挂起</span></span><br><span class="line">                    parkAndCheckInterrupt()) </span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> InterruptedException();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (failed)</span><br><span class="line">                cancelAcquire(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>这里有几点需要说明的：</p>
 <p>1. <code>setHeadAndPropagate</code>方法：</p>
 <p><img src="http://cdn.infoqstatic.com/statics_s2_20161214-0550/resource/articles/java8-abstractqueuedsynchronizer/zh/resources/0815019.png" alt=""></p>
 <p>首先，使用了<code>CAS</code>更换了头节点，然后，将当前节点的下一个节点取出来，如果同样是“<code>shared</code>”类型的，再做一个”<code>releaseShared</code>“操作。</p>
 <p>看下<code>doReleaseShared</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (;;) &#123;</div><div class="line">            Node h = head;</div><div class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h != tail) &#123;</div><div class="line">                <span class="keyword">int</span> ws = h.waitStatus;</div><div class="line">                <span class="keyword">if</span> (ws == Node.SIGNAL) &#123; </div><div class="line">                    <span class="keyword">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, <span class="number">0</span>)) </div><div class="line"><span class="comment">//如果当前节点是SIGNAL意味着，它正在等待一个信号，  </span></div><div class="line"><span class="comment">//或者说，它在等待被唤醒，因此做两件事，1是重置waitStatus标志位，2是重置成功后,唤醒下一个节点。</span></div><div class="line">                        <span class="keyword">continue</span>;            <span class="comment">// loop to recheck cases</span></div><div class="line">                    unparkSuccessor(h);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (ws == <span class="number">0</span> &amp;&amp;</div><div class="line">                         !compareAndSetWaitStatus(h, <span class="number">0</span>, Node.PROPAGATE))  </div><div class="line"><span class="comment">//如果本身头节点的waitStatus是出于重置状态（waitStatus==0）的，将其设置为“传播”状态。</span></div><div class="line"><span class="comment">//意味着需要将状态向后一个节点传播。</span></div><div class="line">                    <span class="keyword">continue</span>;                <span class="comment">// loop on failed CAS</span></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (h == head)                   <span class="comment">// loop if head changed</span></div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            Node h = head;</span><br><span class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h != tail) &#123;</span><br><span class="line">                <span class="keyword">int</span> ws = h.waitStatus;</span><br><span class="line">                <span class="keyword">if</span> (ws == Node.SIGNAL) &#123; </span><br><span class="line">                    <span class="keyword">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, <span class="number">0</span>)) </span><br><span class="line"><span class="comment">//如果当前节点是SIGNAL意味着，它正在等待一个信号，  </span></span><br><span class="line"><span class="comment">//或者说，它在等待被唤醒，因此做两件事，1是重置waitStatus标志位，2是重置成功后,唤醒下一个节点。</span></span><br><span class="line">                        <span class="keyword">continue</span>;            <span class="comment">// loop to recheck cases</span></span><br><span class="line">                    unparkSuccessor(h);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (ws == <span class="number">0</span> &amp;&amp;</span><br><span class="line">                         !compareAndSetWaitStatus(h, <span class="number">0</span>, Node.PROPAGATE))  </span><br><span class="line"><span class="comment">//如果本身头节点的waitStatus是出于重置状态（waitStatus==0）的，将其设置为“传播”状态。</span></span><br><span class="line"><span class="comment">//意味着需要将状态向后一个节点传播。</span></span><br><span class="line">                    <span class="keyword">continue</span>;                <span class="comment">// loop on failed CAS</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (h == head)                   <span class="comment">// loop if head changed</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>为什么要这么做呢？这就是共享功能和独占功能最不一样的地方，对于独占功能来说，有且只有一个线程（通常只对应一个节点，拿<code>ReentantLock</code>举例，如果当前持有锁的线程重复调用<code>lock()</code>方法，那根据本系列上半部分我们的介绍，我们知道，会被包装成多个节点在<code>AQS</code>的队列中，所以用一个线程来描述更准确），能够获取锁，但是对于共享功能来说。</p>
 <p>共享的状态是可以被共享的，也就是意味着其他<code>AQS</code>队列中的其他节点也应能第一时间知道状态的变化。因此，一个节点获取到共享状态流程图是这样的：</p>
 <p>比如现在有如下队列：</p>
@@ -411,7 +413,7 @@
 <p>从上文的分析中可知，如果<code>state</code>的值为0，在<code>CountDownLatch</code>中意味：所有的子线程已经执行完毕，这个时候可以唤醒调用<code>await()</code>方法的线程了，而这些线程正在<code>AQS</code>的队列中，并被挂起的，</p>
 <p>所以下一步应该去唤醒<code>AQS</code>队列中的头节点了（<code>AQS</code>的队列为<code>FIFO</code>队列），然后由头节点去依次唤醒<code>AQS</code>队列中的其他共享节点。</p>
 <p>如果<code>tryReleaseShared</code>返回<code>true</code>,进入<code>doReleaseShared()</code>方法：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&gt;<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doReleaseShared</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">for</span> (;;) &#123;</div><div class="line">            Node h = head;</div><div class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h != tail) &#123;</div><div class="line">                <span class="keyword">int</span> ws = h.waitStatus;</div><div class="line">                <span class="keyword">if</span> (ws == Node.SIGNAL) &#123; </div><div class="line">                    <span class="keyword">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, <span class="number">0</span>)) </div><div class="line"><span class="comment">//如果当前节点是SIGNAL意味着，它正在等待一个信号，</span></div><div class="line"> <span class="comment">//或者说，它在等待被唤醒，因此做两件事，1是重置waitStatus标志位，2是重置成功后,唤醒下一个节点。</span></div><div class="line">                        <span class="keyword">continue</span>;            <span class="comment">// loop to recheck cases</span></div><div class="line">                    unparkSuccessor(h);</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (ws == <span class="number">0</span> &amp;&amp;</div><div class="line">                         !compareAndSetWaitStatus(h, <span class="number">0</span>, Node.PROPAGATE))  </div><div class="line"><span class="comment">//如果本身头节点的waitStatus是出于重置状态（waitStatus==0）的，将其设置为“传播”状态。</span></div><div class="line"><span class="comment">//意味着需要将状态向后一个节点传播。</span></div><div class="line">                    <span class="keyword">continue</span>;                <span class="comment">// loop on failed CAS</span></div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (h == head)                   <span class="comment">// loop if head changed</span></div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&gt;<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">doReleaseShared</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            Node h = head;</span><br><span class="line">            <span class="keyword">if</span> (h != <span class="keyword">null</span> &amp;&amp; h != tail) &#123;</span><br><span class="line">                <span class="keyword">int</span> ws = h.waitStatus;</span><br><span class="line">                <span class="keyword">if</span> (ws == Node.SIGNAL) &#123; </span><br><span class="line">                    <span class="keyword">if</span> (!compareAndSetWaitStatus(h, Node.SIGNAL, <span class="number">0</span>)) </span><br><span class="line"><span class="comment">//如果当前节点是SIGNAL意味着，它正在等待一个信号，</span></span><br><span class="line"> <span class="comment">//或者说，它在等待被唤醒，因此做两件事，1是重置waitStatus标志位，2是重置成功后,唤醒下一个节点。</span></span><br><span class="line">                        <span class="keyword">continue</span>;            <span class="comment">// loop to recheck cases</span></span><br><span class="line">                    unparkSuccessor(h);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (ws == <span class="number">0</span> &amp;&amp;</span><br><span class="line">                         !compareAndSetWaitStatus(h, <span class="number">0</span>, Node.PROPAGATE))  </span><br><span class="line"><span class="comment">//如果本身头节点的waitStatus是出于重置状态（waitStatus==0）的，将其设置为“传播”状态。</span></span><br><span class="line"><span class="comment">//意味着需要将状态向后一个节点传播。</span></span><br><span class="line">                    <span class="keyword">continue</span>;                <span class="comment">// loop on failed CAS</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (h == head)                   <span class="comment">// loop if head changed</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 <p>当线程被唤醒后，会重新尝试获取共享锁，而对于<code>CountDownLatch</code>线程获取共享锁判断依据是<code>state</code>是否为0，而这个时候显然<code>state</code>已经变成了0，因此可以顺利获取共享锁并且依次唤醒AQS队里中后面的节点及对应的线程。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文从<code>CountDownLatch</code>入手，深入分析了<code>AQS</code>关于共享锁方面的实现方式：</p>
 <p>如果获取共享锁失败后，将请求共享锁的线程封装成<code>Node</code>对象放入<code>AQS</code>的队列中，并挂起<code>Node</code>对象对应的线程，实现请求锁线程的等待操作。待共享锁可以被获取后，从头节点开始，依次唤醒头节点及其以后的所有共享类型的节点。实现共享状态的传播。</p>
@@ -429,7 +431,7 @@
 <p>比如：<code>ReentrantReadWriteLock</code>，我们知道<code>ReentrantReadWriteLock</code>的中也有一个叫<code>Sync</code>的内部类继承了<code>AQS</code>，而<code>AQS</code>的队列可以同时存放共享锁和独占锁，对于<code>ReentrantReadWriteLock</code>来说分别代表读锁和写锁，当队列中的头节点为读锁时，代表读操作可以执行，而写操作不能执行，因此请求写操作的线程会被挂起，当读操作依次推出后，写锁成为头节点，请求写操作的线程被唤醒，可以执行写操作，而此时的读请求将被封装成<code>Node</code>放入<code>AQS</code>的队列中。如此往复，实现读写锁的读写交替进行。</p>
 <p>而本系列文章上半部分提到的<code>FutureTask</code>，其实思路也是：封装一个存放线程执行结果的变量<code>A</code>,使用<code>AQS</code>的独占<code>API</code>实现线程对变量A的独占访问，判断规则是，线程没有执行完毕：<code>call()</code>方法没有返回前，不能访问变量A，或者是超时时间没到前不能访问变量<code>A</code>(这就是<code>FutureTask</code>的<code>get</code>方法可以实现获取线程执行结果时，设置超时时间的原因)。</p>
 <p>综上所述，本系列文章从<code>AQS</code>独占锁和共享锁两个方面深入分析了<code>AQS</code>的实现方式和独特的设计思路，希望对读者有启发，下一篇文章，我们将继续<code>JDK 1.8下 J.U.C (java.util.concurrent)</code>包中的其他工具类，敬请期待。</p>
-<p>转自：<a href="http://www.infoq.com/cn/articles/java8-abstractqueuedsynchronizer" target="_blank" rel="external">http://www.infoq.com/cn/articles/java8-abstractqueuedsynchronizer</a></p>
+<p>转自：<a href="http://www.infoq.com/cn/articles/java8-abstractqueuedsynchronizer" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/java8-abstractqueuedsynchronizer</a></p>
 
       
     </div>
@@ -452,7 +454,7 @@
     <div id="QR" style="display: none;">
       
         <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay"/>
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
           <p>微信打赏</p>
         </div>
       
@@ -513,8 +515,7 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/"
-           data-title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下）" data-url="https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/">
+      <div class="ds-thread" data-thread-key="2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/" data-title="深度解析Java 8：JDK1.8 AbstractQueuedSynchronizer的实现分析（下）" data-url="https://muyinchen.github.io/2016/12/19/深度解析`Java 8：AbstractQueuedSynchronizer`的实现分析（下）/">
       </div>
     
   </div>
@@ -539,7 +540,7 @@
 
       
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             文章目录
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
@@ -549,17 +550,15 @@
       
 
       <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="http://og0sybnix.bkt.clouddn.com/18213496.jpg"
-               alt="知秋" />
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
           <p class="site-author-name" itemprop="name">知秋</p>
           <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
         </div>
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">92</span>
+              <span class="site-state-item-count">93</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -576,7 +575,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">24</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -642,7 +641,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        <div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2018</span>
