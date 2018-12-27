@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/NioEndpoint%20%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E5%85%B7%E4%BD%93%E6%B5%81%E7%A8%8B%E5%A6%82%E5%9B%BE.png?raw=true">
 <meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/NioEndpoint%E5%A4%84%E7%90%86%E7%9A%84%E7%9A%84%E6%97%B6%E5%BA%8F%E5%9B%BE.png?raw=true">
 <meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/%E4%BB%8ESocketProcessor%E5%BC%80%E5%A7%8B%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E8%AF%B7%E6%B1%82%E7%9A%84%E6%97%B6%E5%BA%8F%E5%9B%BE.png?raw=true">
-<meta property="og:updated_time" content="2018-12-26T15:56:41.903Z">
+<meta property="og:updated_time" content="2018-12-27T04:06:10.134Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tomcat从启动到接轨Servlet二三事">
 <meta name="twitter:description" content="tomcat从启动到接轨Servlet二三事缘由也是因为之前自己的不谨慎，在写Java编程方法论-Reactor与Webflux的时候，因觉得tomcat关于connector部分已经有不错的博文了，草草参考了下，并没有对源码进行深入分析，导致自己在录制分享视频的时候，发现自己文章内容展现的和源码并不一致，又通过搜索引擎搜索了一些中文博客的文章，并不尽如人意，索性，自己的就通过最新的源码来重新梳理">
@@ -327,7 +327,11 @@
       
 
       
-        <h1 id="tomcat从启动到接轨Servlet二三事"><a href="#tomcat从启动到接轨Servlet二三事" class="headerlink" title="tomcat从启动到接轨Servlet二三事"></a>tomcat从启动到接轨Servlet二三事</h1><h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>也是因为之前自己的不谨慎，在写<code>Java编程方法论-Reactor与Webflux</code>的时候，因觉得tomcat关于connector部分已经有不错的博文了，草草参考了下，并没有对源码进行深入分析，导致自己在录制分享视频的时候，发现自己文章内容展现的和源码并不一致，又通过搜索引擎搜索了一些中文博客的文章，并不尽如人意，索性，自己的就通过最新的源码来重新梳理一下关于tomcat connector部分内容，也是给自己一个警醒，凡事务必仔细仔细再仔细！<br>参考源码地址: <a href="https://github.com/apache/tomcat" target="_blank" rel="noopener">https://github.com/apache/tomcat</a><br><a id="more"></a></p>
+        <h1 id="tomcat从启动到接轨Servlet二三事"><a href="#tomcat从启动到接轨Servlet二三事" class="headerlink" title="tomcat从启动到接轨Servlet二三事"></a>tomcat从启动到接轨Servlet二三事</h1><h2 id="缘由"><a href="#缘由" class="headerlink" title="缘由"></a>缘由</h2><p>也是因为之前自己的不谨慎，在写<code>Java编程方法论-Reactor与Webflux</code>的时候，因觉得tomcat关于connector部分已经有不错的博文了，草草参考了下，并没有对源码进行深入分析，导致自己在录制分享视频的时候，发现自己文章内容展现的和源码并不一致，又通过搜索引擎搜索了一些中文博客的文章，并不尽如人意，索性，自己的就通过最新的源码来重新梳理一下关于tomcat connector部分内容，也是给自己一个警醒，凡事务必仔细仔细再仔细！<br>参考源码地址: <a href="https://github.com/apache/tomcat" target="_blank" rel="noopener">https://github.com/apache/tomcat</a></p>
+<p>关于<code>Java编程方法论-Reactor与Webflux</code>的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下:</p>
+<p>Rxjava源码解读与分享：<a href="https://www.bilibili.com/video/av34537840" target="_blank" rel="noopener">https://www.bilibili.com/video/av34537840</a></p>
+<p>Reactor源码解读与分享：<a href="https://www.bilibili.com/video/av35326911" target="_blank" rel="noopener">https://www.bilibili.com/video/av35326911</a></p>
+<a id="more"></a>
 <h2 id="Tomcat的启动过程详解"><a href="#Tomcat的启动过程详解" class="headerlink" title="Tomcat的启动过程详解"></a>Tomcat的启动过程详解</h2><p>###　启动与结束Tomcat基本操作<br>在Linux系统下，启动和关闭Tomcat使用命令操作。</p>
 <p>进入Tomcat下的bin目录:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /java/tomcat/bin</span><br></pre></td></tr></table></figure></p>
 <p>启动Tomcat命令:</p>
@@ -428,7 +432,7 @@
 <p>  <br> 下面通过一个系列调用来表示下过程:</p>
 <p><code>connector.getService().getContainer().getPipeline().getFirst().invoke(request,response);</code></p>
 <p>  这里首先从Connector 中获取到Service ( Connector 在initInternal 方法中创建CoyoteAdapter的时候已经将自己设置到了CoyoteAdapter 中)，然后从Service 中获取Container ，接着获取管道，再获取管道的第一个Value，最后调用invoke 方法执行请求。Service 中保存的是最顶层的容器，当调用最顶层容器管道的invoke 方法时，管道将逐层调用各层容器的管道中Value 的invoke 方法，直到最后调用Wrapper 的管道中的BaseValue ( StandardWrapperValve)来处理Filter 和Servlet。</p>
-<p>将请求交给Tomcat容器处理后，然后将请求一层一层传递到Engine、Host、Context、Wrapper，最终经过一系列Filter，来到了Servlet，执行我们自己具体的代码逻辑。其中，容器之间数据的传递用到了管道流的设计。</p>
+<p>将请求交给Tomcat容器处理后，然后将请求一层一层传递到Engine、Host、Context、Wrapper，最终经过一系列Filter，来到了Servlet，执行我们自己具体的代码逻辑。</p>
 <p>至此关于Connector的一些东西就算涉及差不多了，剩下的假如以后有精力的话，继续探究下，接着分享Webflux的解读去。</p>
 
       
