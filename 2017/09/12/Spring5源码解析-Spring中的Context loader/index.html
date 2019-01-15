@@ -1,329 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      Spring5源码解析-Spring中的Context loader | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Spring">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="Spring5源码解析-Spring中的Context loader我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。 在第一部分中，会说下在Spring的应用程序上下文中所谓的上下文加载器(context loader)是什么。在第二部分，我们会讨论这个加载器的代码细节。最后一部分，老规矩，写">
-<meta name="keywords" content="Spring">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Spring5源码解析-Spring中的Context loader">
-<meta property="og:url" content="https://muyinchen.github.io/2017/09/12/Spring5源码解析-Spring中的Context loader/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="Spring5源码解析-Spring中的Context loader我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。 在第一部分中，会说下在Spring的应用程序上下文中所谓的上下文加载器(context loader)是什么。在第二部分，我们会讨论这个加载器的代码细节。最后一部分，老规矩，写">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-13T06:03:51.453Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring5源码解析-Spring中的Context loader">
-<meta name="twitter:description" content="Spring5源码解析-Spring中的Context loader我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。 在第一部分中，会说下在Spring的应用程序上下文中所谓的上下文加载器(context loader)是什么。在第二部分，我们会讨论这个加载器的代码细节。最后一部分，老规矩，写">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2017/09/12/Spring5源码解析-Spring中的Context loader/">
-
-
-  <title> Spring5源码解析-Spring中的Context loader | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                Spring5源码解析-Spring中的Context loader
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-09-12T11:19:05+08:00" content="2017-09-12">
-              2017-09-12
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/基础/" itemprop="url" rel="index">
-                    <span itemprop="name">基础</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/09/12/Spring5源码解析-Spring中的Context loader/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/12/Spring5源码解析-Spring中的Context loader/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="Spring5源码解析-Spring中的Context-loader"><a href="#Spring5源码解析-Spring中的Context-loader" class="headerlink" title="Spring5源码解析-Spring中的Context loader"></a>Spring5源码解析-Spring中的Context loader</h1><p>我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。</p>
+    <div id="article-banner">
+  <h2>Spring5源码解析-Spring中的Context loader</h2>
+  <p class="post-date">2017-09-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="Spring5源码解析-Spring中的Context-loader"><a href="#Spring5源码解析-Spring中的Context-loader" class="headerlink" title="Spring5源码解析-Spring中的Context loader"></a>Spring5源码解析-Spring中的Context loader</h1><p>我们已经知道，应用程序上下文是Spring管理的bean所在的容器。但是我们依然要问一个问题:这个上下文是如何创建的？那么在这篇文章中我们来探讨这个问题。</p>
 <p>在第一部分中，会说下在<a href="https://muyinchen.github.io/2017/09/08/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Spring%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E4%B8%8A%E4%B8%8B%E6%96%87/">Spring的应用程序上下文中</a>所谓的<strong>上下文加载器(context loader)</strong>是什么。在第二部分，我们会讨论这个加载器的代码细节。最后一部分，老规矩，写我们自己的一个自定义的loader。在继续之前，需要说一下，loader(加载器) 将根据web application和dispatcher servlet来结合进行分析。其实这也是很多人一碰到源码就像无头苍蝇，不知道从何而起了，刚开始放下所有，从大体去思考该如何入手,这里对设计模式了解就很重要了，还有，源码的类注释很重要，不多说，接着走。<br><a id="more"></a></p>
 <h2 id="什么是Spring的上下文加载器-context-loader-？"><a href="#什么是Spring的上下文加载器-context-loader-？" class="headerlink" title="什么是Spring的上下文加载器(context loader)？"></a>什么是Spring的上下文加载器(context loader)？</h2><p>见名知意，上下文加载程序负责构建应用程序上下文。我们可以通过<strong>org.springframework.web.context.ContextLoaderListener的</strong>实例来对其分析(<strong>从我之前的设计模式的文章可以看到，Spring通过观察者模式，其实我自己总结的是电影院模式，声音和画面通过broadcaster发送到listener，listener再调用相应的adapter来处理,所以，这里就直接从listener来找了</strong>)，它继承并扩展了同一个包下的<code>ContextLoader</code>类。同时还实现了<strong>javax.servlet.ServletContextListener</strong>接口。该接口旨在接收有关servlet上下文中更改变化的通知。只有当它们在(<code>WEB-INF/web.xml</code>)中注册时，这个接口的实现才能接收这些通知。</p>
 <p>在Spring Web应用程序中，会在servlet上下文创建时调用上下文加载程序(<code>context loader</code>)。之后，开始初始化根Web应用程序上下文(<code>Root WebApplicationContext</code>)。<strong>Root</strong>非常重要，因为在加载的时候，可以创建两个或更多的上下文。第一个，也是最重要的，定义了整个bean的生存空间，被称为<strong>应用程序上下文(application context)</strong>。另一个是<strong>servlet应用程序上下文</strong>,其包含更多的是面向Web的元素，比如控制器(controllers)或视图解析器。然而我们需要记住的是，<code>servlet</code>的上下文是根应用程序上下文(<code>Root WebApplicationContext</code>)的子集，也就是父子容器一说。这意味着<code>servlet</code>可以从根应用程序上下文继承所有的bean。这就是为什么你可以在根配置文件中定义一些常见资源(例如:services，这也是我们的Spring xml配置文件为什么要分service和MVC两个的原因)，并通过两个不同的servlet进行共享的原因。但是在另一方面，根应用程序上下文不能获取到特定于servlet的bean，看过我的<a href="https://muyinchen.github.io/2016/11/08/%E7%94%B1%E5%9F%9F%E8%81%94%E7%B3%BB%E5%88%B0%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">逃逸分析</a>的应该都清楚了吧。</p>
@@ -366,368 +190,236 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">[CustomizedContextLoader] Loading context</span><br><span class="line">Version set into servlet<span class="string">'s context :38023</span></span><br><span class="line"><span class="string">// ... test.chtml</span></span><br><span class="line"><span class="string">[TestController] Webapp version from servlet'</span>s context :<span class="number">38023</span></span><br><span class="line">[TestController] Found secretData bean :SecretData &#123;question: How old are you ?, answer: <span class="number">33</span>&#125;</span><br><span class="line"><span class="comment">// ... test.html</span></span><br><span class="line">[TestController] Webapp version from servlet<span class="string">'s context :38023</span></span><br><span class="line"><span class="string">3 avr. 2014 14:01:02 org.apache.catalina.core.StandardWrapperValve invoke</span></span><br><span class="line"><span class="string">GRAVE: Servlet.service() for servlet [guestServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named '</span>secretData<span class="string">' is defined] with root cause</span></span><br><span class="line"><span class="string">org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named '</span>secretData<span class="string">' is defined</span></span><br><span class="line"><span class="string">	  at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinition(DefaultListableBeanFactory.java:638)</span></span><br><span class="line"><span class="string">  at org.springframework.beans.factory.support.AbstractBeanFactory.getMergedLocalBeanDefinition(AbstractBeanFactory.java:1159)</span></span><br><span class="line"><span class="string">  at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:282)</span></span><br><span class="line"><span class="string">  at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)</span></span><br><span class="line"><span class="string">  at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:273)</span></span><br><span class="line"><span class="string">  at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:195)</span></span><br><span class="line"><span class="string">  at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:973)</span></span><br><span class="line"><span class="string">  at com.mysite.controller.TestController.guestTest(TestController.java:114)</span></span><br><span class="line"><span class="string">  at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span></span><br><span class="line"><span class="string">  at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)</span></span><br><span class="line"><span class="string">  at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)</span></span><br><span class="line"><span class="string">  at java.lang.reflect.Method.invoke(Unknown Source)</span></span><br><span class="line"><span class="string">  at org.springframework.web.method.support.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:214)</span></span><br><span class="line"><span class="string">  at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:132)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:104)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandleMethod(RequestMappingHandlerAdapter.java:748)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:689)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:83)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:945)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:876)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:931)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:822)</span></span><br><span class="line"><span class="string">  at javax.servlet.http.HttpServlet.service(HttpServlet.java:668)</span></span><br><span class="line"><span class="string">  at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:807)</span></span><br><span class="line"><span class="string">  at javax.servlet.http.HttpServlet.service(HttpServlet.java:770)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:304)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:210)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:240)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:164)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:462)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:164)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:100)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:562)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:118)</span></span><br><span class="line"><span class="string">  at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:395)</span></span><br><span class="line"><span class="string">  at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:250)</span></span><br><span class="line"><span class="string">  at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:188)</span></span><br><span class="line"><span class="string">  at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:302)</span></span><br><span class="line"><span class="string">  at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(Unknown Source)</span></span><br><span class="line"><span class="string">  at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)</span></span><br><span class="line"><span class="string">  at java.lang.Thread.run(Unknown Source)</span></span><br></pre></td></tr></table></figure>
 <p>首先，将一个信息(“Version set into servlet’s context :”+version)放在servlet上下文中，并由两个servlet上下文继承。第二点是bean的可见性。<code>Guest</code>的<code>servlet</code>没有看到<code>secretData bean</code>，因为它仅在<code>connected</code> (connected-servlet.xml)的配置中被定义。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一部分涉及了这个加载器的两个主要角色:将根Web应用程序上下文(<code>Root WebApplicationContext</code>)绑定到调度程序特定的上下文中并自动创建上下文。接下来，我们分析了关于上下文加载程序的代码的要点所涉及的细节，如所实现的接口和主要方法的细节实现。最后一部分是我们自定义扩展本地上下文加载器，然后对bean和servlet的属性继承方面进行一些测试。</p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Spring/" rel="tag">#Spring</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/" rel="next" title="Spring5源码解析-Spring中的应用上下文">
-                <i class="fa fa-chevron-left"></i> Spring5源码解析-Spring中的应用上下文
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/" rel="prev" title="Spring5源码解析-Spring框架中的单例和原型bean">
-                Spring5源码解析-Spring框架中的单例和原型bean <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2017/09/12/Spring5源码解析-Spring中的Context loader/" data-title="Spring5源码解析-Spring中的Context loader" data-url="https://muyinchen.github.io/2017/09/12/Spring5源码解析-Spring中的Context loader/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的Context-loader"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的Context loader</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring的上下文加载器-context-loader-？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring的上下文加载器(context loader)？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的上下文加载器详解"><span class="nav-number">1.2.</span> <span class="nav-text">Spring的上下文加载器详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在Spring-Web应用程序中实现上下文加载程序"><span class="nav-number">1.3.</span> <span class="nav-text">在Spring Web应用程序中实现上下文加载程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#Spring">
+    <span class="tag-code">Spring</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/">
+        <span class="nav-arrow">← </span>
+        
+          Spring5源码解析-Spring中的应用上下文
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/09/15/Spring5源码解析-Spring框架中的单例和原型bean/">
+        
+          Spring5源码解析-Spring框架中的单例和原型bean
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spring5源码解析-Spring中的Context-loader"><span class="toc-nav-text">Spring5源码解析-Spring中的Context loader</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是Spring的上下文加载器-context-loader-？"><span class="toc-nav-text">什么是Spring的上下文加载器(context loader)？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spring的上下文加载器详解"><span class="toc-nav-text">Spring的上下文加载器详解</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#在Spring-Web应用程序中实现上下文加载程序"><span class="toc-nav-text">在Spring Web应用程序中实现上下文加载程序</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2017/09/12/Spring5源码解析-Spring中的Context loader/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring5源码解析-Spring中的Context loader",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2017/09/12/Spring5源码解析-Spring中的Context loader/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

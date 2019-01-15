@@ -1,329 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      Spring5源码解析-Spring中的应用上下文 | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Spring">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。 关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
-<meta name="keywords" content="Spring">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Spring5源码解析-Spring中的应用上下文">
-<meta property="og:url" content="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。 关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-11T11:49:59.291Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring5源码解析-Spring中的应用上下文">
-<meta name="twitter:description" content="Spring5源码解析-Spring中的应用上下文之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是由域联系到的逃逸分析的关于Spring容器的续篇。 关于Spring5源码解析-@Autowired这篇文章讲了通过@Autowired注解进行依赖注入。这一次我们来探讨应用程序上下文(applic">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/">
-
-
-  <title> Spring5源码解析-Spring中的应用上下文 | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                Spring5源码解析-Spring中的应用上下文
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-09-08T16:49:39+08:00" content="2017-09-08">
-              2017-09-08
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/基础/" itemprop="url" rel="index">
-                    <span itemprop="name">基础</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/09/08/Spring5源码解析-Spring中的应用上下文/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/09/08/Spring5源码解析-Spring中的应用上下文/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="Spring5源码解析-Spring中的应用上下文"><a href="#Spring5源码解析-Spring中的应用上下文" class="headerlink" title="Spring5源码解析-Spring中的应用上下文"></a>Spring5源码解析-Spring中的应用上下文</h1><p>之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是<a href="https://muyinchen.github.io/2016/11/08/%E7%94%B1%E5%9F%9F%E8%81%94%E7%B3%BB%E5%88%B0%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">由域联系到的逃逸分析</a>的关于Spring容器的续篇。</p>
+    <div id="article-banner">
+  <h2>Spring5源码解析-Spring中的应用上下文</h2>
+  <p class="post-date">2017-09-08</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="Spring5源码解析-Spring中的应用上下文"><a href="#Spring5源码解析-Spring中的应用上下文" class="headerlink" title="Spring5源码解析-Spring中的应用上下文"></a>Spring5源码解析-Spring中的应用上下文</h1><p>之前讲到过，Spring中的 beans生活(用这俩字觉得更形象具体)在其应用程序的上下文环境中。在本文中，我们将详细介绍应用程序上下文,另外此篇同样是<a href="https://muyinchen.github.io/2016/11/08/%E7%94%B1%E5%9F%9F%E8%81%94%E7%B3%BB%E5%88%B0%E7%9A%84%E9%80%83%E9%80%B8%E5%88%86%E6%9E%90/">由域联系到的逃逸分析</a>的关于Spring容器的续篇。</p>
 <p>关于<a href="https://muyinchen.github.io/2017/08/23/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-@Autowired/">Spring5源码解析-@Autowired</a>这篇文章讲了通过<code>@Autowired</code>注解进行依赖注入。这一次我们来探讨<strong>应用程序上下文(application context)</strong>的概念。在第一部分中，我们来看看所有Spring管理的bean生活在什么样的环境中。在第二部分，来分析下到负责上下文管理的类。在最后一部分中，我们来进行一些实践操作。<br><a id="more"></a></p>
 <h2 id="什么是Spring的应用程序上下文？"><a href="#什么是Spring的应用程序上下文？" class="headerlink" title="什么是Spring的应用程序上下文？"></a>什么是Spring的应用程序上下文？</h2><p>众所周知，Spring管理的这些类被称为bean，并且生活在Spring容器中。bean处理程序的最基本实现是<strong>bean factory</strong>。作为<strong>org.springframework.beans.factory.BeanFactory</strong>接口的<strong>实现类</strong>，这是一个初始化，配置和管理bean的容器。但通常在Spring应用程序中仅使用<code>BeanFactory</code>是不够的。它出现在<strong>应用程序上下文中</strong>。</p>
 <p>应用程序上下文(Application context)是一种面向企业化(<code>其实Spring文档里也有面向企业这一说，不过这不就是企业里流水线的工厂里才能有的东西么</code>)的bean工厂。作为标准bean工厂，它是bean class生活的空间。但与标准bean工厂不同，应用程序上下文提供了一个补充企业层(也就是通用的东西了，比如企业里的胸牌，服装等)。又迷糊了吧，举个例子 :例如，通过提供国际化，转换服务或事件传播，使我们省去很多麻烦去亲自处理。通常，应用程序上下文优于bean工厂。但它的唯一缺点是内存消耗比bean工厂大，出现这种情况是由于补充的服务。如果内存的使用对于你的程序要求非常苛刻(例如在applet或移动环境中)，请考虑更多使用bean factory。否则，在更标准的应用程序中，应使用应用程序上下文(application context)。</p>
@@ -372,368 +196,236 @@
 <p>最后,我们通过一个方法来使用context(上下文)的getMessage方法来对消息解析。在我们的<code>message_en.properties</code>文件中，可以事先声明消息的模板:<strong>testMessage =It’s our test message with content。</strong>然后我们会在日志文件中看到相应的输出。</p>
 <p>顺便说一下，从<code>ApplicationContextProvider</code>获得的对象和<code>@Autowired</code>的对象之间的上下文是相同的:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[TestController] Received application context :Root WebApplicationContext: startup date [Wed Apr <span class="number">02</span> <span class="number">20</span>:<span class="number">00</span>:<span class="number">23</span> CEST <span class="number">2014</span>]; root of context hierarchy</span><br><span class="line">[TestController] Provider context is :Root WebApplicationContext: startup date [Wed Apr <span class="number">02</span> <span class="number">20</span>:<span class="number">00</span>:<span class="number">23</span> CEST <span class="number">2014</span>]; root of context hierarchy</span><br><span class="line">[TestController] All contexts are the same</span><br><span class="line">[TestController] Message is :It<span class="string">'s our test message with content.</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Spring/" rel="tag">#Spring</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/" rel="next" title="Spring5源码解析-Spring Web中的处理程序执行链">
-                <i class="fa fa-chevron-left"></i> Spring5源码解析-Spring Web中的处理程序执行链
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/12/Spring5源码解析-Spring中的Context loader/" rel="prev" title="Spring5源码解析-Spring中的Context loader">
-                Spring5源码解析-Spring中的Context loader <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2017/09/08/Spring5源码解析-Spring中的应用上下文/" data-title="Spring5源码解析-Spring中的应用上下文" data-url="https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring5源码解析-Spring中的应用上下文"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的应用上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Spring的应用程序上下文？"><span class="nav-number">1.1.</span> <span class="nav-text">什么是Spring的应用程序上下文？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring的应用程序上下文类"><span class="nav-number">1.2.</span> <span class="nav-text">Spring的应用程序上下文类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于Spring的应用程序环境的一些实践"><span class="nav-number">1.3.</span> <span class="nav-text">关于Spring的应用程序环境的一些实践</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#Spring">
+    <span class="tag-code">Spring</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/08/28/Spring5源码解析-Spring Web中的处理程序执行链/">
+        <span class="nav-arrow">← </span>
+        
+          Spring5源码解析-Spring Web中的处理程序执行链
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/09/12/Spring5源码解析-Spring中的Context loader/">
+        
+          Spring5源码解析-Spring中的Context loader
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spring5源码解析-Spring中的应用上下文"><span class="toc-nav-text">Spring5源码解析-Spring中的应用上下文</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#什么是Spring的应用程序上下文？"><span class="toc-nav-text">什么是Spring的应用程序上下文？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spring的应用程序上下文类"><span class="toc-nav-text">Spring的应用程序上下文类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#关于Spring的应用程序环境的一些实践"><span class="toc-nav-text">关于Spring的应用程序环境的一些实践</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring5源码解析-Spring中的应用上下文",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2017/09/08/Spring5源码解析-Spring中的应用上下文/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

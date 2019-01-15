@@ -1,344 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      Migo商城2.0 图片服务器的搭建与使用 五 | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="电商demo ssm">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="Migo商城  图片服务器的搭建与使用 五这里简单说下fastdfs的说明搭建使用，回头专门出附章来讲这块的api和各种配置，这里就来过简易版的，能进行开发就可。 什么是FastDFS​      FastDFS是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：4KB&amp;lt; file_size &amp;lt;500MB）为载体的在线服务，如相册网站、">
-<meta name="keywords" content="电商demo ssm">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Migo商城2.0 图片服务器的搭建与使用 五">
-<meta property="og:url" content="https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="Migo商城  图片服务器的搭建与使用 五这里简单说下fastdfs的说明搭建使用，回头专门出附章来讲这块的api和各种配置，这里就来过简易版的，能进行开发就可。 什么是FastDFS​      FastDFS是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：4KB&amp;lt; file_size &amp;lt;500MB）为载体的在线服务，如相册网站、">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/fastdfs2.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/upload_file.jpg">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/fastdfs_name.jpg">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/download_file.jpg">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/%E9%85%8D%E7%BD%AEtracker.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/storage.conf1.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/storage.conf2.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/storage.conf3.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/fastdfsclient.conf.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/fastdfs_nginx.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs1.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs2.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs3.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/mod_fastdfs4.png">
-<meta property="og:updated_time" content="2016-11-13T03:50:07.020Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Migo商城2.0 图片服务器的搭建与使用 五">
-<meta name="twitter:description" content="Migo商城  图片服务器的搭建与使用 五这里简单说下fastdfs的说明搭建使用，回头专门出附章来讲这块的api和各种配置，这里就来过简易版的，能进行开发就可。 什么是FastDFS​      FastDFS是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：4KB&amp;lt; file_size &amp;lt;500MB）为载体的在线服务，如相册网站、">
-<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/fastdfs2.png">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/">
-
-
-  <title> Migo商城2.0 图片服务器的搭建与使用 五 | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                Migo商城2.0 图片服务器的搭建与使用 五
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-11-11T18:32:02+08:00" content="2016-11-11">
-              2016-11-11
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/Migo商城2-0/" itemprop="url" rel="index">
-                    <span itemprop="name">Migo商城2.0</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/11/11/Migo商城  图片服务器的搭建与使用  五/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/11/11/Migo商城  图片服务器的搭建与使用  五/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="Migo商城-图片服务器的搭建与使用-五"><a href="#Migo商城-图片服务器的搭建与使用-五" class="headerlink" title="Migo商城  图片服务器的搭建与使用 五"></a>Migo商城  图片服务器的搭建与使用 五</h2><p>这里简单说下<code>fastdfs</code>的说明搭建使用，回头专门出附章来讲这块的<code>api</code>和各种配置，这里就来过简易版的，能进行开发就可。</p>
+    <div id="article-banner">
+  <h2>Migo商城2.0 图片服务器的搭建与使用 五</h2>
+  <p class="post-date">2016-11-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="Migo商城-图片服务器的搭建与使用-五"><a href="#Migo商城-图片服务器的搭建与使用-五" class="headerlink" title="Migo商城  图片服务器的搭建与使用 五"></a>Migo商城  图片服务器的搭建与使用 五</h2><p>这里简单说下<code>fastdfs</code>的说明搭建使用，回头专门出附章来讲这块的<code>api</code>和各种配置，这里就来过简易版的，能进行开发就可。</p>
 <h3 id="什么是FastDFS"><a href="#什么是FastDFS" class="headerlink" title="什么是FastDFS"></a>什么是FastDFS</h3><p>​      <code>FastDFS</code>是一个开源的轻量级分布式文件系统。它解决了大数据量存储和负载均衡等问题。特别适合以中小文件（建议范围：<code>4KB&lt; file_size &lt;500MB）</code>为载体的在线服务，如相册网站、视频网站等等。</p>
 <p>​      <code>FastDFS</code>是用c语言编写的一款开源的分布式文件系统。<code>FastDFS</code>为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用<code>FastDFS</code>很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。</p>
 <h3 id="FastDFS的设计理念"><a href="#FastDFS的设计理念" class="headerlink" title="FastDFS的设计理念"></a>FastDFS的设计理念</h3><p>和现有的类<code>Google FS</code>分布式文件系统相比，<code>FastDFS</code>的架构和设计理念有其独到之处，主要体现在<code>轻量级</code>、<code>分组方式</code>和<code>对等结构</code>三个方面。<br><a id="more"></a></p>
@@ -459,368 +268,236 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">nginx通过插件fastdfs-nginx-module_v1.16.tar管理访问/group1/M00/过来的路径</span><br><span class="line">这是插件的日志路径</span><br><span class="line"># the base path to store log files</span><br><span class="line">base_path=/tmp</span><br><span class="line">这里接收管理storage存放路径</span><br><span class="line"># store_path#, based 0, if store_path0 not exists, it&apos;s value is base_path</span><br><span class="line"># the paths must be exist</span><br><span class="line"># must same as storage.conf 注意看这些注释，然后就知道怎么配了</span><br><span class="line">store_path0=/home/fastdfs/storage</span><br><span class="line">通过下面来和索引器联系起来</span><br><span class="line"># valid only when load_fdfs_parameters_from_tracker is true</span><br><span class="line">tracker_server=192.168.42.129:22122</span><br></pre></td></tr></table></figure>
 <p>忘说了：<br>启动测试前，开放端口号端口给浏览器访问</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT</span><br><span class="line">/sbin/iptables -I INPUT -p tcp --dport 22 -j ACCEPT</span><br><span class="line">/sbin/iptables -I INPUT -p tcp --dport 22122 -j ACCEPT</span><br><span class="line">#然后保存：</span><br><span class="line">/etc/rc.d/init.d/iptables save</span><br><span class="line">#重启防火墙以便改动生效:(或者直接重启系统)</span><br><span class="line">/etc/init.d/iptables restart</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Migo商城2-0/" rel="tag">#Migo商城2.0</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/11/10/Migo商城  对代码的二次优化封装  四/" rel="next" title="Migo商城2.0 参考通用mapper思想对service代码的二次优化封装  四">
-                <i class="fa fa-chevron-left"></i> Migo商城2.0 参考通用mapper思想对service代码的二次优化封装  四
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/11/Migo商城 图片上传代码实现 六/" rel="prev" title="Migo商城2.0 图片上传代码实现 六">
-                Migo商城2.0 图片上传代码实现 六 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2016/11/11/Migo商城  图片服务器的搭建与使用  五/" data-title="Migo商城2.0 图片服务器的搭建与使用 五" data-url="https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Migo商城-图片服务器的搭建与使用-五"><span class="nav-number">1.</span> <span class="nav-text">Migo商城  图片服务器的搭建与使用 五</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是FastDFS"><span class="nav-number">1.1.</span> <span class="nav-text">什么是FastDFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastDFS的设计理念"><span class="nav-number">1.2.</span> <span class="nav-text">FastDFS的设计理念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#轻量级"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">轻量级</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#分组方式"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">分组方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对等结构"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">对等结构</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FastDFS的架构"><span class="nav-number">1.3.</span> <span class="nav-text">FastDFS的架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#FastDFS的系统架构-如图："><span class="nav-number">1.3.0.1.</span> <span class="nav-text">FastDFS的系统架构 如图：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件上传和下载的交互过程"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">文件上传和下载的交互过程</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#文件上传流程"><span class="nav-number">1.3.0.2.1.</span> <span class="nav-text">文件上传流程</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件同步"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">文件同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件下载流程"><span class="nav-number">1.3.0.4.</span> <span class="nav-text">文件下载流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文件同步延迟问题的提出"><span class="nav-number">1.3.0.5.</span> <span class="nav-text">文件同步延迟问题的提出</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#FastDFS是如何解决文件同步延迟这个问题的呢？"><span class="nav-number">1.3.0.5.1.</span> <span class="nav-text">FastDFS是如何解决文件同步延迟这个问题的呢？</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#那么文件下载是如何解决文件同步延迟这个问题的呢？"><span class="nav-number">1.3.0.5.2.</span> <span class="nav-text">那么文件下载是如何解决文件同步延迟这个问题的呢？</span></a></li></ol></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#图片服务器的搭建"><span class="nav-number">1.4.</span> <span class="nav-text">图片服务器的搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装步骤"><span class="nav-number">1.4.1.</span> <span class="nav-text">安装步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Tracker的安装"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Tracker的安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Storage服务的安装"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Storage服务的安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试上传服务"><span class="nav-number">1.4.1.3.</span> <span class="nav-text">测试上传服务</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#访问图片"><span class="nav-number">1.4.1.4.</span> <span class="nav-text">访问图片</span></a></li></ol></li></ol></li></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#Migo商城2.0">
+    <span class="tag-code">Migo商城2.0</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2016/11/10/Migo商城  对代码的二次优化封装  四/">
+        <span class="nav-arrow">← </span>
+        
+          Migo商城2.0 参考通用mapper思想对service代码的二次优化封装  四
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2016/11/11/Migo商城 图片上传代码实现 六/">
+        
+          Migo商城2.0 图片上传代码实现 六
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Migo商城-图片服务器的搭建与使用-五"><span class="toc-nav-text">Migo商城  图片服务器的搭建与使用 五</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#什么是FastDFS"><span class="toc-nav-text">什么是FastDFS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#FastDFS的设计理念"><span class="toc-nav-text">FastDFS的设计理念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#轻量级"><span class="toc-nav-text">轻量级</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#分组方式"><span class="toc-nav-text">分组方式</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#对等结构"><span class="toc-nav-text">对等结构</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#FastDFS的架构"><span class="toc-nav-text">FastDFS的架构</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#FastDFS的系统架构-如图："><span class="toc-nav-text">FastDFS的系统架构 如图：</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#文件上传和下载的交互过程"><span class="toc-nav-text">文件上传和下载的交互过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#文件上传流程"><span class="toc-nav-text">文件上传流程</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#文件同步"><span class="toc-nav-text">文件同步</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#文件下载流程"><span class="toc-nav-text">文件下载流程</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#文件同步延迟问题的提出"><span class="toc-nav-text">文件同步延迟问题的提出</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#FastDFS是如何解决文件同步延迟这个问题的呢？"><span class="toc-nav-text">FastDFS是如何解决文件同步延迟这个问题的呢？</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#那么文件下载是如何解决文件同步延迟这个问题的呢？"><span class="toc-nav-text">那么文件下载是如何解决文件同步延迟这个问题的呢？</span></a></li></ol></li></ol></li></ol><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#图片服务器的搭建"><span class="toc-nav-text">图片服务器的搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#安装步骤"><span class="toc-nav-text">安装步骤</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Tracker的安装"><span class="toc-nav-text">Tracker的安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Storage服务的安装"><span class="toc-nav-text">Storage服务的安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#测试上传服务"><span class="toc-nav-text">测试上传服务</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#访问图片"><span class="toc-nav-text">访问图片</span></a></li></ol></li></ol></li>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Migo商城2.0 图片服务器的搭建与使用 五",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2016/11/11/Migo商城  图片服务器的搭建与使用  五/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

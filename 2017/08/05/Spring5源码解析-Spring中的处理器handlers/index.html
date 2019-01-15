@@ -1,329 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      Spring5源码解析-Spring中的处理器handlers | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Spring  设计模式">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="Spring5源码解析-Spring中的处理器handlers Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源码解析-论Spring DispatcherServlet的生命周期)。这是所有传入请求的中心入口。但如果没有但如果没有众多的handlers，我们依然不能做任何事情。  首先，在本文中，我们先解读handler到底是个啥。之后，我们将">
-<meta name="keywords" content="Spring  设计模式">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Spring5源码解析-Spring中的处理器handlers">
-<meta property="og:url" content="https://muyinchen.github.io/2017/08/05/Spring5源码解析-Spring中的处理器handlers/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="Spring5源码解析-Spring中的处理器handlers Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源码解析-论Spring DispatcherServlet的生命周期)。这是所有传入请求的中心入口。但如果没有但如果没有众多的handlers，我们依然不能做任何事情。  首先，在本文中，我们先解读handler到底是个啥。之后，我们将">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-13T06:01:08.576Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring5源码解析-Spring中的处理器handlers">
-<meta name="twitter:description" content="Spring5源码解析-Spring中的处理器handlers Spring Web应用程序的中心站是DispatcherServlet(具体请查看Spring5源码解析-论Spring DispatcherServlet的生命周期)。这是所有传入请求的中心入口。但如果没有但如果没有众多的handlers，我们依然不能做任何事情。  首先，在本文中，我们先解读handler到底是个啥。之后，我们将">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2017/08/05/Spring5源码解析-Spring中的处理器handlers/">
-
-
-  <title> Spring5源码解析-Spring中的处理器handlers | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                Spring5源码解析-Spring中的处理器handlers
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-05T23:50:00+08:00" content="2017-08-05">
-              2017-08-05
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/基础/" itemprop="url" rel="index">
-                    <span itemprop="name">基础</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/08/05/Spring5源码解析-Spring中的处理器handlers/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/08/05/Spring5源码解析-Spring中的处理器handlers/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h2 id="Spring5源码解析-Spring中的处理器handlers"><a href="#Spring5源码解析-Spring中的处理器handlers" class="headerlink" title="Spring5源码解析-Spring中的处理器handlers"></a>Spring5源码解析-Spring中的处理器handlers</h2><blockquote>
+    <div id="article-banner">
+  <h2>Spring5源码解析-Spring中的处理器handlers</h2>
+  <p class="post-date">2017-08-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="Spring5源码解析-Spring中的处理器handlers"><a href="#Spring5源码解析-Spring中的处理器handlers" class="headerlink" title="Spring5源码解析-Spring中的处理器handlers"></a>Spring5源码解析-Spring中的处理器handlers</h2><blockquote>
 <p>Spring Web应用程序的中心站是<code>DispatcherServlet</code>(具体请查看<a href="https://muyinchen.github.io/2017/08/02/Spring5%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E8%AE%BASpring%20DispatcherServlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">Spring5源码解析-论Spring DispatcherServlet的生命周期</a>)。这是所有传入请求的中心入口。但如果没有但如果没有众多的handlers，我们依然不能做任何事情。</p>
 </blockquote>
 <p>首先，在本文中，我们先解读<code>handler</code>到底是个啥。之后，我们将介绍一些<code>Spring</code>框架中<code>handlers</code>的两种处理类型。最后我们加点<code>salt</code>来让我们学的东西进行落地，我们将编写我们自己的handler。<br><a id="more"></a></p>
@@ -370,368 +194,236 @@
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">027</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [org<span class="variable">.springframework</span><span class="variable">.web</span><span class="variable">.servlet</span><span class="variable">.mvc</span><span class="variable">.method</span><span class="variable">.annotation</span><span class="variable">.RequestMappingHandlerMapping</span>]-[DEBUG] Looking up handler method <span class="keyword">for</span> path /test   <span class="comment">//先在RequestMappingHandlerMapping找的，也就是先找有@RequestMapping注解相应处理逻辑的方法来处理</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">028</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [org<span class="variable">.springframework</span><span class="variable">.web</span><span class="variable">.servlet</span><span class="variable">.mvc</span><span class="variable">.method</span><span class="variable">.annotation</span><span class="variable">.RequestMappingHandlerMapping</span>]-[DEBUG] Did <span class="keyword">not</span> find handler method <span class="keyword">for</span> [/test]   <span class="comment">//在RequestMappingHandlerMapping中没找到相应的处理逻辑</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">028</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.DumberRequestHandlerMapping</span>]-[DEBUG] Looking up handler method <span class="keyword">for</span> path /test</span><br><span class="line">  <span class="comment">//从DumberRequestHandlerMapping里找，发现@DumberRequestMapping所注解的方法可以处理，那就处理咯</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">029</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.DumberRequestHandlerMapping</span>]-[DEBUG] [DumberRequestHandlerMapping] handleMatch info &#123;[/test],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]&#125;, lookupPath =/test, request =org<span class="variable">.apache</span><span class="variable">.catalina</span><span class="variable">.connector</span><span class="variable">.RequestFacade</span>@<span class="number">24</span>a7274b</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">030</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.DumberRequestHandlerMapping</span>]-[DEBUG] Returning handler method [public java<span class="variable">.lang</span><span class="variable">.String</span> com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.controller</span><span class="variable">.TestController</span><span class="variable">.testSession</span>(javax<span class="variable">.servlet</span><span class="variable">.http</span><span class="variable">.HttpServletRequest</span>)]</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">030</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [org<span class="variable">.springframework</span><span class="variable">.beans</span><span class="variable">.factory</span><span class="variable">.support</span><span class="variable">.DefaultListableBeanFactory</span>]-[DEBUG] Returning cached <span class="keyword">instance</span> of singleton bean 'testController'</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">030</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [org<span class="variable">.springframework</span><span class="variable">.web</span><span class="variable">.servlet</span><span class="variable">.DispatcherServlet</span>]-[DEBUG] Last-Modified value <span class="keyword">for</span> [/test] is: -<span class="number">1</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">040</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.controller</span><span class="variable">.TestController</span>]-[DEBUG] Is dumber request ?true</span><br><span class="line"><span class="number">2017</span>-<span class="number">08</span>-<span class="number">05</span> <span class="number">23</span>:<span class="number">31</span>:<span class="number">00</span>,<span class="number">040</span> [http-bio-<span class="number">8084</span>-exec-<span class="number">1</span>] [com<span class="variable">.migo</span><span class="variable">.sso</span><span class="variable">.controller</span><span class="variable">.TestController</span>]-[DEBUG] Handled <span class="keyword">time</span> ?<span class="number">21230126522470</span></span><br><span class="line">Handled <span class="keyword">time</span> ?<span class="number">17452005683775</span></span><br></pre></td></tr></table></figure>
 <p>我们可以看到， handler mapping是Spring生态系统中的一个关键概念。所有的URL都由对应的处理程序处理，由此，Spring可以匹配传入的HTTP请求和所加注解配置的controller的方法。我们也看到了如何根据不同规则来过滤请求，例如：Content-Type，Accept或其他headers 或HTTP方法。我们还编写了一个poor版本的Spring的<code>RequestMappingInfoHandlerMapping</code>，它拦截一些URL处理并将结果通过视图输出给用户。</p>
 <p>总结起来就是，通过一定的方式确定相应请求的处理位置(我们通常通过注解来确定)，仅此而已，啰嗦了太多的东西，最后也就是如此的直白</p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Spring/" rel="tag">#Spring</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/" rel="next" title="Spring5源码解析-论Spring DispatcherServlet的生命周期">
-                <i class="fa fa-chevron-left"></i> Spring5源码解析-论Spring DispatcherServlet的生命周期
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/07/Spring5源码解析-Spring中的处理拦截器/" rel="prev" title="Spring5源码解析-Spring中的处理拦截器">
-                Spring5源码解析-Spring中的处理拦截器 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2017/08/05/Spring5源码解析-Spring中的处理器handlers/" data-title="Spring5源码解析-Spring中的处理器handlers" data-url="https://muyinchen.github.io/2017/08/05/Spring5源码解析-Spring中的处理器handlers/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring5源码解析-Spring中的处理器handlers"><span class="nav-number">1.</span> <span class="nav-text">Spring5源码解析-Spring中的处理器handlers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring中的两种handler类型"><span class="nav-number">2.</span> <span class="nav-text">Spring中的两种handler类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring框架中的handler"><span class="nav-number">3.</span> <span class="nav-text">Spring框架中的handler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写自定义的Spring-handler程序"><span class="nav-number">4.</span> <span class="nav-text">编写自定义的Spring handler程序</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#Spring">
+    <span class="tag-code">Spring</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/08/02/Spring5源码解析-论Spring DispatcherServlet的生命周期/">
+        <span class="nav-arrow">← </span>
+        
+          Spring5源码解析-论Spring DispatcherServlet的生命周期
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/08/07/Spring5源码解析-Spring中的处理拦截器/">
+        
+          Spring5源码解析-Spring中的处理拦截器
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spring5源码解析-Spring中的处理器handlers"><span class="toc-nav-text">Spring5源码解析-Spring中的处理器handlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spring中的两种handler类型"><span class="toc-nav-text">Spring中的两种handler类型</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Spring框架中的handler"><span class="toc-nav-text">Spring框架中的handler</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#编写自定义的Spring-handler程序"><span class="toc-nav-text">编写自定义的Spring handler程序</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2017/08/05/Spring5源码解析-Spring中的处理器handlers/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring5源码解析-Spring中的处理器handlers",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2017/08/05/Spring5源码解析-Spring中的处理器handlers/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

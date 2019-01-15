@@ -1,334 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      hsweb的系列学习——hsweb-easy-orm分析  上 | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="hsweb">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="hsweb的系列学习——hsweb-easy-orm分析  上对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core 整体思路:因为是为动态表单设计的orm框架，所以要有为映射包装的PO类和反映到表元素的元数据类MetaData， 以及对这些bean进行操作的各种周边(最多的也就是curd的细节分拆)">
-<meta name="keywords" content="hsweb">
-<meta property="og:type" content="article">
-<meta property="og:title" content="hsweb的系列学习——hsweb-easy-orm分析  上">
-<meta property="og:url" content="https://muyinchen.github.io/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="hsweb的系列学习——hsweb-easy-orm分析  上对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core 整体思路:因为是为动态表单设计的orm框架，所以要有为映射包装的PO类和反映到表元素的元数据类MetaData， 以及对这些bean进行操作的各种周边(最多的也就是curd的细节分拆)">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170319_133900.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170319_151726.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170319_150424.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170319_152320.png">
-<meta property="og:updated_time" content="2017-03-19T10:32:05.711Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hsweb的系列学习——hsweb-easy-orm分析  上">
-<meta name="twitter:description" content="hsweb的系列学习——hsweb-easy-orm分析  上对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core 整体思路:因为是为动态表单设计的orm框架，所以要有为映射包装的PO类和反映到表元素的元数据类MetaData， 以及对这些bean进行操作的各种周边(最多的也就是curd的细节分拆)">
-<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170319_133900.png">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/">
-
-
-  <title> hsweb的系列学习——hsweb-easy-orm分析  上 | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                hsweb的系列学习——hsweb-easy-orm分析  上
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-03-19T18:32:45+08:00" content="2017-03-19">
-              2017-03-19
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/hsweb/" itemprop="url" rel="index">
-                    <span itemprop="name">hsweb</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="hsweb的系列学习——hsweb-easy-orm分析-上"><a href="#hsweb的系列学习——hsweb-easy-orm分析-上" class="headerlink" title="hsweb的系列学习——hsweb-easy-orm分析  上"></a>hsweb的系列学习——hsweb-easy-orm分析  上</h1><h2 id="对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core"><a href="#对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core" class="headerlink" title="对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core"></a>对于此orm框架的封装，首先要看的便是:<code>hsweb-easy-orm-core</code></h2><blockquote>
+    <div id="article-banner">
+  <h2>hsweb的系列学习——hsweb-easy-orm分析  上</h2>
+  <p class="post-date">2017-03-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="hsweb的系列学习——hsweb-easy-orm分析-上"><a href="#hsweb的系列学习——hsweb-easy-orm分析-上" class="headerlink" title="hsweb的系列学习——hsweb-easy-orm分析  上"></a>hsweb的系列学习——hsweb-easy-orm分析  上</h1><h2 id="对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core"><a href="#对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core" class="headerlink" title="对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core"></a>对于此orm框架的封装，首先要看的便是:<code>hsweb-easy-orm-core</code></h2><blockquote>
 <p>整体思路:因为是为动态表单设计的orm框架，所以要有为映射包装的PO类和反映到表元素的元数据类MetaData，</p>
 <p>以及对这些bean进行操作的各种周边(最多的也就是curd的细节分拆)<br><a id="more"></a></p>
 <h3 id="一，映射包装的PO类"><a href="#一，映射包装的PO类" class="headerlink" title="一，映射包装的PO类"></a>一，映射包装的PO类</h3></blockquote>
@@ -386,368 +205,236 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.core.meta;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractTableMetaData</span>&lt;<span class="title">C</span> <span class="keyword">extends</span> <span class="title">AbstractColumnMetaData</span>&gt; <span class="keyword">implements</span> <span class="title">TableMetaData</span> </span>&#123;</span><br><span class="line">    <span class="comment">//表名称</span></span><br><span class="line">    <span class="keyword">protected</span> String               name                   = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//表别名,如果指定了别名,查询结果将使用别名进行封装</span></span><br><span class="line">    <span class="keyword">protected</span> String               alias                  = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//备注</span></span><br><span class="line">    <span class="keyword">protected</span> String               comment                = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">//表字段</span></span><br><span class="line">    <span class="keyword">protected</span> Map&lt;String, C&gt;       columnMetaDataMap      = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">protected</span> Map&lt;String, C&gt;       aliasColumnMetaDataMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">protected</span> Validator            validator              = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">protected</span> ObjectWrapper        objectWrapper          = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">protected</span> Map&lt;String, Object&gt;  properties             = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">protected</span> Map&lt;String, Trigger&gt; triggerBase            = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">ObjectWrapper&lt;T&gt; <span class="title">getObjectWrapper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> objectWrapper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setObjectWrapper</span><span class="params">(ObjectWrapper objectWrapper)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.objectWrapper = objectWrapper;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAlias</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (alias == <span class="keyword">null</span>) alias = name;</span><br><span class="line">        <span class="keyword">return</span> alias;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> &lt;T extends AbstractTableMetaData&lt;C&gt;&gt; <span class="function">T <span class="title">addColumn</span><span class="params">(C columnMetaData)</span> </span>&#123;</span><br><span class="line">        columnMetaData.setTableMetaData(<span class="keyword">this</span>);</span><br><span class="line">        columnMetaDataMap.put(columnMetaData.getName(), columnMetaData);</span><br><span class="line">        <span class="keyword">if</span> (!columnMetaData.getName().equals(columnMetaData.getAlias()))</span><br><span class="line">            aliasColumnMetaDataMap.put(columnMetaData.getAlias(), columnMetaData);</span><br><span class="line">        <span class="keyword">return</span> (T) <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAlias</span><span class="params">(String alias)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.alias = alias;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">(String triggerName, Trigger trigger)</span> </span>&#123;</span><br><span class="line">        triggerBase.put(triggerName, trigger);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">on</span><span class="params">(String triggerName, Map&lt;String, Object&gt; context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (triggerIsSupport(triggerName)) &#123;</span><br><span class="line">            Trigger trigger = triggerBase.get(triggerName);</span><br><span class="line">            trigger.execute(context);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Set&lt;C&gt; <span class="title">getColumns</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> LinkedHashSet&lt;&gt;(columnMetaDataMap.values());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeColumn</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        columnMetaDataMap.remove(name);</span><br><span class="line">        aliasColumnMetaDataMap.remove(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">triggerIsSupport</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> triggerBase.containsKey(name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">getProperty</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.get(name));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">getProperty</span><span class="params">(String name, Object defaultValue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.getOrDefault(name, defaultValue));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">removeProperty</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.remove(name));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">setProperty</span><span class="params">(String property, Object value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.put(property, value));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> C <span class="title">findColumn</span><span class="params">(String name)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getComment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> comment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> C <span class="title">getColumn</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        C metaData = columnMetaDataMap.get(name);</span><br><span class="line">        <span class="keyword">if</span> (metaData == <span class="keyword">null</span>) metaData = aliasColumnMetaDataMap.get(name);</span><br><span class="line">        <span class="keyword">return</span> metaData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setComment</span><span class="params">(String comment)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.comment = comment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Map&lt;String, Object&gt; properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.properties = properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Validator <span class="title">getValidator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> validator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValidator</span><span class="params">(Validator validator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.validator = validator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name + <span class="string">" ["</span> + alias + <span class="string">"]"</span> + <span class="string">"("</span> + comment + <span class="string">")"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="对于ColumnMetaData的初步通用实现"><a href="#对于ColumnMetaData的初步通用实现" class="headerlink" title="对于ColumnMetaData的初步通用实现:"></a>对于<code>ColumnMetaData</code>的初步通用实现:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.core.meta;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.OptionConverter;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.PropertyWrapper;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.SimplePropertyWrapper;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.ValueConverter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractColumnMetaData</span> <span class="keyword">implements</span> <span class="title">ColumnMetaData</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> String          name;</span><br><span class="line">    <span class="keyword">protected</span> String          alias;</span><br><span class="line">    <span class="keyword">protected</span> String          comment;</span><br><span class="line">    <span class="keyword">protected</span> Class           javaType;</span><br><span class="line">    <span class="keyword">protected</span> TableMetaData   tableMetaData;</span><br><span class="line">    <span class="keyword">protected</span> OptionConverter optionConverter;</span><br><span class="line">    <span class="keyword">protected</span> ValueConverter  valueConverter;</span><br><span class="line">    <span class="keyword">protected</span> Set&lt;String&gt;     validator;</span><br><span class="line">    <span class="keyword">protected</span> Map&lt;String, Object&gt; properties = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getAlias</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (alias == <span class="keyword">null</span>) alias = name;</span><br><span class="line">        <span class="keyword">return</span> alias;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getComment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (comment == <span class="keyword">null</span>) comment = <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">return</span> comment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Class <span class="title">getJavaType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> javaType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getValidator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> validator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T extends TableMetaData&gt; <span class="function">T <span class="title">getTableMetaData</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (T) tableMetaData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ValueConverter <span class="title">getValueConverter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> valueConverter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> OptionConverter <span class="title">getOptionConverter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> optionConverter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">getProperty</span><span class="params">(String property)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.get(property));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">getProperty</span><span class="params">(String property, Object defaultValue)</span> </span>&#123;</span><br><span class="line">        Object value = properties.get(property);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(value == <span class="keyword">null</span> ? defaultValue : value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PropertyWrapper <span class="title">setProperty</span><span class="params">(String property, Object value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SimplePropertyWrapper(properties.put(property, value));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAlias</span><span class="params">(String alias)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.alias = alias;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setComment</span><span class="params">(String comment)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.comment = comment;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setJavaType</span><span class="params">(Class javaType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.javaType = javaType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTableMetaData</span><span class="params">(TableMetaData tableMetaData)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.tableMetaData = tableMetaData;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOptionConverter</span><span class="params">(OptionConverter optionConverter)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.optionConverter = optionConverter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValueConverter</span><span class="params">(ValueConverter valueConverter)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.valueConverter = valueConverter;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setValidator</span><span class="params">(Set&lt;String&gt; validator)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.validator = validator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">getProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Map&lt;String, Object&gt; properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.properties = properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> AbstractColumnMetaData <span class="title">clone</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>因篇幅有点长，增删改查的相关操作在下一篇中说</p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/hsweb/" rel="tag">#hsweb</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/03/16/轻量级分布式 RPC 框架 上/" rel="next" title="一个轻量级分布式 RPC 框架 上">
-                <i class="fa fa-chevron-left"></i> 一个轻量级分布式 RPC 框架 上
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/" rel="prev" title="hsweb的系列学习——hsweb-easy-orm分析  中">
-                hsweb的系列学习——hsweb-easy-orm分析  中 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/" data-title="hsweb的系列学习——hsweb-easy-orm分析  上" data-url="https://muyinchen.github.io/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hsweb的系列学习——hsweb-easy-orm分析-上"><span class="nav-number">1.</span> <span class="nav-text">hsweb的系列学习——hsweb-easy-orm分析  上</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core"><span class="nav-number">1.1.</span> <span class="nav-text">对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一，映射包装的PO类"><span class="nav-number">1.1.1.</span> <span class="nav-text">一，映射包装的PO类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#列的设定"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">列的设定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL的参数设定"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">SQL的参数设定</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#首先对条件类型的设定"><span class="nav-number">1.1.1.2.1.</span> <span class="nav-text">首先对条件类型的设定:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其次对于条件的设定"><span class="nav-number">1.1.1.2.2.</span> <span class="nav-text">其次对于条件的设定:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#最后对于SQL参数对象的设定"><span class="nav-number">1.1.1.2.3.</span> <span class="nav-text">最后对于SQL参数对象的设定:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#由Param衍生出来的专门对查询-如分页-和更新参数的额外封装"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">由Param衍生出来的专门对查询(如分页)和更新参数的额外封装:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查询往往会涉及到排序，这里对排序先做下封装"><span class="nav-number">1.1.1.3.1.</span> <span class="nav-text">查询往往会涉及到排序，这里对排序先做下封装:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#QueryParam-排序字段同样LinkedList存储"><span class="nav-number">1.1.1.3.2.</span> <span class="nav-text">QueryParam:   排序字段同样LinkedList存储</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UpdateParam"><span class="nav-number">1.1.1.3.3.</span> <span class="nav-text">UpdateParam:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#对更新数据map类型包装的数据做扩展"><span class="nav-number">1.1.1.3.3.1.</span> <span class="nav-text">对更新数据map类型包装的数据做扩展:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#表插入数据的封装"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">表插入数据的封装</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#InsertParam"><span class="nav-number">1.1.1.4.0.1.</span> <span class="nav-text">InsertParam:</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二，反映到表元素的元数据类MetaData"><span class="nav-number">1.1.2.</span> <span class="nav-text">二，反映到表元素的元数据类MetaData</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PO转表元素数据"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">PO转表元素数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#OptionConverter-选项映射器"><span class="nav-number">1.1.2.1.1.</span> <span class="nav-text">OptionConverter:选项映射器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PropertyWrapper-属性包装"><span class="nav-number">1.1.2.1.2.</span> <span class="nav-text">PropertyWrapper:属性包装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ValueConverter-数据转换"><span class="nav-number">1.1.2.1.3.</span> <span class="nav-text">ValueConverter:数据转换</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ClobValueConverter"><span class="nav-number">1.1.2.1.3.1.</span> <span class="nav-text">ClobValueConverter:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#BooleanValueConverter"><span class="nav-number">1.1.2.1.3.2.</span> <span class="nav-text">BooleanValueConverter:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对象包装ObjectWrapper"><span class="nav-number">1.1.2.1.4.</span> <span class="nav-text">对象包装ObjectWrapper:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#触发-Trigger"><span class="nav-number">1.1.2.1.5.</span> <span class="nav-text">触发:Trigger:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定义TableMetaData"><span class="nav-number">1.1.2.1.6.</span> <span class="nav-text">定义TableMetaData</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定义DatabaseMetaData"><span class="nav-number">1.1.2.1.7.</span> <span class="nav-text">定义DatabaseMetaData</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#定义ColumnMetaData"><span class="nav-number">1.1.2.1.8.</span> <span class="nav-text">定义ColumnMetaData</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#TableMetaDataStorage定义"><span class="nav-number">1.1.2.1.9.</span> <span class="nav-text">TableMetaDataStorage定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对上面定义的三个元数据类型接口的抽象实现"><span class="nav-number">1.1.2.1.10.</span> <span class="nav-text">对上面定义的三个元数据类型接口的抽象实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#对于DatabaseMetaData的初步通用实现"><span class="nav-number">1.1.2.1.10.1.</span> <span class="nav-text">对于DatabaseMetaData的初步通用实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#对于TableMetaData的初步通用实现"><span class="nav-number">1.1.2.1.10.2.</span> <span class="nav-text">对于TableMetaData的初步通用实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#对于ColumnMetaData的初步通用实现"><span class="nav-number">1.1.2.1.10.3.</span> <span class="nav-text">对于ColumnMetaData的初步通用实现:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#hsweb">
+    <span class="tag-code">hsweb</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/03/16/轻量级分布式 RPC 框架 上/">
+        <span class="nav-arrow">← </span>
+        
+          一个轻量级分布式 RPC 框架 上
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/">
+        
+          hsweb的系列学习——hsweb-easy-orm分析  中
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hsweb的系列学习——hsweb-easy-orm分析-上"><span class="toc-nav-text">hsweb的系列学习——hsweb-easy-orm分析  上</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对于此orm框架的封装，首先要看的便是-hsweb-easy-orm-core"><span class="toc-nav-text">对于此orm框架的封装，首先要看的便是:hsweb-easy-orm-core</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#一，映射包装的PO类"><span class="toc-nav-text">一，映射包装的PO类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#列的设定"><span class="toc-nav-text">列的设定</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SQL的参数设定"><span class="toc-nav-text">SQL的参数设定</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#首先对条件类型的设定"><span class="toc-nav-text">首先对条件类型的设定:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#其次对于条件的设定"><span class="toc-nav-text">其次对于条件的设定:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#最后对于SQL参数对象的设定"><span class="toc-nav-text">最后对于SQL参数对象的设定:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#由Param衍生出来的专门对查询-如分页-和更新参数的额外封装"><span class="toc-nav-text">由Param衍生出来的专门对查询(如分页)和更新参数的额外封装:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#查询往往会涉及到排序，这里对排序先做下封装"><span class="toc-nav-text">查询往往会涉及到排序，这里对排序先做下封装:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#QueryParam-排序字段同样LinkedList存储"><span class="toc-nav-text">QueryParam:   排序字段同样LinkedList存储</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#UpdateParam"><span class="toc-nav-text">UpdateParam:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#对更新数据map类型包装的数据做扩展"><span class="toc-nav-text">对更新数据map类型包装的数据做扩展:</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#表插入数据的封装"><span class="toc-nav-text">表插入数据的封装</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#InsertParam"><span class="toc-nav-text">InsertParam:</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#二，反映到表元素的元数据类MetaData"><span class="toc-nav-text">二，反映到表元素的元数据类MetaData</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#PO转表元素数据"><span class="toc-nav-text">PO转表元素数据</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#OptionConverter-选项映射器"><span class="toc-nav-text">OptionConverter:选项映射器</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#PropertyWrapper-属性包装"><span class="toc-nav-text">PropertyWrapper:属性包装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#ValueConverter-数据转换"><span class="toc-nav-text">ValueConverter:数据转换</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#ClobValueConverter"><span class="toc-nav-text">ClobValueConverter:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#BooleanValueConverter"><span class="toc-nav-text">BooleanValueConverter:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#对象包装ObjectWrapper"><span class="toc-nav-text">对象包装ObjectWrapper:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#触发-Trigger"><span class="toc-nav-text">触发:Trigger:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#定义TableMetaData"><span class="toc-nav-text">定义TableMetaData</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#定义DatabaseMetaData"><span class="toc-nav-text">定义DatabaseMetaData</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#定义ColumnMetaData"><span class="toc-nav-text">定义ColumnMetaData</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#TableMetaDataStorage定义"><span class="toc-nav-text">TableMetaDataStorage定义</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#对上面定义的三个元数据类型接口的抽象实现"><span class="toc-nav-text">对上面定义的三个元数据类型接口的抽象实现:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#对于DatabaseMetaData的初步通用实现"><span class="toc-nav-text">对于DatabaseMetaData的初步通用实现:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#对于TableMetaData的初步通用实现"><span class="toc-nav-text">对于TableMetaData的初步通用实现:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#对于ColumnMetaData的初步通用实现"><span class="toc-nav-text">对于ColumnMetaData的初步通用实现:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "hsweb的系列学习——hsweb-easy-orm分析  上",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>

@@ -1,334 +1,153 @@
-<!doctype html>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="只记空山，只念新雨">
+  <meta name="keyword" content="hexo-theme, vuejs">
   
-
-
-<html class="theme-next mist use-motion">
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
+    <link rel="shortcut icon" href="/css/images/logo.png">
   
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
+  <title>
     
+      构建用户管理微服务 | 一叶知秋
     
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
   
 
-  
 
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="微服务">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
-
-
-
-
-
-
-<meta name="description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
-<meta name="keywords" content="微服务">
-<meta property="og:type" content="article">
-<meta property="og:title" content="构建用户管理微服务">
-<meta property="og:url" content="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/index.html">
-<meta property="og:site_name" content="一叶知秋">
-<meta property="og:description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/User_registration_workflow_861x571_final%20%281%29.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/unnamed.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/login_process_962x741_final.png">
-<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/auth_process_792x741_final.png">
-<meta property="og:updated_time" content="2017-07-15T04:15:28.595Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="构建用户管理微服务">
-<meta name="twitter:description" content="构建用户管理微服务翻译自:https://springuni.com/user-management-microservice-part-1/">
-<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/User_registration_workflow_861x571_final%20%281%29.png">
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/">
-
-
-  <title> 构建用户管理微服务 | 一叶知秋 </title>
 </head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
 
-<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-  <script type="text/javascript">
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
-      var s = document.getElementsByTagName("script")[0];
-      s.parentNode.insertBefore(hm, s);
-    })();
-  </script>
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">一叶知秋</span>
-      <span class="logo-line-after"><i></i></span>
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>一叶知秋</span>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="right-list">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-            首页
-          </a>
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-            归档
-          </a>
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-            标签
-          </a>
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
         </li>
       
-        
-        <li class="menu-item menu-item-schedule">
-          <a href="/schedule" rel="section">
-            
-            日程
-          </a>
+        <li class="list-item">
+          
+            <a href="/project/" class="item-link">Projects</a>
+          
         </li>
       
-
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
         
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
         
-          <h1 class="post-title" itemprop="name headline">
+          <li class="menu-item">
             
+              <a href="/tags/" class="menu-link">Tags</a>
             
-              
-                构建用户管理微服务
-              
-            
-          </h1>
+          </li>
         
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-15T12:15:38+08:00" content="2017-07-15">
-              2017-07-15
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/微服务/" itemprop="url" rel="index">
-                    <span itemprop="name">微服务</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
+          <li class="menu-item">
             
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2017/07/15/构建用户管理微服务/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/07/15/构建用户管理微服务/" itemprop="commentsCount"></span>
-                </a>
-              </span>
+              <a href="/archives/" class="menu-link">Archives</a>
             
-          
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/project/" class="menu-link">Projects</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
 
-          
-
-          
-          
-
-          
-              &nbsp; | &nbsp;
-              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
-              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
-              </span>
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="构建用户管理微服务"><a href="#构建用户管理微服务" class="headerlink" title="构建用户管理微服务"></a>构建用户管理微服务</h1><p>翻译自:<a href="https://springuni.com/user-management-microservice-part-1/" target="_blank" rel="noopener">https://springuni.com/user-management-microservice-part-1/</a></p>
+    <div id="article-banner">
+  <h2>构建用户管理微服务</h2>
+  <p class="post-date">2017-07-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="构建用户管理微服务"><a href="#构建用户管理微服务" class="headerlink" title="构建用户管理微服务"></a>构建用户管理微服务</h1><p>翻译自:<a href="https://springuni.com/user-management-microservice-part-1/" target="_blank" rel="noopener">https://springuni.com/user-management-microservice-part-1/</a></p>
   <a id="more"></a>
 <h2 id="构建用户管理微服务（一）：定义领域模型和-REST-API"><a href="#构建用户管理微服务（一）：定义领域模型和-REST-API" class="headerlink" title="构建用户管理微服务（一）：定义领域模型和 REST API"></a>构建用户管理微服务（一）：定义领域模型和 REST API</h2><p>在《构建用户管理微服务》的第一部分中，我们会定义应用的需求，初始的领域模型和供前端使用的 REST API。 我们首先定义<strong>用户注册</strong>和<strong>管理用户</strong>的故事。</p>
 <h3 id="用户故事"><a href="#用户故事" class="headerlink" title="用户故事"></a>用户故事</h3><p>在设计新系统时，值得考虑的是用户希望实现的结果。 下面您可以找到用户注册系统应具有的基本功能的列表。</p>
@@ -580,368 +399,236 @@
 <h3 id="第二次登录尝试"><a href="#第二次登录尝试" class="headerlink" title="第二次登录尝试"></a>第二次登录尝试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl -D- -XPOST http://localhost:5000/auth/login <span class="_">-d</span> <span class="string">'&#123; "username":"test5", "password": "test" &#125;'</span></span><br><span class="line">HTTP/1.1 200</span><br><span class="line">X-Set-Authorization-Bearer: eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI2MjA1OTkwNjIwMTQ4ODEiLCJzdWIiOiI2MjAzNjYxODQ0NDczNzciLCJleHAiOjE0OTcxMDQ3OTAsImlhdCI6MTQ5NzAxODM5MCwiYXV0aG9yaXRpZXMiOiI<span class="keyword">if</span>Q.U-GfabsdYidg-Y9eSp2lyyh7DxxaI-zaTOZISlCf3RjKQUTmu0-vm6DH80xYWE69SmoGgm07qiYM32JBd9d5oQ</span><br></pre></td></tr></table></figure>
 <p>用户的电子邮件地址确认后，即可登录。</p>
 <h2 id="下一步是什么？"><a href="#下一步是什么？" class="headerlink" title="下一步是什么？"></a>下一步是什么？</h2><p>正如我之前提到的，这个应用程序有很多工作要做。其中还有一些基本功能，也没有UI。您可以按照以下步骤进行：  <a href="https://github.com/springuni/springuni-particles/projects/1" target="_blank" rel="noopener">https://github.com/springuni/springuni-particles/projects/1</a></p>
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>您的支持将鼓励我继续创作！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-    </div>
-  </div>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/微服务/" rel="tag">#微服务</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/06/14/谷歌开发工具文档/" rel="next" title="谷歌开发工具文档">
-                <i class="fa fa-chevron-left"></i> 谷歌开发工具文档
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/19/如何在Maven项目中设置Java 9/" rel="prev" title="如何在Maven项目中设置Java 9">
-                如何在Maven项目中设置Java 9 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
+</section>
+    <!-- Tags START -->
     
-      <div class="ds-thread" data-thread-key="2017/07/15/构建用户管理微服务/" data-title="构建用户管理微服务" data-url="https://muyinchen.github.io/2017/07/15/构建用户管理微服务/">
-      </div>
-    
-  </div>
-
-
-        </div>
+      <div class="tags">
+        <span>Tags:</span>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
-          <p class="site-author-name" itemprop="name">知秋</p>
-          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">99</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">19</span>
-                <span class="site-state-item-name">分类</span>
-              
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">25</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Links
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#构建用户管理微服务"><span class="nav-number">1.</span> <span class="nav-text">构建用户管理微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（一）：定义领域模型和-REST-API"><span class="nav-number">1.1.</span> <span class="nav-text">构建用户管理微服务（一）：定义领域模型和 REST API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户故事"><span class="nav-number">1.1.1.</span> <span class="nav-text">用户故事</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作流程"><span class="nav-number">1.1.2.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非功能性需求"><span class="nav-number">1.1.3.</span> <span class="nav-text">非功能性需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域模型"><span class="nav-number">1.1.4.</span> <span class="nav-text">领域模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rest-api"><span class="nav-number">1.1.5.</span> <span class="nav-text">rest api</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Session-management"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Session management</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-management"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">User management</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（二）：实现领域模型"><span class="nav-number">1.2.</span> <span class="nav-text">构建用户管理微服务（二）：实现领域模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用领域驱动设计"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用领域驱动设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实体类"><span class="nav-number">1.2.2.</span> <span class="nav-text">实体类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#值对象"><span class="nav-number">1.2.3.</span> <span class="nav-text">值对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合"><span class="nav-number">1.2.4.</span> <span class="nav-text">聚合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#领域事件"><span class="nav-number">1.2.5.</span> <span class="nav-text">领域事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务"><span class="nav-number">1.2.6.</span> <span class="nav-text">服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储库"><span class="nav-number">1.2.7.</span> <span class="nav-text">存储库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目结构"><span class="nav-number">1.2.8.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模块"><span class="nav-number">1.2.9.</span> <span class="nav-text">模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（三）：实现和测试存储库"><span class="nav-number">1.3.</span> <span class="nav-text">构建用户管理微服务（三）：实现和测试存储库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-XML-来映射简单的-JAVA-对象"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用 XML 来映射简单的 JAVA 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目中的新模块"><span class="nav-number">1.3.2.</span> <span class="nav-text">项目中的新模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试存储库"><span class="nav-number">1.3.3.</span> <span class="nav-text">单元测试存储库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（四）：实现-REST-控制器"><span class="nav-number">1.4.</span> <span class="nav-text">构建用户管理微服务（四）：实现 REST 控制器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有关-REST"><span class="nav-number">1.4.1.</span> <span class="nav-text">有关 REST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REST-端点的支撑模块"><span class="nav-number">1.4.2.</span> <span class="nav-text">REST 端点的支撑模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#能被重新使用的常见-REST-配置项目"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">能被重新使用的常见 REST 配置项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#错误处理"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">错误处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理未响应请求"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">处理未响应请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#用于管理用户的-REST-端点"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">用于管理用户的 REST 端点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-DTO-映射到模型类"><span class="nav-number">1.4.2.5.</span> <span class="nav-text">将 DTO 映射到模型类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-REST-控制器"><span class="nav-number">1.4.2.6.</span> <span class="nav-text">测试 REST 控制器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（五）：使用-JWT-令牌和-Spring-Security-来实现身份验证"><span class="nav-number">1.5.</span> <span class="nav-text">构建用户管理微服务（五）：使用 JWT 令牌和 Spring Security 来实现身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有关-Token"><span class="nav-number">1.5.1.</span> <span class="nav-text">有关 Token</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于-JWT-令牌"><span class="nav-number">1.5.2.</span> <span class="nav-text">关于 JWT 令牌</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建和验证-JWT-令牌"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">创建和验证 JWT 令牌</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录和身份验证过程"><span class="nav-number">1.5.3.</span> <span class="nav-text">登录和身份验证过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录时创建-JWT-令牌"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">登录时创建 JWT 令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理后续请求"><span class="nav-number">1.5.3.2.</span> <span class="nav-text">处理后续请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Security-在-Java-EE-世界中有竞争者吗？"><span class="nav-number">1.5.4.</span> <span class="nav-text">Spring Security 在 Java EE 世界中有竞争者吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#让我们做个小小的研究！"><span class="nav-number">1.5.4.1.</span> <span class="nav-text">让我们做个小小的研究！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证"><span class="nav-number">1.6.</span> <span class="nav-text">构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#验证流程"><span class="nav-number">1.6.1.</span> <span class="nav-text">验证流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#登录"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在应用程序运行时仅使用瞬态令牌"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">在应用程序运行时仅使用瞬态令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用瞬态令牌与持久性令牌结合使用"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">使用瞬态令牌与持久性令牌结合使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化时使用持久令牌"><span class="nav-number">1.6.1.4.</span> <span class="nav-text">初始化时使用持久令牌</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注销"><span class="nav-number">1.6.1.5.</span> <span class="nav-text">注销</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现记住我的身份验证"><span class="nav-number">1.6.2.</span> <span class="nav-text">实现记住我的身份验证</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-UserDetailsService"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">实现  UserDetailsService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-PersistentTokenRepository"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">实现  PersistentTokenRepository</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-RememberMeServices"><span class="nav-number">1.6.2.3.</span> <span class="nav-text">实现  RememberMeServices</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将所有这些组合在一起"><span class="nav-number">1.6.2.4.</span> <span class="nav-text">将所有这些组合在一起</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#陷阱"><span class="nav-number">1.6.3.</span> <span class="nav-text">陷阱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用RememberMeServices处理登录成功"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">使用RememberMeServices处理登录成功</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建用户管理微服务器（七）：将以上组合在一起"><span class="nav-number">1.7.</span> <span class="nav-text">构建用户管理微服务器（七）：将以上组合在一起</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个独立的可执行模块"><span class="nav-number">1.7.1.</span> <span class="nav-text">创建一个独立的可执行模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Maven配置"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">Maven配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序的入口点"><span class="nav-number">1.7.2.</span> <span class="nav-text">应用程序的入口点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动"><span class="nav-number">1.7.3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试驱动用户管理应用程序"><span class="nav-number">1.7.4.</span> <span class="nav-text">测试驱动用户管理应用程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注册新用户"><span class="nav-number">1.7.4.1.</span> <span class="nav-text">注册新用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#首次登录尝试"><span class="nav-number">1.7.5.</span> <span class="nav-text">首次登录尝试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#确认帐号"><span class="nav-number">1.7.6.</span> <span class="nav-text">确认帐号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二次登录尝试"><span class="nav-number">1.7.7.</span> <span class="nav-text">第二次登录尝试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下一步是什么？"><span class="nav-number">1.8.</span> <span class="nav-text">下一步是什么？</span></a></li></ol></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2019</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">知秋</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+  <a href="/tags#微服务">
+    <span class="tag-code">微服务</span>
   </a>
-</div>
 
-        
-
-<div class="busuanzi-count">
-
-  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
-  
-
-  
-    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
-  
-  
-</div>
-
-
-
-        
       </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2017/06/14/谷歌开发工具文档/">
+        <span class="nav-arrow">← </span>
+        
+          谷歌开发工具文档
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2017/07/19/如何在Maven项目中设置Java 9/">
+        
+          如何在Maven项目中设置Java 9
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
   </div>
 
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#构建用户管理微服务"><span class="toc-nav-text">构建用户管理微服务</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（一）：定义领域模型和-REST-API"><span class="toc-nav-text">构建用户管理微服务（一）：定义领域模型和 REST API</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#用户故事"><span class="toc-nav-text">用户故事</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#工作流程"><span class="toc-nav-text">工作流程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#非功能性需求"><span class="toc-nav-text">非功能性需求</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#领域模型"><span class="toc-nav-text">领域模型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#rest-api"><span class="toc-nav-text">rest api</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Session-management"><span class="toc-nav-text">Session management</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#User-management"><span class="toc-nav-text">User management</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（二）：实现领域模型"><span class="toc-nav-text">构建用户管理微服务（二）：实现领域模型</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用领域驱动设计"><span class="toc-nav-text">使用领域驱动设计</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#实体类"><span class="toc-nav-text">实体类</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#值对象"><span class="toc-nav-text">值对象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#聚合"><span class="toc-nav-text">聚合</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#领域事件"><span class="toc-nav-text">领域事件</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#服务"><span class="toc-nav-text">服务</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#存储库"><span class="toc-nav-text">存储库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#项目结构"><span class="toc-nav-text">项目结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#模块"><span class="toc-nav-text">模块</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（三）：实现和测试存储库"><span class="toc-nav-text">构建用户管理微服务（三）：实现和测试存储库</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#使用-XML-来映射简单的-JAVA-对象"><span class="toc-nav-text">使用 XML 来映射简单的 JAVA 对象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#项目中的新模块"><span class="toc-nav-text">项目中的新模块</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#单元测试存储库"><span class="toc-nav-text">单元测试存储库</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（四）：实现-REST-控制器"><span class="toc-nav-text">构建用户管理微服务（四）：实现 REST 控制器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有关-REST"><span class="toc-nav-text">有关 REST</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#REST-端点的支撑模块"><span class="toc-nav-text">REST 端点的支撑模块</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#能被重新使用的常见-REST-配置项目"><span class="toc-nav-text">能被重新使用的常见 REST 配置项目</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#错误处理"><span class="toc-nav-text">错误处理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#处理未响应请求"><span class="toc-nav-text">处理未响应请求</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#用于管理用户的-REST-端点"><span class="toc-nav-text">用于管理用户的 REST 端点</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#将-DTO-映射到模型类"><span class="toc-nav-text">将 DTO 映射到模型类</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#测试-REST-控制器"><span class="toc-nav-text">测试 REST 控制器</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（五）：使用-JWT-令牌和-Spring-Security-来实现身份验证"><span class="toc-nav-text">构建用户管理微服务（五）：使用 JWT 令牌和 Spring Security 来实现身份验证</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#有关-Token"><span class="toc-nav-text">有关 Token</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#关于-JWT-令牌"><span class="toc-nav-text">关于 JWT 令牌</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#创建和验证-JWT-令牌"><span class="toc-nav-text">创建和验证 JWT 令牌</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#登录和身份验证过程"><span class="toc-nav-text">登录和身份验证过程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#登录时创建-JWT-令牌"><span class="toc-nav-text">登录时创建 JWT 令牌</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#处理后续请求"><span class="toc-nav-text">处理后续请求</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Spring-Security-在-Java-EE-世界中有竞争者吗？"><span class="toc-nav-text">Spring Security 在 Java EE 世界中有竞争者吗？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#让我们做个小小的研究！"><span class="toc-nav-text">让我们做个小小的研究！</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证"><span class="toc-nav-text">构建用户管理微服务（六）：添加并记住我使用持久JWT令牌的身份验证</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#验证流程"><span class="toc-nav-text">验证流程</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#登录"><span class="toc-nav-text">登录</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#在应用程序运行时仅使用瞬态令牌"><span class="toc-nav-text">在应用程序运行时仅使用瞬态令牌</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#使用瞬态令牌与持久性令牌结合使用"><span class="toc-nav-text">使用瞬态令牌与持久性令牌结合使用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#初始化时使用持久令牌"><span class="toc-nav-text">初始化时使用持久令牌</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#注销"><span class="toc-nav-text">注销</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#实现记住我的身份验证"><span class="toc-nav-text">实现记住我的身份验证</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#实现-UserDetailsService"><span class="toc-nav-text">实现  UserDetailsService</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#实现-PersistentTokenRepository"><span class="toc-nav-text">实现  PersistentTokenRepository</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#实现-RememberMeServices"><span class="toc-nav-text">实现  RememberMeServices</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#将所有这些组合在一起"><span class="toc-nav-text">将所有这些组合在一起</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#陷阱"><span class="toc-nav-text">陷阱</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据"><span class="toc-nav-text">在POST请求的正文中接收用户凭据和remember-me标志作为JSON数据</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#使用RememberMeServices处理登录成功"><span class="toc-nav-text">使用RememberMeServices处理登录成功</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构建用户管理微服务器（七）：将以上组合在一起"><span class="toc-nav-text">构建用户管理微服务器（七）：将以上组合在一起</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#创建一个独立的可执行模块"><span class="toc-nav-text">创建一个独立的可执行模块</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Maven配置"><span class="toc-nav-text">Maven配置</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#应用程序的入口点"><span class="toc-nav-text">应用程序的入口点</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#启动"><span class="toc-nav-text">启动</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试驱动用户管理应用程序"><span class="toc-nav-text">测试驱动用户管理应用程序</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#注册新用户"><span class="toc-nav-text">注册新用户</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#首次登录尝试"><span class="toc-nav-text">首次登录尝试</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#确认帐号"><span class="toc-nav-text">确认帐号</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#第二次登录尝试"><span class="toc-nav-text">第二次登录尝试</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#下一步是什么？"><span class="toc-nav-text">下一步是什么？</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<script>
+  (function () {
+    var url = 'https://muyinchen.github.io/2017/07/15/构建用户管理微服务/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "yanm1ng";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "构建用户管理微服务",
+        owner: "yanm1ng",
+        repo: "yanm1ng.github.io",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
 </script>
 
-
-
-
-
-
-
-
-
+<script>
+  var disqus_shortname = '';
   
-
-
-
+  var disqus_url = 'https://muyinchen.github.io/2017/07/15/构建用户管理微服务/';
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
 
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
 
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
 
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"zhiqiuyy"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
-</body>
+<script src="/js/script.js"></script>
+  </body>
 </html>
