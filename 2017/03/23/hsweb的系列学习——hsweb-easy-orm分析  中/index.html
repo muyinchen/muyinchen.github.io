@@ -1,153 +1,333 @@
-<!DOCTYPE html>
-<html>
-  <head><meta name="generator" content="Hexo 3.8.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="只记空山，只念新雨">
-  <meta name="keyword" content="hexo-theme, vuejs">
+<!doctype html>
+
+
+
   
-    <link rel="shortcut icon" href="/css/images/logo.png">
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <title>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
     
-      hsweb的系列学习——hsweb-easy-orm分析  中 | 一叶知秋
     
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
   
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="hsweb">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="hsweb的系列学习——hsweb-easy-orm分析  中接上篇">
+<meta name="keywords" content="hsweb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hsweb的系列学习——hsweb-easy-orm分析  中">
+<meta property="og:url" content="https://muyinchen.github.io/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="hsweb的系列学习——hsweb-easy-orm分析  中接上篇">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170322_223008.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170322_225901.png">
+<meta property="og:image" content="http://og0sybnix.bkt.clouddn.com/sp170322_231154.png">
+<meta property="og:updated_time" content="2017-03-22T16:58:48.229Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hsweb的系列学习——hsweb-easy-orm分析  中">
+<meta name="twitter:description" content="hsweb的系列学习——hsweb-easy-orm分析  中接上篇">
+<meta name="twitter:image" content="http://og0sybnix.bkt.clouddn.com/sp170322_223008.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/">
+
+
+  <title> hsweb的系列学习——hsweb-easy-orm分析  中 | 一叶知秋 </title>
 </head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png">
+
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>一叶知秋</span>
-    </a>
-    <ul class="right-list">
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Home</a>
-          
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">Tags</a>
-          
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
-          
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/project/" class="item-link">Projects</a>
-          
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
-        </li>
+
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
-        
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Home</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">Archives</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/project/" class="menu-link">Projects</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</header>
+  
 
-    <div id="article-banner">
-  <h2>hsweb的系列学习——hsweb-easy-orm分析  中</h2>
-  <p class="post-date">2017-03-23</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
-</div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h1 id="hsweb的系列学习——hsweb-easy-orm分析-中"><a href="#hsweb的系列学习——hsweb-easy-orm分析-中" class="headerlink" title="hsweb的系列学习——hsweb-easy-orm分析  中"></a>hsweb的系列学习——hsweb-easy-orm分析  中</h1><p>接上篇<br> <a id="more"></a></p>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hsweb的系列学习——hsweb-easy-orm分析  中
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-23T00:59:26+08:00" content="2017-03-23">
+              2017-03-23
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/hsweb/" itemprop="url" rel="index">
+                    <span itemprop="name">hsweb</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="hsweb的系列学习——hsweb-easy-orm分析-中"><a href="#hsweb的系列学习——hsweb-easy-orm分析-中" class="headerlink" title="hsweb的系列学习——hsweb-easy-orm分析  中"></a>hsweb的系列学习——hsweb-easy-orm分析  中</h1><p>接上篇<br> <a id="more"></a></p>
 <h2 id="三，curd的逻辑"><a href="#三，curd的逻辑" class="headerlink" title="三，curd的逻辑"></a>三，curd的逻辑</h2><p>从sql语句里可以看出，查，删，改，都是伴随着条件进行的，首先对条件进行设计，然后再具体事情具体办</p>
 <h4 id="1，设计一个统一的条件类型的支持接口来统一接收"><a href="#1，设计一个统一的条件类型的支持接口来统一接收" class="headerlink" title="1，设计一个统一的条件类型的支持接口来统一接收"></a>1，设计一个统一的条件类型的支持接口来统一接收</h4><h5 id="一个是根据输入条件TermTypeConditionalSupport"><a href="#一个是根据输入条件TermTypeConditionalSupport" class="headerlink" title="一个是根据输入条件TermTypeConditionalSupport:"></a>一个是根据输入条件<code>TermTypeConditionalSupport</code>:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.core;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TermTypeConditionalSupport</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Accepter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">        <span class="function">T <span class="title">accept</span><span class="params">(String column, String termType, Object value)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">SimpleAccepter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">        <span class="function">T <span class="title">accept</span><span class="params">(String column, Object value)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="另外一个根据实例化的po-bean-TermTypeConditionalFromBeanSupport"><a href="#另外一个根据实例化的po-bean-TermTypeConditionalFromBeanSupport" class="headerlink" title="另外一个根据实例化的po bean TermTypeConditionalFromBeanSupport:"></a>另外一个根据实例化的po bean <code>TermTypeConditionalFromBeanSupport</code>:</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.core;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanUtilsBean;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtilsBean;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TermTypeConditionalFromBeanSupport</span> </span>&#123;</span><br><span class="line">    Logger logger = LoggerFactory.getLogger(<span class="string">"queryForBean"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function">Object <span class="title">getBean</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> Object <span class="title">getValue</span><span class="params">(String property)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (getBean() == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        PropertyUtilsBean propertyUtilsBean = BeanUtilsBean.getInstance().getPropertyUtils();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> propertyUtilsBean.getProperty(getBean(), property);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.warn(<span class="string">"get bean property &#123;&#125; error"</span>, property, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -207,236 +387,368 @@
 <h5 id="终于得到-了sql，最后，验证之后执行sql语句"><a href="#终于得到-了sql，最后，验证之后执行sql语句" class="headerlink" title="终于得到 了sql，最后，验证之后执行sql语句:"></a>终于得到 了sql，最后，验证之后执行sql语句:</h5><h6 id="设定执行器接口SqlExecutor"><a href="#设定执行器接口SqlExecutor" class="headerlink" title="设定执行器接口SqlExecutor:"></a>设定执行器接口<code>SqlExecutor</code>:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Copyright 2016 http://github.com/hs-web</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</span></span><br><span class="line"><span class="comment"> * you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"> * You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"> * See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"> * limitations under the License.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.rdb.executor;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.ObjectWrapper;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.rdb.meta.expand.SimpleMapWrapper;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.sql.SQLException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * SQL执行器,用于执行sql</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhouhao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlExecutor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SimpleMapWrapper mapWrapper = <span class="keyword">new</span> SimpleMapWrapper();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 传入SQL对象和对象包装器执行查询,将查询结果通过对象包装器进行包装后返回</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql     sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> wrapper 执行结果对象包装器 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.meta.expand.SimpleMapWrapper&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;     查询结果类型泛型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 查询结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行查询异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">list</span><span class="params">(SQL sql, ObjectWrapper&lt;T&gt; wrapper)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 传入SQL对象和对象包装器执行查询,将查询结果通过对象包装器进行包装后返回</span></span><br><span class="line"><span class="comment">     * 只返回单个结果,如果sql结果存在多个值,则返回首个值</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql     sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> wrapper 对象包装其</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt;     查询结果类型泛型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 查询结果</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行查询异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    &lt;T&gt; <span class="function">T <span class="title">single</span><span class="params">(SQL sql, ObjectWrapper&lt;T&gt; wrapper)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行sql</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">exec</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行update</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 执行sql后影响的行数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行delete</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 执行sql后影响的行数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">delete</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行insert</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql sql对象 参照&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 执行sql后影响的行数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> SQLException 执行异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">insert</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">tableExists</span><span class="params">(String tableName)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span> List&lt;Map&lt;String, Object&gt;&gt; list(SQL sql) <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="keyword">return</span> list(sql, mapWrapper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span> List&lt;Map&lt;String, Object&gt;&gt; list(String sql, Object params) <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="keyword">return</span> list(<span class="keyword">new</span> SimpleSQL(sql, params));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span> List&lt;Map&lt;String, Object&gt;&gt; list(String sql) <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">        <span class="keyword">return</span> list(<span class="keyword">new</span> SimpleSQL(sql));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> Map&lt;String, Object&gt; <span class="title">single</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> single(sql, mapWrapper);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> Map&lt;String, Object&gt; <span class="title">single</span><span class="params">(String sql, Object params)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> single(<span class="keyword">new</span> SimpleSQL(sql, params));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> Map&lt;String, Object&gt; <span class="title">single</span><span class="params">(String sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> single(<span class="keyword">new</span> SimpleSQL(sql));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">int</span> <span class="title">insert</span><span class="params">(String sql, Object params)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> insert(<span class="keyword">new</span> SimpleSQL(sql, params));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(String sql, Object params)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> update(<span class="keyword">new</span> SimpleSQL(sql, params));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(String sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> update(<span class="keyword">new</span> SimpleSQL(sql));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">int</span> <span class="title">delete</span><span class="params">(String sql, Object params)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> delete(<span class="keyword">new</span> SimpleSQL(sql, params));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">int</span> <span class="title">delete</span><span class="params">(String sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> delete(<span class="keyword">new</span> SimpleSQL(sql));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">exec</span><span class="params">(String sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        exec(<span class="keyword">new</span> SimpleSQL(sql));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h6 id="JDBC-通用sql执行器"><a href="#JDBC-通用sql执行器" class="headerlink" title="JDBC 通用sql执行器"></a><code>JDBC 通用sql执行器</code></h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Copyright 2016 http://github.com/hs-web</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</span></span><br><span class="line"><span class="comment"> * you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"> * You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</span></span><br><span class="line"><span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"> * See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"> * limitations under the License.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> org.hsweb.ezorm.rdb.executor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.BeanUtilsBean;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.beanutils.PropertyUtilsBean;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.ObjectWrapper;</span><br><span class="line"><span class="keyword">import</span> org.hsweb.ezorm.core.param.Term;</span><br><span class="line"><span class="keyword">import</span> org.hswebframwork.utils.StringUtils;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Date;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Matcher;</span><br><span class="line"><span class="keyword">import</span> java.util.regex.Pattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * JDBC 通用sql执行器,用于执行sql.支持参数化预编译</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> zhouhao</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractJdbcSqlExecutor</span> <span class="keyword">implements</span> <span class="title">SqlExecutor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> Logger logger = LoggerFactory.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取jdbc链接,由子类实现</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> jdbc 链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> Connection <span class="title">getConnection</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 直接拼接sql的编译表达式: $&#123;&#125;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Pattern APPEND_PATTERN = Pattern.compile(<span class="string">"(?&lt;=\\$\\&#123;)(.+?)(?=\\&#125;)"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 进行参数预编译的表达式:#&#123;&#125;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span> 1.0</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Pattern PREPARED_PATTERN = Pattern.compile(<span class="string">"(?&lt;=#\\&#123;)(.+?)(?=\\&#125;)"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对象属性操作工具</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@see</span> PropertyUtilsBean</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">protected</span> PropertyUtilsBean propertyUtils = BeanUtilsBean.getInstance().getPropertyUtils();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">getSqlParamValue</span><span class="params">(Object param, String paramName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Object obj = propertyUtils.getProperty(param, paramName);</span><br><span class="line">            <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Term)</span><br><span class="line">                obj = ((Term) obj).getValue();</span><br><span class="line">            <span class="keyword">return</span> obj;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.warn(<span class="string">"获取sql参数失败"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将sql模板编译为sql信息</span></span><br><span class="line"><span class="comment">     * 模板语法:$&#123;&#125;代表直接拼接sql,#&#123;&#125;使用预编译</span></span><br><span class="line"><span class="comment">     * 如: 模板参数为:&#123;name:"张三",age:10&#125;,sql为:select * from user where name=#&#123;name&#125; and age=$&#123;age&#125;</span></span><br><span class="line"><span class="comment">     * 将被编译为:select * from user where name=? and age=10。 参数列表:["张三"]</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sql sql模板 ,参考&#123;<span class="doctag">@link</span> org.hsweb.ezorm.rdb.render.support.simple.SimpleSQL&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> sql 编译好的信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SQLInfo <span class="title">compileSql</span><span class="params">(SQL sql)</span> </span>&#123;</span><br><span class="line">        String sqlTemplate = sql.getSql();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            SQLInfo sqlInfo = <span class="keyword">new</span> SQLInfo();</span><br><span class="line">            Object param = sql.getParams();</span><br><span class="line">            Matcher prepared_matcher = PREPARED_PATTERN.matcher(sqlTemplate);</span><br><span class="line">            Matcher append_matcher = APPEND_PATTERN.matcher(sqlTemplate);</span><br><span class="line">            List&lt;Object&gt; params = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">            <span class="comment">//直接拼接sql</span></span><br><span class="line">            <span class="keyword">while</span> (append_matcher.find()) &#123;</span><br><span class="line">                String group = append_matcher.group();</span><br><span class="line">                Object obj = getSqlParamValue(param, group);</span><br><span class="line">                sqlTemplate = sqlTemplate.replaceFirst(StringUtils.concat(<span class="string">"\\$\\&#123;"</span>, escapeExprSpecialWord(group), <span class="string">"\\&#125;"</span>), String.valueOf(obj));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//参数预编译sql</span></span><br><span class="line">            <span class="keyword">while</span> (prepared_matcher.find()) &#123;</span><br><span class="line">                String group = prepared_matcher.group();</span><br><span class="line">                sqlTemplate = sqlTemplate.replaceFirst(StringUtils.concat(<span class="string">"#\\&#123;"</span>, escapeExprSpecialWord(group), <span class="string">"\\&#125;"</span>), <span class="string">"?"</span>);</span><br><span class="line">                Object obj = getSqlParamValue(param, group);</span><br><span class="line">                params.add(obj);</span><br><span class="line">            &#125;</span><br><span class="line">            sqlInfo.setSql(sqlTemplate);</span><br><span class="line">            sqlInfo.setParam(params.toArray());</span><br><span class="line">            <span class="keyword">return</span> sqlInfo;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            logger.error(<span class="string">"compile sql  &#123;&#125;  error"</span>, sqlTemplate, e);</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 释放连接,在执行完sql后,将释放此链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">releaseConnection</span><span class="params">(Connection connection)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">List&lt;T&gt; <span class="title">list</span><span class="params">(SQL sql, ObjectWrapper&lt;T&gt; wrapper)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sql <span class="keyword">instanceof</span> EmptySQL) <span class="keyword">return</span> <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//将sql模板编译为可执行的sql</span></span><br><span class="line">        SQLInfo info = compileSql(sql);</span><br><span class="line">        printSql(info);<span class="comment">//打印sql信息</span></span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        PreparedStatement statement = <span class="keyword">null</span>;</span><br><span class="line">        ResultSet resultSet = <span class="keyword">null</span>;</span><br><span class="line">        List&lt;T&gt; datas = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//预编译SQL</span></span><br><span class="line">            statement = connection.prepareStatement(info.getSql());</span><br><span class="line">            <span class="keyword">this</span>.preparedParam(statement, info);</span><br><span class="line">            <span class="comment">//执行sql</span></span><br><span class="line">            resultSet = statement.executeQuery();</span><br><span class="line">            ResultSetMetaData metaData = resultSet.getMetaData();</span><br><span class="line">            <span class="keyword">int</span> count = metaData.getColumnCount();</span><br><span class="line">            <span class="comment">//获取到执行sql后返回的列信息</span></span><br><span class="line">            List&lt;String&gt; headers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++) &#123;</span><br><span class="line">                headers.add(metaData.getColumnLabel(i));</span><br><span class="line">            &#125;</span><br><span class="line">            wrapper.setUp(headers);</span><br><span class="line">            <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (resultSet.next()) &#123;</span><br><span class="line">                <span class="comment">//调用包装器,将查询结果包装为对象</span></span><br><span class="line">                T data = wrapper.newInstance();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</span><br><span class="line">                    Object value = resultSet.getObject(i + <span class="number">1</span>);</span><br><span class="line">                    wrapper.wrapper(data, index, headers.get(i), value);</span><br><span class="line">                &#125;</span><br><span class="line">                index++;</span><br><span class="line">                wrapper.done(data);</span><br><span class="line">                datas.add(data);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">                logger.debug(<span class="string">"&lt;==      total: &#123;&#125;"</span>, index);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            closeResultSet(resultSet);</span><br><span class="line">            closeStatement(statement);</span><br><span class="line">            <span class="comment">//重置JDBC链接</span></span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> datas;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">closeResultSet</span><span class="params">(ResultSet resultSet)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != resultSet)</span><br><span class="line">                resultSet.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"close ResultSet error"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">closeStatement</span><span class="params">(Statement statement)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != statement)</span><br><span class="line">                statement.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SQLException e) &#123;</span><br><span class="line">            logger.error(<span class="string">"close ResultSet error"</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">single</span><span class="params">(SQL sql, ObjectWrapper&lt;T&gt; wrapper)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sql <span class="keyword">instanceof</span> EmptySQL) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        SQLInfo info = compileSql(sql);</span><br><span class="line">        printSql(info);</span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        PreparedStatement statement = <span class="keyword">null</span>;</span><br><span class="line">        ResultSet resultSet = <span class="keyword">null</span>;</span><br><span class="line">        T data = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            statement = connection.prepareStatement(info.getSql());</span><br><span class="line">            <span class="comment">//预编译参数</span></span><br><span class="line">            <span class="keyword">this</span>.preparedParam(statement, info);</span><br><span class="line">            resultSet = statement.executeQuery();</span><br><span class="line">            ResultSetMetaData metaData = resultSet.getMetaData();</span><br><span class="line">            <span class="keyword">int</span> count = metaData.getColumnCount();</span><br><span class="line">            List&lt;String&gt; headers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= count; i++) &#123;</span><br><span class="line">                headers.add(metaData.getColumnLabel(i));</span><br><span class="line">            &#125;</span><br><span class="line">            wrapper.setUp(headers);</span><br><span class="line">            <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (resultSet.next()) &#123;</span><br><span class="line">                data = wrapper.newInstance();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; headers.size(); i++) &#123;</span><br><span class="line">                    Object value = resultSet.getObject(i + <span class="number">1</span>);</span><br><span class="line">                    wrapper.wrapper(data, index, headers.get(i), value);</span><br><span class="line">                &#125;</span><br><span class="line">                index++;</span><br><span class="line">                wrapper.done(data);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">                logger.debug(<span class="string">"&lt;==      total: &#123;&#125;"</span>, index);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            closeResultSet(resultSet);</span><br><span class="line">            closeStatement(statement);</span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exec</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sql <span class="keyword">instanceof</span> EmptySQL) <span class="keyword">return</span>;</span><br><span class="line">        SQLInfo info = compileSql(sql);</span><br><span class="line">        printSql(info);</span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        PreparedStatement statement = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            statement = connection.prepareStatement(info.getSql());</span><br><span class="line">            <span class="comment">//预编译参数</span></span><br><span class="line">            <span class="keyword">this</span>.preparedParam(statement, info);</span><br><span class="line">            statement.execute();</span><br><span class="line">            <span class="keyword">if</span> (sql.getBinds() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (BindSQL bindSQL : sql.getBinds()) &#123;</span><br><span class="line">                    exec(bindSQL.getSql());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            closeStatement(statement);</span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sql <span class="keyword">instanceof</span> EmptySQL) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        SQLInfo info = compileSql(sql);</span><br><span class="line">        printSql(info);</span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PreparedStatement statement = connection.prepareStatement(info.getSql());</span><br><span class="line">            <span class="keyword">this</span>.preparedParam(statement, info);</span><br><span class="line">            i = statement.executeUpdate();</span><br><span class="line">            <span class="keyword">if</span> (logger.isDebugEnabled())</span><br><span class="line">                logger.debug(<span class="string">"&lt;==    updated: &#123;&#125; rows"</span>, i);</span><br><span class="line">            closeStatement(statement);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">delete</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sql <span class="keyword">instanceof</span> EmptySQL) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        SQLInfo info = compileSql(sql);</span><br><span class="line">        printSql(info);</span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            PreparedStatement statement = connection.prepareStatement(info.getSql());</span><br><span class="line">            <span class="keyword">this</span>.preparedParam(statement, info);</span><br><span class="line">            i = statement.executeUpdate();</span><br><span class="line">            <span class="keyword">if</span> (sql.getBinds() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (BindSQL bindSQL : sql.getBinds()) &#123;</span><br><span class="line">                    i += delete(bindSQL.getSql());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (logger.isDebugEnabled())</span><br><span class="line">                logger.debug(<span class="string">"&lt;==     delete: &#123;&#125; rows"</span>, i);</span><br><span class="line">            closeStatement(statement);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">insert</span><span class="params">(SQL sql)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> update(sql);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tableExists</span><span class="params">(String tname)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        Connection connection = getConnection();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            DatabaseMetaData metaData = connection.getMetaData();</span><br><span class="line">            ResultSet resultSet = metaData</span><br><span class="line">                    .getTables(connection.getCatalog(), <span class="keyword">null</span>, tname.toUpperCase(), <span class="keyword">null</span>);</span><br><span class="line">            <span class="keyword">if</span> (resultSet.next()) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                resultSet = metaData</span><br><span class="line">                        .getTables(connection.getCatalog(), <span class="keyword">null</span>, tname.toLowerCase(), <span class="keyword">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (resultSet.next()) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            releaseConnection(connection);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 预编译参数</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> statement</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> info</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">preparedParam</span><span class="params">(PreparedStatement statement, SQLInfo info)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//预编译参数</span></span><br><span class="line">        <span class="keyword">for</span> (Object object : info.getParam()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (object <span class="keyword">instanceof</span> Date)</span><br><span class="line">                statement.setTimestamp(index++, <span class="keyword">new</span> java.sql.Timestamp(((Date) object).getTime()));</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (object <span class="keyword">instanceof</span> <span class="keyword">byte</span>[]) &#123;</span><br><span class="line">                statement.setBlob(index++, <span class="keyword">new</span> ByteArrayInputStream((<span class="keyword">byte</span>[]) object));</span><br><span class="line">            &#125; <span class="keyword">else</span></span><br><span class="line">                statement.setObject(index++, object);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">printSql</span><span class="params">(SQLInfo info)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">            logger.debug(<span class="string">"==&gt;  Preparing: &#123;&#125;"</span>, info.getSql());</span><br><span class="line">            <span class="keyword">if</span> (info.getParam() != <span class="keyword">null</span> &amp;&amp; info.getParam().length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                logger.debug(<span class="string">"==&gt; Parameters: &#123;&#125;"</span>, info.paramsString());</span><br><span class="line">                String sim = info.getSql();</span><br><span class="line">                Object[] param = info.getParam();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; param.length; i++) &#123;</span><br><span class="line">                    Object obj = param[i];</span><br><span class="line">                    <span class="keyword">try</span> &#123;</span><br><span class="line">                        sim = sim.replaceFirst(<span class="string">"\\?"</span>, obj <span class="keyword">instanceof</span> Number ? String.valueOf(obj) : <span class="string">"'"</span>.concat(escapeExprSpecialWord(String.valueOf(obj))).concat(<span class="string">"'"</span>));</span><br><span class="line">                    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                logger.debug(<span class="string">"==&gt;  Simulated: &#123;&#125;"</span>, sim);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">escapeExprSpecialWord</span><span class="params">(String keyword)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!StringUtils.isNullOrEmpty(keyword)) &#123;</span><br><span class="line">            String[] fbsArr = &#123;<span class="string">"\\"</span>, <span class="string">"$"</span>, <span class="string">"("</span>, <span class="string">")"</span>, <span class="string">"*"</span>, <span class="string">"+"</span>, <span class="string">"."</span>, <span class="string">"["</span>, <span class="string">"]"</span>, <span class="string">"?"</span>, <span class="string">"^"</span>, <span class="string">"&#123;"</span>, <span class="string">"&#125;"</span>, <span class="string">"|"</span>&#125;;</span><br><span class="line">            <span class="keyword">for</span> (String key : fbsArr) &#123;</span><br><span class="line">                <span class="keyword">if</span> (keyword.contains(key)) &#123;</span><br><span class="line">                    keyword = keyword.replace(key, <span class="string">"\\"</span> + key);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> keyword;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">SQLInfo</span> </span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * sql语句</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String sql;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 参数列表</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> Object[] param;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 参数字符串</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">private</span> String paramString;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">getSql</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> sql;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSql</span><span class="params">(String sql)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.sql = sql;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> Object[] getParam() &#123;</span><br><span class="line">            <span class="keyword">return</span> param;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setParam</span><span class="params">(Object[] param)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.param = param;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">paramsString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (getParam() == <span class="keyword">null</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">            <span class="keyword">if</span> (paramString == <span class="keyword">null</span>) &#123;</span><br><span class="line">                StringBuilder builder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">                <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span> (Object param : getParam()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (i++ != <span class="number">0</span>)</span><br><span class="line">                        builder.append(<span class="string">","</span>);</span><br><span class="line">                    builder.append(String.valueOf(param));</span><br><span class="line">                    builder.append(<span class="string">"("</span>);</span><br><span class="line">                    builder.append(param == <span class="keyword">null</span> ? <span class="string">"null"</span> : param.getClass().getSimpleName());</span><br><span class="line">                    builder.append(<span class="string">")"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                paramString = builder.toString();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> paramString;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>至此，关于改终于分析完毕</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#hsweb">
-    <span class="tag-code">hsweb</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/">
-        <span class="nav-arrow">← </span>
-        
-          hsweb的系列学习——hsweb-easy-orm分析  上
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2017/03/27/一个轻量级分布式 RPC 框架 下/">
-        
-          一个轻量级分布式 RPC 框架  下
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
+      
+    </div>
 
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
+          <p>微信打赏</p>
         </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-      <div class="qrcode">
-        <canvas id="share-qrcode"></canvas>
-        <p class="notice">扫描二维码，分享此文章</p>
-      </div>
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hsweb/" rel="tag">#hsweb</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/19/hsweb的系列学习——hsweb-easy-orm分析  上/" rel="next" title="hsweb的系列学习——hsweb-easy-orm分析  上">
+                <i class="fa fa-chevron-left"></i> hsweb的系列学习——hsweb-easy-orm分析  上
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/27/一个轻量级分布式 RPC 框架 下/" rel="prev" title="一个轻量级分布式 RPC 框架  下">
+                一个轻量级分布式 RPC 框架  下 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#hsweb的系列学习——hsweb-easy-orm分析-中"><span class="toc-nav-text">hsweb的系列学习——hsweb-easy-orm分析  中</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#三，curd的逻辑"><span class="toc-nav-text">三，curd的逻辑</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1，设计一个统一的条件类型的支持接口来统一接收"><span class="toc-nav-text">1，设计一个统一的条件类型的支持接口来统一接收</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#一个是根据输入条件TermTypeConditionalSupport"><span class="toc-nav-text">一个是根据输入条件TermTypeConditionalSupport:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#另外一个根据实例化的po-bean-TermTypeConditionalFromBeanSupport"><span class="toc-nav-text">另外一个根据实例化的po bean TermTypeConditionalFromBeanSupport:</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#接下来就搞定条件的设置接口-Conditional"><span class="toc-nav-text">接下来就搞定条件的设置接口:Conditional</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2，对删，改，查的设计与实现"><span class="toc-nav-text">2，对删，改，查的设计与实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#对改的接口设计Update"><span class="toc-nav-text">对改的接口设计Update:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#最关键的地方也就在于exec"><span class="toc-nav-text">最关键的地方也就在于exec(),</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#AbstractRDBDatabaseMetaData对RDBDatabaseMetaData进行抽象实现"><span class="toc-nav-text">AbstractRDBDatabaseMetaData对RDBDatabaseMetaData进行抽象实现</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#最后再看具体实现类，此处拿MysqlRDBDatabaseMetaData为例"><span class="toc-nav-text">最后再看具体实现类，此处拿MysqlRDBDatabaseMetaData为例</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#对update-sql语句的组合渲染："><span class="toc-nav-text">对update sql语句的组合渲染：</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#CommonSqlRender-具体逻辑如下，不仔细解释了"><span class="toc-nav-text">CommonSqlRender:具体逻辑如下，不仔细解释了</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#拼接sql准备"><span class="toc-nav-text">拼接sql准备:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#where语句的共同部分进行抽象"><span class="toc-nav-text">where语句的共同部分进行抽象</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#首先是Dialect的设定"><span class="toc-nav-text">首先是Dialect的设定:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#默认实现DefaultDialect"><span class="toc-nav-text">默认实现DefaultDialect</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#这里漏说了一个表元素的解析"><span class="toc-nav-text">这里漏说了一个表元素的解析:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#其次是SimpleWhereSqlBuilder："><span class="toc-nav-text">其次是SimpleWhereSqlBuilder：</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#拼接出的sql封装："><span class="toc-nav-text">拼接出的sql封装：</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#回到SimpleUpdateSqlRender实现"><span class="toc-nav-text">回到SimpleUpdateSqlRender实现:</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#终于得到-了sql，最后，验证之后执行sql语句"><span class="toc-nav-text">终于得到 了sql，最后，验证之后执行sql语句:</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#设定执行器接口SqlExecutor"><span class="toc-nav-text">设定执行器接口SqlExecutor:</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#JDBC-通用sql执行器"><span class="toc-nav-text">JDBC 通用sql执行器</span></a></li></ol></li></ol></li></ol></li></ol>
+      <div class="ds-thread" data-thread-key="2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/" data-title="hsweb的系列学习——hsweb-easy-orm分析  中" data-url="https://muyinchen.github.io/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/">
+      </div>
     
   </div>
-</aside>
-  
-  <!-- Catalog END -->
-</main>
 
-<script>
-  (function () {
-    var url = 'https://muyinchen.github.io/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
 
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
+        </div>
         
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "yanm1ng";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "hsweb的系列学习——hsweb-easy-orm分析  中",
-        owner: "yanm1ng",
-        repo: "yanm1ng.github.io",
-        oauth: {
-          client_id: "0f87e490e00ee3fd87ef",
-          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-<script>
-  var disqus_shortname = '';
+          
   
-  var disqus_url = 'https://muyinchen.github.io/2017/03/23/hsweb的系列学习——hsweb-easy-orm分析  中/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//go.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
 
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hsweb的系列学习——hsweb-easy-orm分析-中"><span class="nav-number">1.</span> <span class="nav-text">hsweb的系列学习——hsweb-easy-orm分析  中</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#三，curd的逻辑"><span class="nav-number">1.1.</span> <span class="nav-text">三，curd的逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1，设计一个统一的条件类型的支持接口来统一接收"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">1，设计一个统一的条件类型的支持接口来统一接收</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一个是根据输入条件TermTypeConditionalSupport"><span class="nav-number">1.1.0.1.1.</span> <span class="nav-text">一个是根据输入条件TermTypeConditionalSupport:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#另外一个根据实例化的po-bean-TermTypeConditionalFromBeanSupport"><span class="nav-number">1.1.0.1.2.</span> <span class="nav-text">另外一个根据实例化的po bean TermTypeConditionalFromBeanSupport:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#接下来就搞定条件的设置接口-Conditional"><span class="nav-number">1.1.0.1.3.</span> <span class="nav-text">接下来就搞定条件的设置接口:Conditional</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2，对删，改，查的设计与实现"><span class="nav-number">1.1.1.</span> <span class="nav-text">2，对删，改，查的设计与实现</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#对改的接口设计Update"><span class="nav-number">1.1.1.0.1.</span> <span class="nav-text">对改的接口设计Update:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#最关键的地方也就在于exec"><span class="nav-number">1.1.1.0.1.1.</span> <span class="nav-text">最关键的地方也就在于exec(),</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#AbstractRDBDatabaseMetaData对RDBDatabaseMetaData进行抽象实现"><span class="nav-number">1.1.1.0.1.2.</span> <span class="nav-text">AbstractRDBDatabaseMetaData对RDBDatabaseMetaData进行抽象实现</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#最后再看具体实现类，此处拿MysqlRDBDatabaseMetaData为例"><span class="nav-number">1.1.1.0.1.3.</span> <span class="nav-text">最后再看具体实现类，此处拿MysqlRDBDatabaseMetaData为例</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#对update-sql语句的组合渲染："><span class="nav-number">1.1.1.0.1.4.</span> <span class="nav-text">对update sql语句的组合渲染：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CommonSqlRender-具体逻辑如下，不仔细解释了"><span class="nav-number">1.1.1.0.1.5.</span> <span class="nav-text">CommonSqlRender:具体逻辑如下，不仔细解释了</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#拼接sql准备"><span class="nav-number">1.1.1.0.1.6.</span> <span class="nav-text">拼接sql准备:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#where语句的共同部分进行抽象"><span class="nav-number">1.1.1.0.2.</span> <span class="nav-text">where语句的共同部分进行抽象</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#首先是Dialect的设定"><span class="nav-number">1.1.1.0.2.1.</span> <span class="nav-text">首先是Dialect的设定:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#默认实现DefaultDialect"><span class="nav-number">1.1.1.0.2.2.</span> <span class="nav-text">默认实现DefaultDialect</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#这里漏说了一个表元素的解析"><span class="nav-number">1.1.1.0.2.3.</span> <span class="nav-text">这里漏说了一个表元素的解析:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其次是SimpleWhereSqlBuilder："><span class="nav-number">1.1.1.0.2.4.</span> <span class="nav-text">其次是SimpleWhereSqlBuilder：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#拼接出的sql封装："><span class="nav-number">1.1.1.0.2.5.</span> <span class="nav-text">拼接出的sql封装：</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#回到SimpleUpdateSqlRender实现"><span class="nav-number">1.1.1.0.2.6.</span> <span class="nav-text">回到SimpleUpdateSqlRender实现:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#终于得到-了sql，最后，验证之后执行sql语句"><span class="nav-number">1.1.1.0.3.</span> <span class="nav-text">终于得到 了sql，最后，验证之后执行sql语句:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#设定执行器接口SqlExecutor"><span class="nav-number">1.1.1.0.3.1.</span> <span class="nav-text">设定执行器接口SqlExecutor:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JDBC-通用sql执行器"><span class="nav-number">1.1.1.0.3.2.</span> <span class="nav-text">JDBC 通用sql执行器</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
   }
 </script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
 
-<script src="/js/script.js"></script>
-  </body>
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
 </html>

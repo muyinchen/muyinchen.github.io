@@ -1,153 +1,329 @@
-<!DOCTYPE html>
-<html>
-  <head><meta name="generator" content="Hexo 3.8.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="只记空山，只念新雨">
-  <meta name="keyword" content="hexo-theme, vuejs">
+<!doctype html>
+
+
+
   
-    <link rel="shortcut icon" href="/css/images/logo.png">
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
   
-  <title>
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
     
-      BIO到NIO源码的一些事儿之NIO 中 | 一叶知秋
     
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
   
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
   
 
 
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Reactor  响应式 Rxjava  Tomcat NIO">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+<meta name="keywords" content="Reactor  响应式 Rxjava  Tomcat NIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BIO到NIO源码的一些事儿之NIO 中">
+<meta property="og:url" content="https://muyinchen.github.io/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-09T04:00:49.235Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BIO到NIO源码的一些事儿之NIO 中">
+<meta name="twitter:description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/">
+
+
+  <title> BIO到NIO源码的一些事儿之NIO 中 | 一叶知秋 </title>
 </head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png">
+
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>一叶知秋</span>
-    </a>
-    <ul class="right-list">
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/" class="item-link">Home</a>
-          
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">Tags</a>
-          
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
-          
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/project/" class="item-link">Projects</a>
-          
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
-        </li>
+
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
-        
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link">Home</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/archives/" class="menu-link">Archives</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/project/" class="menu-link">Projects</a>
-            
-          </li>
-        
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</header>
+  
 
-    <div id="article-banner">
-  <h2>BIO到NIO源码的一些事儿之NIO 中</h2>
-  <p class="post-date">2019-01-09</p>
-  <div class="arrow-down">
-    <a href="javascript:;"></a>
-  </div>
-</div>
-<main class="app-body flex-box">
-  <!-- Article START -->
-  <article class="post-article">
-    <section class="markdown-content"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。</p>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                BIO到NIO源码的一些事儿之NIO 中
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-01-09T01:40:25+08:00" content="2019-01-09">
+              2019-01-09
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/响应式/" itemprop="url" rel="index">
+                    <span itemprop="name">响应式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/01/09/BIO到NIO源码的一些事儿之NIO 中/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。</p>
 <p>关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下:</p>
 <p>Rxjava源码解读与分享：<a href="https://www.bilibili.com/video/av34537840" target="_blank" rel="noopener">https://www.bilibili.com/video/av34537840</a></p>
 <p>Reactor源码解读与分享：<a href="https://www.bilibili.com/video/av35326911" target="_blank" rel="noopener">https://www.bilibili.com/video/av35326911</a></p>
@@ -247,236 +423,368 @@
 <p>关于<code>beginFinishConnect</code>与<code>endFinishConnect</code>和我们之前分析的<code>sun.nio.ch.SocketChannelImpl#beginConnect</code>与<code>sun.nio.ch.SocketChannelImpl#endConnect</code>过程差不多，不懂读者可回看。剩下的，就是我们关注的主要核心逻辑<code>checkConnect(fd, true)</code>，它也是一个本地方法，涉及到的源码如下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">JNIEXPORT jint JNICALL</span><br><span class="line">Java_sun_nio_ch_SocketChannelImpl_checkConnect(JNIEnv *env, jobject <span class="keyword">this</span>,</span><br><span class="line">                                               jobject fdo, jboolean block)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> error = <span class="number">0</span>;</span><br><span class="line">    socklen_t n = sizeof(<span class="keyword">int</span>);</span><br><span class="line">    <span class="comment">//获取FileDescriptor中的fd</span></span><br><span class="line">    jint fd = fdval(env, fdo);</span><br><span class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">    struct pollfd poller;</span><br><span class="line">    <span class="comment">//文件描述符</span></span><br><span class="line">    poller.fd = fd;</span><br><span class="line">    <span class="comment">//请求的事件为写事件</span></span><br><span class="line">    poller.events = POLLOUT;</span><br><span class="line">    <span class="comment">//返回的事件</span></span><br><span class="line">    poller.revents = <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//-1表示阻塞,0表示立即返回，不阻塞进程</span></span><br><span class="line">    result = poll(&amp;poller, <span class="number">1</span>, block ? -<span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//小于0表示调用失败</span></span><br><span class="line">    <span class="keyword">if</span> (result &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (errno == EINTR) &#123;</span><br><span class="line">            <span class="keyword">return</span> IOS_INTERRUPTED;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            JNU_ThrowIOExceptionWithLastError(env, <span class="string">"poll failed"</span>);</span><br><span class="line">            <span class="keyword">return</span> IOS_THROWN;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//非堵塞时，0表示没有准备好的连接</span></span><br><span class="line">    <span class="keyword">if</span> (!block &amp;&amp; (result == <span class="number">0</span>))</span><br><span class="line">        <span class="keyword">return</span> IOS_UNAVAILABLE;</span><br><span class="line">    <span class="comment">//准备好写或出现错误的socket数量&gt;0</span></span><br><span class="line">    <span class="keyword">if</span> (result &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        errno = <span class="number">0</span>;</span><br><span class="line">        result = getsockopt(fd, SOL_SOCKET, SO_ERROR, &amp;error, &amp;n);</span><br><span class="line">        <span class="comment">//出错</span></span><br><span class="line">        <span class="keyword">if</span> (result &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> handleSocketError(env, errno);</span><br><span class="line">        <span class="comment">//发生错误，处理错误</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            <span class="keyword">return</span> handleSocketError(env, error);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((poller.revents &amp; POLLHUP) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> handleSocketError(env, ENOTCONN);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//socket已经准备好，可写，即连接已经建立好</span></span><br><span class="line">        <span class="comment">// connected</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>具体的过程如源码注释所示，其中是否阻塞我们在本地方法源码中和之前<code>sun.nio.ch.SocketChannelImpl#finishConnect</code>的行为产生对应。另外，从上面的源码看到，底层是通过<code>poll</code>查询<code>socket</code>的状态，从而判断连接是否建立成功；由于在非堵塞模式下，<code>finishConnect</code>方法会立即返回，根据此处<code>sun.nio.ch.SocketAdaptor#connect</code>的处理，其使用循环的方式判断连接是否建立，在我们的nio编程中，这个是不建议的，属于半成品，而是建议注册到<code>Selector</code>，通过<code>ops=OP_CONNECT</code>获取连接完成的<code>SelectionKey</code>,然后调用<code>finishConnect</code>完成连接的建立；<br>那么<code>finishConnect</code>是否可以不调用呢？答案是否定的，因为只有<code>finishConnect</code>中才会将状态更新为<code>ST_CONNECTED</code>，而在调用<code>read</code>和<code>write</code>时都会对状态进行判断。</p>
 <p>这里，我们算是引出了我们即将要涉及的<code>Selector</code>和<code>SelectionKey</code>，我们会在下一篇中进行详细讲解。</p>
-</section>
-    <!-- Tags START -->
-    
-      <div class="tags">
-        <span>Tags:</span>
-        
-  <a href="/tags#Reactor Rxjava  NIO">
-    <span class="tag-code">Reactor Rxjava  NIO</span>
-  </a>
 
-      </div>
-    
-    <!-- Tags END -->
-    <!-- NAV START -->
-    
-  <div class="nav-container">
-    <!-- reverse left and right to put prev and next in a more logic postition -->
-    
-      <a class="nav-left" href="/2019/01/03/BIO到NIO源码的一些事儿之NIO 上/">
-        <span class="nav-arrow">← </span>
-        
-          BIO到NIO源码的一些事儿之NIO 上
-        
-      </a>
-    
-    
-      <a class="nav-right" href="/2019/01/12/BIO到NIO源码的一些事儿之NIO 下 之 Selector/">
-        
-          BIO到NIO源码的一些事儿之NIO 下 之 Selector
-        
-        <span class="nav-arrow"> →</span>
-      </a>
-    
-  </div>
+      
+    </div>
 
-    <!-- NAV END -->
-    <!-- 打赏 START -->
-    
-      <div class="money-like">
-        <div class="reward-btn">
-          赏
-          <span class="money-code">
-            <span class="alipay-code">
-              <div class="code-image"></div>
-              <b>使用支付宝打赏</b>
-            </span>
-            <span class="wechat-code">
-              <div class="code-image"></div>
-              <b>使用微信打赏</b>
-            </span>
-          </span>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
+          <p>微信打赏</p>
         </div>
-        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
-      </div>
-    
-    <!-- 打赏 END -->
-    <!-- 二维码 START -->
-    
-      <div class="qrcode">
-        <canvas id="share-qrcode"></canvas>
-        <p class="notice">扫描二维码，分享此文章</p>
-      </div>
-    
-    <!-- 二维码 END -->
-    
-      <!-- Gitment START -->
-      <div id="comments"></div>
-      <!-- Gitment END -->
-    
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reactor-Rxjava-NIO/" rel="tag">#Reactor Rxjava  NIO</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/03/BIO到NIO源码的一些事儿之NIO 上/" rel="next" title="BIO到NIO源码的一些事儿之NIO 上">
+                <i class="fa fa-chevron-left"></i> BIO到NIO源码的一些事儿之NIO 上
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/12/BIO到NIO源码的一些事儿之NIO 下 之 Selector/" rel="prev" title="BIO到NIO源码的一些事儿之NIO 下 之 Selector">
+                BIO到NIO源码的一些事儿之NIO 下 之 Selector <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
-  <!-- Article END -->
-  <!-- Catalog START -->
-  
-    <aside class="catalog-container">
-  <div class="toc-main">
-    <strong class="toc-title">Catalog</strong>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Channel解读"><span class="toc-nav-text">Channel解读</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#赋予Channel支持网络socket的能力"><span class="toc-nav-text">赋予Channel支持网络socket的能力</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#bind"><span class="toc-nav-text">bind</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Net-bind"><span class="toc-nav-text">Net.bind</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Net-listen"><span class="toc-nav-text">Net.listen</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#supportedOptions"><span class="toc-nav-text">supportedOptions</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#setOption实现"><span class="toc-nav-text">setOption实现</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#getOption"><span class="toc-nav-text">getOption</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ServerSocketChannel与ServerSocket在bind处的异同"><span class="toc-nav-text">ServerSocketChannel与ServerSocket在bind处的异同</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#由ServerSocketChannel的socket方法延伸的"><span class="toc-nav-text">由ServerSocketChannel的socket方法延伸的</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#channel的close-应用"><span class="toc-nav-text">channel的close()应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#FileDescriptor"><span class="toc-nav-text">FileDescriptor</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#NIO包下SocketChannel解读"><span class="toc-nav-text">NIO包下SocketChannel解读</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ServerSocketChannel与SocketChannel的open"><span class="toc-nav-text">ServerSocketChannel与SocketChannel的open()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SocketChannel的connect解读"><span class="toc-nav-text">SocketChannel的connect解读</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#SocketChannelImpl中finishConnect解读"><span class="toc-nav-text">SocketChannelImpl中finishConnect解读</span></a></li></ol></li></ol></li></ol>
+      <div class="ds-thread" data-thread-key="2019/01/09/BIO到NIO源码的一些事儿之NIO 中/" data-title="BIO到NIO源码的一些事儿之NIO 中" data-url="https://muyinchen.github.io/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/">
+      </div>
     
   </div>
-</aside>
-  
-  <!-- Catalog END -->
-</main>
 
-<script>
-  (function () {
-    var url = 'https://muyinchen.github.io/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/';
-    var banner = ''
-    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
-      $('#article-banner').css({
-        'background-image': 'url(' + banner + ')'
-      })
-    } else {
-      $('#article-banner').geopattern(url)
-    }
-    $('.header').removeClass('fixed-header')
 
-     // error image
-    $(".markdown-content img").on('error', function() {
-      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
-      $(this).css({
-        'cursor': 'default'
-      })
-    })
-
-    // zoom image
-    $(".markdown-content img").on('click', function() {
-      var src = $(this).attr('src')
-      if (src !== 'http://file.muyutech.com/error-img.png') {
-        var imageW = $(this).width()
-        var imageH = $(this).height()
+        </div>
         
-        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
-        zoom = zoom < 1 ? 1 : zoom
-        zoom = zoom > 2 ? 2 : zoom
-        var transY = (($(window).height() - imageH) / 2).toFixed(2)
-
-        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
-        $('.image-view-wrap').addClass('wrap-active')
-        $('.image-view-wrap img').css({
-          'width': `${imageW}`,
-          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
-        })
-        $('html').css('overflow', 'hidden')
-
-        $('.image-view-wrap').on('click', function() {
-          $(this).remove()
-          $('html').attr('style', '')
-        })
-      }
-    })
-
-    // qrcode
-    var qr = new QRious({
-      element: document.getElementById('share-qrcode'),
-      value: document.location.href
-    });
-
-    // gitment
-    var gitmentConfig = "yanm1ng";
-    if (gitmentConfig !== 'undefined') {
-      var gitment = new Gitment({
-        id: "BIO到NIO源码的一些事儿之NIO 中",
-        owner: "yanm1ng",
-        repo: "yanm1ng.github.io",
-        oauth: {
-          client_id: "0f87e490e00ee3fd87ef",
-          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
-        },
-        theme: {
-          render(state, instance) {
-            const container = document.createElement('div')
-            container.lang = "en-US"
-            container.className = 'gitment-container gitment-root-container'
-            container.appendChild(instance.renderHeader(state, instance))
-            container.appendChild(instance.renderEditor(state, instance))
-            container.appendChild(instance.renderComments(state, instance))
-            container.appendChild(instance.renderFooter(state, instance))
-            return container;
-          }
-        }
-      })
-      gitment.render(document.getElementById('comments'))
-    }
-  })();
-</script>
-
-<script>
-  var disqus_shortname = '';
+          
   
-  var disqus_url = 'https://muyinchen.github.io/2019/01/09/BIO到NIO源码的一些事儿之NIO 中/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//go.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
 
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">99</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Channel解读"><span class="nav-number">2.</span> <span class="nav-text">Channel解读</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋予Channel支持网络socket的能力"><span class="nav-number">2.1.</span> <span class="nav-text">赋予Channel支持网络socket的能力</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bind"><span class="nav-number">2.1.1.</span> <span class="nav-text">bind</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Net-bind"><span class="nav-number">2.1.1.1.</span> <span class="nav-text">Net.bind</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Net-listen"><span class="nav-number">2.1.1.2.</span> <span class="nav-text">Net.listen</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#supportedOptions"><span class="nav-number">2.1.2.</span> <span class="nav-text">supportedOptions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setOption实现"><span class="nav-number">2.1.3.</span> <span class="nav-text">setOption实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getOption"><span class="nav-number">2.1.4.</span> <span class="nav-text">getOption</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ServerSocketChannel与ServerSocket在bind处的异同"><span class="nav-number">2.1.5.</span> <span class="nav-text">ServerSocketChannel与ServerSocket在bind处的异同</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#由ServerSocketChannel的socket方法延伸的"><span class="nav-number">2.1.6.</span> <span class="nav-text">由ServerSocketChannel的socket方法延伸的</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#channel的close-应用"><span class="nav-number">2.1.6.1.</span> <span class="nav-text">channel的close()应用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FileDescriptor"><span class="nav-number">2.1.7.</span> <span class="nav-text">FileDescriptor</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NIO包下SocketChannel解读"><span class="nav-number">2.2.</span> <span class="nav-text">NIO包下SocketChannel解读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ServerSocketChannel与SocketChannel的open"><span class="nav-number">2.2.1.</span> <span class="nav-text">ServerSocketChannel与SocketChannel的open()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SocketChannel的connect解读"><span class="nav-number">2.2.2.</span> <span class="nav-text">SocketChannel的connect解读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SocketChannelImpl中finishConnect解读"><span class="nav-number">2.2.3.</span> <span class="nav-text">SocketChannelImpl中finishConnect解读</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
 </div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
 
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
   }
 </script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
 
-<script src="/js/script.js"></script>
-  </body>
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
 </html>
