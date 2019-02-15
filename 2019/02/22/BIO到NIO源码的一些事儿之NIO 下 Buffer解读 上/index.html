@@ -1,0 +1,789 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Reactor  响应式 Rxjava  Tomcat NIO">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="一叶知秋" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2">
+
+
+
+
+
+
+<meta name="description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+<meta name="keywords" content="Reactor  响应式 Rxjava  Tomcat NIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上">
+<meta property="og:url" content="https://muyinchen.github.io/2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/index.html">
+<meta property="og:site_name" content="一叶知秋">
+<meta property="og:description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/buffers-modes.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/ByteBuffer%E5%88%9D%E5%A7%8B%E5%8C%96.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/ByteBuffer%20%E9%80%BB%E8%BE%91%E8%A7%86%E5%9B%BE.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/flip.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/buffer.compact(">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/buffer.compact(">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/buffer.rewind.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/%E5%8E%9F%E5%A7%8BByteBuffer.png?raw=true">
+<meta property="og:image" content="https://github.com/muyinchen/woker/blob/master/mypics/slice%E6%96%B0bytebuffer.png?raw=true">
+<meta property="og:updated_time" content="2019-02-15T10:12:29.385Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上">
+<meta name="twitter:description" content="前言此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。 关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下: Rxjava源码解读与分享：https://www.bilibili.com/video/av34537840 Reactor源码解读与分享：https://www.bil">
+<meta name="twitter:image" content="https://github.com/muyinchen/woker/blob/master/mypics/buffers-modes.png?raw=true">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://muyinchen.github.io/2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/">
+
+
+  <title> BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上 | 一叶知秋 </title>
+</head>
+
+<body itemscope="" itemtype="//schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=UA-83014983-1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">一叶知秋</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule" rel="section">
+            
+            日程
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-02-22T00:00:00+08:00" content="2019-02-22">
+              2019-02-22
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/响应式/" itemprop="url" rel="index">
+                    <span itemprop="name">响应式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv"><i class="fa fa-user"> 本站访客数 </i>
+              <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>人次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>此系列文章会详细解读NIO的功能逐步丰满的路程，为Reactor-Netty 库的讲解铺平道路。</p>
+<p>关于Java编程方法论-Reactor与Webflux的视频分享，已经完成了Rxjava 与 Reactor，b站地址如下:</p>
+<p>Rxjava源码解读与分享：<a href="https://www.bilibili.com/video/av34537840" target="_blank" rel="noopener">https://www.bilibili.com/video/av34537840</a></p>
+<p>Reactor源码解读与分享：<a href="https://www.bilibili.com/video/av35326911" target="_blank" rel="noopener">https://www.bilibili.com/video/av35326911</a></p>
+<p>本系列源码解读基于JDK11 api细节可能与其他版本有所差别，请自行解决jdk版本问题。</p>
+<p>本系列前几篇:</p>
+<p><a href="https://juejin.im/post/5c2cc075f265da611037298e" target="_blank" rel="noopener">BIO到NIO源码的一些事儿之BIO</a></p>
+<p><a href="https://juejin.im/post/5c2e23156fb9a049ff4e4009" target="_blank" rel="noopener">BIO到NIO源码的一些事儿之NIO 上</a></p>
+<p><a href="https://juejin.im/post/5c34d1dd6fb9a049c84fa2ce" target="_blank" rel="noopener">BIO到NIO源码的一些事儿之NIO 中</a></p>
+<p><a href="https://juejin.im/post/5c3a01d851882525c55fad36" target="_blank" rel="noopener">BIO到NIO源码的一些事儿之NIO 下 之 Selector</a></p>
+<a id="more"></a>
+<h2 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h2><p>在Java BIO中，通过<a href="">BIO到NIO源码的一些事儿之BIO</a>开篇的Demo可知，所有的读写API，都是直接使用byte数组作为缓冲区的，简单直接。我们来拿一个杯子做例子，我们不讲它的材质，只说它的使用属性，一个杯子在使用过程中会首先看其最大容量，然后加水，这里给一个限制，即加到杯子中的水量为杯子最大容量的一半，然后喝水，我们最多也只能喝杯子里所盛水量。由这个例子，我们思考下，杯子是不是可以看作是一个缓冲区，对于杯子倒水的节奏我们是不是可以轻易的控制，从而带来诸多方便，那是不是可以将之前<code>BIO</code>中的缓冲区也加入一些特性，使之变的和我们使用杯子一样便捷。<br>于是，我们给<code>buffer</code>添加几个属性，对比杯子的最大容量，我们设计添加一个<code>capacity</code>属性，对比加上的容量限制，我们设计添加一个<code>limit</code>属性，对于加水加到杯中的当前位置，我们设计添加一个<code>position</code>属性，有时候我们还想在杯子上自己做个标记，比如喝茶，我自己的习惯就是喝到杯里剩三分之一水的时候再加水加到一半，针对这个情况，设计添加一个<code>mark</code>属性。由此，我们来总结下这几个属性的关系，<code>limit</code>不可能比<code>capacity</code>大的，<code>position</code>又不会大于<code>limit</code>，<code>mark</code>可以理解为一个标签，其也不会大于<code>position</code>，也就是<code>mark &lt;= position &lt;= limit &lt;= capacity</code>。</p>
+<p>结合以上概念，我们来对buffer中这几个属性使用时的行为进行下描述:</p>
+<ul>
+<li><p><strong>capacity</strong></p>
+<blockquote>
+<p>也就是缓冲区的容量大小。我们只能往里面写<code>capacity</code>个<code>byte</code>、<code>long</code>、<code>char</code>等类型。一旦<code>Buffer</code>满了，需要将其清空（通过读数据或者清除数据）才能继续写数据往里写数据。</p>
+</blockquote>
+</li>
+<li><p><strong>position</strong></p>
+<blockquote>
+<p>（1）当我们写数据到<code>Buffer</code>中时，<code>position</code>表示当前的位置。初始的<code>position</code>值为0.当一个<code>byte</code>、<code>long</code>、<code>char</code>等数据写到<code>Buffer</code>后， <code>position</code>会向前移动到下一个可插入数据的<code>Buffer</code>位置。<code>position</code>最大可为<code>capacity – 1</code>。</p>
+<p>（2）当读取数据时，也是从某个特定位置读。当将<code>Buffer</code>从写模式切换到读模式，<code>position</code>会被重置为<code>0</code>. 当从<code>Buffer</code>的<code>position</code>处读取数据时，<code>position</code>向前移动到下一个可读的位置。</p>
+</blockquote>
+</li>
+<li><p><strong>limit</strong></p>
+<blockquote>
+<p>（1）在写模式下，<code>Buffer</code>的<code>limit</code>表示你最多能往<code>Buffer</code>里写多少数据。 写模式下，<code>limit</code>等于<code>Buffer</code>的<code>capacity</code>。</p>
+<p>（2）读模式时，<code>limit</code>表示你最多能读到多少数据。因此，当切换<code>Buffer</code>到读模式时，<code>limit</code>会被设置成写模式下的<code>position</code>值。换句话说，你能读到之前写入的所有数据（<code>limit</code>被设置成已写数据的数量，这个值在写模式下就是<code>position</code>）</p>
+</blockquote>
+</li>
+<li><p><strong>mark</strong></p>
+<blockquote>
+<p>类似于喝茶喝到剩余三分之一谁加水一样，当buffer调用它的reset方法时，当前的位置<code>position</code>会指向<code>mark</code>所在位置，同样，这个也根据个人喜好，有些人就喜欢将水喝完再添加的，所以<code>mark</code>不一定总会被设定，但当它被设定值之后，那设定的这个值不能为负数，同时也不能大于<code>position</code>。还有一种情况，就是我喝水喝不下了，在最后将水一口喝完，则对照的此处的话，即如果对<code>mark</code>设定了值（并非初始值-1），则在将<code>position</code>或<code>limit</code>调整为小于<code>mark</code>的值的时候将<code>mark</code>丢弃掉。如果并未对<code>mark</code>重新设定值（即还是初始值-1），那么在调用<code>reset</code>方法会抛出<code>InvalidMarkException</code>异常。</p>
+</blockquote>
+</li>
+</ul>
+<p>可见，经过包装的Buffer是Java NIO中对于缓冲区的抽象。在Java有8中基本类型：<code>byte、short、int、long、float、double、char、boolean</code>，除了<code>boolean</code>类型外，其他的类型都有对应的<code>Buffer</code>具体实现，可见，<code>Buffer</code>是一个用于存储特定基本数据类型的容器。再加上数据时有序存储的，而且<code>Buffer</code>有大小限制，所以，<code>Buffer</code>可以说是特定基本数据类型的线性存储有限的序列。</p>
+<p>接着，我们通过下面这幅图来展示下上面几个属性的关系，方便大家更好理解:<br><img src="https://github.com/muyinchen/woker/blob/master/mypics/buffers-modes.png?raw=true" alt=""></p>
+<h3 id="Buffer的基本用法"><a href="#Buffer的基本用法" class="headerlink" title="Buffer的基本用法"></a>Buffer的基本用法</h3><p>先来看一个Demo:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">RandomAccessFile aFile = <span class="keyword">new</span> RandomAccessFile(<span class="string">"data/nio-data.txt"</span>, <span class="string">"rw"</span>);</span><br><span class="line">FileChannel inChannel = aFile.getChannel();</span><br><span class="line"></span><br><span class="line"><span class="comment">//create buffer with capacity of 48 bytes</span></span><br><span class="line">ByteBuffer buf = ByteBuffer.allocate(<span class="number">48</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> bytesRead = inChannel.read(buf); <span class="comment">//read into buffer.</span></span><br><span class="line"><span class="keyword">while</span> (bytesRead != -<span class="number">1</span>) &#123;</span><br><span class="line"></span><br><span class="line">  buf.flip();  <span class="comment">//make buffer ready for read</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(buf.hasRemaining())&#123;</span><br><span class="line">      System.out.print((<span class="keyword">char</span>) buf.get()); <span class="comment">// read 1 byte at a time</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  buf.clear(); <span class="comment">//make buffer ready for writing</span></span><br><span class="line">  bytesRead = inChannel.read(buf);</span><br><span class="line">&#125;</span><br><span class="line">aFile.close();</span><br></pre></td></tr></table></figure></p>
+<p>我们抛去前两行，来总结下buffer的使用步骤：</p>
+<ol>
+<li>通过相应类型Buffer的allocate的静态方法来分配指定类型大小的缓冲数据区域（此处为buf）;</li>
+<li>写入数据到Buffer;</li>
+<li>调用flip()方法：Buffer从写模式切换到读模式;</li>
+<li>从buffer读取数据;</li>
+<li>调用clear()方法或则compact()方法。<h4 id="Buffer分配"><a href="#Buffer分配" class="headerlink" title="Buffer分配"></a>Buffer分配</h4>那我们依据上面的步骤来一一看下其相应源码实现，这里我们使用ByteBuffer来解读。首先是Buffer分配。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.ByteBuffer#allocate</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ByteBuffer <span class="title">allocate</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (capacity &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> createCapacityException(capacity);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(capacity, capacity);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.ByteBuffer#allocateDirect</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ByteBuffer <span class="title">allocateDirect</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DirectByteBuffer(capacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><code>ByteBuffer</code>是一个抽象类，具体的实现有<code>HeapByteBuffer</code>和<code>DirectByteBuffer</code>。分别对应<code>Java</code>堆缓冲区与堆外内存缓冲区。Java堆缓冲区本质上就是byte数组（由之前分析的，我们只是在字节数组上面加点属性，辅以逻辑，实现一些更复杂的功能），所以实现会比较简单。而堆外内存涉及到JNI代码实现，较为复杂，所以我们先来分析<code>HeapByteBuffer</code>的相关操作，随后再专门分析<code>DirectByteBuffer</code>。</p>
+<p>我们来看<code>HeapByteBuffer</code>相关构造器源码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#HeapByteBuffer(int, int)</span></span><br><span class="line">HeapByteBuffer(<span class="keyword">int</span> cap, <span class="keyword">int</span> lim) &#123;            </span><br><span class="line"></span><br><span class="line">    <span class="keyword">super</span>(-<span class="number">1</span>, <span class="number">0</span>, lim, cap, <span class="keyword">new</span> <span class="keyword">byte</span>[cap], <span class="number">0</span>);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    hb = new byte[cap];</span></span><br><span class="line"><span class="comment">    offset = 0;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">this</span>.address = ARRAY_BASE_OFFSET;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.ByteBuffer#ByteBuffer(int, int, int, int, byte[], int)</span></span><br><span class="line">ByteBuffer(<span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap,   </span><br><span class="line">                <span class="keyword">byte</span>[] hb, <span class="keyword">int</span> offset)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">super</span>(mark, pos, lim, cap);</span><br><span class="line">    <span class="keyword">this</span>.hb = hb;</span><br><span class="line">    <span class="keyword">this</span>.offset = offset;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#Buffer</span></span><br><span class="line">Buffer(<span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap) &#123;       </span><br><span class="line">    <span class="keyword">if</span> (cap &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> createCapacityException(cap);</span><br><span class="line">    <span class="keyword">this</span>.capacity = cap;</span><br><span class="line">    limit(lim);</span><br><span class="line">    position(pos);</span><br><span class="line">    <span class="keyword">if</span> (mark &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (mark &gt; pos)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"mark &gt; position: ("</span></span><br><span class="line">                                                + mark + <span class="string">" &gt; "</span> + pos + <span class="string">")"</span>);</span><br><span class="line">        <span class="keyword">this</span>.mark = mark;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由上，<code>HeapByteBuffer</code>通过初始化字节数组<code>hd</code>，在虚拟机堆上申请内存空间。<br>因在<code>ByteBuffer</code>中定义有<code>hb</code>这个字段，它是一个<code>byte[]</code>类型，为了获取这个字段相对于当前这个<code>ByteBuffer</code>对象所在内存地址，通过<code>private static final long ARRAY_BASE_OFFSET = UNSAFE.arrayBaseOffset(byte[].class)</code>中这个<code>UNSAFE</code>操作来获取这个数组第一个元素位置与该对象所在地址的相对长度，这个对象的地址代表你的头所在的位置，将这个数组看作你的鼻子，而这里返回的是你的鼻子距离头位置的那个长度，即数组第一个位置距离这个对象开始地址所在位置，这个是在class字节码加载到jvm里的时候就已经确定了。<br>如果<code>ARRAY_INDEX_SCALE = UNSAFE.arrayIndexScale(byte[].class)</code>为返回非零值，则可以使用该比例因子以及此基本偏移量（ARRAY_BASE_OFFSET）来形成新的偏移量，以访问这个类的数组元素。知道这些，在<code>ByteBuffer</code>的<code>slice</code> <code>duplicate</code>之类的方法，就能理解其操作了，就是计算数组中每一个元素所占空间长度得到<code>ARRAY_INDEX_SCALE</code>，然后当我确定我从数组第5个位置作为该数组的开始位置操作时，我就可以使用<code>this.address = ARRAY_BASE_OFFSET + off * ARRAY_INDEX_SCALE</code>。<br>我们再通过下面的源码对上述内容对比消化下:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">HeapByteBuffer</span><span class="params">(<span class="keyword">byte</span>[] buf,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap,</span></span></span><br><span class="line"><span class="function"><span class="params">                                <span class="keyword">int</span> off)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(mark, pos, lim, cap, buf, off);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    hb = buf;</span></span><br><span class="line"><span class="comment">    offset = off;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">this</span>.address = ARRAY_BASE_OFFSET + off * ARRAY_INDEX_SCALE;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">slice</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(hb,</span><br><span class="line">                            -<span class="number">1</span>,</span><br><span class="line">                            <span class="number">0</span>,</span><br><span class="line">                            <span class="keyword">this</span>.remaining(),</span><br><span class="line">                            <span class="keyword">this</span>.remaining(),</span><br><span class="line">                            <span class="keyword">this</span>.position() + offset);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">ByteBuffer <span class="title">slice</span><span class="params">(<span class="keyword">int</span> pos, <span class="keyword">int</span> lim)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">assert</span> (pos &gt;= <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">assert</span> (pos &lt;= lim);</span><br><span class="line">    <span class="keyword">int</span> rem = lim - pos;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(hb,</span><br><span class="line">                            -<span class="number">1</span>,</span><br><span class="line">                            <span class="number">0</span>,</span><br><span class="line">                            rem,</span><br><span class="line">                            rem,</span><br><span class="line">                            pos + offset);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">duplicate</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(hb,</span><br><span class="line">                            <span class="keyword">this</span>.markValue(),</span><br><span class="line">                            <span class="keyword">this</span>.position(),</span><br><span class="line">                            <span class="keyword">this</span>.limit(),</span><br><span class="line">                            <span class="keyword">this</span>.capacity(),</span><br><span class="line">                            offset);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4 id="Buffer的读写"><a href="#Buffer的读写" class="headerlink" title="Buffer的读写"></a>Buffer的读写</h4><p>每个<code>buffer</code>都是可读的，但不是每个<code>buffer</code>都是可写的。这里，当<code>buffer</code>有内容变动的时候，会首先调用<code>buffer</code>的<code>isReadOnly</code>判断此<code>buffer</code>是否只读，只读<code>buffer</code>是不允许更改其内容的，但<code>mark</code>、<code>position</code> 和 <code>limit</code>的值是可变的，这是我们人为给其额外的定义，方便我们增加功能逻辑的。当在只读<code>buffer</code>上调用修改时，则会抛出<code>ReadOnlyBufferException</code>异常。我们来看<code>buffer</code>的<code>put</code>方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.ByteBuffer#put(java.nio.ByteBuffer)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">put</span><span class="params">(ByteBuffer src)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (src == <span class="keyword">this</span>)</span><br><span class="line">        <span class="keyword">throw</span> createSameBufferException();</span><br><span class="line">    <span class="keyword">if</span> (isReadOnly())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ReadOnlyBufferException();</span><br><span class="line">    <span class="keyword">int</span> n = src.remaining();</span><br><span class="line">    <span class="keyword">if</span> (n &gt; remaining())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferOverflowException();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        put(src.get());</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#remaining</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">remaining</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> limit - position;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面<code>remaining</code>方法表示还剩多少数据未读，上面的源码讲的是，如果<code>src</code>这个<code>ByteBuffer</code>的<code>src.remaining()</code>的数量大于要存放的目标<code>Buffer</code>的还剩的空间，直接抛溢出的异常。然后通过一个for循环，将<code>src</code>剩余的数据，依次写入目标<code>Buffer</code>中。接下来，我们通过<code>src.get()</code>来探索下<code>Buffer</code>的读操作。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#get()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> hb[ix(nextGetIndex())];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> hb[ix(checkIndex(i))];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.HeapByteBuffer#ix</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">ix</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + offset;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#nextGetIndex()</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">nextGetIndex</span><span class="params">()</span> </span>&#123;                          </span><br><span class="line">    <span class="keyword">if</span> (position &gt;= limit)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferUnderflowException();</span><br><span class="line">    <span class="keyword">return</span> position++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里，为了依次读取数组中的数据，这里使用<code>nextGetIndex()</code>来获取要读位置，即先返回当前要获取的位置值，然后position自己再加1。以此在前面<code>ByteBuffer#put(java.nio.ByteBuffer)</code>所示源码中的<code>for</code>循环中依次对剩余数据的读取。上述<code>get(int i)</code>不过是从指定位置获取数据，实现也比较简单<code>HeapByteBuffer#ix</code>也只是确定所要获取此数组对象指定位置数据，其中的<code>offset</code>表示第一个<strong>可读</strong>字节在该字节数组中的位置（就好比我喝茶杯底三分之一水是不喝的，每次都从三分之一水量开始位置计算喝了多少或者加入多少水）。<br>接下来看下单个字节存储到指定字节数组的操作，与获取字节数组单个位置数据相对应，代码比较简单:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#put(byte)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">put</span><span class="params">(<span class="keyword">byte</span> x)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    hb[ix(nextPutIndex())] = x;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">put</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">byte</span> x)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    hb[ix(checkIndex(i))] = x;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#nextPutIndex()</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">nextPutIndex</span><span class="params">()</span> </span>&#123;                          <span class="comment">// package-private</span></span><br><span class="line">    <span class="keyword">if</span> (position &gt;= limit)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferOverflowException();</span><br><span class="line">    <span class="keyword">return</span> position++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>前面的都是单个字节的，下面来讲下批量操作字节数组是如何进行的，因过程知识点重复，这里只讲get,先看源码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.ByteBuffer#get(byte[])</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">get</span><span class="params">(<span class="keyword">byte</span>[] dst)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(dst, <span class="number">0</span>, dst.length);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.ByteBuffer#get(byte[], int, int)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">get</span><span class="params">(<span class="keyword">byte</span>[] dst, <span class="keyword">int</span> offset, <span class="keyword">int</span> length)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 检查参数是否越界</span></span><br><span class="line">    checkBounds(offset, length, dst.length);</span><br><span class="line">     <span class="comment">// 检查要获取的长度是否大于Buffer中剩余的数据长度</span></span><br><span class="line">    <span class="keyword">if</span> (length &gt; remaining())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferUnderflowException();</span><br><span class="line">    <span class="keyword">int</span> end = offset + length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = offset; i &lt; end; i++)</span><br><span class="line">        dst[i] = get();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#checkBounds</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">checkBounds</span><span class="params">(<span class="keyword">int</span> off, <span class="keyword">int</span> len, <span class="keyword">int</span> size)</span> </span>&#123; <span class="comment">// package-private</span></span><br><span class="line">    <span class="keyword">if</span> ((off | len | (off + len) | (size - (off + len))) &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>通过这个方法将这个buffer中的字节数据读到我们给定的目标数组dst中，由checkBounds可知，当要写入目标字节数组的可写长度小于将要写入数据的长度的时候，会产生边界异常。当要获取的长度是大于Buffer中剩余的数据长度时抛出<code>BufferUnderflowException</code>异常，当验证通过后，接着就从目标数组的<code>offset</code>位置开始，从<code>buffer</code>获取并写入<code>offset + length</code>长度的数据。<br>可以看出，<code>HeapByteBuffer</code>是封装了对byte数组的简单操作。对缓冲区的写入和读取本质上是对数组的写入和读取。使用<code>HeapByteBuffer</code>的好处是我们不用做各种参数校验，也不需要另外维护数组当前读写位置的变量了。<br>同时我们可以看到，<code>Buffer</code>中对<code>position</code>的操作没有使用锁保护，所以<code>Buffer</code>不是线程安全的。如果我们操作的这个<code>buffer</code>会有多个线程使用，则针对该<code>buffer</code>的访问应通过适当的同步控制机制来进行保护。</p>
+<h4 id="ByteBuffer的模式"><a href="#ByteBuffer的模式" class="headerlink" title="ByteBuffer的模式"></a>ByteBuffer的模式</h4><p>jdk本身是没这个说法的，只是按照我们自己的操作习惯，我们将<code>Buffer</code>分为两种工作模式，一种是接收数据模式，一种是输出数据模式。我们可以通过<code>Buffer</code>提供的<code>flip</code>等操作来切换<code>Buffer</code>的工作模式。</p>
+<p>我们来新建一个容量为10的<code>ByteBuffer</code>:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ByteBuffer.allocate(<span class="number">10</span>);</span><br></pre></td></tr></table></figure></p>
+<p>由前面所学的<code>HeapByteBuffer</code>的构造器中的相关代码可知，这里的<code>position</code>被设置为0，而且 <code>capacity</code>和<code>limit</code>设置为 10，<code>mark</code>设置为-1，<code>offset</code>设定为0。<br>可参考下图展示:</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/ByteBuffer%E5%88%9D%E5%A7%8B%E5%8C%96.png?raw=true" alt="HeapByteBuffer初始化"></p>
+<p>新建的<code>Buffer</code>处于接收数据的模式，可以向<code>Buffer</code>放入数据，在放入一个对应基本类型的数据后（此处假如放入一个char类型数据），position加一，参考我们上面所示源码，如果position已经等于limit了还进行<code>put</code>操作，则会抛出<code>BufferOverflowException</code>异常。<br>我们向所操作的buffer中put 5个char类型的数据进去:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buffer.put((<span class="keyword">byte</span>)<span class="string">'a'</span>).put((<span class="keyword">byte</span>)<span class="string">'b'</span>).put((<span class="keyword">byte</span>)<span class="string">'c'</span>).put((<span class="keyword">byte</span>)<span class="string">'d'</span>).put((<span class="keyword">byte</span>)<span class="string">'e'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>会得到如下结果视图:</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/ByteBuffer%20%E9%80%BB%E8%BE%91%E8%A7%86%E5%9B%BE.png?raw=true" alt=""></p>
+<p>由之前源码分析可知，Buffer的读写的位置变量都是基于<code>position</code>来做的，其他的变量都是围绕着它进行辅助管理的，所以如果从<code>Buffer</code>中读取数据，要将<code>Buffer</code>切换到输出数据模式（也就是读模式）。此时，我们就可以使用<code>Buffer</code>提供了flip方法。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.Buffer#flip</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Buffer <span class="title">flip</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    limit = position;</span><br><span class="line">    position = <span class="number">0</span>;</span><br><span class="line">    mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们知道，在put的时候，会进行<code>java.nio.Buffer#nextPutIndex()</code>的调用，里面会进行<code>position &gt;= limit</code>，所以，此时再进行写操作的话，会从第0个位置开始进行覆盖，而且只能写到<code>flip</code>操作之后<code>limit</code>的位置。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.Buffer#nextPutIndex()</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">nextPutIndex</span><span class="params">()</span> </span>&#123;                          <span class="comment">// package-private</span></span><br><span class="line">    <span class="keyword">if</span> (position &gt;= limit)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferOverflowException();</span><br><span class="line">    <span class="keyword">return</span> position++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在做完<code>put</code>操作后，<code>position</code>会自增一下，所以，<code>flip</code>操作示意图如下：</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/flip.png?raw=true" alt=""></p>
+<p>也是因为<code>position</code>为0了，所以我们可以很方便的从Buffer中第0个位置开始读取数据，不需要别的附加操作。由之前解读可知，每次读取一个元素，<code>position</code>就会加一，如果<code>position</code>已经等于<code>limit</code>还进行读取，则会抛出<code>BufferUnderflowException</code>异常。</p>
+<p>我们通过<code>flip</code>方法把<code>Buffer</code>从接收写模式切换到输出读模式，如果要从输出模式切换到接收模式，可以使用<code>compact</code>或者<code>clear</code>方法，如果数据已经读取完毕或者数据不要了，使用<code>clear</code>方法，如果只想从缓冲区中释放一部分数据，而不是全部（即释放已读数据，保留未读数据），然后重新填充，使用<code>compact</code>方法。</p>
+<p>对于<code>clear</code>方法，我们先来看它的源码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.Buffer#clear</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Buffer <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    position = <span class="number">0</span>;</span><br><span class="line">    limit = capacity;</span><br><span class="line">    mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们可以看到，它的<code>clear</code>方法内并没有做清理工作，只是修改位置变量，重置为初始化时的状态，等待下一次将数据写入缓冲数组。<br>接着，来看<code>compact</code>操作的源码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#compact</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">compact</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.arraycopy(hb, ix(position()), hb, ix(<span class="number">0</span>), remaining());</span><br><span class="line">    position(remaining());</span><br><span class="line">    limit(capacity());</span><br><span class="line">    discardMark();</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.ByteBuffer#position</span></span><br><span class="line"><span class="function">ByteBuffer <span class="title">position</span><span class="params">(<span class="keyword">int</span> newPosition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.position(newPosition);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#position(int)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Buffer <span class="title">position</span><span class="params">(<span class="keyword">int</span> newPosition)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (newPosition &gt; limit | newPosition &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> createPositionException(newPosition);</span><br><span class="line">    position = newPosition;</span><br><span class="line">    <span class="keyword">if</span> (mark &gt; position) mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.ByteBuffer#limit</span></span><br><span class="line"><span class="function">ByteBuffer <span class="title">limit</span><span class="params">(<span class="keyword">int</span> newLimit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.limit(newLimit);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#limit(int)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Buffer <span class="title">limit</span><span class="params">(<span class="keyword">int</span> newLimit)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (newLimit &gt; capacity | newLimit &lt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> createLimitException(newLimit);</span><br><span class="line">    limit = newLimit;</span><br><span class="line">    <span class="keyword">if</span> (position &gt; limit) position = limit;</span><br><span class="line">    <span class="keyword">if</span> (mark &gt; limit) mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.Buffer#discardMark</span></span><br><span class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">discardMark</span><span class="params">()</span> </span>&#123;                          </span><br><span class="line">        mark = -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里使用了数组的拷贝操作，将未读元素转移到该字节数组从<strong>0</strong>开始的位置，由于<code>remaining()</code>返回的是<code>limit - position</code>，假如在<code>flip</code>操作的时候填入的元素有<strong>5</strong>个，那么<code>limit</code>为<strong>5</strong>，此时读到了第三个元素，也就是在调用<code>compact</code>时<code>position</code>的数值为<strong>2</strong>，那<code>remaining()</code>的值就为<strong>3</strong>，也就是此时<code>position</code>为<strong>3</strong>，<code>compact</code>操作后，<code>limit</code>会回归到和初始化数组容量大小一样，并将<strong>mark</strong>值置为 <strong>-1</strong>。</p>
+<p>我们来看示意图，在进行<code>buffer.compact()</code>调用前:</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/buffer.compact(" alt="">%E8%B0%83%E7%94%A8%E5%89%8D.png?raw=true)</p>
+<p><code>buffer.compact()</code>调用后:</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/buffer.compact(" alt="">%E8%B0%83%E7%94%A8%E5%90%8E.png?raw=true)</p>
+<h4 id="ByteBuffer的其他方法"><a href="#ByteBuffer的其他方法" class="headerlink" title="ByteBuffer的其他方法"></a>ByteBuffer的其他方法</h4><p>接下来，我们再接触一些<code>ByteBuffer</code>的其他方法，方便在适当的条件下进行使用。</p>
+<h5 id="rewind方法"><a href="#rewind方法" class="headerlink" title="rewind方法"></a>rewind方法</h5><p>首先来看它的源码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.Buffer#rewind</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Buffer <span class="title">rewind</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    position = <span class="number">0</span>;</span><br><span class="line">    mark = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里就是将<code>position</code>设定为0，<code>mark</code>设定为-1，其他设定的管理属性（<code>capacity</code>，<code>limit</code>）不变。结合前面的知识，在字节数组写入数据后，它的<code>clear</code>方法也只是重置我们在<code>Buffer</code>中设定的那几个增强管理属性（<code>capacity</code>、<code>position</code>、<code>limit</code>、<code>mark</code>），此处的英文表达的意思也很明显：<strong>倒带</strong>，也就是可以回头重新写，或者重新读。但是我们要注意一个前提，我们要确保已经恰当的设置了<code>limit</code>。这个方法可以在<code>Channel</code>的读或者写之前调用，如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out.write(buf);    <span class="comment">// Write remaining data</span></span><br><span class="line">buf.rewind();      <span class="comment">// Rewind buffer</span></span><br><span class="line">buf.get(array);    <span class="comment">// Copy data into array</span></span><br></pre></td></tr></table></figure></p>
+<p>我们通过下图来进行展示执行<code>rewind</code>操作后的结果：</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/buffer.rewind.png?raw=true" alt=""></p>
+<h5 id="duplicate-方法"><a href="#duplicate-方法" class="headerlink" title="duplicate 方法"></a>duplicate 方法</h5><p>在JDK9版本中，新增了这个方法。用来创建一个与原始<code>Buffer</code>一样的新<code>Buffer</code>。新<code>Buffer</code>的内容和原始<code>Buffer</code>一样。改变新<code>Buffer</code>内的数据，同样会体现在原始<code>Buffer</code>上，反之亦然。两个<code>Buffer</code>都拥有自己独立的 <code>position</code>，<code>limit</code> 和<code>mark</code> 属性。<br>刚创建的新<code>Buffer</code>的<code>position</code>，<code>limit</code> 和<code>mark</code> 属性与原始<code>Buffer</code>对应属性的值相同。<br>还有一点需要注意的是，如果原始<code>Buffer</code>是只读的（即<code>HeapByteBufferR</code>），那么新<code>Buffer</code>也是只读的。如果原始<code>Buffer</code>是<code>DirectByteBuffer</code>，那新<code>Buffer</code>也是<code>DirectByteBuffer</code>。<br>我们来看相关源码实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#duplicate</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">duplicate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(hb,</span><br><span class="line">                                <span class="keyword">this</span>.markValue(),</span><br><span class="line">                                <span class="keyword">this</span>.position(),</span><br><span class="line">                                <span class="keyword">this</span>.limit(),</span><br><span class="line">                                <span class="keyword">this</span>.capacity(),</span><br><span class="line">                                offset);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.HeapByteBufferR#duplicate</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">duplicate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HeapByteBufferR(hb,</span><br><span class="line">                                <span class="keyword">this</span>.markValue(),</span><br><span class="line">                                <span class="keyword">this</span>.position(),</span><br><span class="line">                                <span class="keyword">this</span>.limit(),</span><br><span class="line">                                <span class="keyword">this</span>.capacity(),</span><br><span class="line">                                offset);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.DirectByteBuffer#duplicate</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">duplicate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DirectByteBuffer(<span class="keyword">this</span>,</span><br><span class="line">                                    <span class="keyword">this</span>.markValue(),</span><br><span class="line">                                    <span class="keyword">this</span>.position(),</span><br><span class="line">                                    <span class="keyword">this</span>.limit(),</span><br><span class="line">                                    <span class="keyword">this</span>.capacity(),</span><br><span class="line">                                    <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>基本类型的参数传递都是值传递，所以由上面源码可知每个新缓冲区都拥有自己的 <code>position</code>、<code>limit</code> 和 <code>mark</code> 属性，而且他们的初始值使用了原始<code>Buffer</code>此时的值。<br>但是，从<code>HeapByteBuffer</code>角度来说，对于<strong>hb</strong> 作为一个数组对象，属于对象引用传递，即新老<code>Buffer</code>共用了同一个字节数组对象。无论谁操作，都会改变另一个。<br>从<code>DirectByteBuffer</code>角度来说，直接内存看重的是地址操作，所以，其在创建这个新<code>Buffer</code>的时候传入的是原始<code>Buffer</code>的引用，进而可以获取到相关地址。</p>
+<h5 id="asReadOnlyBuffer"><a href="#asReadOnlyBuffer" class="headerlink" title="asReadOnlyBuffer"></a>asReadOnlyBuffer</h5><p>可以使用 <code>asReadOnlyBuffer()</code> 方法来生成一个只读的缓冲区。这与<br><code>duplicate()</code>实现有些相同，除了这个新的缓冲区不允许使用<code>put()</code>，并且其<code>isReadOnly()</code>函数<br>将会返回true 。 对这一只读缓冲区调用<code>put()</code>操作，会导致<code>ReadOnlyBufferException</code>异常。<br>我们来看相关源码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.ByteBuffer#put(java.nio.ByteBuffer)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">put</span><span class="params">(ByteBuffer src)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (src == <span class="keyword">this</span>)</span><br><span class="line">        <span class="keyword">throw</span> createSameBufferException();</span><br><span class="line">    <span class="keyword">if</span> (isReadOnly())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ReadOnlyBufferException();</span><br><span class="line">    <span class="keyword">int</span> n = src.remaining();</span><br><span class="line">    <span class="keyword">if</span> (n &gt; remaining())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BufferOverflowException();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        put(src.get());</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.HeapByteBuffer#asReadOnlyBuffer</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">asReadOnlyBuffer</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HeapByteBufferR(hb,</span><br><span class="line">                                    <span class="keyword">this</span>.markValue(),</span><br><span class="line">                                    <span class="keyword">this</span>.position(),</span><br><span class="line">                                    <span class="keyword">this</span>.limit(),</span><br><span class="line">                                    <span class="keyword">this</span>.capacity(),</span><br><span class="line">                                    offset);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.HeapByteBufferR#asReadOnlyBuffer</span></span><br><span class="line"><span class="comment">//HeapByteBufferR下直接调用其duplicate方法即可，其本来就是只读的</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">asReadOnlyBuffer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> duplicate();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.DirectByteBuffer#asReadOnlyBuffer</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">asReadOnlyBuffer</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> DirectByteBufferR(<span class="keyword">this</span>,</span><br><span class="line">                                        <span class="keyword">this</span>.markValue(),</span><br><span class="line">                                        <span class="keyword">this</span>.position(),</span><br><span class="line">                                        <span class="keyword">this</span>.limit(),</span><br><span class="line">                                        <span class="keyword">this</span>.capacity(),</span><br><span class="line">                                        <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.DirectByteBufferR#asReadOnlyBuffer</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">asReadOnlyBuffer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> duplicate();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//java.nio.HeapByteBufferR#HeapByteBufferR</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">HeapByteBufferR</span><span class="params">(<span class="keyword">byte</span>[] buf,</span></span></span><br><span class="line"><span class="function"><span class="params">                <span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap,</span></span></span><br><span class="line"><span class="function"><span class="params">                <span class="keyword">int</span> off)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(buf, mark, pos, lim, cap, off);</span><br><span class="line">    <span class="keyword">this</span>.isReadOnly = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//java.nio.DirectByteBufferR#DirectByteBufferR</span></span><br><span class="line">DirectByteBufferR(DirectBuffer db,       </span><br><span class="line">                <span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap,</span><br><span class="line">                <span class="keyword">int</span> off)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">super</span>(db, mark, pos, lim, cap, off);</span><br><span class="line">    <span class="keyword">this</span>.isReadOnly = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，<code>ByteBuffer</code>的只读实现，在构造器里首先将<code>isReadOnly</code>属性设定为<code>true</code>。接着，<code>HeapByteBufferR</code>继承了<code>HeapByteBuffer</code> 类（<code>DirectByteBufferR</code>也是类似实现，就不重复了），并重写了所有可对buffer修改的方法。把所有能修改<code>buffer</code>的方法都直接抛出ReadOnlyBufferException来保证只读。来看<code>DirectByteBufferR</code>相关源码，其他对应实现一样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.DirectByteBufferR#put(byte)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">put</span><span class="params">(<span class="keyword">byte</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ReadOnlyBufferException();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h5 id="slice-方法"><a href="#slice-方法" class="headerlink" title="slice 方法"></a>slice 方法</h5><p><code>slice</code>从字面意思来看，就是<strong>切片</strong>，用在这里，就是分割<code>ByteBuffer</code>。即创建一个从原始<code>ByteBuffer</code>的当前位置（<code>position</code>）开始的新<code>ByteBuffer</code>，并且其容量是原始<code>ByteBuffer</code>的剩余消费元素数量（ <code>limit-position</code>）。这个新<code>ByteBuffer</code>与原始<code>ByteBuffer</code>共享一段数据元素子序列，也就是设定一个offset值，这样就可以将一个相对数组第三个位置的元素看作是起点元素，此时新<code>ByteBuffer</code>的<code>position</code>就是0，读取的还是所传入这个<code>offset</code>的所在值。分割出来的<code>ByteBuffer</code>也会继承只读和直接属性。<br>我们来看相关源码:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java.nio.HeapByteBuffer#slice()</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ByteBuffer <span class="title">slice</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HeapByteBuffer(hb,</span><br><span class="line">                                -<span class="number">1</span>,</span><br><span class="line">                                <span class="number">0</span>,</span><br><span class="line">                                <span class="keyword">this</span>.remaining(),</span><br><span class="line">                                <span class="keyword">this</span>.remaining(),</span><br><span class="line">                                <span class="keyword">this</span>.position() + offset);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">HeapByteBuffer</span><span class="params">(<span class="keyword">byte</span>[] buf,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="keyword">int</span> mark, <span class="keyword">int</span> pos, <span class="keyword">int</span> lim, <span class="keyword">int</span> cap,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="keyword">int</span> off)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(mark, pos, lim, cap, buf, off);</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    hb = buf;</span></span><br><span class="line"><span class="comment">    offset = off;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">this</span>.address = ARRAY_BASE_OFFSET + off * ARRAY_INDEX_SCALE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由源码可知，新<code>ByteBuffer</code>和原始<code>ByteBuffer</code>共有了一个数组，新<code>ByteBuffer</code>的<code>mark</code>值为-1，<code>position</code>值为0，<code>limit</code>和<code>capacity</code>都为原始<code>Buffer</code>中<code>limit-position</code>的值。<br>于是，我们可以通过下面两幅图来展示<code>slice</code>方法前后的对比。</p>
+<p>原始<code>ByteBuffer</code>：</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/%E5%8E%9F%E5%A7%8BByteBuffer.png?raw=true" alt=""></p>
+<p>调用<code>slice</code>方法分割后得到的新<code>ByteBuffer</code>：</p>
+<p><img src="https://github.com/muyinchen/woker/blob/master/mypics/slice%E6%96%B0bytebuffer.png?raw=true" alt=""></p>
+<p>本篇到此为止，在下一篇中，我会着重讲下<code>DirectByteBuffer</code>的实现细节。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="http://og0sybnix.bkt.clouddn.com/wechat-qcode.png" alt="知秋 WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Reactor-Rxjava-NIO/" rel="tag">#Reactor Rxjava  NIO</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/12/BIO到NIO源码的一些事儿之NIO 下 之 Selector/" rel="next" title="BIO到NIO源码的一些事儿之NIO 下 之 Selector">
+                <i class="fa fa-chevron-left"></i> BIO到NIO源码的一些事儿之NIO 下 之 Selector
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/" data-title="BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上" data-url="https://muyinchen.github.io/2019/02/22/BIO到NIO源码的一些事儿之NIO 下 Buffer解读 上/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="http://og0sybnix.bkt.clouddn.com/18213496.jpg" alt="知秋">
+          <p class="site-author-name" itemprop="name">知秋</p>
+          <p class="site-description motion-element" itemprop="description">只记空山，只念新雨</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">100</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://blog.csdn.net/lsgqjh" title="小舒哥" target="_blank">小舒哥</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Buffer"><span class="nav-number">2.</span> <span class="nav-text">Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer的基本用法"><span class="nav-number">2.1.</span> <span class="nav-text">Buffer的基本用法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Buffer分配"><span class="nav-number">2.1.1.</span> <span class="nav-text">Buffer分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Buffer的读写"><span class="nav-number">2.1.2.</span> <span class="nav-text">Buffer的读写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ByteBuffer的模式"><span class="nav-number">2.1.3.</span> <span class="nav-text">ByteBuffer的模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ByteBuffer的其他方法"><span class="nav-number">2.1.4.</span> <span class="nav-text">ByteBuffer的其他方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rewind方法"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">rewind方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#duplicate-方法"><span class="nav-number">2.1.4.2.</span> <span class="nav-text">duplicate 方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#asReadOnlyBuffer"><span class="nav-number">2.1.4.3.</span> <span class="nav-text">asReadOnlyBuffer</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#slice-方法"><span class="nav-number">2.1.4.4.</span> <span class="nav-text">slice 方法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">知秋</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"zhiqiuyy"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
