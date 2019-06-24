@@ -253,6 +253,143 @@
             
               
                 
+                <a class="post-title-link" href="/2019/06/25/RxJava调度选择/" itemprop="url">
+                  RxJava调度选择
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2019-06-25T00:00:00+08:00" content="2019-06-25">
+              2019-06-25
+            </time>
+          </span>
+
+          
+            <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
+                  <a href="/categories/响应式/" itemprop="url" rel="index">
+                    <span itemprop="name">响应式</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2019/06/25/RxJava调度选择/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2019/06/25/RxJava调度选择/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="RxJava调度选择"><a href="#RxJava调度选择" class="headerlink" title="RxJava调度选择"></a>RxJava调度选择</h1><h2 id="前提："><a href="#前提：" class="headerlink" title="前提："></a>前提：</h2><p>在RxJava中有<a href="http://reactivex.io/RxJava/javadoc/rx/schedulers/Schedulers.html" target="_blank" rel="noopener">5种不同的调度程序</a>可供选择：</p>
+<blockquote>
+<ol>
+<li><strong>immediate()</strong>：创建并返回一个在当前线程上立即执行工作的Scheduler。</li>
+<li><strong>trampoline()</strong>：创建并返回一个Scheduler ，该Scheduler 所在线程并不会立即工作，而是要等待我们所设定的等待时间结束后才可以执行（默认为0），当然，这个延时设置是要设定在Runnable实现内部。还有一点就是所有任务要添加到一个队列中，然后依次执行即可。</li>
+<li><strong>newThread()</strong>：创建并返回一个Scheduler，为每个任务创建一个新的Thread。</li>
+<li><strong>computation()</strong>：创建并返回用于计算工作的Scheduler。它可以用于事件循环，处理回调和其他计算工作。注意不要使用该Scheduler执行IO类型的工作，对此，我们可以使用<strong>io()</strong> 代替。</li>
+<li><strong>io()</strong> ：创建并返回一个用于IO类型工作的Scheduler。该实现维护了一个Executor线程池，该线程池可根据需要增长。该Scheduler可用于异步执行阻塞IO。不要使用该Scheduler执行计算任务。</li>
+</ol>
+</blockquote>
+<h2 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h2><p>前3个Scheduler解释的非常到位，对<strong>computation()</strong> 和 <strong>io()</strong> 有点困惑。</p>
+<ol>
+<li>究竟什么是“IO-bound work”？它适用于处理streams(<code>java.io</code>)和files(<code>java.nio.files</code>)吗？适用于数据库查询吗？适用于下载文件还是访问REST API？</li>
+<li><strong>computation()</strong>与<strong>newThread()</strong> 有什么不同之处？</li>
+<li>为什么在进行IO任务时调用<strong>computation()</strong> 会很糟糕？</li>
+<li>为什么在进行计算任务时调用<strong>io()</strong> 会很糟糕？
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2019/06/25/RxJava调度选择/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </li></ol></div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2019/06/10/知秋源码解读分享系列/" itemprop="url">
                   知秋源码解读分享系列
                 </a>
@@ -1366,128 +1503,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope="" itemtype="//schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2018/09/12/2018.9.10 响应式一些内容的分享总结/" itemprop="url">
-                  2018.9.10 响应式一些内容的分享总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2018-09-12T23:40:25+08:00" content="2018-09-12">
-              2018-09-12
-            </time>
-          </span>
-
-          
-            <span class="post-category">
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope="" itemtype="https://schema.org/Thing">
-                  <a href="/categories/响应式/" itemprop="url" rel="index">
-                    <span itemprop="name">响应式</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2018/09/12/2018.9.10 响应式一些内容的分享总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/09/12/2018.9.10 响应式一些内容的分享总结/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="2018-9-10-响应式一些内容的分享总结"><a href="#2018-9-10-响应式一些内容的分享总结" class="headerlink" title="2018.9.10 响应式一些内容的分享总结"></a>2018.9.10 响应式一些内容的分享总结</h1><h2 id="响应式到底是什么？"><a href="#响应式到底是什么？" class="headerlink" title="响应式到底是什么？"></a>响应式到底是什么？</h2><p>现实生活中，当我们听到有人喊我们的时候，我们会对其进行响应，也就是说，我们是基于事件驱动模式来进行的编程。<br>所以这个过程其实就是对于所产生事件的下发，我们的消费者对其进行的一系列的消费。<br>从这个角度，我们可以思考，整个代码的设计我们应该是针对于消费者来讲的，比如看电影，有些画面我们不想看，那就闭上眼睛，有些声音不想听，那就捂上耳朵，说白了，就是对于消费者的增强包装，我们将这些复杂的逻辑给其拆分，然后分割成一个个的小任务进行封装，于是就有了诸如ﬁlter、map、skip、limit等操作。而对于其中源码的设计逻辑，我们放在后面来讲。</p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2018/09/12/2018.9.10 响应式一些内容的分享总结/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1531,7 +1546,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">101</span>
+              <span class="site-state-item-count">102</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
